@@ -5,8 +5,8 @@ import 'package:andromeda/screens/andromeda/home.dart';
 import 'package:andromeda/screens/andromeda/search.dart';
 import 'package:andromeda/screens/andromeda/history.dart';
 //Auth
-import 'package:andromeda/screens/auth/login.dart';
-import 'package:andromeda/screens/auth/register.dart';
+import 'package:andromeda/screens/auth/Login/login_page.dart';
+import 'package:andromeda/screens/auth/Register/registro_page.dart';
 //Inicio
 import 'package:andromeda/screens/start.dart';
 //Users
@@ -28,9 +28,9 @@ class Router {
           ),
         );
       case 'home':
-        return MaterialPageRoute(builder: (_) => const MyHomePage());
+        return MaterialPageRoute(builder: (_) => MyHomePage());
       case 'login':
-        return MaterialPageRoute(builder: (_) => const MyLoginPage());
+        return MaterialPageRoute(builder: (_) => LoginPage());
       case 'start':
         return MaterialPageRoute(builder: (_) => const MyStartPage());
       case 'store':
@@ -40,7 +40,7 @@ class Router {
           ),
         );
       case 'register':
-        return MaterialPageRoute(builder: (_) => const MyRegisterPage());
+        return MaterialPageRoute(builder: (_) => const RegisterPage());
       case 'review':
         return MaterialPageRoute(
           builder: (_) => MyReviewPage(

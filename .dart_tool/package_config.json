@@ -56,10 +56,22 @@
       "languageVersion": "2.17"
     },
     {
+      "name": "flutter_custom_clippers",
+      "rootUri": "file:///Users/emmanuelsantizfelipe/.pub-cache/hosted/pub.dev/flutter_custom_clippers-2.1.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "flutter_lints",
       "rootUri": "file:///Users/emmanuelsantizfelipe/.pub-cache/hosted/pub.dev/flutter_lints-2.0.3",
       "packageUri": "lib/",
       "languageVersion": "2.19"
+    },
+    {
+      "name": "flutter_rating_bar",
+      "rootUri": "file:///Users/emmanuelsantizfelipe/.pub-cache/hosted/pub.dev/flutter_rating_bar-4.0.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.14"
     },
     {
       "name": "flutter_test",
@@ -110,6 +122,12 @@
       "languageVersion": "2.15"
     },
     {
+      "name": "google_nav_bar",
+      "rootUri": "file:///Users/emmanuelsantizfelipe/.pub-cache/hosted/pub.dev/google_nav_bar-5.0.6",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "http",
       "rootUri": "file:///Users/emmanuelsantizfelipe/.pub-cache/hosted/pub.dev/http-0.13.6",
       "packageUri": "lib/",
@@ -152,6 +170,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "nested",
+      "rootUri": "file:///Users/emmanuelsantizfelipe/.pub-cache/hosted/pub.dev/nested-1.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "path",
       "rootUri": "file:///Users/emmanuelsantizfelipe/.pub-cache/hosted/pub.dev/path-1.8.2",
       "packageUri": "lib/",
@@ -162,6 +186,12 @@
       "rootUri": "file:///Users/emmanuelsantizfelipe/.pub-cache/hosted/pub.dev/plugin_platform_interface-2.1.6",
       "packageUri": "lib/",
       "languageVersion": "2.19"
+    },
+    {
+      "name": "provider",
+      "rootUri": "file:///Users/emmanuelsantizfelipe/.pub-cache/hosted/pub.dev/provider-6.1.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
     },
     {
       "name": "sky_engine",
@@ -236,7 +266,7 @@
       "languageVersion": "2.19"
     }
   ],
-  "generated": "2024-01-25T04:14:34.342014Z",
+  "generated": "2024-01-25T04:26:49.104956Z",
   "generator": "pub",
   "generatorVersion": "2.19.6"
 }
