@@ -1,61 +1,53 @@
 import 'package:flutter/material.dart';
 
 class CardsBase extends StatelessWidget {
-  final String imagenAsset;
-  final String nombreRestaurante;
-  final String tipoComida;
-  final String horariosAtencion;
-
-  CardsBase({
-    required this.imagenAsset,
-    required this.nombreRestaurante,
-    required this.tipoComida,
-    required this.horariosAtencion,
-  });
-
   @override
   Widget build(BuildContext context) {
+    return Scaffold(
+      body: ListView(
+        padding: EdgeInsets.all(16.0),
+        children: [
+          _buildCard(
+            'assets/ExampleRest.png',
+            'Restaurante 1',
+            'Comida Italiana',
+            '11:00 AM - 9:00 PM',
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCard(String imageUrl, String name, String cuisineType, String openingHours) {
     return Card(
-      elevation: 3.0,
-      margin: EdgeInsets.all(10.0),
+      elevation: 5.0,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Imagen del restaurante desde assets
-          Container(
+          Image.network(
+            imageUrl,
             height: 150.0,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage(imagenAsset),
-                fit: BoxFit.cover,
-              ),
-            ),
+            width: double.infinity,
+            fit: BoxFit.cover,
           ),
-          // Contenido del restaurante
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Nombre del restaurante
                 Text(
-                  nombreRestaurante,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16.0,
-                  ),
+                  name,
+                  style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
                 ),
                 SizedBox(height: 8.0),
-                // Tipo de comida
                 Text(
-                  'Tipo de Comida: $tipoComida',
-                  style: TextStyle(fontSize: 14.0),
+                  'Tipo de Comida: $cuisineType',
+                  style: TextStyle(fontSize: 16.0),
                 ),
-                SizedBox(height: 8.0),
-                // Horarios de atención
+                SizedBox(height: 4.0),
                 Text(
-                  'Horarios de Atención: $horariosAtencion',
-                  style: TextStyle(fontSize: 14.0),
+                  'Horario de Atención: $openingHours',
+                  style: TextStyle(fontSize: 16.0),
                 ),
               ],
             ),
@@ -68,28 +60,6 @@ class CardsBase extends StatelessWidget {
 
 void main() {
   runApp(MaterialApp(
-    home: Scaffold(
-      appBar: AppBar(
-        title: Text('Ejemplo de Cards'),
-      ),
-      body: ListView(
-        // Utilizamos ListView para mostrar múltiples Cards
-        children: [
-          CardsBase(
-            imagenAsset: 'assets/restaurante1.jpg',
-            nombreRestaurante: 'Restaurante Ejemplo 1',
-            tipoComida: 'Comida Internacional',
-            horariosAtencion: 'Lun-Vie: 10:00 AM - 8:00 PM',
-          ),
-          CardsBase(
-            imagenAsset: 'assets/restaurante2.jpg',
-            nombreRestaurante: 'Restaurante Ejemplo 2',
-            tipoComida: 'Comida Asiática',
-            horariosAtencion: 'Lun-Dom: 11:00 AM - 9:00 PM',
-          ),
-          // Agrega más Cards según sea necesario
-        ],
-      ),
-    ),
+    home: CardsBase(),
   ));
 }
