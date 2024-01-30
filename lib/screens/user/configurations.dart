@@ -10,6 +10,6 @@ class MyConfigProfilePage extends StatefulWidget {
 class _MyConfigProfilePageState extends State<MyConfigProfilePage> {
   @override
   Widget build(BuildContext context) {
-    return const Text('is Profile');
+    return const Text('is Configurations');
   }
 }
