@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:andromeda/Witgets/bottomBar.dart';
+
 class MyHistoryPage extends StatefulWidget {
   const MyHistoryPage({Key? key}) : super(key: key);
 
@@ -15,8 +17,8 @@ class _MyHistoryPageState extends State<MyHistoryPage> {
         padding: const EdgeInsets.all(16.0),
         children: [
           _buildCard(
-            'Restaurante de Prueba',
-            'Recuerda que tu reservación es el dia 10/01/2024',
+            'Prueba',
+            'Recuerda que tu reservación',
             'assets/ExampleRest.png',
             3, // Número de personas
           ),
@@ -46,10 +48,14 @@ class _MyHistoryPageState extends State<MyHistoryPage> {
           ),
         ],
       ),
+      bottomNavigationBar: MyBottomBar(
+        index: 1,
+      ),
     );
   }
 
-  Widget _buildCard(String title, String description, String imagePath, int numberOfPeople) {
+  Widget _buildCard(
+      String title, String description, String imagePath, int numberOfPeople) {
     return Card(
       margin: const EdgeInsets.all(15),
       elevation: 10,
@@ -62,7 +68,7 @@ class _MyHistoryPageState extends State<MyHistoryPage> {
             bottom: 0,
             child: Container(
               width: 150,
-              height: 80,
+              height: 90,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 image: DecorationImage(
@@ -85,7 +91,8 @@ class _MyHistoryPageState extends State<MyHistoryPage> {
                 children: [
                   Text(
                     title,
-                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                        fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 10),
                   Text(

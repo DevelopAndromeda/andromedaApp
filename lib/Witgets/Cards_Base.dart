@@ -18,13 +18,14 @@ class CardsBase extends StatelessWidget {
     );
   }
 
-  Widget _buildCard(String imageUrl, String name, String cuisineType, String openingHours) {
+  Widget _buildCard(
+      String imageUrl, String name, String cuisineType, String openingHours) {
     return Card(
       elevation: 5.0,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Image.network(
+          Image.asset(
             imageUrl,
             height: 150.0,
             width: double.infinity,

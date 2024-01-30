@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.andromeda.app-mergeDebugResources-13:/values-pt-rPT/values-pt-rPT.xml",
+            "outputFile": "com.example.andromeda.app-mergeDebugResources-12:/values-pt-rPT/values-pt-rPT.xml",
             "map": [
                 {
                     "source": "/Users/emmanuelsantizfelipe/.gradle/caches/transforms-3/f46b9773282b7a3d38863a46e0e0b5d1/transformed/jetified-play-services-basement-18.1.0/res/values-pt-rPT/values.xml",
