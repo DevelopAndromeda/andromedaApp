@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:andromeda/Witgets/Button_Base.dart';
-import 'package:andromeda/Witgets/Colores_Base.dart';
-import 'package:andromeda/Witgets/Textfield_Base.dart';
+import 'package:andromeda/Witgets/General/Button_Base.dart';
+import 'package:andromeda/Witgets/General/Colores_Base.dart';
+import 'package:andromeda/Witgets/General/Textfield_Base.dart';
 import 'package:andromeda/screens/auth/Login/login_viewmodel.dart';
 //import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 
