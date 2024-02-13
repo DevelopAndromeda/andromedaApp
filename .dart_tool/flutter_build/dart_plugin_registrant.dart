@@ -7,6 +7,7 @@
 
 import 'dart:io'; // flutter_ignore: dart_io_import.
 import 'package:geolocator_android/geolocator_android.dart';
+<<<<<<< HEAD
 import 'package:path_provider_android/path_provider_android.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:geolocator_apple/geolocator_apple.dart';
@@ -17,6 +18,10 @@ import 'package:geolocator_apple/geolocator_apple.dart';
 import 'package:path_provider_foundation/path_provider_foundation.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider_windows/path_provider_windows.dart';
+=======
+import 'package:geolocator_apple/geolocator_apple.dart';
+import 'package:geolocator_apple/geolocator_apple.dart';
+>>>>>>> 115012ed922540f1e069de4da03b93c5a0b3bd4e
 
 @pragma('vm:entry-point')
 class _PluginRegistrant {
@@ -31,6 +36,7 @@ class _PluginRegistrant {
           '`geolocator_android` threw an error: $err. '
           'The app may not function as expected until you remove this plugin from pubspec.yaml'
         );
+<<<<<<< HEAD
         rethrow;
       }
 
@@ -52,6 +58,8 @@ class _PluginRegistrant {
           'The app may not function as expected until you remove this plugin from pubspec.yaml'
         );
         rethrow;
+=======
+>>>>>>> 115012ed922540f1e069de4da03b93c5a0b3bd4e
       }
 
     } else if (Platform.isIOS) {
@@ -62,6 +70,7 @@ class _PluginRegistrant {
           '`geolocator_apple` threw an error: $err. '
           'The app may not function as expected until you remove this plugin from pubspec.yaml'
         );
+<<<<<<< HEAD
         rethrow;
       }
 
@@ -96,6 +105,11 @@ class _PluginRegistrant {
         rethrow;
       }
 
+=======
+      }
+
+    } else if (Platform.isLinux) {
+>>>>>>> 115012ed922540f1e069de4da03b93c5a0b3bd4e
     } else if (Platform.isMacOS) {
       try {
         GeolocatorApple.registerWith();
@@ -104,6 +118,7 @@ class _PluginRegistrant {
           '`geolocator_apple` threw an error: $err. '
           'The app may not function as expected until you remove this plugin from pubspec.yaml'
         );
+<<<<<<< HEAD
         rethrow;
       }
 
@@ -138,6 +153,11 @@ class _PluginRegistrant {
         rethrow;
       }
 
+=======
+      }
+
+    } else if (Platform.isWindows) {
+>>>>>>> 115012ed922540f1e069de4da03b93c5a0b3bd4e
     }
   }
 }
