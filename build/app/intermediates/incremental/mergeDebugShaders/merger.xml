@@ -1,2 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
+<<<<<<< HEAD
 <merger version="3"><dataSet config="main" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/emmanuelsantizfelipe/Documents/flutter/AndromedaApp/android/app/src/main/shaders"/></dataSet><dataSet config="debug" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/emmanuelsantizfelipe/Documents/flutter/AndromedaApp/android/app/src/debug/shaders"/></dataSet></merger>
+=======
+<merger version="3"><dataSet config="main" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="C:\Users\ingsa\OneDrive\Documentos\Andromeda\Andromeda Dev\AndromedaApp\android\app\src\main\shaders"/></dataSet><dataSet config="debug" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="C:\Users\ingsa\OneDrive\Documentos\Andromeda\Andromeda Dev\AndromedaApp\android\app\src\debug\shaders"/></dataSet></merger>
+>>>>>>> 115012ed922540f1e069de4da03b93c5a0b3bd4e

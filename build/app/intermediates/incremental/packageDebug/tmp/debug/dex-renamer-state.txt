@@ -1,4 +1,9 @@
+<<<<<<< HEAD
 #Mon Jan 29 12:09:39 CST 2024
 base.0=/Users/emmanuelsantizfelipe/Documents/flutter/AndromedaApp/build/app/intermediates/dex/debug/mergeDexDebug/classes.dex
+=======
+#Wed Jan 31 14:18:37 CST 2024
+base.0=C\:\\Users\\ingsa\\OneDrive\\Documentos\\Andromeda\\Andromeda Dev\\AndromedaApp\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes.dex
+>>>>>>> 115012ed922540f1e069de4da03b93c5a0b3bd4e
 path.0=classes.dex
 renamed.0=classes.dex

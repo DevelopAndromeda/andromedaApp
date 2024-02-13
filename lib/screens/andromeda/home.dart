@@ -99,7 +99,8 @@ class _MyHomePageState extends State<MyHomePage> {
                         backgroundColor: Color.fromARGB(255, 154, 126, 43),
                       ),
                       onTap: () {
-                        Navigator.of(context).pushNamed('profile');
+                        Navigator.of(context).pushNamedAndRemoveUntil(
+                            'profile', (Route<dynamic> route) => false);
                       },
                     ),
                     const SizedBox(height: 30)
