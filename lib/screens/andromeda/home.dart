@@ -27,17 +27,17 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Future getFirstSection() async {
     return await get('', 'integration',
-        'products/?searchCriteria%5BsortOrders%5D%5B0%5D%5Bdirection%5D=ASC&searchCriteria%5BcurrentPage%5D=1&searchCriteria%5BpageSize%5D=3&searchCriteria%5BfilterGroups%5D%5B0%5D%5Bfilters%5D%5B1%5D%5Bfield%5D=category_id&searchCriteria%5BfilterGroups%5D%5B0%5D%5Bfilters%5D%5B1%5D%5Bvalue%5D=3&searchCriteria%5BfilterGroups%5D%5B0%5D%5Bfilters%5D%5B1%5D%5BconditionType%5D=eq');
+        'products/?searchCriteria[sortOrders][0][direction]=ASC&searchCriteria[currentPage]=1&searchCriteria[pageSize]=3&searchCriteria[filterGroups][0][filters][1][field]=category_id&searchCriteria[filterGroups][0][filters][1][value]=3&searchCriteria[filterGroups][0][filters][1][conditionType]=eq');
   }
 
   Future getSecondSection() async {
     return await get('', 'integration',
-        'products/?searchCriteria%5BsortOrders%5D%5B0%5D%5Bdirection%5D=ASC&searchCriteria%5BcurrentPage%5D=2&searchCriteria%5BpageSize%5D=3&searchCriteria%5BfilterGroups%5D%5B0%5D%5Bfilters%5D%5B1%5D%5Bfield%5D=category_id&searchCriteria%5BfilterGroups%5D%5B0%5D%5Bfilters%5D%5B1%5D%5Bvalue%5D=3&searchCriteria%5BfilterGroups%5D%5B0%5D%5Bfilters%5D%5B1%5D%5BconditionType%5D=eq');
+        'products/?searchCriteria[sortOrders][0][direction]=ASC&searchCriteria[currentPage]=2&searchCriteria[pageSize]=3&searchCriteria[filterGroups][0][filters][1][field]=category_id&searchCriteria[filterGroups][0][filters][1][value]=3&searchCriteria[filterGroups][0][filters][1][conditionType]=eq');
   }
 
   Future getAllRestaurants() async {
     return await get('', 'integration',
-        'products/?searchCriteria%5BsortOrders%5D%5B0%5D%5Bdirection%5D=ASC&searchCriteria%5BcurrentPage%5D=1&searchCriteria%5BpageSize%5D=10&searchCriteria%5BfilterGroups%5D%5B0%5D%5Bfilters%5D%5B1%5D%5Bfield%5D=category_id&searchCriteria%5BfilterGroups%5D%5B0%5D%5Bfilters%5D%5B1%5D%5Bvalue%5D=3&searchCriteria%5BfilterGroups%5D%5B0%5D%5Bfilters%5D%5B1%5D%5BconditionType%5D=eq');
+        'products/?searchCriteria[sortOrders][0][direction]=ASC&searchCriteria[currentPage]=1&searchCriteria[pageSize]=10&searchCriteria[filterGroups][0][filters][1][field]=category_id&searchCriteria[filterGroups][0][filters][1][value]=3&searchCriteria[filterGroups][0][filters][1][conditionType]=eq');
   }
 
   Future<void> getUserData() async {
