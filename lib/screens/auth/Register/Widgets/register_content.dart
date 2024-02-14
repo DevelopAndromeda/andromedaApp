@@ -1,11 +1,11 @@
-import 'package:andromeda/Witgets/Colores_Base.dart';
-import 'package:andromeda/Witgets/Textfield_Base.dart';
+import 'package:andromeda/Witgets/General/Colores_Base.dart';
+import 'package:andromeda/Witgets/General/Textfield_Base.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 // ignore: unused_import
 import 'package:provider/provider.dart';
-//import 'package:andromeda/screens/auth/Register/registro_viewmodel.dart';
-import 'package:andromeda/Witgets/Button_Base.dart';
+import 'package:andromeda/screens/auth/Register/registro_viewmodel.dart';
+import 'package:andromeda/Witgets/General/Button_Base.dart';
 
 import 'package:andromeda/services/api.dart';
 import 'package:andromeda/services/db.dart';

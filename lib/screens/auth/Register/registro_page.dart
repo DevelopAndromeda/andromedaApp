@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:andromeda/Witgets/Colores_Base.dart';
+
+import 'package:andromeda/Witgets/General/Colores_Base.dart';
 import 'Widgets/register_content.dart';
 import 'package:andromeda/screens/auth/Register/registro_viewmodel.dart';
 
