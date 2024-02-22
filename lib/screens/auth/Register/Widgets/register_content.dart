@@ -175,7 +175,7 @@ class _MyRegisterContet extends State<RegisterContent> {
                     'customer': {
                       'email': email,
                       'firstname': firstname,
-                      'lastname': lastname
+                      'lastname': lastname,
                     },
                     'password': password
                   });

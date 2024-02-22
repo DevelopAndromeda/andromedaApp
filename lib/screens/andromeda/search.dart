@@ -1,6 +1,6 @@
-import 'package:andromeda/services/api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:andromeda/services/api.dart';
 
 import 'package:andromeda/Witgets/bottomBar.dart';
 
@@ -28,20 +28,10 @@ class _MySearchPageState extends State<MySearchPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color.fromARGB(255, 154, 126, 43),
-        title: const Text('New Your City'),
-        leading: IconButton(
-          icon: Icon(Icons.menu),
-          onPressed: () => {},
-        ),
-        actions: const [
-          Icon(Icons.person_pin),
-          SizedBox(
-            width: 10,
-          )
-        ],
+        //backgroundColor: Color.fromARGB(255, 154, 126, 43),
+        backgroundColor: Colors.white,
         bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(40),
+          preferredSize: const Size.fromHeight(15),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
             child: Row(
@@ -51,9 +41,9 @@ class _MySearchPageState extends State<MySearchPage> {
                       //controller: search,
                       padding:
                           EdgeInsets.symmetric(vertical: 12, horizontal: 10),
-                      placeholder: "Seach for shop & restaurants",
+                      placeholder: "Buscar",
                       prefix: Padding(
-                        padding: const EdgeInsets.only(left: 10),
+                        padding: EdgeInsets.only(left: 10),
                         child: Icon(
                           Icons.search,
                           color: Color(0xff7b7b7b),
@@ -61,10 +51,10 @@ class _MySearchPageState extends State<MySearchPage> {
                       ),
                       decoration: BoxDecoration(
                           color: Color(0xfff7f7f7),
-                          borderRadius: BorderRadius.circular(50)),
+                          borderRadius: BorderRadius.circular(10)),
                       style: TextStyle(
                           color: Color(0xff707070),
-                          fontSize: 12,
+                          fontSize: 16,
                           fontFamily: 'Exo Regular'),
                       onChanged: (value) async {
                         setState(() {
@@ -98,8 +88,9 @@ class _MySearchPageState extends State<MySearchPage> {
                   },
                   initialData: const []),
             )
-          : Text('Ingresa datos para realizar una busqueda'),
-      bottomNavigationBar: MyBottomBar(
+          : const Center(
+              child: Text('Ingresa datos para realizar una busqueda')),
+      bottomNavigationBar: const MyBottomBar(
         index: 0,
       ),
     );
@@ -114,7 +105,7 @@ class _MySearchPageState extends State<MySearchPage> {
         lists.add(_buildCard(data));
       }
     } else {
-      lists.add(const Text('Sin Registros'));
+      lists.add(const Center(child: Text('Sin Registros')));
     }
 
     return lists;

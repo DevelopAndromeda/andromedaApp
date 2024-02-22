@@ -19,16 +19,19 @@ import 'package:andromeda/screens/restaurant/detail.dart';
 import 'package:andromeda/screens/restaurant/store.dart';
 import 'package:andromeda/screens/restaurant/review.dart';
 
+import 'package:andromeda/Reservacion/Reservación_Example.dart';
+
 class Router {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case 'configurations':
         return MaterialPageRoute(builder: (_) => const MyConfigProfilePage());
       case 'detail':
-        final ID = settings.arguments as int;
+        //final ID = settings.arguments as int;
+        final data = settings.arguments as Map<String, dynamic>;
         return MaterialPageRoute(
           builder: (_) => MyDetailPage(
-            id: ID,
+            data: data,
           ),
         );
       case 'home':
@@ -63,6 +66,8 @@ class Router {
             id: ID,
           ),
         );
+      case 'reservation':
+        return MaterialPageRoute(builder: (_) => ExampleReservacion());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

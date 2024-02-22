@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:andromeda/Witgets/Notifications/Successful_Notification_.dart';
 import 'package:andromeda/Witgets/Notifications/Reservation_Notificacion.dart';
+import 'package:andromeda/Witgets/bottomBar.dart';
 
 class MyNotificationsPage extends StatefulWidget {
   const MyNotificationsPage({super.key});
@@ -12,17 +13,25 @@ class MyNotificationsPage extends StatefulWidget {
 class _MyNotificationsPageState extends State<MyNotificationsPage> {
   @override
   Widget build(BuildContext context) {
-    // ignore: prefer_const_constructors
-    return //Confirmación de reservación
-       ReservationNotification(
-        title: "Confirmacion de tu reservación", 
-        subtitle: "Nombre del Restaurante", 
-        description: "Datos de la reservación", 
-        imagePath: "assets/ExampleRest.png", 
-        onClose: (){
-          print("Notificaciones");
-        },
-        );
+    return Scaffold(
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+        child: SingleChildScrollView(
+          child: ReservationNotification(
+            title: "Confirmacion de tu reservación",
+            subtitle: "Nombre del Restaurante",
+            description: "Datos de la reservación",
+            imagePath: "assets/ExampleRest.png",
+            onClose: () {
+              print("Notificaciones");
+            },
+          ),
+        ),
+      ),
+      bottomNavigationBar: MyBottomBar(
+        index: 4,
+      ),
+    );
   }
 /*
     return //Notificacion de cancelacion de la reservación
@@ -64,5 +73,5 @@ class _MyNotificationsPageState extends State<MyNotificationsPage> {
   }
 */
   //Pendiente a resolver con Emma :x
-  //Crear validaciones y formatos de para mandar a llamar las funciones 
+  //Crear validaciones y formatos de para mandar a llamar las funciones
 }

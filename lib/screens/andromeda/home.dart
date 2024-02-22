@@ -26,13 +26,17 @@ class _MyHomePageState extends State<MyHomePage> {
   };*/
 
   Future getFirstSection() async {
+    //return await get('', 'integration',
+    //    'products/?searchCriteria[sortOrders][0][direction]=ASC&searchCriteria[currentPage]=1&searchCriteria[pageSize]=3&searchCriteria[filterGroups][0][filters][1][field]=category_id&searchCriteria[filterGroups][0][filters][1][value]=3&searchCriteria[filterGroups][0][filters][1][conditionType]=eq');
     return await get('', 'integration',
-        'products/?searchCriteria[sortOrders][0][direction]=ASC&searchCriteria[currentPage]=1&searchCriteria[pageSize]=3&searchCriteria[filterGroups][0][filters][1][field]=category_id&searchCriteria[filterGroups][0][filters][1][value]=3&searchCriteria[filterGroups][0][filters][1][conditionType]=eq');
+        'products/?searchCriteria[filterGroups][0][filters][0][field]=category_string&searchCriteria[filterGroups][0][filters][0][value]=%25destacados%25&searchCriteria[filterGroups][0][filters][0][conditionType]=like');
   }
 
   Future getSecondSection() async {
     return await get('', 'integration',
         'products/?searchCriteria[sortOrders][0][direction]=ASC&searchCriteria[currentPage]=2&searchCriteria[pageSize]=3&searchCriteria[filterGroups][0][filters][1][field]=category_id&searchCriteria[filterGroups][0][filters][1][value]=3&searchCriteria[filterGroups][0][filters][1][conditionType]=eq');
+    //return await get(
+    //    '', 'integration', 'threedadv-catalog/most-viewed?pageSize=10&city=2');
   }
 
   Future getAllRestaurants() async {
@@ -140,7 +144,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ),
               const Text(
-                'Destacados',
+                'Mas Vistos',
                 style: TextStyle(
                     color: Color(0xff323232),
                     fontSize: 15,
@@ -217,17 +221,20 @@ class _MyHomePageState extends State<MyHomePage> {
   List<Widget> _createList(datas) {
     List<Widget> lists = <Widget>[];
     for (dynamic data in datas) {
-      lists.add(RestuarentScreen(
+      //final score = getScore(data['custom_attributes']);
+      /*lists.add(RestuarentScreen(
+        id: data['id'],
         name: data['name'],
         image: "http://82.165.212.67/media/catalog/product" +
             data['media_gallery_entries'][0]['file'],
         remainingTime: '',
         subTitle: 'Tipo de Comida',
-        rating: '4.5',
+        rating: getCustomAttribute(data['custom_attributes'], 'product_score'),
         deliveryTime: '',
         totalRating: '560',
         deliveryPrice: '',
-      ));
+      ));*/
+      lists.add(RestuarentScreen(data: data));
     }
     return lists;
   }

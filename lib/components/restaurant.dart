@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
+import 'package:andromeda/services/api.dart';
+import 'package:andromeda/services/db.dart';
+
 class RestuarentScreen extends StatefulWidget {
+  /*final int id;
   final String name,
       image,
       remainingTime,
@@ -9,9 +13,11 @@ class RestuarentScreen extends StatefulWidget {
       rating,
       deliveryTime,
       totalRating,
-      deliveryPrice;
+      deliveryPrice;*/
+  final Map<dynamic, dynamic> data;
   const RestuarentScreen(
-      {Key? key,
+      /*{Key? key,
+      required this.id,
       required this.name,
       required this.image,
       required this.remainingTime,
@@ -20,6 +26,9 @@ class RestuarentScreen extends StatefulWidget {
       required this.totalRating,
       required this.subTitle,
       required this.deliveryPrice})
+      : super(key: key);*/
+      {Key? key,
+      required this.data})
       : super(key: key);
 
   @override
@@ -29,12 +38,13 @@ class RestuarentScreen extends StatefulWidget {
 class _RestuarentScreenState extends State<RestuarentScreen> {
   @override
   Widget build(BuildContext context) {
-    //print(widget.image);
+    print(widget.data['image']);
     final height = MediaQuery.of(context).size.height * 1;
     final width = MediaQuery.of(context).size.width * 1;
     return InkWell(
       onTap: () {
-        //Navigator.push(context, MaterialPageRoute(builder: (context) => DetailScreen(name: widget.name, image: widget.image)));
+        Navigator.of(context).pushNamedAndRemoveUntil(
+            'detail', arguments: widget.data, (Route<dynamic> route) => false);
       },
       child: Padding(
         padding: const EdgeInsets.only(right: 10),
@@ -43,8 +53,8 @@ class _RestuarentScreenState extends State<RestuarentScreen> {
             border: Border.all(color: Colors.blueAccent),
           ),
           margin: const EdgeInsets.all(1.0),*/
-          height: height * .3,
-          width: width * .6,
+          height: height * .5,
+          width: width * .5,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -53,8 +63,11 @@ class _RestuarentScreenState extends State<RestuarentScreen> {
                 children: [
                   ClipRRect(
                       borderRadius: BorderRadius.circular(10),
-                      child:
-                          Image.network(widget.image, width: 300, height: 200)),
+                      child: Image.network(
+                          "http://82.165.212.67/media/catalog/product" +
+                              widget.data['media_gallery_entries'][0]['file'],
+                          width: 300,
+                          height: 180)),
                   /*Padding(
                     padding: const EdgeInsets.symmetric(vertical: 15),
                     child: Container(
@@ -102,40 +115,41 @@ class _RestuarentScreenState extends State<RestuarentScreen> {
                   ),*/
                 ],
               ),
-              SizedBox(
-                height: 5,
-              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    widget.name,
+                    widget.data['name'],
                     style: TextStyle(
                         color: Color(0xff323232),
                         fontSize: 14,
                         fontFamily: 'Exo Bold'),
                   ),
-                  Icon(
-                    Icons.bookmark_border,
-                    size: 20.0,
+                  IconButton(
+                    onPressed: () async {
+                      print('click');
+                      final user = await serviceDB.instance
+                          .getById('users', 'id_user', 1);
+                      if (user.isEmpty) {
+                        return;
+                      }
+                      String token = user[0]['token'];
+                      final favorite = await post(token, 'custom',
+                          'wishlist/customer/product/${widget.data["id"]}', {});
+
+                      print(favorite);
+                    },
+                    iconSize: 20,
+                    icon: Icon(
+                      Icons.bookmark_border,
+                    ),
                   ),
-                  /*Row(
-                    children: [
-                      Icon(
-                        Icons.bookmark_border,
-                        size: 20.0,
-                      )
-                    ],
-                  )*/
                 ],
-              ),
-              SizedBox(
-                height: 3,
               ),
               Row(
                 children: <Widget>[
                   Text(
-                    widget.subTitle,
+                    'Tipo de Comida',
                     style: TextStyle(
                         color: Color(0xff707070),
                         fontSize: 12,
@@ -144,33 +158,39 @@ class _RestuarentScreenState extends State<RestuarentScreen> {
                   Row(
                     children: [
                       RatingBarIndicator(
-                        rating: 2.75,
+                        rating: double.parse(getCustomAttribute(
+                                widget.data['custom_attributes'],
+                                'product_score')
+                            .toString()),
                         itemBuilder: (context, index) => Icon(
                           Icons.star,
                           color: Colors.amber,
                         ),
-                        itemCount: 1,
-                        itemSize: 19.0,
+                        itemCount: 5,
+                        itemSize: 12.0,
                         direction: Axis.horizontal,
                       ),
                       Text(
-                        " " + widget.rating,
+                        " " +
+                            getCustomAttribute(widget.data['custom_attributes'],
+                                    'product_score')
+                                .toString(),
                         style: TextStyle(
                             color: Color(0xff323232),
                             fontSize: 12,
                             fontFamily: 'Exo Light'),
                       ),
-                      Text(
+                      /*Text(
                         "  (" + widget.totalRating + ")",
                         style: TextStyle(
                             color: Color(0xffa9a9a9),
                             fontSize: 12,
                             fontFamily: 'Exo Bold'),
-                      ),
+                      ),*/
                     ],
                   )
                 ],
-              )
+              ),
               /*SizedBox(
                 height: 3,
               ),*/
@@ -197,5 +217,20 @@ class _RestuarentScreenState extends State<RestuarentScreen> {
         ),
       ),
     );
+  }
+
+  getCustomAttribute(data, type) {
+    if (data.length == 0) {
+      return '';
+    }
+
+    Map<String, String> typeValue = {'product_score': '0'};
+    String? value = typeValue[type] ?? '';
+    for (dynamic attr in data) {
+      if (attr['attribute_code'] == type) {
+        value = attr['value'];
+      }
+    }
+    return value;
   }
 }

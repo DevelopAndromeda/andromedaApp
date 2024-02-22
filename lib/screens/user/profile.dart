@@ -12,16 +12,35 @@ class MyProfilePage extends StatefulWidget {
 }
 
 class _MyProfilePageState extends State<MyProfilePage> {
-  String nombre = "John";
-  String apellido = "Doe";
-  String correo = "john.doe@example.com";
-  String telefono = "123-456-7890";
+  String? nombre;
+  String? apellido;
+  String? correo;
+  String? telefono;
+
+  Future getDataUser() async {
+    var usurio = await serviceDB.instance.getById('users', 'id_user', 1);
+    if (usurio.isNotEmpty) {
+      nombre = usurio[0]['nombre'];
+      apellido = usurio[0]['apellido_paterno'];
+      correo = usurio[0]['username'];
+      telefono = usurio[0]['telefono'] ?? '';
+    }
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    getDataUser();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       //Inicio de AppBar
       appBar: AppBar(
+        backgroundColor: Colors.white,
         flexibleSpace: Row(
           children: [
             Spacer(),
@@ -31,7 +50,6 @@ class _MyProfilePageState extends State<MyProfilePage> {
                 'Andromeda',
                 style: TextStyle(
                   fontSize: 24, // Tamaño del texto
-                  color: Colors.white, // Color del texto
                 ),
               ),
             ),
@@ -40,7 +58,6 @@ class _MyProfilePageState extends State<MyProfilePage> {
               icon: const Icon(
                 Icons.exit_to_app_rounded,
                 size: 30, // Tamaño del icono
-                color: Colors.white, // Color del icono
               ),
               onPressed: () async {
                 await serviceDB.instance.cleanAllTable();

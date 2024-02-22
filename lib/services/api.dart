@@ -30,6 +30,7 @@ String getTokenHeader(String type, String? tokenCustomer) {
 
 Future<dynamic> get(String? tokenCustomer, String type, String url) async {
   try {
+    print(Uri.parse(endPoint! + url));
     _headers["Authorization"] = getTokenHeader(type, tokenCustomer);
     final resp = await http.get(Uri.parse(endPoint! + url), headers: _headers);
     if (resp.statusCode == 200) {
@@ -44,6 +45,7 @@ Future<dynamic> get(String? tokenCustomer, String type, String url) async {
 Future<dynamic> post(
     String? tokenCustomer, String type, String url, Object params) async {
   try {
+    print(Uri.parse(endPoint! + url));
     _headers["Authorization"] = getTokenHeader(type, tokenCustomer);
     final resp = await http.post(Uri.parse(endPoint! + url),
         headers: _headers, body: jsonEncode(params));
@@ -62,6 +64,22 @@ Future<dynamic> put(String? tokenCustomer, String type, String url,
     _headers["Authorization"] = getTokenHeader(type, tokenCustomer);
     final resp = await http.put(Uri.parse(endPoint! + url + id),
         headers: _headers, body: jsonEncode(params));
+    if (resp.statusCode == 200) {
+      return json.decode(resp.body);
+    }
+  } on Exception catch (_) {
+    // make it explicit that this function can throw exceptions
+    rethrow;
+  }
+}
+
+Future<dynamic> delete(String? tokenCustomer, String type, String url) async {
+  try {
+    print('delete');
+    print(Uri.parse(endPoint! + url));
+    _headers["Authorization"] = getTokenHeader(type, tokenCustomer);
+    final resp =
+        await http.delete(Uri.parse(endPoint! + url), headers: _headers);
     if (resp.statusCode == 200) {
       return json.decode(resp.body);
     }
