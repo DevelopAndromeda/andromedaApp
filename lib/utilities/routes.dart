@@ -7,8 +7,8 @@ import 'package:andromeda/screens/andromeda/notifications.dart';
 import 'package:andromeda/screens/andromeda/saved.dart';
 import 'package:andromeda/screens/andromeda/search.dart';
 //Auth
-import 'package:andromeda/screens/auth/Login/login_page.dart';
-import 'package:andromeda/screens/auth/Register/registro_page.dart';
+import 'package:andromeda/screens/auth%20costum/Login/login_page.dart';
+import 'package:andromeda/screens/auth%20costum/Register/registro_page.dart';
 //Inicio
 import 'package:andromeda/screens/start.dart';
 //Users

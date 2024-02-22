@@ -47,6 +47,14 @@ flutter:
     - assets/ExampleRest2.png
     - assets/Profile.png
     - assets/Back.png
+    - assets/image1.jpg
+    - assets/image2.jpg
+    - assets/image3.jpg
+    - assets/image4.jpg
+    - assets/image5.jpg
+    - assets/IniciarSesionCliente.png
+    - assets/IniciarSesionRest.png
+
   # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg
