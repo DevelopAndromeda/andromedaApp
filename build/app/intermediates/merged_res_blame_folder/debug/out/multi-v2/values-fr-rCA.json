@@ -1,17 +1,10 @@
 {
     "logs": [
         {
-<<<<<<< HEAD
             "outputFile": "com.example.andromeda.app-mergeDebugResources-12:/values-fr-rCA/values-fr-rCA.xml",
             "map": [
                 {
-                    "source": "/Users/emmanuelsantizfelipe/.gradle/caches/transforms-3/5f80b20db3afa86c72a9766b008d752d/transformed/core-1.9.0/res/values-fr-rCA/values-fr-rCA.xml",
-=======
-            "outputFile": "com.example.andromeda.app-mergeDebugResources-13:/values-fr-rCA/values-fr-rCA.xml",
-            "map": [
-                {
                     "source": "C:\\Users\\ingsa\\.gradle\\caches\\transforms-3\\5f80b20db3afa86c72a9766b008d752d\\transformed\\core-1.9.0\\res\\values-fr-rCA\\values-fr-rCA.xml",
->>>>>>> 115012ed922540f1e069de4da03b93c5a0b3bd4e
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
@@ -28,28 +21,7 @@
                     }
                 },
                 {
-<<<<<<< HEAD
-                    "source": "/Users/emmanuelsantizfelipe/.gradle/caches/transforms-3/f46b9773282b7a3d38863a46e0e0b5d1/transformed/jetified-play-services-basement-18.1.0/res/values-fr-rCA/values.xml",
-                    "from": {
-                        "startLines": "4",
-                        "startColumns": "0",
-                        "startOffsets": "199",
-                        "endColumns": "156",
-                        "endOffsets": "355"
-                    },
-                    "to": {
-                        "startLines": "10",
-                        "startColumns": "4",
-                        "startOffsets": "1118",
-                        "endColumns": "160",
-                        "endOffsets": "1274"
-                    }
-                },
-                {
-                    "source": "/Users/emmanuelsantizfelipe/.gradle/caches/transforms-3/24bd5ae211488322aa8c48f41a7bee4d/transformed/jetified-play-services-base-18.1.0/res/values-fr-rCA/values.xml",
-=======
                     "source": "C:\\Users\\ingsa\\.gradle\\caches\\transforms-3\\24bd5ae211488322aa8c48f41a7bee4d\\transformed\\jetified-play-services-base-18.1.0\\res\\values-fr-rCA\\values.xml",
->>>>>>> 115012ed922540f1e069de4da03b93c5a0b3bd4e
                     "from": {
                         "startLines": "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20",
                         "startColumns": "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0",
@@ -64,8 +36,6 @@
                         "endColumns": "105,179,129,108,170,132,120,112,194,111,184,135,159,178,72,63,83",
                         "endOffsets": "156,336,466,575,746,879,1000,1113,1469,1581,1766,1902,2062,2241,2314,2378,2462"
                     }
-<<<<<<< HEAD
-=======
                 },
                 {
                     "source": "C:\\Users\\ingsa\\.gradle\\caches\\transforms-3\\f46b9773282b7a3d38863a46e0e0b5d1\\transformed\\jetified-play-services-basement-18.1.0\\res\\values-fr-rCA\\values.xml",
@@ -83,7 +53,6 @@
                         "endColumns": "160",
                         "endOffsets": "1274"
                     }
->>>>>>> 115012ed922540f1e069de4da03b93c5a0b3bd4e
                 }
             ]
         }

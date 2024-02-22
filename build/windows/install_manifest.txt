@@ -1,0 +1,16 @@
+C:/Users/ingsa/OneDrive/Documentos/Andromeda/Andromeda Dev/AndromedaApp/build/windows/runner/Debug/data/icudtl.dat
+C:/Users/ingsa/OneDrive/Documentos/Andromeda/Andromeda Dev/AndromedaApp/build/windows/runner/Debug/flutter_windows.dll
+C:/Users/ingsa/OneDrive/Documentos/Andromeda/Andromeda Dev/AndromedaApp/build/windows/runner/Debug/geolocator_windows_plugin.dll
+C:/Users/ingsa/OneDrive/Documentos/Andromeda/Andromeda Dev/AndromedaApp/build/windows/runner/Debug/data/flutter_assets/AssetManifest.bin
+C:/Users/ingsa/OneDrive/Documentos/Andromeda/Andromeda Dev/AndromedaApp/build/windows/runner/Debug/data/flutter_assets/AssetManifest.json
+C:/Users/ingsa/OneDrive/Documentos/Andromeda/Andromeda Dev/AndromedaApp/build/windows/runner/Debug/data/flutter_assets/assets/Back.png
+C:/Users/ingsa/OneDrive/Documentos/Andromeda/Andromeda Dev/AndromedaApp/build/windows/runner/Debug/data/flutter_assets/assets/ExampleRest.png
+C:/Users/ingsa/OneDrive/Documentos/Andromeda/Andromeda Dev/AndromedaApp/build/windows/runner/Debug/data/flutter_assets/assets/ExampleRest1.png
+C:/Users/ingsa/OneDrive/Documentos/Andromeda/Andromeda Dev/AndromedaApp/build/windows/runner/Debug/data/flutter_assets/assets/ExampleRest2.png
+C:/Users/ingsa/OneDrive/Documentos/Andromeda/Andromeda Dev/AndromedaApp/build/windows/runner/Debug/data/flutter_assets/assets/Profile.png
+C:/Users/ingsa/OneDrive/Documentos/Andromeda/Andromeda Dev/AndromedaApp/build/windows/runner/Debug/data/flutter_assets/FontManifest.json
+C:/Users/ingsa/OneDrive/Documentos/Andromeda/Andromeda Dev/AndromedaApp/build/windows/runner/Debug/data/flutter_assets/fonts/MaterialIcons-Regular.otf
+C:/Users/ingsa/OneDrive/Documentos/Andromeda/Andromeda Dev/AndromedaApp/build/windows/runner/Debug/data/flutter_assets/kernel_blob.bin
+C:/Users/ingsa/OneDrive/Documentos/Andromeda/Andromeda Dev/AndromedaApp/build/windows/runner/Debug/data/flutter_assets/NOTICES.Z
+C:/Users/ingsa/OneDrive/Documentos/Andromeda/Andromeda Dev/AndromedaApp/build/windows/runner/Debug/data/flutter_assets/packages/cupertino_icons/assets/CupertinoIcons.ttf
+C:/Users/ingsa/OneDrive/Documentos/Andromeda/Andromeda Dev/AndromedaApp/build/windows/runner/Debug/data/flutter_assets/shaders/ink_sparkle.frag

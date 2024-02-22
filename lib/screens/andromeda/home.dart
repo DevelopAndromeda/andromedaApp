@@ -103,7 +103,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             'profile', (Route<dynamic> route) => false);
                       },
                     ),
-                    const SizedBox(height: 30)
+                    const SizedBox(height: 20)
                   ],
                 ),
               ),
@@ -139,6 +139,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       }),
                 ),
               ),
+            
               const Text(
                 'Destacados',
                 style: TextStyle(
@@ -202,7 +203,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     }),
               ),
               const SizedBox(
-                height: 20,
+                height: 30,
               )
             ],
           ),

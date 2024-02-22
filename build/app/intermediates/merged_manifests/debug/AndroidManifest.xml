@@ -5,11 +5,7 @@
     android:versionName="1.0.0" >
 
     <uses-sdk
-<<<<<<< HEAD
-        android:minSdkVersion="16"
-=======
         android:minSdkVersion="19"
->>>>>>> 115012ed922540f1e069de4da03b93c5a0b3bd4e
         android:targetSdkVersion="33" />
     <!--
          The INTERNET permission is required for development. Specifically,
@@ -17,12 +13,9 @@
          to allow setting breakpoints, to provide hot reload, etc.
     -->
     <uses-permission android:name="android.permission.INTERNET" />
-<<<<<<< HEAD
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
-=======
->>>>>>> 115012ed922540f1e069de4da03b93c5a0b3bd4e
 
     <permission
         android:name="com.example.andromeda.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
@@ -70,35 +63,11 @@
             android:value="2" />
 
         <service
-<<<<<<< HEAD
-=======
-            android:name="com.google.firebase.components.ComponentDiscoveryService"
-            android:directBootAware="true"
-            android:exported="false" >
-            <meta-data
-                android:name="com.google.firebase.components:io.flutter.plugins.firebase.core.FlutterFirebaseCoreRegistrar"
-                android:value="com.google.firebase.components.ComponentRegistrar" />
-            <meta-data
-                android:name="com.google.firebase.components:com.google.firebase.FirebaseCommonKtxRegistrar"
-                android:value="com.google.firebase.components.ComponentRegistrar" />
-        </service>
-        <service
->>>>>>> 115012ed922540f1e069de4da03b93c5a0b3bd4e
             android:name="com.baseflow.geolocator.GeolocatorLocationService"
             android:enabled="true"
             android:exported="false"
             android:foregroundServiceType="location" />
 
-<<<<<<< HEAD
-=======
-        <provider
-            android:name="com.google.firebase.provider.FirebaseInitProvider"
-            android:authorities="com.example.andromeda.firebaseinitprovider"
-            android:directBootAware="true"
-            android:exported="false"
-            android:initOrder="100" />
-
->>>>>>> 115012ed922540f1e069de4da03b93c5a0b3bd4e
         <uses-library
             android:name="androidx.window.extensions"
             android:required="false" />

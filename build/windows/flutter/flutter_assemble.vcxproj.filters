@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\ingsa\OneDrive\Documentos\Andromeda\Andromeda Dev\AndromedaApp\build\windows\CMakeFiles\73e9141692774688460c7833a7920592\flutter_windows.dll.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\ingsa\OneDrive\Documentos\Andromeda\Andromeda Dev\AndromedaApp\build\windows\CMakeFiles\710a727c2840133adb713f27bde9f47f\flutter_assemble.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\ingsa\OneDrive\Documentos\Andromeda\Andromeda Dev\AndromedaApp\windows\flutter\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="C:\Users\ingsa\OneDrive\Documentos\Andromeda\Andromeda Dev\AndromedaApp\build\windows\flutter\CMakeFiles\flutter_assemble" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{66A6C276-F4C5-30FA-A9D7-C96C00B25BC2}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

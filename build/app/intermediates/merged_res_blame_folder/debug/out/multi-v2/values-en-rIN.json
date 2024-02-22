@@ -1,17 +1,10 @@
 {
     "logs": [
         {
-<<<<<<< HEAD
             "outputFile": "com.example.andromeda.app-mergeDebugResources-12:/values-en-rIN/values-en-rIN.xml",
             "map": [
                 {
-                    "source": "/Users/emmanuelsantizfelipe/.gradle/caches/transforms-3/5f80b20db3afa86c72a9766b008d752d/transformed/core-1.9.0/res/values-en-rIN/values-en-rIN.xml",
-=======
-            "outputFile": "com.example.andromeda.app-mergeDebugResources-13:/values-en-rIN/values-en-rIN.xml",
-            "map": [
-                {
                     "source": "C:\\Users\\ingsa\\.gradle\\caches\\transforms-3\\5f80b20db3afa86c72a9766b008d752d\\transformed\\core-1.9.0\\res\\values-en-rIN\\values-en-rIN.xml",
->>>>>>> 115012ed922540f1e069de4da03b93c5a0b3bd4e
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",

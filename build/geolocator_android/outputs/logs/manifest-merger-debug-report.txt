@@ -1,42 +1,5 @@
 -- Merging decision tree log ---
 manifest
-<<<<<<< HEAD
-ADDED from /Users/emmanuelsantizfelipe/.pub-cache/hosted/pub.dev/geolocator_android-4.4.1/android/src/main/AndroidManifest.xml:1:1-11:12
-INJECTED from /Users/emmanuelsantizfelipe/.pub-cache/hosted/pub.dev/geolocator_android-4.4.1/android/src/main/AndroidManifest.xml:1:1-11:12
-INJECTED from /Users/emmanuelsantizfelipe/.pub-cache/hosted/pub.dev/geolocator_android-4.4.1/android/src/main/AndroidManifest.xml:1:1-11:12
-	package
-		ADDED from /Users/emmanuelsantizfelipe/.pub-cache/hosted/pub.dev/geolocator_android-4.4.1/android/src/main/AndroidManifest.xml:2:3-36
-		INJECTED from /Users/emmanuelsantizfelipe/.pub-cache/hosted/pub.dev/geolocator_android-4.4.1/android/src/main/AndroidManifest.xml
-		INJECTED from /Users/emmanuelsantizfelipe/.pub-cache/hosted/pub.dev/geolocator_android-4.4.1/android/src/main/AndroidManifest.xml
-	xmlns:android
-		ADDED from /Users/emmanuelsantizfelipe/.pub-cache/hosted/pub.dev/geolocator_android-4.4.1/android/src/main/AndroidManifest.xml:1:11-69
-application
-ADDED from /Users/emmanuelsantizfelipe/.pub-cache/hosted/pub.dev/geolocator_android-4.4.1/android/src/main/AndroidManifest.xml:4:5-10:19
-service#com.baseflow.geolocator.GeolocatorLocationService
-ADDED from /Users/emmanuelsantizfelipe/.pub-cache/hosted/pub.dev/geolocator_android-4.4.1/android/src/main/AndroidManifest.xml:5:9-9:60
-	android:enabled
-		ADDED from /Users/emmanuelsantizfelipe/.pub-cache/hosted/pub.dev/geolocator_android-4.4.1/android/src/main/AndroidManifest.xml:6:17-39
-	android:exported
-		ADDED from /Users/emmanuelsantizfelipe/.pub-cache/hosted/pub.dev/geolocator_android-4.4.1/android/src/main/AndroidManifest.xml:7:17-41
-	android:foregroundServiceType
-		ADDED from /Users/emmanuelsantizfelipe/.pub-cache/hosted/pub.dev/geolocator_android-4.4.1/android/src/main/AndroidManifest.xml:8:17-57
-	android:name
-		ADDED from /Users/emmanuelsantizfelipe/.pub-cache/hosted/pub.dev/geolocator_android-4.4.1/android/src/main/AndroidManifest.xml:9:17-58
-uses-sdk
-INJECTED from /Users/emmanuelsantizfelipe/.pub-cache/hosted/pub.dev/geolocator_android-4.4.1/android/src/main/AndroidManifest.xml reason: use-sdk injection requested
-INJECTED from /Users/emmanuelsantizfelipe/.pub-cache/hosted/pub.dev/geolocator_android-4.4.1/android/src/main/AndroidManifest.xml
-INJECTED from /Users/emmanuelsantizfelipe/.pub-cache/hosted/pub.dev/geolocator_android-4.4.1/android/src/main/AndroidManifest.xml
-INJECTED from /Users/emmanuelsantizfelipe/.pub-cache/hosted/pub.dev/geolocator_android-4.4.1/android/src/main/AndroidManifest.xml
-INJECTED from /Users/emmanuelsantizfelipe/.pub-cache/hosted/pub.dev/geolocator_android-4.4.1/android/src/main/AndroidManifest.xml
-	android:targetSdkVersion
-		INJECTED from /Users/emmanuelsantizfelipe/.pub-cache/hosted/pub.dev/geolocator_android-4.4.1/android/src/main/AndroidManifest.xml
-		ADDED from /Users/emmanuelsantizfelipe/.pub-cache/hosted/pub.dev/geolocator_android-4.4.1/android/src/main/AndroidManifest.xml
-		INJECTED from /Users/emmanuelsantizfelipe/.pub-cache/hosted/pub.dev/geolocator_android-4.4.1/android/src/main/AndroidManifest.xml
-	android:minSdkVersion
-		INJECTED from /Users/emmanuelsantizfelipe/.pub-cache/hosted/pub.dev/geolocator_android-4.4.1/android/src/main/AndroidManifest.xml
-		ADDED from /Users/emmanuelsantizfelipe/.pub-cache/hosted/pub.dev/geolocator_android-4.4.1/android/src/main/AndroidManifest.xml
-		INJECTED from /Users/emmanuelsantizfelipe/.pub-cache/hosted/pub.dev/geolocator_android-4.4.1/android/src/main/AndroidManifest.xml
-=======
 ADDED from C:\Users\ingsa\AppData\Local\Pub\Cache\hosted\pub.dev\geolocator_android-4.4.1\android\src\main\AndroidManifest.xml:1:1-11:12
 INJECTED from C:\Users\ingsa\AppData\Local\Pub\Cache\hosted\pub.dev\geolocator_android-4.4.1\android\src\main\AndroidManifest.xml:1:1-11:12
 INJECTED from C:\Users\ingsa\AppData\Local\Pub\Cache\hosted\pub.dev\geolocator_android-4.4.1\android\src\main\AndroidManifest.xml:1:1-11:12
@@ -72,4 +35,3 @@ INJECTED from C:\Users\ingsa\AppData\Local\Pub\Cache\hosted\pub.dev\geolocator_a
 		INJECTED from C:\Users\ingsa\AppData\Local\Pub\Cache\hosted\pub.dev\geolocator_android-4.4.1\android\src\main\AndroidManifest.xml
 		ADDED from C:\Users\ingsa\AppData\Local\Pub\Cache\hosted\pub.dev\geolocator_android-4.4.1\android\src\main\AndroidManifest.xml
 		INJECTED from C:\Users\ingsa\AppData\Local\Pub\Cache\hosted\pub.dev\geolocator_android-4.4.1\android\src\main\AndroidManifest.xml
->>>>>>> 115012ed922540f1e069de4da03b93c5a0b3bd4e

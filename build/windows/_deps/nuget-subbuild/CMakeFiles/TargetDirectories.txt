@@ -1,0 +1,3 @@
+C:/Users/ingsa/OneDrive/Documentos/Andromeda/Andromeda Dev/AndromedaApp/build/windows/_deps/nuget-subbuild/CMakeFiles/nuget-populate.dir
+C:/Users/ingsa/OneDrive/Documentos/Andromeda/Andromeda Dev/AndromedaApp/build/windows/_deps/nuget-subbuild/CMakeFiles/ALL_BUILD.dir
+C:/Users/ingsa/OneDrive/Documentos/Andromeda/Andromeda Dev/AndromedaApp/build/windows/_deps/nuget-subbuild/CMakeFiles/ZERO_CHECK.dir

@@ -1,0 +1,28 @@
+^C:\USERS\INGSA\ONEDRIVE\DOCUMENTOS\ANDROMEDA\ANDROMEDA DEV\ANDROMEDAAPP\BUILD\WINDOWS\CMAKEFILES\73E9141692774688460C7833A7920592\FLUTTER_WINDOWS.DLL.RULE
+setlocal
+"C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -E env FLUTTER_ROOT=C:\Flutter\flutter "PROJECT_DIR=C:\Users\ingsa\OneDrive\Documentos\Andromeda\Andromeda Dev\AndromedaApp" FLUTTER_ROOT=C:\Flutter\flutter "FLUTTER_EPHEMERAL_DIR=C:\Users\ingsa\OneDrive\Documentos\Andromeda\Andromeda Dev\AndromedaApp\windows\flutter\ephemeral" "PROJECT_DIR=C:\Users\ingsa\OneDrive\Documentos\Andromeda\Andromeda Dev\AndromedaApp" "FLUTTER_TARGET=C:\Users\ingsa\OneDrive\Documentos\Andromeda\Andromeda Dev\AndromedaApp\lib\main.dart" DART_DEFINES=RkxVVFRFUl9XRUJfQVVUT19ERVRFQ1Q9dHJ1ZQ==,RkxVVFRFUl9XRUJfQ0FOVkFTS0lUX1VSTD1odHRwczovL3d3dy5nc3RhdGljLmNvbS9mbHV0dGVyLWNhbnZhc2tpdC9iMjAxODNlMDQwOTYwOTRiY2MzN2Q5Y2RlMmE0Yjk2ZjVjYzY4NGNmLw== DART_OBFUSCATION=false TRACK_WIDGET_CREATION=true TREE_SHAKE_ICONS=false "PACKAGE_CONFIG=C:\Users\ingsa\OneDrive\Documentos\Andromeda\Andromeda Dev\AndromedaApp\.dart_tool\package_config.json" C:/Flutter/flutter/packages/flutter_tools/bin/tool_backend.bat windows-x64 Debug
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\INGSA\ONEDRIVE\DOCUMENTOS\ANDROMEDA\ANDROMEDA DEV\ANDROMEDAAPP\BUILD\WINDOWS\CMAKEFILES\710A727C2840133ADB713F27BDE9F47F\FLUTTER_ASSEMBLE.RULE
+setlocal
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\INGSA\ONEDRIVE\DOCUMENTOS\ANDROMEDA\ANDROMEDA DEV\ANDROMEDAAPP\WINDOWS\FLUTTER\CMAKELISTS.TXT
+setlocal
+"C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" "-SC:/Users/ingsa/OneDrive/Documentos/Andromeda/Andromeda Dev/AndromedaApp/windows" "-BC:/Users/ingsa/OneDrive/Documentos/Andromeda/Andromeda Dev/AndromedaApp/build/windows" --check-stamp-file "C:/Users/ingsa/OneDrive/Documentos/Andromeda/Andromeda Dev/AndromedaApp/build/windows/flutter/CMakeFiles/generate.stamp"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

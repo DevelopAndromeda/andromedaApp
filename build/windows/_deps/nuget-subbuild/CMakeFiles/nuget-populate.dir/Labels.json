@@ -1,0 +1,49 @@
+{
+	"sources" : 
+	[
+		{
+			"file" : "C:/Users/ingsa/OneDrive/Documentos/Andromeda/Andromeda Dev/AndromedaApp/build/windows/_deps/nuget-subbuild/CMakeFiles/nuget-populate"
+		},
+		{
+			"file" : "C:/Users/ingsa/OneDrive/Documentos/Andromeda/Andromeda Dev/AndromedaApp/build/windows/_deps/nuget-subbuild/CMakeFiles/1b22d9be597725336512f77dcc3c1cdd/nuget-populate.rule"
+		},
+		{
+			"file" : "C:/Users/ingsa/OneDrive/Documentos/Andromeda/Andromeda Dev/AndromedaApp/build/windows/_deps/nuget-subbuild/CMakeFiles/42edcf21016d76c0667a0a45e302d1d0/nuget-populate-complete.rule"
+		},
+		{
+			"file" : "C:/Users/ingsa/OneDrive/Documentos/Andromeda/Andromeda Dev/AndromedaApp/build/windows/_deps/nuget-subbuild/CMakeFiles/db8e5ddc83de78ca3a922eb2aea0ea05/nuget-populate-build.rule"
+		},
+		{
+			"file" : "C:/Users/ingsa/OneDrive/Documentos/Andromeda/Andromeda Dev/AndromedaApp/build/windows/_deps/nuget-subbuild/CMakeFiles/db8e5ddc83de78ca3a922eb2aea0ea05/nuget-populate-configure.rule"
+		},
+		{
+			"file" : "C:/Users/ingsa/OneDrive/Documentos/Andromeda/Andromeda Dev/AndromedaApp/build/windows/_deps/nuget-subbuild/CMakeFiles/db8e5ddc83de78ca3a922eb2aea0ea05/nuget-populate-copyfile.rule"
+		},
+		{
+			"file" : "C:/Users/ingsa/OneDrive/Documentos/Andromeda/Andromeda Dev/AndromedaApp/build/windows/_deps/nuget-subbuild/CMakeFiles/db8e5ddc83de78ca3a922eb2aea0ea05/nuget-populate-download.rule"
+		},
+		{
+			"file" : "C:/Users/ingsa/OneDrive/Documentos/Andromeda/Andromeda Dev/AndromedaApp/build/windows/_deps/nuget-subbuild/CMakeFiles/db8e5ddc83de78ca3a922eb2aea0ea05/nuget-populate-install.rule"
+		},
+		{
+			"file" : "C:/Users/ingsa/OneDrive/Documentos/Andromeda/Andromeda Dev/AndromedaApp/build/windows/_deps/nuget-subbuild/CMakeFiles/db8e5ddc83de78ca3a922eb2aea0ea05/nuget-populate-mkdir.rule"
+		},
+		{
+			"file" : "C:/Users/ingsa/OneDrive/Documentos/Andromeda/Andromeda Dev/AndromedaApp/build/windows/_deps/nuget-subbuild/CMakeFiles/db8e5ddc83de78ca3a922eb2aea0ea05/nuget-populate-patch.rule"
+		},
+		{
+			"file" : "C:/Users/ingsa/OneDrive/Documentos/Andromeda/Andromeda Dev/AndromedaApp/build/windows/_deps/nuget-subbuild/CMakeFiles/db8e5ddc83de78ca3a922eb2aea0ea05/nuget-populate-test.rule"
+		},
+		{
+			"file" : "C:/Users/ingsa/OneDrive/Documentos/Andromeda/Andromeda Dev/AndromedaApp/build/windows/_deps/nuget-subbuild/CMakeFiles/db8e5ddc83de78ca3a922eb2aea0ea05/nuget-populate-update.rule"
+		}
+	],
+	"target" : 
+	{
+		"labels" : 
+		[
+			"nuget-populate"
+		],
+		"name" : "nuget-populate"
+	}
+}

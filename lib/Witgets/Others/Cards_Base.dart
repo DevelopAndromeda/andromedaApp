@@ -63,7 +63,7 @@ class CardsBase extends StatelessWidget {
                 const SizedBox(height: 8.0), // Agregar espacio entre el texto y el botón
               ElevatedButton(onPressed: (){
                   // ignore: prefer_const_constructors
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=>ExampleReservacion()));
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>InfoRest()));
               }, child: Text('Reservar Ahora'))
               ],
             ),

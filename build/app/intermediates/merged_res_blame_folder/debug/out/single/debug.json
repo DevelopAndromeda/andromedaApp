@@ -1,6 +1,5 @@
 [
     {
-<<<<<<< HEAD
         "merged": "com.example.andromeda.app-merged_res-14:/drawable_launch_background.xml.flat",
         "source": "com.example.andromeda.app-main-8:/drawable/launch_background.xml"
     },
@@ -27,33 +26,5 @@
     {
         "merged": "com.example.andromeda.app-merged_res-14:/mipmap-mdpi_ic_launcher.png.flat",
         "source": "com.example.andromeda.app-main-8:/mipmap-mdpi/ic_launcher.png"
-=======
-        "merged": "com.example.andromeda.app-merged_res-15:/drawable_launch_background.xml.flat",
-        "source": "com.example.andromeda.app-main-9:/drawable/launch_background.xml"
-    },
-    {
-        "merged": "com.example.andromeda.app-merged_res-15:/mipmap-xxxhdpi_ic_launcher.png.flat",
-        "source": "com.example.andromeda.app-main-9:/mipmap-xxxhdpi/ic_launcher.png"
-    },
-    {
-        "merged": "com.example.andromeda.app-merged_res-15:/mipmap-xhdpi_ic_launcher.png.flat",
-        "source": "com.example.andromeda.app-main-9:/mipmap-xhdpi/ic_launcher.png"
-    },
-    {
-        "merged": "com.example.andromeda.app-merged_res-15:/mipmap-xxhdpi_ic_launcher.png.flat",
-        "source": "com.example.andromeda.app-main-9:/mipmap-xxhdpi/ic_launcher.png"
-    },
-    {
-        "merged": "com.example.andromeda.app-merged_res-15:/mipmap-hdpi_ic_launcher.png.flat",
-        "source": "com.example.andromeda.app-main-9:/mipmap-hdpi/ic_launcher.png"
-    },
-    {
-        "merged": "com.example.andromeda.app-merged_res-15:/mipmap-mdpi_ic_launcher.png.flat",
-        "source": "com.example.andromeda.app-main-9:/mipmap-mdpi/ic_launcher.png"
-    },
-    {
-        "merged": "com.example.andromeda.app-merged_res-15:/drawable-v21_launch_background.xml.flat",
-        "source": "com.example.andromeda.app-main-9:/drawable-v21/launch_background.xml"
->>>>>>> 115012ed922540f1e069de4da03b93c5a0b3bd4e
     }
 ]

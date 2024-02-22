@@ -1,20 +1,7 @@
 {
     "logs": [
         {
-<<<<<<< HEAD
             "outputFile": "com.example.andromeda.app-mergeDebugResources-12:/values-night-v8/values-night-v8.xml",
-            "map": [
-                {
-                    "source": "/Users/emmanuelsantizfelipe/Documents/flutter/AndromedaApp/android/app/src/main/res/values-night/styles.xml",
-                    "from": {
-                        "startLines": "3,14",
-                        "startColumns": "4,4",
-                        "startOffsets": "172,817",
-                        "endLines": "7,16",
-                        "endColumns": "12,12",
-                        "endOffsets": "475,981"
-=======
-            "outputFile": "com.example.andromeda.app-mergeDebugResources-13:/values-night-v8/values-night-v8.xml",
             "map": [
                 {
                     "source": "C:\\Users\\ingsa\\OneDrive\\Documentos\\Andromeda\\Andromeda Dev\\AndromedaApp\\android\\app\\src\\main\\res\\values-night\\styles.xml",
@@ -25,7 +12,6 @@
                         "endLines": "7,16",
                         "endColumns": "12,12",
                         "endOffsets": "482,997"
->>>>>>> 115012ed922540f1e069de4da03b93c5a0b3bd4e
                     },
                     "to": {
                         "startLines": "2,6",

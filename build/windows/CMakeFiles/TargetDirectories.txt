@@ -1,0 +1,13 @@
+C:/Users/ingsa/OneDrive/Documentos/Andromeda/Andromeda Dev/AndromedaApp/build/windows/CMakeFiles/INSTALL.dir
+C:/Users/ingsa/OneDrive/Documentos/Andromeda/Andromeda Dev/AndromedaApp/build/windows/CMakeFiles/ALL_BUILD.dir
+C:/Users/ingsa/OneDrive/Documentos/Andromeda/Andromeda Dev/AndromedaApp/build/windows/CMakeFiles/ZERO_CHECK.dir
+C:/Users/ingsa/OneDrive/Documentos/Andromeda/Andromeda Dev/AndromedaApp/build/windows/flutter/CMakeFiles/flutter_wrapper_plugin.dir
+C:/Users/ingsa/OneDrive/Documentos/Andromeda/Andromeda Dev/AndromedaApp/build/windows/flutter/CMakeFiles/flutter_wrapper_app.dir
+C:/Users/ingsa/OneDrive/Documentos/Andromeda/Andromeda Dev/AndromedaApp/build/windows/flutter/CMakeFiles/flutter_assemble.dir
+C:/Users/ingsa/OneDrive/Documentos/Andromeda/Andromeda Dev/AndromedaApp/build/windows/flutter/CMakeFiles/INSTALL.dir
+C:/Users/ingsa/OneDrive/Documentos/Andromeda/Andromeda Dev/AndromedaApp/build/windows/runner/CMakeFiles/andromeda.dir
+C:/Users/ingsa/OneDrive/Documentos/Andromeda/Andromeda Dev/AndromedaApp/build/windows/runner/CMakeFiles/INSTALL.dir
+C:/Users/ingsa/OneDrive/Documentos/Andromeda/Andromeda Dev/AndromedaApp/build/windows/runner/CMakeFiles/ALL_BUILD.dir
+C:/Users/ingsa/OneDrive/Documentos/Andromeda/Andromeda Dev/AndromedaApp/build/windows/plugins/geolocator_windows/CMakeFiles/geolocator_windows_plugin.dir
+C:/Users/ingsa/OneDrive/Documentos/Andromeda/Andromeda Dev/AndromedaApp/build/windows/plugins/geolocator_windows/CMakeFiles/INSTALL.dir
+C:/Users/ingsa/OneDrive/Documentos/Andromeda/Andromeda Dev/AndromedaApp/build/windows/plugins/geolocator_windows/CMakeFiles/ALL_BUILD.dir

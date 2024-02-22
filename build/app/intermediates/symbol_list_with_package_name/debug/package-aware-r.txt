@@ -203,10 +203,6 @@ layout notification_template_icon_group
 layout notification_template_part_chronometer
 layout notification_template_part_time
 mipmap ic_launcher
-<<<<<<< HEAD
-=======
-raw firebase_common_keep
->>>>>>> 115012ed922540f1e069de4da03b93c5a0b3bd4e
 string common_google_play_services_enable_button
 string common_google_play_services_enable_text
 string common_google_play_services_enable_title

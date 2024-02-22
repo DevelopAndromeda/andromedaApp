@@ -1,0 +1,10 @@
+^C:\USERS\INGSA\ONEDRIVE\DOCUMENTOS\ANDROMEDA\ANDROMEDA DEV\ANDROMEDAAPP\BUILD\WINDOWS\CMAKEFILES\33966FDD9185B083391330E9B77A85A8\INSTALL_FORCE.RULE
+setlocal
+cd .
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
