@@ -62,7 +62,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
               onPressed: () async {
                 await serviceDB.instance.cleanAllTable();
                 Navigator.of(context).pushNamedAndRemoveUntil(
-                    'login', (Route<dynamic> route) => false);
+                    'start', (Route<dynamic> route) => false);
               },
             ),
           ],

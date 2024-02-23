@@ -9,7 +9,7 @@ import 'package:andromeda/screens/andromeda/search.dart';
 //Auth
 import 'package:andromeda/screens/auth_costum/Login/login_page.dart';
 import 'package:andromeda/screens/auth_costum/Register/registro_page.dart';
-import 'package:andromeda/screens/auth_rest/Login/login_page_rest.dart';
+import '../screens/auth_rest/Login/login_content_rest.dart';
 //Inicio
 import 'package:andromeda/screens/start.dart';
 //Users
@@ -40,7 +40,7 @@ class Router {
       case 'login':
         return MaterialPageRoute(builder: (_) => const MyLoginPage());
       case 'login-rest':
-        return MaterialPageRoute(builder: (_) => const LoginPageRest());
+        return MaterialPageRoute(builder: (_) => const LoginContentRest());
       case 'notifications':
         return MaterialPageRoute(builder: (_) => const MyNotificationsPage());
       case 'search':

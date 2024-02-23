@@ -14,7 +14,7 @@ class RegisterViewModel extends ChangeNotifier {
       print('Contraseña del formulario ${_state.password.value}');
       print('C Contraseña del formulario ${_state.confirmPassword.value}');
     } else {
-      print('Formulario no validob drty');
+      print('Formulario no valido');
     }
   }
 
