@@ -1,23 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:andromeda/utilities/validation_item.dart';
 import 'package:andromeda/screens/auth%20costum/Register/registro_state.dart';
-class RegisterViewModelRest extends StatefulWidget {
+
+class RegisterViewmodelRest extends StatefulWidget {
   RegisterState _state = RegisterState();
 
-RegisterState get state => _state;
+  
+  RegisterState get state => _state;
 
-register() {
+
+   register() {
     if (_state.isValid()) {
       print('Email del formulario ${_state.email.value}');
       print('Username del formulario ${_state.username.value}');
       print('Contraseña del formulario ${_state.password.value}');
       print('C Contraseña del formulario ${_state.confirmPassword.value}');
     } else {
-      print('Formulario no validob drty');
+      print('Formulario no valido');
     }
   }
-
-  changeEmail(String value) {
+changeEmail(String value) {
     final bool emailFormatValid = RegExp(
             r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
         .hasMatch(value);
@@ -30,6 +32,7 @@ register() {
       _state = _state.copyWith(
           email: ValidationItem(error: 'Al menos 6 caracteres'));
     }
+  
   }
 
   changeUsername(String value) {
@@ -40,7 +43,7 @@ register() {
       _state = _state.copyWith(
           username: ValidationItem(error: 'Al menos 8 caracteres'));
     }
-  
+    
   }
 
   changePassword(String value) {
@@ -51,7 +54,7 @@ register() {
       _state = _state.copyWith(
           password: ValidationItem(error: 'Al menos 8 caracteres'));
     }
-   
+ 
   }
 
   changeconfirmPassword(String value) {
@@ -62,7 +65,7 @@ register() {
       _state = _state.copyWith(
           confirmPassword: ValidationItem(error: 'Al menos 8 caracteres'));
     }
-
+    
   }
   
   @override
@@ -70,6 +73,4 @@ register() {
     // TODO: implement createState
     throw UnimplementedError();
   }
-
- 
 }

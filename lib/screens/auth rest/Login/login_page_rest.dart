@@ -14,8 +14,30 @@ class LoginPageRest extends StatefulWidget {
 }
 
 class _LoginPageRestState extends State<LoginPageRest> {
+
+  Future<void> getSesion() async {
+    var sesion = await serviceDB.instance.getById('users', 'id_user', 1);
+    if (sesion.isNotEmpty) {
+      Navigator.of(context).pushNamed('home');
+    }
+  }
+
+
+
+  @override
+
+  void initState() {
+    super.initState();
+    getSesion();
+  }
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+
+ backgroundColor: Background_Color,
+      //body: loginContent(vm),
+      body: LoginPageRest(),
+
+    );
   }
 }
