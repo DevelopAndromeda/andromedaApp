@@ -1,4 +1,3 @@
-import 'package:andromeda/Reservacion/Reservación_Example.dart';
 import 'package:flutter/material.dart';
 import 'package:andromeda/Witgets/Others/Cards_Base.dart';
 import 'package:andromeda/screens/andromeda/history.dart';
@@ -22,14 +21,14 @@ class CardsBase extends StatelessWidget {
             'Comida Italiana',
             '11:00 AM - 9:00 PM',
             context,
-            
           ),
         ],
       ),
     );
   }
 
-  Widget _buildCard(String imagePath, String name, String cuisineType, String openingHours, BuildContext context) {
+  Widget _buildCard(String imagePath, String name, String cuisineType,
+      String openingHours, BuildContext context) {
     return Card(
       elevation: 5.0,
       child: Column(
@@ -48,7 +47,8 @@ class CardsBase extends StatelessWidget {
               children: [
                 Text(
                   name,
-                  style: const TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                      fontSize: 20.0, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 8.0),
                 Text(
@@ -60,11 +60,14 @@ class CardsBase extends StatelessWidget {
                   'Horario de Atención: $openingHours',
                   style: const TextStyle(fontSize: 16.0),
                 ),
-                const SizedBox(height: 8.0), // Agregar espacio entre el texto y el botón
-              ElevatedButton(onPressed: (){
-                  // ignore: prefer_const_constructors
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=>ExampleReservacion()));
-              }, child: Text('Reservar Ahora'))
+                const SizedBox(
+                    height: 8.0), // Agregar espacio entre el texto y el botón
+                ElevatedButton(
+                    onPressed: () {
+                      // ignore: prefer_const_constructors
+                      //Navigator.push(context, MaterialPageRoute(builder: (context)=>InfoRest()));
+                    },
+                    child: Text('Reservar Ahora'))
               ],
             ),
           ),

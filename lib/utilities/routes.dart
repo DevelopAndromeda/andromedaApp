@@ -7,8 +7,9 @@ import 'package:andromeda/screens/andromeda/notifications.dart';
 import 'package:andromeda/screens/andromeda/saved.dart';
 import 'package:andromeda/screens/andromeda/search.dart';
 //Auth
-import 'package:andromeda/screens/auth/Login/login_page.dart';
-import 'package:andromeda/screens/auth/Register/registro_page.dart';
+import 'package:andromeda/screens/auth_costum/Login/login_page.dart';
+import 'package:andromeda/screens/auth_costum/Register/registro_page.dart';
+import 'package:andromeda/screens/auth_rest/Login/login_page_rest.dart';
 //Inicio
 import 'package:andromeda/screens/start.dart';
 //Users
@@ -18,8 +19,6 @@ import 'package:andromeda/screens/user/configurations.dart';
 import 'package:andromeda/screens/restaurant/detail.dart';
 import 'package:andromeda/screens/restaurant/store.dart';
 import 'package:andromeda/screens/restaurant/review.dart';
-
-import 'package:andromeda/Reservacion/Reservación_Example.dart';
 
 class Router {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -40,6 +39,8 @@ class Router {
         return MaterialPageRoute(builder: (_) => const MyHistoryPage());
       case 'login':
         return MaterialPageRoute(builder: (_) => const MyLoginPage());
+      case 'login-rest':
+        return MaterialPageRoute(builder: (_) => const LoginPageRest());
       case 'notifications':
         return MaterialPageRoute(builder: (_) => const MyNotificationsPage());
       case 'search':
@@ -60,14 +61,12 @@ class Router {
       case 'register':
         return MaterialPageRoute(builder: (_) => const RegisterPage());
       case 'review':
-        final ID = settings.arguments as int;
+        final data = settings.arguments as Map<String, dynamic>;
         return MaterialPageRoute(
           builder: (_) => MyReviewPage(
-            id: ID,
+            data: data,
           ),
         );
-      case 'reservation':
-        return MaterialPageRoute(builder: (_) => ExampleReservacion());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

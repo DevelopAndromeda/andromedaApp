@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:andromeda/Witgets/bottomBar.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:intl/intl.dart';
+import 'package:andromeda/screens/restaurant/review.dart';
 
 class MyDetailPage extends StatefulWidget {
   //final int data;
@@ -12,7 +13,9 @@ class MyDetailPage extends StatefulWidget {
   State<MyDetailPage> createState() => _MyDetailPageState();
 }
 
-class _MyDetailPageState extends State<MyDetailPage> {
+class _MyDetailPageState extends State<MyDetailPage>
+    with TickerProviderStateMixin {
+  late final TabController _tabController;
   DateTime _selectedDate = DateTime.now();
   TimeOfDay _selectedTime = TimeOfDay.now();
   final _personasController = TextEditingController();
@@ -52,6 +55,7 @@ class _MyDetailPageState extends State<MyDetailPage> {
       context: context,
       initialTime: _selectedTime,
     );
+    print(_selectedTime);
     if (picked != null && picked != _selectedTime) {
       setState(() {
         _selectedTime = picked;
@@ -60,8 +64,19 @@ class _MyDetailPageState extends State<MyDetailPage> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 3, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    print(widget.data);
     return Scaffold(
       appBar: AppBar(
         title: Text('Información y Reserva del Restaurante'),
@@ -136,57 +151,122 @@ class _MyDetailPageState extends State<MyDetailPage> {
                         widget.data['custom_attributes'], 'short_description'),
                     style: TextStyle(fontSize: 16),
                   ),
-                  SizedBox(height: 20),
-                  Text(
-                    'Realizar Reservación',
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                  /*DataTable(columns: const <DataColumn>[
+                    DataColumn(
+                      label: Expanded(
+                        child: Text(
+                          'Reservacion',
+                          style: TextStyle(fontStyle: FontStyle.italic),
+                        ),
+                      ),
+                    ),
+                    DataColumn(
+                      label: Expanded(
+                        child: Text(
+                          'Reseñas',
+                          style: TextStyle(fontStyle: FontStyle.italic),
+                        ),
+                      ),
+                    ),
+                    DataColumn(
+                      label: Expanded(
+                        child: Text(
+                          'Detalle',
+                          style: TextStyle(fontStyle: FontStyle.italic),
+                        ),
+                      ),
+                    ),
+                  ], rows: const <DataRow>[]),*/
+                  TabBar(
+                    controller: _tabController,
+                    labelColor: Colors.black,
+                    onTap: (index) {
+                      print(index);
+                      if (index == 1) {
+                        setState(() {
+                          index = 0;
+                        });
+                        Navigator.of(context).push(_createRoute());
+                      }
+                    },
+                    tabs: const <Widget>[
+                      Tab(
+                        text: 'Reservacion',
+                      ),
+                      Tab(
+                        text: 'Reseñas',
+                      ),
+                      Tab(
+                        text: 'Detalles',
+                      ),
+                    ],
                   ),
-                  ListTile(
-                    title: Text(
-                        "Fecha: ${DateFormat('yyyy-MM-dd').format(_selectedDate)}"),
-                    trailing: Icon(Icons.calendar_today),
-                    onTap: () => _selectDate(context),
-                  ),
-                  ListTile(
-                    title: Text("Hora: ${_selectedTime.format(context)}"),
-                    trailing: Icon(Icons.access_time),
-                    onTap: () => _selectTime(context),
-                  ),
-                  TextField(
-                    controller: _personasController,
-                    decoration:
-                        InputDecoration(labelText: 'Número de personas'),
-                    keyboardType: TextInputType.number,
-                  ),
-                  TextField(
-                    controller: _notasController,
-                    decoration: InputDecoration(
-                        labelText: 'Notas adicionales (opcional)'),
-                    keyboardType: TextInputType.text,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 16.0),
-                    child: ElevatedButton(
-                      onPressed: () {
-                        // Aquí puedes agregar la lógica para procesar la reserva
-                        showDialog(
-                          context: context,
-                          builder: (context) => AlertDialog(
-                            title: Text('Reserva Realizada'),
-                            content:
-                                Text('Tu reserva ha sido realizada con éxito.'),
-                            actions: <Widget>[
-                              TextButton(
+                  SizedBox(
+                    height: 350,
+                    child: TabBarView(
+                      controller: _tabController,
+                      children: <Widget>[
+                        Column(
+                          children: [
+                            SizedBox(height: 10),
+                            ListTile(
+                              title: Text(
+                                  "Fecha: ${DateFormat('yyyy-MM-dd').format(_selectedDate)}"),
+                              trailing: Icon(Icons.calendar_today),
+                              onTap: () => _selectDate(context),
+                            ),
+                            ListTile(
+                              title: Text(
+                                  "Hora: ${_selectedTime.format(context)}"),
+                              trailing: Icon(Icons.access_time),
+                              onTap: () => _selectTime(context),
+                            ),
+                            TextField(
+                              controller: _personasController,
+                              decoration: InputDecoration(
+                                  labelText: 'Número de personas'),
+                              keyboardType: TextInputType.number,
+                            ),
+                            TextField(
+                              controller: _notasController,
+                              decoration: InputDecoration(
+                                  labelText: 'Notas adicionales (opcional)'),
+                              keyboardType: TextInputType.text,
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 16.0),
+                              child: ElevatedButton(
                                 onPressed: () {
-                                  Navigator.of(context).pop();
+                                  // Aquí puedes agregar la lógica para procesar la reserva
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) => AlertDialog(
+                                      title: Text('Reserva Realizada'),
+                                      content: Text(
+                                          'Tu reserva ha sido realizada con éxito.'),
+                                      actions: <Widget>[
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: Text('OK'),
+                                        ),
+                                      ],
+                                    ),
+                                  );
                                 },
-                                child: Text('OK'),
+                                child: Text('Generar Reserva'),
                               ),
-                            ],
-                          ),
-                        );
-                      },
-                      child: Text('Generar Reserva'),
+                            ),
+                          ],
+                        ),
+                        /*Timer(const Duration(seconds: 5), () {
+                          Navigator.of(context).push(_createRoute());
+                        }),*/
+                        Center(),
+                        Center(),
+                      ],
                     ),
                   ),
                 ],
@@ -198,6 +278,26 @@ class _MyDetailPageState extends State<MyDetailPage> {
       bottomNavigationBar: MyBottomBar(
         index: 2,
       ),
+    );
+  }
+
+  Route _createRoute() {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) =>
+          MyReviewPage(data: widget.data),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        const begin = Offset(0.0, 1.0);
+        const end = Offset.zero;
+        const curve = Curves.ease;
+
+        var tween =
+            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+        return SlideTransition(
+          position: animation.drive(tween),
+          child: child,
+        );
+      },
     );
   }
 

@@ -53,7 +53,7 @@ class Andromeda extends StatelessWidget {
         primarySwatch: Colors.pink,
       ),
       onGenerateRoute: rt.Router.generateRoute,
-      initialRoute: 'login',
+      initialRoute: 'start',
     );
   }
 }
