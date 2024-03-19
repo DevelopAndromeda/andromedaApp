@@ -60,7 +60,8 @@ class _MyProfilePageState extends State<MyProfilePage> {
                 size: 30, // Tamaño del icono
               ),
               onPressed: () async {
-                await serviceDB.instance.cleanAllTable();
+                //await serviceDB.instance.cleanAllTable();
+                await serviceDB.instance.deleteDatabase();
                 Navigator.of(context).pushNamedAndRemoveUntil(
                     'start', (Route<dynamic> route) => false);
               },

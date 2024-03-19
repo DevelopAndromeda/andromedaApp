@@ -49,8 +49,9 @@ class _MyStartPageState extends State<MyStartPage> {
             Expanded(
               child: GestureDetector(
                 onTap: () {
-                  Navigator.of(context).pushNamedAndRemoveUntil(
-                      'login-rest', (Route<dynamic> route) => false);
+                  //Navigator.of(context).pushNamedAndRemoveUntil(
+                  //    'login-rest', (Route<dynamic> route) => false);
+                  Navigator.pushNamed(context, 'login-rest');
                   /*Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => LoginPageRest()),
@@ -74,8 +75,9 @@ class _MyStartPageState extends State<MyStartPage> {
             Expanded(
               child: GestureDetector(
                 onTap: () {
-                  Navigator.of(context).pushNamedAndRemoveUntil(
-                      'login', (Route<dynamic> route) => false);
+                  //Navigator.of(context).pushNamedAndRemoveUntil(
+                  //    'login', (Route<dynamic> route) => false);
+                  Navigator.pushNamed(context, 'login');
                 },
                 child: SizedBox(
                   width: double.infinity,

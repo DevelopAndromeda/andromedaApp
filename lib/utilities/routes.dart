@@ -2,14 +2,16 @@ import 'package:flutter/material.dart' hide Router;
 
 //Componentes
 import 'package:andromeda/screens/andromeda/home.dart';
+import 'package:andromeda/screens/andromeda/home-rest.dart';
 import 'package:andromeda/screens/andromeda/history.dart';
 import 'package:andromeda/screens/andromeda/notifications.dart';
 import 'package:andromeda/screens/andromeda/saved.dart';
 import 'package:andromeda/screens/andromeda/search.dart';
 //Auth
-import 'package:andromeda/screens/auth_costum/Login/login_page.dart';
-import 'package:andromeda/screens/auth_costum/Register/registro_page.dart';
-import '../screens/auth_rest/Login/login_content_rest.dart';
+import 'package:andromeda/screens/auth/Login/login_custom.dart';
+import 'package:andromeda/screens/auth/Login/login_restaurant.dart';
+import 'package:andromeda/screens/auth/Register/register_custom.dart';
+import 'package:andromeda/screens/auth/Register/registro_restaurant.dart';
 //Inicio
 import 'package:andromeda/screens/start.dart';
 //Users
@@ -35,12 +37,14 @@ class Router {
         );
       case 'home':
         return MaterialPageRoute(builder: (_) => const MyHomePage());
+      case 'home-rest':
+        return MaterialPageRoute(builder: (_) => const MyHomeRestPage());
       case 'history':
         return MaterialPageRoute(builder: (_) => const MyHistoryPage());
       case 'login':
         return MaterialPageRoute(builder: (_) => const MyLoginPage());
       case 'login-rest':
-        return MaterialPageRoute(builder: (_) => const LoginContentRest());
+        return MaterialPageRoute(builder: (_) => const MyLoginPageRestaurant());
       case 'notifications':
         return MaterialPageRoute(builder: (_) => const MyNotificationsPage());
       case 'search':
@@ -59,7 +63,10 @@ class Router {
       case 'profile':
         return MaterialPageRoute(builder: (_) => const MyProfilePage());
       case 'register':
-        return MaterialPageRoute(builder: (_) => const RegisterPage());
+        return MaterialPageRoute(builder: (_) => const MyRegisterPage());
+      case 'register-rest':
+        return MaterialPageRoute(
+            builder: (_) => const MyRegisterPageRestaurant());
       case 'review':
         final data = settings.arguments as Map<String, dynamic>;
         return MaterialPageRoute(

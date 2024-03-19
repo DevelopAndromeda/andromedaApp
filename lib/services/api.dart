@@ -9,7 +9,7 @@ String? tokenAdmin = dotenv.env['TOKEN_ADMIN'];
 String? tokenIntegracion = dotenv.env['TOKEN_INTEGRATION'];
 
 Map<String, String> _headers = <String, String>{
-  'Content-type': 'application/json',
+  'Content-type': 'application/json; charset=utf-8',
 };
 
 String getTokenHeader(String type, String? tokenCustomer) {

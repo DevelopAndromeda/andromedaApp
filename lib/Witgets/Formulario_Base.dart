@@ -51,7 +51,8 @@ class _FormularioBaseState extends State<FormularioBase> {
               _crearCampoTexto("Teléfono", _telefonoController),
               _crearCampoTexto("Descripción", _descripcionController),
               _crearCampoTexto("Tipo de Comida", _tipoComidaController),
-              _crearCampoTexto("Horario de Apertura", _horarioAperturaController),
+              _crearCampoTexto(
+                  "Horario de Apertura", _horarioAperturaController),
               _crearCampoTexto("Horarios de Días", _horariosDiasController),
               SizedBox(height: 20.0),
               ElevatedButton(
@@ -78,10 +79,4 @@ class _FormularioBaseState extends State<FormularioBase> {
       ),
     );
   }
-}
-
-void main() {
-  runApp(MaterialApp(
-    home: FormularioBase(),
-  ));
 }
