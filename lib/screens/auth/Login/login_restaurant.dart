@@ -139,7 +139,8 @@ class _MyLoginPageRestaurant extends State<MyLoginPageRestaurant> {
                     }
 
                     //Redireccionamos a la pagina principal
-                    Navigator.of(context).pushNamed('home');
+                    Navigator.of(context).pushNamedAndRemoveUntil(
+                        'home-rest', (Route<dynamic> route) => false);
                   },
                   text: 'Iniciar Sesion'),
             ),

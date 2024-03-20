@@ -9,7 +9,7 @@ String? tokenAdmin = dotenv.env['TOKEN_ADMIN'];
 String? tokenIntegracion = dotenv.env['TOKEN_INTEGRATION'];
 
 Map<String, String> _headers = <String, String>{
-  'Content-type': 'application/json; charset=utf-8',
+  'Content-type': 'application/json',
 };
 
 String getTokenHeader(String type, String? tokenCustomer) {
@@ -46,6 +46,8 @@ Future<dynamic> post(
     String? tokenCustomer, String type, String url, Object params) async {
   try {
     print(Uri.parse(endPoint! + url));
+    print(params);
+    print(jsonEncode(params));
     _headers["Authorization"] = getTokenHeader(type, tokenCustomer);
     final resp = await http.post(Uri.parse(endPoint! + url),
         headers: _headers, body: jsonEncode(params));
@@ -61,6 +63,8 @@ Future<dynamic> post(
 Future<dynamic> put(String? tokenCustomer, String type, String url,
     Object params, String id) async {
   try {
+    print(Uri.parse(endPoint! + url + id));
+    print(params);
     _headers["Authorization"] = getTokenHeader(type, tokenCustomer);
     final resp = await http.put(Uri.parse(endPoint! + url + id),
         headers: _headers, body: jsonEncode(params));

@@ -171,13 +171,23 @@ class _MyRegisterPageRestaurant extends State<MyRegisterPageRestaurant> {
                   onPressed: () async {
                     //Llamada a endpoint
                     final registro = await post('', '', 'customers', {
-                      'customer': {
-                        'email': email,
-                        'firstname': firstname,
-                        'lastname': lastname
+                      "customer": {
+                        "group_id": 4,
+                        "email": email,
+                        "firstname": firstname,
+                        "lastname": lastname,
                       },
                       'password': password
                     });
+                    /*print({
+                      'customer': {
+                        'email': email,
+                        'firstname': firstname,
+                        'lastname': lastname,
+                        'group_id': '4'
+                      },
+                      'password': password
+                    });*/
 
                     //Revision de respuesta
                     if (registro == null) {
@@ -185,14 +195,17 @@ class _MyRegisterPageRestaurant extends State<MyRegisterPageRestaurant> {
                       return;
                     }
 
+                    print(registro);
+
                     //Creamos mapa para guardar en base de datos local
                     Map<String, dynamic> data = {
-                      'id_user': 5,
+                      'id_user': 1,
                       'id': registro['id'],
                       'nombre': firstname,
                       'apellido_paterno': lastname,
                       'username': email,
                       'password': password,
+                      'group_id': registro['group_id']
                     };
 
                     final login = await post(
@@ -207,12 +220,28 @@ class _MyRegisterPageRestaurant extends State<MyRegisterPageRestaurant> {
                       return;
                     }
 
+                    //print(login);
+
                     data['token'] = login;
 
+                    if (registro['group_id'] == 5) {
+                      final update =
+                          await put(login, 'custom', 'customergroup/', {}, '4');
+
+                      print(update);
+
+                      if (update != null) {
+                        data['group_id'] = update['data']['new_group_id'];
+                      }
+                    }
+
+                    await serviceDB.instance
+                        .deleteRecord('users', 'id_user', 1);
                     await serviceDB.instance.insertRecord('users', data);
 
                     //vm.register();
-                    Navigator.of(context).pushNamed('home');
+                    Navigator.of(context).pushNamedAndRemoveUntil(
+                        'home-rest', (Route<dynamic> route) => false);
                   }),
             ),
           ],
