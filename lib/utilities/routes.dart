@@ -2,7 +2,7 @@ import 'package:flutter/material.dart' hide Router;
 
 //Componentes
 import 'package:andromeda/screens/andromeda/home.dart';
-import 'package:andromeda/screens/andromeda/home-rest.dart';
+import 'package:andromeda/screens/andromeda-rest/home-rest.dart';
 import 'package:andromeda/screens/andromeda/history.dart';
 import 'package:andromeda/screens/andromeda/notifications.dart';
 import 'package:andromeda/screens/andromeda/saved.dart';
@@ -21,6 +21,9 @@ import 'package:andromeda/screens/user/configurations.dart';
 import 'package:andromeda/screens/restaurant/detail.dart';
 import 'package:andromeda/screens/restaurant/store.dart';
 import 'package:andromeda/screens/restaurant/review.dart';
+
+//RecoveryPass
+import 'package:andromeda/Recover_Password/Recover_password.dart';
 
 class Router {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -64,6 +67,8 @@ class Router {
         return MaterialPageRoute(builder: (_) => const MyProfilePage());
       case 'register':
         return MaterialPageRoute(builder: (_) => const MyRegisterPage());
+      case 'RecoverPassword':
+        return MaterialPageRoute(builder: (_) => const RecoverPassword());
       case 'register-rest':
         return MaterialPageRoute(
             builder: (_) => const MyRegisterPageRestaurant());

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:andromeda/Witgets/General/Button_Base.dart';
 import 'package:andromeda/Witgets/General/Textfield_Base.dart';
 import 'package:andromeda/Witgets/General/Colores_Base.dart';
+import 'package:andromeda/Recover_Password/Recover_password.dart';
 
 import 'package:andromeda/services/api.dart';
 import 'package:andromeda/services/db.dart';
@@ -155,7 +156,7 @@ class _MyLoginPageState extends State<MyLoginPage> {
                     Navigator.of(context).pushNamedAndRemoveUntil(
                         'home', (Route<dynamic> route) => false);
                   },
-                  text: 'Iniciar Sesion'),
+                  text: 'Iniciar Sesion',)
             ),
             Container(
               alignment: Alignment.center,
@@ -178,9 +179,27 @@ class _MyLoginPageState extends State<MyLoginPage> {
                 ),
               ),
             ),
+            Container(
+              margin: const EdgeInsets.only(bottom: 25),
+              child: GestureDetector(
+                onTap: () {
+                  //Navigator.of(context).pushNamedAndRemoveUntil(
+                  //    'register', (Route<dynamic> route) => false);
+                  Navigator.pushNamed(context, 'RecoverPassword');
+                },
+                child: const Text(
+                  "Olvidaste tu contraseña",
+                  style: TextStyle(
+                      color: Color.fromARGB(255, 154, 126, 43),
+                      fontWeight: FontWeight.bold),
+                ),
+              ),
+            ),
           ],
         ),
       ),
     );
   }
 }
+
+
