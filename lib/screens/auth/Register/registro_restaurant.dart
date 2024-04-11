@@ -27,13 +27,13 @@ class _MyRegisterPageRestaurant extends State<MyRegisterPageRestaurant> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Base_ColorClaro,
-      appBar: AppBar(
+     /**  appBar: AppBar(
         title: Text('Restaurant'),
         centerTitle: true,
         leading: BackButton(),
         backgroundColor: Colors.transparent,
         elevation: 1,
-      ),
+      ),*/
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -72,7 +72,7 @@ class _MyRegisterPageRestaurant extends State<MyRegisterPageRestaurant> {
               ],
             ),
             const SizedBox(height: 50), //Espacio separador
-            Container(
+          /**   Container(
               margin: const EdgeInsets.symmetric(horizontal: 20),
               child: DropdownButtonFormField(
                   decoration: const InputDecoration(
@@ -92,7 +92,7 @@ class _MyRegisterPageRestaurant extends State<MyRegisterPageRestaurant> {
                     });
                   },
                   items: dropdownItems),
-            ),
+            ),*/
             const SizedBox(height: 10),
             Container(
               margin: const EdgeInsets.symmetric(horizontal: 20),
