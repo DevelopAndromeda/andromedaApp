@@ -117,7 +117,7 @@
     },
     {
       "name": "geolocator_apple",
-      "rootUri": "file:///Users/emmanuelsantizfelipe/.pub-cache/hosted/pub.dev/geolocator_apple-2.3.6",
+      "rootUri": "file:///Users/emmanuelsantizfelipe/.pub-cache/hosted/pub.dev/geolocator_apple-2.3.7",
       "packageUri": "lib/",
       "languageVersion": "2.15"
     },
@@ -135,7 +135,7 @@
     },
     {
       "name": "geolocator_windows",
-      "rootUri": "file:///Users/emmanuelsantizfelipe/.pub-cache/hosted/pub.dev/geolocator_windows-0.2.2",
+      "rootUri": "file:///Users/emmanuelsantizfelipe/.pub-cache/hosted/pub.dev/geolocator_windows-0.2.3",
       "packageUri": "lib/",
       "languageVersion": "2.15"
     },
@@ -249,7 +249,7 @@
     },
     {
       "name": "provider",
-      "rootUri": "file:///Users/emmanuelsantizfelipe/.pub-cache/hosted/pub.dev/provider-6.1.1",
+      "rootUri": "file:///Users/emmanuelsantizfelipe/.pub-cache/hosted/pub.dev/provider-6.1.2",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -362,7 +362,7 @@
       "languageVersion": "2.19"
     }
   ],
-  "generated": "2024-02-23T18:39:29.218308Z",
+  "generated": "2024-04-12T06:24:48.912471Z",
   "generator": "pub",
   "generatorVersion": "2.19.6"
 }

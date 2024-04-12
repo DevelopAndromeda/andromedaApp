@@ -2,7 +2,7 @@ import 'package:flutter/material.dart' hide Router;
 
 //Componentes
 import 'package:andromeda/screens/andromeda/home.dart';
-import 'package:andromeda/screens/andromeda/home-rest.dart';
+import 'package:andromeda/screens/andromeda-rest/home-rest.dart';
 import 'package:andromeda/screens/andromeda/history.dart';
 import 'package:andromeda/screens/andromeda/notifications.dart';
 import 'package:andromeda/screens/andromeda/saved.dart';
@@ -63,6 +63,12 @@ class Router {
       case 'RecoverPassword':
         return MaterialPageRoute(builder: (_) => const MyRecoverPassword());
       case 'register':
+        final type = settings.arguments as int;
+        return MaterialPageRoute(
+            builder: (_) => MyRegisterPage(
+                  type: type,
+                ));
+      case 'register-rest':
         final type = settings.arguments as int;
         return MaterialPageRoute(
             builder: (_) => MyRegisterPage(
