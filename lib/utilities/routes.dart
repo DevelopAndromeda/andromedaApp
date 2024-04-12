@@ -8,10 +8,9 @@ import 'package:andromeda/screens/andromeda/notifications.dart';
 import 'package:andromeda/screens/andromeda/saved.dart';
 import 'package:andromeda/screens/andromeda/search.dart';
 //Auth
-import 'package:andromeda/screens/auth/Login/login_custom.dart';
-import 'package:andromeda/screens/auth/Login/login_restaurant.dart';
+import 'package:andromeda/screens/auth/Login/login.dart';
 import 'package:andromeda/screens/auth/Register/register_custom.dart';
-import 'package:andromeda/screens/auth/Register/registro_restaurant.dart';
+import 'package:andromeda/screens/auth/Recover_Password/Recover_password.dart';
 //Inicio
 import 'package:andromeda/screens/start.dart';
 //Users
@@ -42,9 +41,8 @@ class Router {
       case 'history':
         return MaterialPageRoute(builder: (_) => const MyHistoryPage());
       case 'login':
-        return MaterialPageRoute(builder: (_) => const MyLoginPage());
-      case 'login-rest':
-        return MaterialPageRoute(builder: (_) => const MyLoginPageRestaurant());
+        final type = settings.arguments as int;
+        return MaterialPageRoute(builder: (_) => MyLoginPage(type: type));
       case 'notifications':
         return MaterialPageRoute(builder: (_) => const MyNotificationsPage());
       case 'search':
@@ -62,11 +60,17 @@ class Router {
         );
       case 'profile':
         return MaterialPageRoute(builder: (_) => const MyProfilePage());
+      case 'RecoverPassword':
+        return MaterialPageRoute(builder: (_) => const MyRecoverPassword());
       case 'register':
-        return MaterialPageRoute(builder: (_) => const MyRegisterPage());
-      case 'register-rest':
+        final type = settings.arguments as int;
         return MaterialPageRoute(
-            builder: (_) => const MyRegisterPageRestaurant());
+            builder: (_) => MyRegisterPage(
+                  type: type,
+                ));
+      /*case 'register-rest':
+        return MaterialPageRoute(
+            builder: (_) => const MyRegisterPageRestaurant());*/
       case 'review':
         final data = settings.arguments as Map<String, dynamic>;
         return MaterialPageRoute(
