@@ -1,17 +1,8 @@
-import 'package:andromeda/screens/andromeda-rest/alta-rest.dart';
-import 'package:andromeda/screens/andromeda-rest/list-reservacion.dart';
-import 'package:andromeda/screens/andromeda-rest/list-rest.dart';
 import 'package:flutter/material.dart';
 
 import 'package:andromeda/services/api.dart';
 import 'package:andromeda/services/gps.dart';
 import 'package:andromeda/services/db.dart';
-
-
-//Uso de pruebas solamente
-void main() {
-  runApp(MyHomeRestPage());
-}
 
 class MyHomeRestPage extends StatefulWidget {
   const MyHomeRestPage({super.key});
@@ -21,10 +12,8 @@ class MyHomeRestPage extends StatefulWidget {
   _MyHomeRestPageState createState() => _MyHomeRestPageState();
 }
 
-
 class _MyHomeRestPageState extends State<MyHomeRestPage> {
-  Future<void> getUserData() async {
-  }
+  Future<void> getUserData() async {}
 
   @override
   void initState() {
@@ -34,71 +23,62 @@ class _MyHomeRestPageState extends State<MyHomeRestPage> {
   }
 
   @override
-    Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('Panel de Administración'),
-        ),
-        body: Center(
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Panel de Administración'),
+      ),
+      body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ElevatedButton(
               onPressed: () {
-                // Navegar a la primera pantalla al presionar el botón
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => MyHomeRestPage(),
-                  ),
-                );
-              },
-              child: Text('Alta de restaurante'),
-            ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
                 // Navegar a la segunda pantalla al presionar el botón
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => AltaRest(),
-                  ),
-                );
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                    'alta-rest', (Route<dynamic> route) => false);
               },
-              child: Text('Restaurantes'),
+              child: Text('Alta de Restaurante'),
             ),
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
                 // Navegar a la tercera pantalla al presionar el botón
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ListRest(),
-                  ),
-                );
+                /*Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ListRest(),
+                    ),
+                  );*/
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                    'list-rest', (Route<dynamic> route) => false);
               },
-              child: Text('Reservaciones'),
+              child: Text('Lista de Restaurantes'),
             ),
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
                 // Navegar a la cuarta pantalla al presionar el botón
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => listReservacion(),
-                  ),
-                );
+                /*Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => listReservacion(),
+                    ),
+                  );*/
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                    'list-reservation', (Route<dynamic> route) => false);
               },
-              child: Text('Cerrar sesion'),
+              child: Text('lista de Reservaciones'),
             ),
-            
+            ElevatedButton(
+                onPressed: () async {
+                  await serviceDB.instance.deleteDatabase();
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                      'start', (Route<dynamic> route) => false);
+                },
+                child: Text('Cerrar Sesion'))
           ],
         ),
-      ),
       ),
     );
   }

@@ -3,6 +3,9 @@ import 'package:flutter/material.dart' hide Router;
 //Componentes
 import 'package:andromeda/screens/andromeda/home.dart';
 import 'package:andromeda/screens/andromeda-rest/home-rest.dart';
+import 'package:andromeda/screens/andromeda-rest/alta-rest.dart';
+import 'package:andromeda/screens/andromeda-rest/list-rest.dart';
+import 'package:andromeda/screens/andromeda-rest/list-reservacion.dart';
 import 'package:andromeda/screens/andromeda/history.dart';
 import 'package:andromeda/screens/andromeda/notifications.dart';
 import 'package:andromeda/screens/andromeda/saved.dart';
@@ -24,6 +27,8 @@ import 'package:andromeda/screens/restaurant/review.dart';
 class Router {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
+      case 'alta-rest':
+        return MaterialPageRoute(builder: (_) => const AltaRest());
       case 'configurations':
         return MaterialPageRoute(builder: (_) => const MyConfigProfilePage());
       case 'detail':
@@ -40,6 +45,10 @@ class Router {
         return MaterialPageRoute(builder: (_) => const MyHomeRestPage());
       case 'history':
         return MaterialPageRoute(builder: (_) => const MyHistoryPage());
+      case 'list-rest':
+        return MaterialPageRoute(builder: (_) => const ListRest());
+      case 'list-reservation':
+        return MaterialPageRoute(builder: (_) => const listReservacion());
       case 'login':
         final type = settings.arguments as int;
         return MaterialPageRoute(builder: (_) => MyLoginPage(type: type));
