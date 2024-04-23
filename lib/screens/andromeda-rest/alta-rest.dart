@@ -273,14 +273,53 @@ class _AltaRestState extends State<AltaRest> {
                           'stock_item': {'qty': 99999999, 'is_in_stock': true},
                           'slot_data': arraSlot
                         };
-                        CustomAttributes.add({
-                          "attribute_code": "short_description",
-                          "value": _descripcionController.text
-                        });
-                        CustomAttributes.add({
-                          'attribute_code': 'hotel_address',
-                          'value': _direccionController.text
-                        });
+                        //CustomAttributes.add();
+                        //CustomAttributes.add();
+                        CustomAttributes.addAll([
+                          {
+                            "attribute_code": "short_description",
+                            "value": _descripcionController.text
+                          },
+                          {
+                            "attribute_code": "cancellation_available",
+                            "value": "1"
+                          },
+                          {"attribute_code": "no_of_guests", "value": "4"},
+                          {"attribute_code": "max_capacity", "value": "4"},
+                          {"attribute_code": "slot_duration", "value": "60"},
+                          {
+                            "attribute_code": "prevent_scheduling_before",
+                            "value": "10"
+                          },
+                          {
+                            "attribute_code": "break_time_bw_slot",
+                            "value": "10"
+                          },
+                          {"attribute_code": "show_map_loction", "value": "1"},
+                          {
+                            'attribute_code': 'hotel_address',
+                            'value': _direccionController.text
+                          },
+                          {"attribute_code": "hotel_country", "value": "MX"},
+                          {"attribute_code": "hotel_state", "value": "955"},
+                          {
+                            "attribute_code": "location",
+                            "value":
+                                "De Los Ferrocarriles Sur, Norte, Puente de Ixtla, Mor., México"
+                          },
+                          {"attribute_code": "city", "value": "cancun"},
+                          {
+                            "attribute_code": "category_ids",
+                            "value": ["6", "3"]
+                          },
+                          {
+                            "attribute_code": "description",
+                            "value": _descripcionController.text
+                          },
+                          {"attribute_code": "slot_for_all_days", "value": 0},
+                          {"attribute_code": "created_by", "value": 1},
+                          {"attribute_code": "updated_by", "value": 1}
+                        ]);
 
                         Map<String, dynamic> producto = {
                           'product': {
@@ -291,8 +330,8 @@ class _AltaRestState extends State<AltaRest> {
                             'status': 1,
                             'visibility': 4,
                             'type_id': 'booking',
+                            'extension_attributes': ExtensionAttributes,
                             'custom_attributes': CustomAttributes,
-                            'extension_attributes': ExtensionAttributes
                           }
                         };
 

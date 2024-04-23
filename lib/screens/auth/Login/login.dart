@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:andromeda/screens/auth/Register/register_custom.dart';
 import 'package:flutter/material.dart';
 import 'package:andromeda/Witgets/General/Button_Base.dart';
@@ -18,11 +20,14 @@ class _MyLoginPageState extends State<MyLoginPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  bool typePassword = true;
+  bool _isButtonDisabled = false;
 
   Future<void> getSesion() async {
     print('getSession');
     var sesion = await serviceDB.instance.getById('users', 'id_user', 1);
     if (sesion.isNotEmpty) {
+      print('Sesion is alredy');
       Navigator.of(context).pushNamedAndRemoveUntil(
           sesion[0]['group_id'] == 5 ? 'home' : 'home-rest',
           (Route<dynamic> route) => false);
@@ -96,6 +101,7 @@ class _MyLoginPageState extends State<MyLoginPage> {
                     const EdgeInsets.symmetric(horizontal: 35, vertical: 10),
                 child: TextFormField(
                     controller: _emailController,
+                    keyboardType: TextInputType.emailAddress,
                     decoration: InputDecoration(
                       contentPadding: const EdgeInsets.all(5),
                       border: OutlineInputBorder(
@@ -126,6 +132,7 @@ class _MyLoginPageState extends State<MyLoginPage> {
                     const EdgeInsets.symmetric(horizontal: 35, vertical: 10),
                 child: TextFormField(
                   controller: _passwordController,
+                  obscureText: typePassword,
                   decoration: InputDecoration(
                     contentPadding: const EdgeInsets.all(5),
                     border: OutlineInputBorder(
@@ -136,7 +143,16 @@ class _MyLoginPageState extends State<MyLoginPage> {
                       'Contraseña',
                       style: const TextStyle(color: Colors.grey),
                     ),
-                    suffixIcon: Icon(Icons.lock_clock_outlined),
+                    suffixIcon: GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          typePassword = !typePassword;
+                        });
+                      },
+                      child: Icon(typePassword == true
+                          ? Icons.lock_outline
+                          : Icons.lock_open),
+                    ),
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -151,78 +167,88 @@ class _MyLoginPageState extends State<MyLoginPage> {
                 margin:
                     const EdgeInsets.symmetric(horizontal: 50, vertical: 30),
                 child: baseButtom(
-                    onPressed: () async {
-                      if (_formKey.currentState!.validate()) {
-                        try {
-                          final login = await post(
-                              'admin', '', 'integration/customer/token', {
-                            'username': _emailController.text,
-                            'password': _passwordController.text
-                          });
+                    onPressed: _isButtonDisabled
+                        ? () {}
+                        : () async {
+                            if (_formKey.currentState!.validate()) {
+                              setState(() {
+                                _isButtonDisabled = !_isButtonDisabled;
+                              });
+                              try {
+                                final login = await post(
+                                    'admin', '', 'integration/customer/token', {
+                                  'username': _emailController.text,
+                                  'password': _passwordController.text
+                                });
 
-                          //Revision de respuesta
-                          /*if (login == null) {
+                                //Revision de respuesta
+                                /*if (login == null) {
                             print('hay error: $login["message"]');
                             return;
                           }*/
 
-                          print(login);
+                                print(login);
 
-                          /*if (login["message"] != null) {
+                                /*if (login["message"] != null) {
                             ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(content: Text(login["message"])));
                             return;
                           }*/
 
-                          //Creamos mapa para guardar en base de datos local
-                          Map<String, dynamic> data = {
-                            'username': _emailController.text,
-                            'password': _passwordController.text,
-                            'token': login
-                          };
+                                //Creamos mapa para guardar en base de datos local
+                                Map<String, dynamic> data = {
+                                  'username': _emailController.text,
+                                  'password': _passwordController.text,
+                                  'token': login
+                                };
 
-                          //Vamos por la info del cliente
-                          final customer =
-                              await get(login, 'custom', 'customers/me');
+                                //Vamos por la info del cliente
+                                final customer =
+                                    await get(login, 'custom', 'customers/me');
 
-                          print('customer');
-                          print(customer);
+                                print('customer');
+                                print(customer);
 
-                          if (customer != null) {
-                            data['id'] = customer['id'];
-                            data['nombre'] = customer['firstname'];
-                            data['apellido_paterno'] = customer['lastname'];
-                            data['group_id'] = customer['group_id'];
-                          }
+                                if (customer != null) {
+                                  data['id'] = customer['id'];
+                                  data['nombre'] = customer['firstname'];
+                                  data['apellido_paterno'] =
+                                      customer['lastname'];
+                                  data['group_id'] = customer['group_id'];
+                                }
 
-                          print('data');
-                          print(data);
-                          print('token: $login');
-                          //Obtenemos datos de la base local
-                          final user = await serviceDB.instance
-                              .getById('users', 'id_user', 1);
-                          //Si existen datos en base de datos local actualizamos datos en mapa
-                          if (user.isNotEmpty) {
-                            await serviceDB.instance
-                                .updateRecord('users', data, 'id_user', 1);
-                          } else {
-                            //Si no existen datos en base de datos local insertamos datos en mapa
-                            data['id_user'] = 1;
-                            await serviceDB.instance
-                                .insertRecord('users', data);
-                          }
+                                print('data');
+                                print(data);
+                                print('token: $login');
+                                //Obtenemos datos de la base local
+                                final user = await serviceDB.instance
+                                    .getById('users', 'id_user', 1);
+                                //Si existen datos en base de datos local actualizamos datos en mapa
+                                if (user.isNotEmpty) {
+                                  await serviceDB.instance.updateRecord(
+                                      'users', data, 'id_user', 1);
+                                } else {
+                                  //Si no existen datos en base de datos local insertamos datos en mapa
+                                  data['id_user'] = 1;
+                                  await serviceDB.instance
+                                      .insertRecord('users', data);
+                                }
 
-                          //Redireccionamos a la pagina principal
-                          Navigator.of(context).pushNamedAndRemoveUntil(
-                              widget.type == 0 ? 'home' : 'home-rest',
-                              (Route<dynamic> route) => false);
-                        } catch (e) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text(e.toString())));
-                        }
-                      }
-                      /**/
-                    },
+                                //Redireccionamos a la pagina principal
+                                Navigator.of(context).pushNamedAndRemoveUntil(
+                                    data['group_id'] == 5
+                                        ? 'home'
+                                        : 'home-rest',
+                                    (Route<dynamic> route) => false);
+                              } catch (e) {
+                                setState(() {
+                                  _isButtonDisabled = !_isButtonDisabled;
+                                });
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(content: Text(e.toString())));
+                              }
+                            }
+                          },
                     text: 'Iniciar Sesion'),
               ),
               Container(

@@ -112,41 +112,48 @@ class _MySearchPageState extends State<MySearchPage> {
   }
 
   Widget _buildCard(data) {
-    return Card(
-      elevation: 5.0,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Image.network(
-            "http://82.165.212.67/media/catalog/product" +
-                data['media_gallery_entries'][0]['file'],
-            height: 150.0,
-            width: double.infinity,
-            fit: BoxFit.cover,
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  data['name'],
-                  style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
-                ),
-                SizedBox(height: 8.0),
-                Text(
-                  'Tipo de Comida: ',
-                  style: TextStyle(fontSize: 16.0),
-                ),
-                SizedBox(height: 4.0),
-                Text(
-                  'Horario de Atención: ',
-                  style: TextStyle(fontSize: 16.0),
-                ),
-              ],
+    return InkWell(
+      onTap: () {
+        Navigator.of(context).pushNamedAndRemoveUntil(
+            'detail', arguments: data, (Route<dynamic> route) => false);
+      },
+      child: Card(
+        elevation: 5.0,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Image.network(
+              "http://82.165.212.67/media/catalog/product" +
+                  data['media_gallery_entries'][0]['file'],
+              height: 150.0,
+              width: double.infinity,
+              fit: BoxFit.cover,
             ),
-          ),
-        ],
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    data['name'],
+                    style:
+                        TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(height: 8.0),
+                  Text(
+                    'Tipo de Comida: ',
+                    style: TextStyle(fontSize: 16.0),
+                  ),
+                  SizedBox(height: 4.0),
+                  Text(
+                    'Horario de Atención: ',
+                    style: TextStyle(fontSize: 16.0),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

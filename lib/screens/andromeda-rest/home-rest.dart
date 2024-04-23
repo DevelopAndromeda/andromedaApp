@@ -35,8 +35,9 @@ class _MyHomeRestPageState extends State<MyHomeRestPage> {
             ElevatedButton(
               onPressed: () {
                 // Navegar a la segunda pantalla al presionar el botón
-                Navigator.of(context).pushNamedAndRemoveUntil(
-                    'alta-rest', (Route<dynamic> route) => false);
+                //Navigator.of(context).pushNamedAndRemoveUntil(
+                //    'alta-rest', (Route<dynamic> route) => false);
+                Navigator.pushNamed(context, 'alta-rest');
               },
               child: Text('Alta de Restaurante'),
             ),
@@ -50,8 +51,9 @@ class _MyHomeRestPageState extends State<MyHomeRestPage> {
                       builder: (context) => ListRest(),
                     ),
                   );*/
-                Navigator.of(context).pushNamedAndRemoveUntil(
-                    'list-rest', (Route<dynamic> route) => false);
+                //Navigator.of(context).pushNamedAndRemoveUntil(
+                //    'list-rest', (Route<dynamic> route) => false);
+                Navigator.pushNamed(context, 'list-rest');
               },
               child: Text('Lista de Restaurantes'),
             ),
@@ -65,14 +67,15 @@ class _MyHomeRestPageState extends State<MyHomeRestPage> {
                       builder: (context) => listReservacion(),
                     ),
                   );*/
-                Navigator.of(context).pushNamedAndRemoveUntil(
-                    'list-reservation', (Route<dynamic> route) => false);
+                Navigator.pushNamed(context, 'list-reservation');
+                //Navigator.of(context).pushNamedAndRemoveUntil(
+                //    'list-reservation', (Route<dynamic> route) => false);
               },
               child: Text('lista de Reservaciones'),
             ),
             ElevatedButton(
                 onPressed: () async {
-                  await serviceDB.instance.deleteDatabase();
+                  await serviceDB.instance.cleanAllTable();
                   Navigator.of(context).pushNamedAndRemoveUntil(
                       'start', (Route<dynamic> route) => false);
                 },

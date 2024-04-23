@@ -24,7 +24,9 @@ class _MyRegisterContet extends State<MyRegisterPage> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
       TextEditingController();
-  List<String> dropdownItems = <String>[];
+  bool typePassword = true;
+  bool typePasswordConfirm = true;
+  //List<String> dropdownItems = <String>[];
 
   /*List<DropdownMenuItem<String>> get dropdownItems {
     List<DropdownMenuItem<String>> menuItems = [
@@ -33,12 +35,12 @@ class _MyRegisterContet extends State<MyRegisterPage> {
     return menuItems;
   }*/
 
-  String? selectedValue;
+  //String? selectedValue;
 
   @override
   void initState() {
     super.initState();
-    dropdownItems.add(widget.type == 0 ? "Comensal" : "Restaurante");
+    //dropdownItems.add(widget.type == 0 ? "Comensal" : "Restaurante");
   }
 
   @override
@@ -113,7 +115,7 @@ class _MyRegisterContet extends State<MyRegisterPage> {
                 ],
               ),
               const SizedBox(height: 50),
-              Container(
+              /*Container(
                 margin: const EdgeInsets.symmetric(horizontal: 20),
                 child: DropdownButtonFormField(
                   decoration: const InputDecoration(
@@ -142,7 +144,7 @@ class _MyRegisterContet extends State<MyRegisterPage> {
                 ),
                 //items: dropdownItems),
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 10),*/
               Container(
                 margin: const EdgeInsets.symmetric(horizontal: 20),
                 child: TextFormField(
@@ -197,6 +199,7 @@ class _MyRegisterContet extends State<MyRegisterPage> {
                 margin: const EdgeInsets.symmetric(horizontal: 20),
                 child: TextFormField(
                     controller: _emailController,
+                    keyboardType: TextInputType.emailAddress,
                     decoration: InputDecoration(
                       contentPadding: const EdgeInsets.all(5),
                       border: OutlineInputBorder(
@@ -227,6 +230,7 @@ class _MyRegisterContet extends State<MyRegisterPage> {
                 margin: const EdgeInsets.symmetric(horizontal: 20),
                 child: TextFormField(
                   controller: _passwordController,
+                  obscureText: typePassword,
                   decoration: InputDecoration(
                     contentPadding: const EdgeInsets.all(5),
                     border: OutlineInputBorder(
@@ -237,7 +241,16 @@ class _MyRegisterContet extends State<MyRegisterPage> {
                       'Contraseña',
                       style: const TextStyle(color: Colors.grey),
                     ),
-                    suffixIcon: Icon(Icons.lock_clock_outlined),
+                    suffixIcon: GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          typePassword = !typePassword;
+                        });
+                      },
+                      child: Icon(typePassword == true
+                          ? Icons.lock_clock_outlined
+                          : Icons.lock_open_sharp),
+                    ),
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -258,6 +271,7 @@ class _MyRegisterContet extends State<MyRegisterPage> {
                 margin: const EdgeInsets.symmetric(horizontal: 20),
                 child: TextFormField(
                   controller: _confirmPasswordController,
+                  obscureText: typePasswordConfirm,
                   decoration: InputDecoration(
                     contentPadding: const EdgeInsets.all(5),
                     border: OutlineInputBorder(
@@ -268,7 +282,16 @@ class _MyRegisterContet extends State<MyRegisterPage> {
                       'Confirmar contraseña',
                       style: const TextStyle(color: Colors.grey),
                     ),
-                    suffixIcon: Icon(Icons.lock_outline),
+                    suffixIcon: GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          typePasswordConfirm = !typePasswordConfirm;
+                        });
+                      },
+                      child: Icon(typePasswordConfirm == true
+                          ? Icons.lock_outline
+                          : Icons.lock_open),
+                    ),
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -306,11 +329,11 @@ class _MyRegisterContet extends State<MyRegisterPage> {
                         print('registro');
                         print(registro);
 
-                        if (registro["message"] != null) {
+                        /*if (registro["message"] != null) {
                           ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(content: Text(registro["message"])));
                           return;
-                        }
+                        }*/
 
                         //Creamos mapa para guardar en base de datos local
                         Map<String, dynamic> data = {
