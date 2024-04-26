@@ -5,31 +5,8 @@ import 'package:andromeda/services/api.dart';
 import 'package:andromeda/services/db.dart';
 
 class RestuarentScreen extends StatefulWidget {
-  /*final int id;
-  final String name,
-      image,
-      remainingTime,
-      subTitle,
-      rating,
-      deliveryTime,
-      totalRating,
-      deliveryPrice;*/
   final Map<dynamic, dynamic> data;
-  const RestuarentScreen(
-      /*{Key? key,
-      required this.id,
-      required this.name,
-      required this.image,
-      required this.remainingTime,
-      required this.rating,
-      required this.deliveryTime,
-      required this.totalRating,
-      required this.subTitle,
-      required this.deliveryPrice})
-      : super(key: key);*/
-      {Key? key,
-      required this.data})
-      : super(key: key);
+  const RestuarentScreen({Key? key, required this.data}) : super(key: key);
 
   @override
   _RestuarentScreenState createState() => _RestuarentScreenState();
@@ -164,7 +141,7 @@ class _RestuarentScreenState extends State<RestuarentScreen> {
                             .toString()),
                         itemBuilder: (context, index) => Icon(
                           Icons.star,
-                          color: Colors.amber,
+                          color: const Color.fromARGB(255, 20, 20, 20),
                         ),
                         itemCount: 5,
                         itemSize: 12.0,

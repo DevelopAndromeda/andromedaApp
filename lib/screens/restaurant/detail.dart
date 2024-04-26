@@ -179,7 +179,8 @@ class _MyDetailPageState extends State<MyDetailPage>
                   ], rows: const <DataRow>[]),*/
                   TabBar(
                     controller: _tabController,
-                    labelColor: Colors.black,
+                    labelColor: Color.fromARGB(255, 0, 0, 0),
+                    indicatorColor: Colors.black,
                     onTap: (index) {
                       print(index);
                       if (index == 1) {
@@ -256,7 +257,19 @@ class _MyDetailPageState extends State<MyDetailPage>
                                     ),
                                   );
                                 },
-                                child: Text('Generar Reserva'),
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.black,
+                                  textStyle: TextStyle(
+                                    fontSize: 20,
+                                    color: Color.fromARGB(255, 255, 255, 255),
+                                  ),
+                                  minimumSize: Size(200, 50),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(4),
+                                  )
+                                ),
+                                child: Text('Generar Reserva',
+                                style: TextStyle(color: Colors.white),),
                               ),
                             ),
                           ],

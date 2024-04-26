@@ -17,7 +17,7 @@ class serviceDB {
     batch.execute("DROP TABLE IF EXISTS stores;");
 
     batch.execute(
-        'CREATE TABLE users(id_user INTEGER PRIMARY KEY, nombre TEXT NULL, apellido_paterno TEXT NULL, apellido_materno TEXT NULL, telefono TEXT NULL, codigo_postal TEXT NULL, estado TEXT NULL, password TEXT, username TEXT NULL, lat TEXT NULL, long TEXT NULL, token TEXT NULL, id INTEGER NULL)');
+        'CREATE TABLE users(id_user INTEGER PRIMARY KEY, nombre TEXT NULL, apellido_paterno TEXT NULL, apellido_materno TEXT NULL, telefono TEXT NULL, codigo_postal TEXT NULL, estado TEXT NULL, password TEXT, username TEXT NULL, lat TEXT NULL, long TEXT NULL, token TEXT NULL, id INTEGER NULL, group_id INTEGER NULL, token_integration TEXT NULL)');
 
     batch.execute(
         'CREATE TABLE stores(id_store INTEGER PRIMARY KEY, nombre TEXT, direccion TEXT, id_tipo_comida INTEGER, id_tipo_restaurante INTEGER, cantidad_mesas NUMERIC)');

@@ -14,6 +14,10 @@ class _MyHistoryPageState extends State<MyHistoryPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Historial'), // Título del AppBar
+        centerTitle: true, // Centra el título del AppBar
+      ),
       body: ListView(
         padding: const EdgeInsets.all(5.0),
         children: [
@@ -54,18 +58,22 @@ class _MyHistoryPageState extends State<MyHistoryPage> {
       child: Card(
         margin: const EdgeInsets.all(5),
         elevation: 10,
-        child: Stack(
+        child: SizedBox(
+          width: 350,
+          height: 150,
+
+          child: Stack(
           children: <Widget>[
             // Imagen a la izquierda
             Positioned(
-              left: 0,
+              left: 10,
               top: 15,
               bottom: 15,
               child: Container(
-                width: 150,
+                width: 100,
                 height: 90,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(4),
                   image: DecorationImage(
                     image: AssetImage(imagePath),
                     fit: BoxFit.cover,
@@ -76,7 +84,7 @@ class _MyHistoryPageState extends State<MyHistoryPage> {
 
             // Título, descripción y número de personas a la derecha
             Positioned(
-              left: 120,
+              left: 110,
               top: 10,
               right: 65,
               bottom: 5,
@@ -90,7 +98,7 @@ class _MyHistoryPageState extends State<MyHistoryPage> {
                       style: const TextStyle(
                           fontSize: 18, fontWeight: FontWeight.bold),
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 30),
                     Text(
                       description,
                       style: const TextStyle(fontSize: 14),
@@ -109,41 +117,44 @@ class _MyHistoryPageState extends State<MyHistoryPage> {
               alignment: Alignment.bottomRight,
               child: Padding(
                 padding: const EdgeInsets.all(0.0),
-                child: Column(
-                  mainAxisSize: MainAxisSize.max,
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    IconButton(
-                      icon: const Icon(
-                        Icons.edit,
-                        color: Colors.blue, // Cambia el color del icono aquí
-                      ),
-                      onPressed: () {
-                        // Acción cuando se presiona "Modificar"
-                        // Puedes agregar tu lógica aquí
-                      },
+                    Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        IconButton(
+                          icon: const Icon(
+                            Icons.edit,
+                            color:
+                                Color.fromARGB(255, 2, 2, 2), // Cambia el color del icono aquí
+                          ),
+                          iconSize: 16,
+                          onPressed: () {
+                            // Acción cuando se presiona "Modificar"
+                            // Puedes agregar tu lógica aquí
+                          },
+                        ),
+                      ],
                     ),
-                    const Text(
-                      'Modificar',
-                      style: TextStyle(
-                        color: Colors.blue, // Cambia el color del texto aquí
-                      ),
-                    ),
-                    const SizedBox(height: 1),
-                    IconButton(
-                      icon: const Icon(
-                        Icons.delete,
-                        color: Colors.red, // Cambia el color del icono aquí
-                      ),
-                      onPressed: () {
-                        // Acción cuando se presiona "Eliminar"
-                        // Puedes agregar tu lógica aquí
-                      },
-                    ),
-                    const Text(
-                      'Eliminar',
-                      style: TextStyle(
-                        color: Colors.red, // Cambia el color del texto aquí
-                      ),
+                        // Espacio entre los botones
+                    Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        IconButton(
+                          padding: EdgeInsets.zero,
+                          icon: const Icon(
+                            Icons.delete,
+                            color: Color.fromARGB(255, 8, 8, 8), // Cambia el color del icono aquí
+                          ),
+                          iconSize: 16,
+                          onPressed: () {
+                            // Acción cuando se presiona "Eliminar"
+                            // Puedes agregar tu lógica aquí
+                          },
+                        ),
+                        
+                      ],
                     ),
                   ],
                 ),
@@ -151,6 +162,8 @@ class _MyHistoryPageState extends State<MyHistoryPage> {
             ),
           ],
         ),
+        ),
+        
       ),
     );
   }

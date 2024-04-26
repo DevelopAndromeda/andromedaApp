@@ -60,6 +60,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
                 size: 30, // Tamaño del icono
               ),
               onPressed: () async {
+                //await serviceDB.instance.cleanAllTable();
                 await serviceDB.instance.cleanAllTable();
                 Navigator.of(context).pushNamedAndRemoveUntil(
                     'start', (Route<dynamic> route) => false);
@@ -80,16 +81,20 @@ class _MyProfilePageState extends State<MyProfilePage> {
               children: [
                 // Imagen de portada
                 Image.asset(
-                  "assets/Back.png", // Reemplaza con la ruta de tu imagen de portada
+                  "assets/Black.jpg", // Reemplaza con la ruta de tu imagen de portada
                   height: 200, // Ajusta la altura según tus necesidades
                   width: double.infinity,
                   fit: BoxFit.cover,
                 ),
-                // Imagen de perfil
-                CircleAvatar(
+
+                Positioned(top: 150,
+                child: CircleAvatar(
                   radius: 50,
                   backgroundImage: AssetImage("assets/Profile.png"),
+                ), 
                 ),
+                // Imagen de perfil
+                
               ],
             ),
             SizedBox(height: 20),
@@ -101,15 +106,30 @@ class _MyProfilePageState extends State<MyProfilePage> {
             SizedBox(height: 10),
             Text("Teléfono: $telefono"),
             SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => MyConfigProfilePage(),
-                    ));
-              },
-              child: Text("Modificar Perfil"),
+
+          SizedBox(height: 250,),
+
+            Center(
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => MyConfigProfilePage(),
+                      ));
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.black,
+                  minimumSize: Size(250, 40),
+                  shape: RoundedRectangleBorder(
+              
+                      borderRadius: BorderRadius.circular(4),
+                  ),
+                  
+                ),
+                child: Text("Modificar Perfil",
+                style: TextStyle(color: Colors.white),),
+              ),
             ),
           ],
         ),
