@@ -316,15 +316,20 @@ class _MyRegisterContet extends State<MyRegisterPage> {
                     if (_formKey.currentState!.validate()) {
                       try {
                         //Llamada a endpoint
-                        final registro = await post('', 'admin', 'customers', {
-                          'customer': {
-                            'email': _emailController.text,
-                            'firstname': _firstController.text,
-                            'lastname': _lastController.text,
-                            "group_id": widget.type == 0 ? 5 : 4,
-                          },
-                          'password': _passwordController.text
-                        });
+                        final registro = await post(
+                            '',
+                            'admin',
+                            'customers',
+                            {
+                              'customer': {
+                                'email': _emailController.text,
+                                'firstname': _firstController.text,
+                                'lastname': _lastController.text,
+                                "group_id": widget.type == 0 ? 5 : 4,
+                              },
+                              'password': _passwordController.text
+                            },
+                            '');
 
                         print('registro');
                         print(registro);
@@ -350,10 +355,14 @@ class _MyRegisterContet extends State<MyRegisterPage> {
                         print('data');
 
                         final login = await post(
-                            '', '', 'integration/customer/token', {
-                          'username': _emailController.text,
-                          'password': _passwordController.text
-                        });
+                            '',
+                            '',
+                            'integration/customer/token',
+                            {
+                              'username': _emailController.text,
+                              'password': _passwordController.text
+                            },
+                            '');
 
                         print(login);
                         data['token'] = login;

@@ -5,11 +5,13 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 String? endPoint = dotenv.env['ENDPOINT'];
+String? endPointV2 = dotenv.env['ENDPOINT_V2'];
 String? tokenAdmin = dotenv.env['TOKEN_ADMIN'];
 String? tokenIntegracion = dotenv.env['TOKEN_INTEGRATION'];
 
 Map<String, String> _headers = <String, String>{
   'Content-type': 'application/json',
+  'Accept': 'application/json'
 };
 
 String getTokenHeader(String type, String? tokenCustomer) {
@@ -35,6 +37,9 @@ Future<dynamic> get(String? tokenCustomer, String type, String url) async {
   try {
     final TOKEN = getTokenHeader(type, tokenCustomer);
     print(Uri.parse(endPoint! + url));
+    print('Endpoint');
+    print(TOKEN);
+
     if (TOKEN.isNotEmpty) {
       _headers["Authorization"] = TOKEN;
     } else {
@@ -50,16 +55,14 @@ Future<dynamic> get(String? tokenCustomer, String type, String url) async {
   }
 }
 
-Future<dynamic> post(
-    String? tokenCustomer, String type, String url, Object params) async {
+Future<dynamic> post(String? tokenCustomer, String type, String url,
+    Object params, String? version) async {
   try {
     final TOKEN = getTokenHeader(type, tokenCustomer);
     print('Endpoint');
     print(Uri.parse(endPoint! + url));
     print('Paramas');
     print(params);
-    print('encoded');
-    print(jsonEncode(params));
     if (TOKEN.isNotEmpty) {
       _headers["Authorization"] = TOKEN;
     } else {
@@ -67,8 +70,12 @@ Future<dynamic> post(
     }
     print('headers');
     print(_headers);
-    final resp = await http.post(Uri.parse(endPoint! + url),
-        headers: _headers, body: jsonEncode(params));
+    print(version != '' ? endPointV2! + url : endPoint! + url);
+
+    final resp = await http.post(
+        Uri.parse(version == '' ? endPoint! + url : endPointV2! + url),
+        headers: _headers,
+        body: jsonEncode(params));
     if (resp.statusCode < 500) {
       return json.decode(resp.body);
     }

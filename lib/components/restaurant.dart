@@ -111,8 +111,12 @@ class _RestuarentScreenState extends State<RestuarentScreen> {
                         return;
                       }
                       String token = user[0]['token'];
-                      final favorite = await post(token, 'custom',
-                          'wishlist/customer/product/${widget.data["id"]}', {});
+                      final favorite = await post(
+                          token,
+                          'custom',
+                          'wishlist/customer/product/${widget.data["id"]}',
+                          {},
+                          '');
 
                       print(favorite);
                     },

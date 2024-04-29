@@ -176,10 +176,14 @@ class _MyLoginPageState extends State<MyLoginPage> {
                               });
                               try {
                                 final login = await post(
-                                    'admin', '', 'integration/customer/token', {
-                                  'username': _emailController.text,
-                                  'password': _passwordController.text
-                                });
+                                    'admin',
+                                    '',
+                                    'integration/customer/token',
+                                    {
+                                      'username': _emailController.text,
+                                      'password': _passwordController.text
+                                    },
+                                    '');
 
                                 //Revision de respuesta
                                 /*if (login == null) {

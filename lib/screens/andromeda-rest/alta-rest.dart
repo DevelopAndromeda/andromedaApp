@@ -11,10 +11,9 @@ class Restaurant {
   String descripcion = '';
   String tipo = '';
   String direccion = '';
-  String diaDeLaSemana = 'Lunes';
-  String diaDeLaSemanaFin = 'Sábado';
-  String horaInicio = '6:00 am';
-  String horaFin = '11:00 pm';
+  //String diaDeLaSemana = 'Lunes';
+  //String diaDeLaSemanaFin = 'Sábado';
+  //List<Map<String, dynamic>> diasSemana = [];
 }
 
 class AltaRest extends StatefulWidget {
@@ -32,15 +31,64 @@ class _AltaRestState extends State<AltaRest> {
   final TextEditingController _tipoController = TextEditingController();
   final TextEditingController _direccionController = TextEditingController();
   Restaurant _restaurant = Restaurant();
-  /*List<String> _daysOfWeek = [
-    'Lunes',
-    'Martes',
-    'Miércoles',
-    'Jueves',
-    'Viernes',
-    'Sábado',
-    'Domingo'
-  ];*/
+  final List<Map<String, dynamic>> _daysOfWeek = [
+    {
+      'name': 'Lunes',
+      'checked': false,
+      'index': 0,
+      'hora': [
+        {'from': '6:00 am', 'to': '3:00 pm'},
+      ]
+    },
+    {
+      'name': 'Martes',
+      'checked': false,
+      'index': 1,
+      'hora': [
+        {'from': '6:00 am', 'to': '3:00 pm'},
+      ]
+    },
+    {
+      'name': 'Miercoles',
+      'checked': false,
+      'index': 2,
+      'hora': [
+        {'from': '6:00 am', 'to': '3:00 pm'},
+      ]
+    },
+    {
+      'name': 'Jueves',
+      'checked': false,
+      'index': 3,
+      'hora': [
+        {'from': '6:00 am', 'to': '3:00 pm'},
+      ]
+    },
+    {
+      'name': 'Viernes',
+      'checked': false,
+      'index': 4,
+      'hora': [
+        {'from': '6:00 am', 'to': '3:00 pm'},
+      ]
+    },
+    {
+      'name': 'Sabado',
+      'checked': false,
+      'index': 5,
+      'hora': [
+        {'from': '6:00 am', 'to': '3:00 pm'},
+      ]
+    },
+    {
+      'name': 'Domingo',
+      'checked': false,
+      'index': 6,
+      'hora': [
+        {'from': '6:00 am', 'to': '3:00 pm'},
+      ]
+    }
+  ];
 
   List<String> _timeOptions = [
     '6:00 am',
@@ -142,139 +190,102 @@ class _AltaRestState extends State<AltaRest> {
                   },
                 ),
                 SizedBox(height: 10.0),
-                Row(
-                  children: [
-                    Expanded(
-                      child: DropdownButtonFormField(
-                        items: dropdownItems,
-                        /*_daysOfWeek.map((String day) {
-                          return DropdownMenuItem<String>(
-                            value: day,
-                            child: Text(day),
+                SingleChildScrollView(
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: _daysOfWeek.length,
+                        itemBuilder: (context, index) {
+                          //var data = _daysOfWeek.toList();
+                          //print(data[index]);
+                          print(index);
+                          print(_daysOfWeek[index]['name']);
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Checkbox(
+                                value: _daysOfWeek[index]['checked'],
+                                onChanged: (bool? value) {
+                                  print(value);
+                                  setState(() {
+                                    _daysOfWeek[index]['checked'] = value;
+                                  });
+                                },
+                              ),
+                              Text(_daysOfWeek[index]['name']),
+                              Expanded(
+                                child: DropdownButtonFormField<String>(
+                                  //value: _daysOfWeek[index]['hora'][0]['from'],
+                                  items: _timeOptions.map((String time) {
+                                    return DropdownMenuItem<String>(
+                                      value: time,
+                                      child: Text(time),
+                                    );
+                                  }).toList(),
+                                  decoration:
+                                      InputDecoration(labelText: 'Inicio'),
+                                  onChanged: (String? newValue) {
+                                    setState(() {
+                                      // _restaurant.horaFin = newValue!;
+                                      _daysOfWeek[index]['hora'][0]['from'] =
+                                          newValue!;
+                                    });
+                                  },
+                                ),
+                              ),
+                              Expanded(
+                                child: DropdownButtonFormField<String>(
+                                  //value: _restaurant.horaInicio,
+                                  items: _timeOptions.map((String time) {
+                                    return DropdownMenuItem<String>(
+                                      value: time,
+                                      child: Text(time),
+                                    );
+                                  }).toList(),
+                                  decoration:
+                                      InputDecoration(labelText: 'Final'),
+                                  onChanged: (String? newValue) {
+                                    setState(() {
+                                      _daysOfWeek[index]['hora'][0]['to'] =
+                                          newValue!;
+                                    });
+                                  },
+                                ),
+                              ),
+                            ],
                           );
-                        }).toList(),*/
-                        decoration: InputDecoration(labelText: 'Día de Inicio'),
-                        onChanged: (String? newValue) {
-                          print(newValue);
-                          setState(() {
-                            _restaurant.diaDeLaSemana = newValue!;
-                          });
-                        },
-                      ),
-                    ),
-                    SizedBox(width: 20.0),
-                    Expanded(
-                      child: DropdownButtonFormField(
-                        items: dropdownItems,
-                        /*_daysOfWeek.map((String day) {
-                          return DropdownMenuItem<String>(
-                            value: day,
-                            child: Text(day),
-                          );
-                        }).toList(),*/
-                        decoration: InputDecoration(labelText: 'Día de Fin'),
-                        onChanged: (String? newValue) {
-                          print(newValue);
-                          setState(() {
-                            _restaurant.diaDeLaSemanaFin = newValue!;
-                          });
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 10.0),
-                Text('Horario de Servicio:'),
-                Row(
-                  children: [
-                    Expanded(
-                      child: DropdownButtonFormField<String>(
-                        value: _restaurant.horaInicio,
-                        items: _timeOptions.map((String time) {
-                          return DropdownMenuItem<String>(
-                            value: time,
-                            child: Text(time),
-                          );
-                        }).toList(),
-                        decoration: InputDecoration(labelText: 'Inicio'),
-                        onChanged: (String? newValue) {
-                          setState(() {
-                            _restaurant.horaInicio = newValue!;
-                          });
-                        },
-                      ),
-                    ),
-                    SizedBox(width: 20.0),
-                    Expanded(
-                      child: DropdownButtonFormField<String>(
-                        value: _restaurant.horaFin,
-                        items: _timeOptions.map((String time) {
-                          return DropdownMenuItem<String>(
-                            value: time,
-                            child: Text(time),
-                          );
-                        }).toList(),
-                        decoration: InputDecoration(labelText: 'Fin'),
-                        onChanged: (String? newValue) {
-                          setState(() {
-                            _restaurant.horaFin = newValue!;
-                          });
-                        },
-                      ),
-                    ),
-                  ],
+                        }),
+                  ),
                 ),
                 SizedBox(height: 10.0),
                 ElevatedButton(
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
                       try {
-                        List<Map<String, dynamic>> CustomAttributes = [];
-                        Map<String, dynamic> arraSlot = {};
-                        int inicio = int.parse(_restaurant.diaDeLaSemana);
-                        int fin = int.parse(_restaurant.diaDeLaSemanaFin);
-
-                        if (fin > inicio) {
-                          int i = inicio;
-                          while (i <= fin) {
-                            arraSlot[i.toString()] = [
-                              {
-                                'from': _restaurant.horaInicio,
-                                'to': _restaurant.horaFin
-                              },
-                            ];
-                            i++;
-                          }
-                        } else if (fin < inicio) {
-                          int i = inicio;
-                          while (i != fin) {
-                            if (i > 7) {
-                              i = 0;
-                            }
-                            arraSlot[
-                                i == 0 ? (i + 1).toString() : i.toString()] = [
-                              {
-                                'from': _restaurant.horaInicio,
-                                'to': _restaurant.horaFin
-                              },
-                            ];
-
-                            i++;
-                          }
-                        } else {
-                          arraSlot[_restaurant.diaDeLaSemana] = [
-                            {
-                              'from': _restaurant.horaInicio,
-                              'to': _restaurant.horaFin
-                            },
-                          ];
+                        final user = await serviceDB.instance
+                            .getById('users', 'id_user', 1);
+                        if (user.isEmpty) {
+                          print('error user empty');
+                          return;
                         }
+
+                        Map<String, dynamic> arraSlot = {};
+                        _daysOfWeek.forEach((element) {
+                          if (element['checked'] == true) {
+                            print(element);
+                            //arraSlot[element['index'].toString()] =
+                            arraSlot[element['index'].toString()] =
+                                element['hora'];
+                          }
+                        });
+
                         Map<String, dynamic> ExtensionAttributes = {
                           'stock_item': {'qty': 99999999, 'is_in_stock': true},
                           'slot_data': arraSlot
                         };
-                        //CustomAttributes.add();
-                        //CustomAttributes.add();
+
+                        List<Map<String, dynamic>> CustomAttributes = [];
                         CustomAttributes.addAll([
                           {
                             "attribute_code": "short_description",
@@ -317,45 +328,36 @@ class _AltaRestState extends State<AltaRest> {
                             "value": _descripcionController.text
                           },
                           {"attribute_code": "slot_for_all_days", "value": 0},
-                          {"attribute_code": "created_by", "value": 1},
-                          {"attribute_code": "updated_by", "value": 1}
+                          {
+                            "attribute_code": "created_by",
+                            "value": user[0]['id']
+                          },
+                          {
+                            "attribute_code": "updated_by",
+                            "value": user[0]['id']
+                          }
                         ]);
 
                         Map<String, dynamic> producto = {
                           'product': {
                             'name': _nombreController.text,
                             'attribute_set_id': 13,
-                            'sku': 'RESTO97651',
+                            'sku': 'REST1991',
                             'price': 100,
                             'status': 1,
                             'visibility': 4,
                             'type_id': 'booking',
                             'extension_attributes': ExtensionAttributes,
                             'custom_attributes': CustomAttributes,
-                          }
+                          },
+                          'saveOptions': true
                         };
 
-                        final user = await serviceDB.instance
-                            .getById('users', 'id_user', 1);
-                        if (user.isEmpty) {
-                          return;
-                        }
-
-                        //final restaurante = await post(
-                        //    user[0]['token'], 'custom', 'products', producto);
-                        final restaurante =
-                            await post('', 'admin', 'products', producto);
+                        final restaurante = await post(
+                            '', 'integration', 'products', producto, 'v2');
+                        print('rest --->');
                         print(restaurante);
 
-                        /*print('Datos del restaurante:');
-                        print('Nombre: ${_restaurant.nombre}');
-                        print('Descripción: ${_restaurant.descripcion}');
-                        print('Tipo: ${_restaurant.tipo}');
-                        print('Dirección: ${_restaurant.direccion}');
-                        print(
-                            'Días de la semana abiertos: ${_restaurant.diaDeLaSemana} - ${_restaurant.diaDeLaSemanaFin}');
-                        print('Hora de inicio: ${_restaurant.horaInicio}');
-                        print('Hora de fin: ${_restaurant.horaFin}');*/
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content:
@@ -364,6 +366,7 @@ class _AltaRestState extends State<AltaRest> {
                           ),
                         );
                       } catch (e) {
+                        print(e);
                         ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(content: Text(e.toString())));
                       }
@@ -379,7 +382,7 @@ class _AltaRestState extends State<AltaRest> {
     );
   }
 
-  List<DropdownMenuItem<String>> get dropdownItems {
+  /*List<DropdownMenuItem<String>> get dropdownItems {
     List<DropdownMenuItem<String>> menuItems = [
       const DropdownMenuItem(value: "1", child: Text("Lunes")),
       const DropdownMenuItem(value: "2", child: Text("Martes")),
@@ -390,5 +393,5 @@ class _AltaRestState extends State<AltaRest> {
       const DropdownMenuItem(value: "7", child: Text("Domingo")),
     ];
     return menuItems;
-  }
+  }*/
 }

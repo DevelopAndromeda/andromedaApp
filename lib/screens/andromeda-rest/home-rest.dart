@@ -13,6 +13,7 @@ class MyHomeRestPage extends StatefulWidget {
 }
 
 class _MyHomeRestPageState extends State<MyHomeRestPage> {
+  int indexBottomBar = 0;
   Future<void> getUserData() async {}
 
   @override
