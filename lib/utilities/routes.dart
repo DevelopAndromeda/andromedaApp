@@ -49,7 +49,7 @@ class Router {
       case 'list-rest':
         return MaterialPageRoute(builder: (_) => const ListRest());
       case 'list-reservation':
-        return MaterialPageRoute(builder: (_) =>  ModificacionRestaurante());
+        return MaterialPageRoute(builder: (_) => ModificacionRestaurante());
       case 'Modificacion':
         return MaterialPageRoute(builder: (_) => const listReservacion());
       case 'login':

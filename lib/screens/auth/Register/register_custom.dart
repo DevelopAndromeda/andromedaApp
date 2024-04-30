@@ -26,6 +26,7 @@ class _MyRegisterContet extends State<MyRegisterPage> {
       TextEditingController();
   bool typePassword = true;
   bool typePasswordConfirm = true;
+  bool _isButtonDisabled = false;
   //List<String> dropdownItems = <String>[];
 
   /*List<DropdownMenuItem<String>> get dropdownItems {
@@ -81,7 +82,7 @@ class _MyRegisterContet extends State<MyRegisterPage> {
           child: Column(
             children: [
               ClipPath(
-               child: Container(
+                child: Container(
                   width: 450,
                   height: 250,
                   decoration: BoxDecoration(
@@ -110,7 +111,7 @@ class _MyRegisterContet extends State<MyRegisterPage> {
                   ),
                 ),
               ),
-               Divider(
+              Divider(
                 height: 20, // Altura del separador
                 color: const Color.fromARGB(
                     255, 255, 255, 255), // Color del separador
@@ -118,8 +119,7 @@ class _MyRegisterContet extends State<MyRegisterPage> {
                 indent: 20, // Espaciado izquierdo del separador
                 endIndent: 20, // Espaciado derecho del separador
               ),
-              
- Container(
+              Container(
                 width: 150,
                 height: 150,
                 decoration: BoxDecoration(
@@ -138,40 +138,7 @@ class _MyRegisterContet extends State<MyRegisterPage> {
                 indent: 20, // Espaciado izquierdo del separador
                 endIndent: 20, // Espaciado derecho del separador
               ),
-
-
-
               const SizedBox(height: 50),
-              /*Container(
-                margin: const EdgeInsets.symmetric(horizontal: 20),
-                child: DropdownButtonFormField(
-                  decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      filled: true,
-                      labelText: 'Tipo',
-                      hintText: 'Seleccione Tipo'),
-                  validator: (String? value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Ingrese Tipo';
-                    }
-                    return null;
-                  },
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      selectedValue = newValue!;
-                    });
-                  },
-                  items: dropdownItems
-                      .map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
-                ),
-                //items: dropdownItems),
-              ),
-              const SizedBox(height: 10),*/
               Container(
                 margin: const EdgeInsets.symmetric(horizontal: 20),
                 child: TextFormField(
@@ -339,87 +306,124 @@ class _MyRegisterContet extends State<MyRegisterPage> {
                 margin: const EdgeInsets.symmetric(horizontal: 100),
                 child: baseButtom(
                   text: 'Registrarse',
-                  onPressed: () async {
-                    if (_formKey.currentState!.validate()) {
-                      try {
-                        //Llamada a endpoint
-                        final registro = await post('', 'admin', 'customers', {
-                          'customer': {
-                            'email': _emailController.text,
-                            'firstname': _firstController.text,
-                            'lastname': _lastController.text,
-                            "group_id": widget.type == 0 ? 5 : 4,
-                          },
-                          'password': _passwordController.text
-                        });
+                  onPressed: _isButtonDisabled
+                      ? () {}
+                      : () async {
+                          if (_formKey.currentState!.validate()) {
+                            try {
+                              //Llamada a endpoint
+                              final registro = await post(
+                                  '',
+                                  'admin',
+                                  'customers',
+                                  {
+                                    'customer': {
+                                      'email': _emailController.text,
+                                      'firstname': _firstController.text,
+                                      'lastname': _lastController.text,
+                                      "group_id": widget.type == 0 ? 5 : 4,
+                                    },
+                                    'password': _passwordController.text
+                                  },
+                                  '');
 
-                        print('registro');
-                        print(registro);
+                              print('registro');
 
-                        /*if (registro["message"] != null) {
+                              if (registro == null) {
+                                print('hay error');
+                                print(registro);
+                                //ScaffoldMessenger.of(context).showSnackBar(
+                                //    SnackBar(
+                                //        content: Text(registro['message'])));
+                                setState(() {
+                                  _isButtonDisabled = !_isButtonDisabled;
+                                });
+                                return;
+                              }
+
+                              /*if (registro["message"] != null) {
                           ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(content: Text(registro["message"])));
                           return;
                         }*/
 
-                        //Creamos mapa para guardar en base de datos local
-                        Map<String, dynamic> data = {
-                          'id_user': 1,
-                          'id': registro['id'],
-                          'nombre': _firstController.text,
-                          'apellido_paterno': _lastController.text,
-                          'username': _emailController.text,
-                          'password': _passwordController.text,
-                          'group_id': registro['group_id']
-                        };
+                              //Creamos mapa para guardar en base de datos local
+                              Map<String, dynamic> data = {
+                                'id_user': 1,
+                                'id': registro['id'],
+                                'nombre': _firstController.text,
+                                'apellido_paterno': _lastController.text,
+                                'username': _emailController.text,
+                                'password': _passwordController.text,
+                                'group_id': registro['group_id']
+                              };
 
-                        print(data);
-                        print('data');
+                              print(data);
+                              print('data');
 
-                        final login = await post(
-                            '', '', 'integration/customer/token', {
-                          'username': _emailController.text,
-                          'password': _passwordController.text
-                        });
+                              final login = await post(
+                                  '',
+                                  '',
+                                  'integration/customer/token',
+                                  {
+                                    'username': _emailController.text,
+                                    'password': _passwordController.text
+                                  },
+                                  '');
 
-                        print(login);
-                        data['token'] = login;
-                        print('token');
+                              //Revision de respuesta
+                              if (login.runtimeType != String) {
+                                print('hay error');
+                                print(login['message']);
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(content: Text(login['message'])));
+                                setState(() {
+                                  _isButtonDisabled = !_isButtonDisabled;
+                                });
+                                return;
+                              }
 
-                        if (widget.type == 1 && registro['group_id'] == 5) {
-                          final update = await put(
-                              login, 'custom', 'customergroup/', {}, '4');
+                              print(login);
 
-                          print(update);
+                              if (widget.type == 1 &&
+                                  registro['group_id'] == 5) {
+                                final update = await put(
+                                    login, 'custom', 'customergroup/', {}, '4');
 
-                          if (update != null) {
-                            data['group_id'] = update['data']['new_group_id'];
+                                print(update);
+
+                                if (update != null) {
+                                  data['group_id'] =
+                                      update['data']['new_group_id'];
+                                }
+                              }
+
+                              final user = await serviceDB.instance
+                                  .getById('users', 'id_user', 1);
+                              print('usuario');
+                              print(user);
+                              //Si existen datos en base de datos local actualizamos datos en mapa
+                              if (user.isNotEmpty) {
+                                await serviceDB.instance
+                                    .updateRecord('users', data, 'id_user', 1);
+                              } else {
+                                //Si no existen datos en base de datos local insertamos datos en mapa
+                                data['id_user'] = 1;
+                                await serviceDB.instance
+                                    .insertRecord('users', data);
+                              }
+
+                              Navigator.of(context).pushNamedAndRemoveUntil(
+                                  widget.type == 0 ? 'home' : 'home-rest',
+                                  (Route<dynamic> route) => false);
+                            } catch (e) {
+                              setState(() {
+                                _isButtonDisabled = !_isButtonDisabled;
+                              });
+                              print(e);
+                            }
                           }
-                        }
-
-                        final user = await serviceDB.instance
-                            .getById('users', 'id_user', 1);
-                        print('usuario');
-                        print(user);
-                        //Si existen datos en base de datos local actualizamos datos en mapa
-                        if (user.isNotEmpty) {
-                          await serviceDB.instance
-                              .updateRecord('users', data, 'id_user', 1);
-                        } else {
-                          //Si no existen datos en base de datos local insertamos datos en mapa
-                          data['id_user'] = 1;
-                          await serviceDB.instance.insertRecord('users', data);
-                        }
-
-                        Navigator.of(context).pushNamedAndRemoveUntil(
-                            widget.type == 0 ? 'home' : 'home-rest',
-                            (Route<dynamic> route) => false);
-                      } catch (e) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text(e.toString())));
-                      }
-                    }
-                  },
+                        },
                 ),
               ),
             ],

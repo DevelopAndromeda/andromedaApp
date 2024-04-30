@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:andromeda/screens/auth/Register/register_custom.dart';
 import 'package:flutter/material.dart';
 import 'package:andromeda/Witgets/General/Button_Base.dart';
@@ -177,7 +175,6 @@ class _MyLoginPageState extends State<MyLoginPage> {
                   },
                 ),
               ),
-
               //Textfield Contraseña
               Container(
                 margin:
@@ -218,7 +215,6 @@ class _MyLoginPageState extends State<MyLoginPage> {
                   },
                 ),
               ),
-
               Container(
                 width: double.infinity,
                 margin:
@@ -233,16 +229,27 @@ class _MyLoginPageState extends State<MyLoginPage> {
                               });
                               try {
                                 final login = await post(
-                                    'admin', '', 'integration/customer/token', {
-                                  'username': _emailController.text,
-                                  'password': _passwordController.text
-                                });
+                                    '',
+                                    'admin',
+                                    'integration/customer/token',
+                                    {
+                                      'username': _emailController.text,
+                                      'password': _passwordController.text
+                                    },
+                                    '');
 
                                 //Revision de respuesta
-                                /*if (login == null) {
-                            print('hay error: $login["message"]');
-                            return;
-                          }*/
+                                if (login.runtimeType != String) {
+                                  print('hay error');
+                                  print(login['message']);
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                          content: Text(login['message'])));
+                                  setState(() {
+                                    _isButtonDisabled = !_isButtonDisabled;
+                                  });
+                                  return;
+                                }
 
                                 print(login);
 
@@ -291,6 +298,9 @@ class _MyLoginPageState extends State<MyLoginPage> {
                                       .insertRecord('users', data);
                                 }
 
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(content: Text('Exito')));
+
                                 //Redireccionamos a la pagina principal
                                 Navigator.of(context).pushNamedAndRemoveUntil(
                                     data['group_id'] == 5
@@ -301,14 +311,12 @@ class _MyLoginPageState extends State<MyLoginPage> {
                                 setState(() {
                                   _isButtonDisabled = !_isButtonDisabled;
                                 });
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(content: Text(e.toString())));
+                                print(e);
                               }
                             }
                           },
                     text: 'Iniciar Sesion'),
               ),
-
               SizedBox(
                 width: 312, // Ancho deseado para el botón
                 height: 35, // Alto deseado para el botón
@@ -321,7 +329,8 @@ class _MyLoginPageState extends State<MyLoginPage> {
                       ),
                     );
                   },
-                  color: Color.fromARGB(255, 85, 85, 85), // Color de fondo del botón
+                  color: Color.fromARGB(
+                      255, 85, 85, 85), // Color de fondo del botón
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(
                         4), // Ajusta el radio del borde a 0 para quitar el redondeo
@@ -335,7 +344,7 @@ class _MyLoginPageState extends State<MyLoginPage> {
                   ),
                 ),
               ),
- Divider(
+              Divider(
                 height: 50, // Altura del separador
                 color: const Color.fromARGB(
                     255, 255, 255, 255), // Color del separador
@@ -348,7 +357,6 @@ class _MyLoginPageState extends State<MyLoginPage> {
                 margin: const EdgeInsets.only(bottom: 20),
                 child: const Text("¿No tienes cuenta?"),
               ),
-
               Container(
                 margin: const EdgeInsets.only(bottom: 25),
                 child: GestureDetector(
@@ -365,60 +373,59 @@ class _MyLoginPageState extends State<MyLoginPage> {
                   ),
                 ),
               ),
-
-            Container(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    width: 200,//Ancho del primer Boton
-                    height: 50,//Alto del primer boton
-                    child: MaterialButton(onPressed: (){
-                      //Acción al presionar
-                    },
-                    color: Colors.white,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0),),
-                    child: Text('Comensal',
-                    style: TextStyle(color: Colors.black),),
+              Container(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      width: 200, //Ancho del primer Boton
+                      height: 50, //Alto del primer boton
+                      child: MaterialButton(
+                        onPressed: () {
+                          //Acción al presionar
+                        },
+                        color: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(0),
+                        ),
+                        child: Text(
+                          'Comensal',
+                          style: TextStyle(color: Colors.black),
+                        ),
+                      ),
                     ),
-                  ),
-                  SizedBox(width: 10,),//Espacio entre botones
-                  SizedBox(
-                    width: 200,//Ancho del segundo boton
-                    height: 50, //Alto del segundo boton
-                    child: MaterialButton(onPressed: (){
-                  /**    Navigator.popAndPushNamed(context,'');
+                    SizedBox(
+                      width: 10,
+                    ), //Espacio entre botones
+                    SizedBox(
+                      width: 200, //Ancho del segundo boton
+                      height: 50, //Alto del segundo boton
+                      child: MaterialButton(
+                        onPressed: () {
+                          /**    Navigator.popAndPushNamed(context,'');
                       Navigator.of(context).pushNamedAndRemoveUntil(
                     '', (Route<dynamic> route) => false);
                       
                       */
-
-
-                    },
-                    color: Color.fromARGB(255, 255, 255, 255),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0),),
-                    child: Text('Restaurante',
-                    style: TextStyle(color: Color.fromARGB(255, 114, 113, 113)),),),
-                  ),
-                ],
+                        },
+                        color: Color.fromARGB(255, 255, 255, 255),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(0),
+                        ),
+                        child: Text(
+                          'Restaurante',
+                          style: TextStyle(
+                              color: Color.fromARGB(255, 114, 113, 113)),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-
-              
-            ),  
             ],
-
           ),
         ),
       ),
-
-
-
-
-
-
-
-
-      
     );
   }
 }

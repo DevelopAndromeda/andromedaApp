@@ -1,4 +1,4 @@
-com.example.andromeda
+com.example.andromedaapp
 attr activityAction
 attr activityName
 attr alpha

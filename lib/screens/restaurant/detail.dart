@@ -1,3 +1,5 @@
+import 'package:andromeda/services/api.dart';
+import 'package:andromeda/services/db.dart';
 import 'package:flutter/material.dart';
 import 'package:andromeda/Witgets/bottomBar.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -65,6 +67,7 @@ class _MyDetailPageState extends State<MyDetailPage>
 
   @override
   void initState() {
+    print(widget.data);
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
   }
@@ -238,9 +241,119 @@ class _MyDetailPageState extends State<MyDetailPage>
                               padding:
                                   const EdgeInsets.symmetric(vertical: 16.0),
                               child: ElevatedButton(
-                                onPressed: () {
+                                onPressed: () async {
+                                  final sesion = await serviceDB.instance
+                                      .getById('users', 'id_user', 1);
+                                  // Generar carrito vacio
+                                  if (sesion.isEmpty) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(
+                                            content: Text(
+                                                'Nesecitas iniciar una sesion')));
+                                    return;
+                                  }
+
+                                  var myCart = await get(sesion[0]['token'],
+                                      'custom', 'carts/mine');
+                                  print(myCart);
+                                  if (myCart == null) {
+                                    print('llamar con post');
+                                    myCart = await post(sesion[0]['token'],
+                                        'custom', 'carts/mine', {}, '');
+                                  }
+
+                                  print('Llamar los items del carrito');
+                                  final items = await get(sesion[0]['token'],
+                                      'custom', 'carts/mine/items');
+
+                                  print('items');
+                                  print(items);
+
+                                  if (items.length > 0) {
+                                    print('existen items');
+                                  } else {
+                                    print('llamar atributos');
+                                    //Llamar labels del producot
+                                    final labels = await get('', 'integration',
+                                        'products/${widget.data['sku']}/options');
+                                    print('labels');
+                                    print(labels);
+
+                                    //Agregar Items
+                                    Map<String, Map<String, dynamic>> item = {
+                                      "cartItem": {
+                                        "quote_id": myCart['id'],
+                                        "sku": widget.data['sku'],
+                                        "qty": 2,
+                                        "product_type": "booking",
+                                        "product_option": {
+                                          "extension_attributes": {
+                                            "custom_options": [
+                                              {
+                                                "option_id": "390",
+                                                "option_value": "2024-06-26"
+                                              },
+                                              {
+                                                "option_id": "391",
+                                                "option_value": "11:20 am"
+                                              },
+                                              {
+                                                "option_id": "3",
+                                                "option_value": "something"
+                                              },
+                                              {
+                                                "option_id": "4",
+                                                "option_value":
+                                                    "Table (2 Guests)"
+                                              },
+                                              {
+                                                "option_id": "389",
+                                                "option_value": 1
+                                              }
+                                            ],
+                                            "configurable_item_options": [
+                                              {
+                                                "option_id": "product",
+                                                "option_value": 3
+                                              },
+                                              {
+                                                "option_id":
+                                                    "selected_configurable_option",
+                                                "option_value": "0"
+                                              },
+                                              {
+                                                "option_id": "related_product",
+                                                "option_value": "0"
+                                              },
+                                              {
+                                                "option_id": "slot_id",
+                                                "option_value": 0
+                                              },
+                                              {
+                                                "option_id": "slot_day_index",
+                                                "option_value": 4
+                                              },
+                                              {
+                                                "option_id":
+                                                    "charged_per_count",
+                                                "option_value": 2
+                                              },
+                                              {
+                                                "option_id": "item",
+                                                "option_value": 3
+                                              }
+                                            ]
+                                          }
+                                        },
+                                        "extension_attributes": {}
+                                      }
+                                    };
+
+                                    print(item);
+                                  }
+
                                   // Aquí puedes agregar la lógica para procesar la reserva
-                                  showDialog(
+                                  /*showDialog(
                                     context: context,
                                     builder: (context) => AlertDialog(
                                       title: Text('Reserva Realizada'),
@@ -255,21 +368,22 @@ class _MyDetailPageState extends State<MyDetailPage>
                                         ),
                                       ],
                                     ),
-                                  );
+                                  );*/
                                 },
                                 style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.black,
-                                  textStyle: TextStyle(
-                                    fontSize: 20,
-                                    color: Color.fromARGB(255, 255, 255, 255),
-                                  ),
-                                  minimumSize: Size(200, 50),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(4),
-                                  )
+                                    backgroundColor: Colors.black,
+                                    textStyle: TextStyle(
+                                      fontSize: 20,
+                                      color: Color.fromARGB(255, 255, 255, 255),
+                                    ),
+                                    minimumSize: Size(200, 50),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(4),
+                                    )),
+                                child: Text(
+                                  'Generar Reserva',
+                                  style: TextStyle(color: Colors.white),
                                 ),
-                                child: Text('Generar Reserva',
-                                style: TextStyle(color: Colors.white),),
                               ),
                             ),
                           ],

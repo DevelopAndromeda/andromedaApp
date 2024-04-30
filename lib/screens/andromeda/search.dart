@@ -137,22 +137,23 @@ class _MySearchPageState extends State<MySearchPage> {
                 children: [
                   Text(
                     data['name'],
-                    style:
-                        TextStyle(fontSize: 20.0, 
+                    style: TextStyle(
+                        fontSize: 20.0,
                         color: Colors.white,
                         fontWeight: FontWeight.bold),
                   ),
                   SizedBox(height: 8.0),
                   Text(
                     'Tipo de Comida: ',
-                    style: TextStyle(fontSize: 16.0,
-                    color: Colors.white,),
+                    style: TextStyle(
+                      fontSize: 16.0,
+                      color: Colors.white,
+                    ),
                   ),
                   SizedBox(height: 4.0),
                   Text(
                     'Horario de Atención: ',
-                    style: TextStyle(fontSize: 16.0,
-                    color: Colors.white),
+                    style: TextStyle(fontSize: 16.0, color: Colors.white),
                   ),
                 ],
               ),

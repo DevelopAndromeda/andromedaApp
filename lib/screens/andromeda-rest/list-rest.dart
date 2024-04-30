@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:andromeda/screens/andromeda-rest/modificacion-rest.dart';
+import 'package:andromeda/Witgets/General/Colores_Base.dart';
+import 'package:andromeda/services/api.dart';
+import 'package:andromeda/services/db.dart';
 
 class ListRest extends StatefulWidget {
   const ListRest({super.key});
@@ -9,62 +12,88 @@ class ListRest extends StatefulWidget {
 }
 
 class _ListRestState extends State<ListRest> {
+  Future getRestaurant() async {
+    final user = await serviceDB.instance.getById('users', 'id_user', 1);
+
+    if (user.isEmpty) {
+      return;
+    }
+
+    return await get('', 'integration',
+        'products/?searchCriteria[filterGroups][0][filters][0][field]=created_by&searchCriteria[filterGroups][0][filters][0][value]=${user[0]['id']}&searchCriteria[filterGroups][0][filters][0][conditionType]=eq');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Background_Color,
       appBar: AppBar(
         title: Text('Lista de restaurantes'),
+        backgroundColor: Base_ColorClaro,
       ),
-      body: Center(
-        child: ImageCard(
-          image: AssetImage('assets/image1.jpg'),
-          title: 'Imagen Ejemplo De Restaurante',
-          onModify: () {
-            // Aquí puedes implementar la lógica para modificar la imagen
-            print('Modificar imagen');
-          },
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: FutureBuilder(
+              future: getRestaurant(),
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                if (snapshot.hasError) {
+                  return const Text('Something went wrong');
+                }
+
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+
+                return Column(
+                  children: _createList(snapshot.data!['items']),
+                );
+              }),
         ),
       ),
     );
   }
-}
 
-class ImageCard extends StatelessWidget {
-  final ImageProvider image;
-  final String title;
-  final VoidCallback onModify;
+  List<Widget> _createList(items) {
+    List<Widget> lists = <Widget>[];
+    if (items.length > 0) {
+      for (dynamic data in items) {
+        print(data);
+        lists.add(_buildCard(
+          data,
+        ));
+      }
+    } else {
+      lists.add(Text('No se encontraron datos'));
+    }
+    return lists;
+  }
 
-  ImageCard({
-    required this.image,
-    required this.title,
-    required this.onModify,
-  });
-
-  @override
-  Widget build(BuildContext context) {
+  Widget _buildCard(data) {
     return Card(
       margin: EdgeInsets.all(20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Image(
-            image: image,
+            image: AssetImage('assets/image1.jpg'),
             fit: BoxFit.cover,
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              title,
+              data['name'],
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
           ),
           SizedBox(height: 10),
-           ElevatedButton(
-              onPressed: () {
-                Navigator.pushNamed(context, 'Modificacion');
-              },
-              child: Text('Modificación'),
-            ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pushNamed(context, 'Modificacion');
+            },
+            child: Text('Modificación'),
+          ),
         ],
       ),
     );

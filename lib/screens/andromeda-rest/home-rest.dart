@@ -4,6 +4,8 @@ import 'package:andromeda/services/api.dart';
 import 'package:andromeda/services/gps.dart';
 import 'package:andromeda/services/db.dart';
 
+import 'package:andromeda/screens/andromeda-rest/menu.dart';
+
 class MyHomeRestPage extends StatefulWidget {
   const MyHomeRestPage({super.key});
 
@@ -25,18 +27,16 @@ class _MyHomeRestPageState extends State<MyHomeRestPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: NavDrawer(changeSalida: () {}),
       appBar: AppBar(
         title: Text('Panel de Administración'),
       ),
       body: Center(
-        child: Column(
+          /*child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ElevatedButton(
               onPressed: () {
-                // Navegar a la segunda pantalla al presionar el botón
-                //Navigator.of(context).pushNamedAndRemoveUntil(
-                //    'alta-rest', (Route<dynamic> route) => false);
                 Navigator.pushNamed(context, 'alta-rest');
               },
               child: Text('Alta de Restaurante'),
@@ -44,15 +44,6 @@ class _MyHomeRestPageState extends State<MyHomeRestPage> {
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                // Navegar a la tercera pantalla al presionar el botón
-                /*Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ListRest(),
-                    ),
-                  );*/
-                //Navigator.of(context).pushNamedAndRemoveUntil(
-                //    'list-rest', (Route<dynamic> route) => false);
                 Navigator.pushNamed(context, 'list-rest');
               },
               child: Text('Lista de Restaurantes'),
@@ -61,8 +52,6 @@ class _MyHomeRestPageState extends State<MyHomeRestPage> {
             ElevatedButton(
               onPressed: () {
                 Navigator.pushNamed(context, 'list-reservation');
-                Navigator.of(context).pushNamedAndRemoveUntil(
-                    'list-reservation', (Route<dynamic> route) => false);
               },
               child: Text('lista de Reservaciones'),
             ),
@@ -74,8 +63,8 @@ class _MyHomeRestPageState extends State<MyHomeRestPage> {
                 },
                 child: Text('Cerrar Sesion'))
           ],
-        ),
-      ),
+        ),*/
+          ),
     );
   }
 }
