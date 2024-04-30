@@ -92,7 +92,7 @@ class NavDrawer extends StatelessWidget {
         onTap: () async {
           await serviceDB.instance.cleanAllTable();
           Navigator.of(context).pushNamedAndRemoveUntil(
-              'start', (Route<dynamic> route) => false);
+              'login', (Route<dynamic> route) => false);
         }));
 
     return lista;

@@ -63,7 +63,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
                 //await serviceDB.instance.cleanAllTable();
                 await serviceDB.instance.cleanAllTable();
                 Navigator.of(context).pushNamedAndRemoveUntil(
-                    'start', (Route<dynamic> route) => false);
+                    'login', (Route<dynamic> route) => false);
               },
             ),
           ],
@@ -87,14 +87,14 @@ class _MyProfilePageState extends State<MyProfilePage> {
                   fit: BoxFit.cover,
                 ),
 
-                Positioned(top: 150,
-                child: CircleAvatar(
-                  radius: 50,
-                  backgroundImage: AssetImage("assets/Profile.png"),
-                ), 
+                Positioned(
+                  top: 150,
+                  child: CircleAvatar(
+                    radius: 50,
+                    backgroundImage: AssetImage("assets/Profile.png"),
+                  ),
                 ),
                 // Imagen de perfil
-                
               ],
             ),
             SizedBox(height: 20),
@@ -106,9 +106,9 @@ class _MyProfilePageState extends State<MyProfilePage> {
             SizedBox(height: 10),
             Text("Teléfono: $telefono"),
             SizedBox(height: 20),
-
-          SizedBox(height: 250,),
-
+            SizedBox(
+              height: 250,
+            ),
             Center(
               child: ElevatedButton(
                 onPressed: () {
@@ -122,13 +122,13 @@ class _MyProfilePageState extends State<MyProfilePage> {
                   backgroundColor: Colors.black,
                   minimumSize: Size(250, 40),
                   shape: RoundedRectangleBorder(
-              
-                      borderRadius: BorderRadius.circular(4),
+                    borderRadius: BorderRadius.circular(4),
                   ),
-                  
                 ),
-                child: Text("Modificar Perfil",
-                style: TextStyle(color: Colors.white),),
+                child: Text(
+                  "Modificar Perfil",
+                  style: TextStyle(color: Colors.white),
+                ),
               ),
             ),
           ],
