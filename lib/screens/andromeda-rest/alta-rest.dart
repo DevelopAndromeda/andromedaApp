@@ -126,6 +126,7 @@ class _AltaRestState extends State<AltaRest> {
   }
 
   Future<List<Map<dynamic, dynamic>>> setStates() async {
+    await serviceDB.instance.initBD();
     final estados = await serviceDB.instance.queryRecord('states');
 
     if (estados.isNotEmpty) {

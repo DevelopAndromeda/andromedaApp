@@ -23,6 +23,7 @@ class _MyLoginPageState extends State<MyLoginPage> {
   bool isClicked = false;
   bool isComensalSelected = false;
   bool isRestauranteSelected = false;
+  int type = 0;
 
   Future<void> getSesion() async {
     print('getSession');
@@ -328,7 +329,7 @@ class _MyLoginPageState extends State<MyLoginPage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => MyRegisterPage(type: 0),
+                        builder: (context) => MyRegisterPage(type: type),
                       ),
                     );
                   },
@@ -385,7 +386,9 @@ class _MyLoginPageState extends State<MyLoginPage> {
                       height: 50, // Alto del primer boton
                       child: ElevatedButton(
                         onPressed: () {
-                          setState(() {
+                          type = 0;
+                          print('tipo -> ${type}');
+                          /*setState(() {
                             isComensalSelected = true;
                             isRestauranteSelected = false;
                           });
@@ -393,7 +396,7 @@ class _MyLoginPageState extends State<MyLoginPage> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => MyLoginPage()),
-                          );
+                          );*/
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.white,
@@ -418,7 +421,9 @@ class _MyLoginPageState extends State<MyLoginPage> {
                       height: 50, // Alto del segundo boton
                       child: ElevatedButton(
                         onPressed: () {
-                          setState(() {
+                          type = 1;
+                          print('tipo -> ${type}');
+                          /*setState(() {
                             isComensalSelected = false;
                             isRestauranteSelected = true;
                           });
@@ -426,7 +431,7 @@ class _MyLoginPageState extends State<MyLoginPage> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => MyLoginPage()),
-                          );
+                          );*/
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.white,

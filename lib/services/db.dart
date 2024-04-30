@@ -51,7 +51,7 @@ class serviceDB {
 
     batch.execute('DELETE FROM users;');
     batch.execute('DELETE FROM stores;');
-    batch.execute('DELETE FROM states;');
+    //batch.execute('DELETE FROM states;');
 
     await batch.commit();
   }
