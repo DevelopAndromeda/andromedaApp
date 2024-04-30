@@ -90,7 +90,7 @@ class _ListRestState extends State<ListRest> {
           SizedBox(height: 10),
           ElevatedButton(
             onPressed: () {
-              Navigator.pushNamed(context, 'Modificacion');
+              Navigator.pushNamed(context, 'modification', arguments: data);
             },
             child: Text('Modificación'),
           ),

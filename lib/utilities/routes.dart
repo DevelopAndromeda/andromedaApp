@@ -48,9 +48,13 @@ class Router {
         return MaterialPageRoute(builder: (_) => const MyHistoryPage());
       case 'list-rest':
         return MaterialPageRoute(builder: (_) => const ListRest());
+      case 'modification':
+        final data = settings.arguments as Map<String, dynamic>;
+        return MaterialPageRoute(
+            builder: (_) => ModificacionRestaurante(
+                  data: data,
+                ));
       case 'list-reservation':
-        return MaterialPageRoute(builder: (_) => ModificacionRestaurante());
-      case 'Modificacion':
         return MaterialPageRoute(builder: (_) => const listReservacion());
       case 'login':
         final type = settings.arguments as int;

@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\ingsa\OneDrive\Documentos\Pruebas\AndromedaApp\build\windows\x64\_deps\nuget-subbuild\CMakeFiles\f946685794b4c82b21fbcd398659f523\nuget-populate-mkdir.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\ingsa\OneDrive\Documentos\Pruebas\AndromedaApp\build\windows\x64\_deps\nuget-subbuild\CMakeFiles\f946685794b4c82b21fbcd398659f523\nuget-populate-download.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\ingsa\OneDrive\Documentos\Pruebas\AndromedaApp\build\windows\x64\_deps\nuget-subbuild\CMakeFiles\f946685794b4c82b21fbcd398659f523\nuget-populate-update.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\ingsa\OneDrive\Documentos\Pruebas\AndromedaApp\build\windows\x64\_deps\nuget-subbuild\CMakeFiles\f946685794b4c82b21fbcd398659f523\nuget-populate-patch.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\ingsa\OneDrive\Documentos\Pruebas\AndromedaApp\build\windows\x64\_deps\nuget-subbuild\CMakeFiles\f946685794b4c82b21fbcd398659f523\nuget-populate-copyfile.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\ingsa\OneDrive\Documentos\Pruebas\AndromedaApp\build\windows\x64\_deps\nuget-subbuild\CMakeFiles\f946685794b4c82b21fbcd398659f523\nuget-populate-configure.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\ingsa\OneDrive\Documentos\Pruebas\AndromedaApp\build\windows\x64\_deps\nuget-subbuild\CMakeFiles\f946685794b4c82b21fbcd398659f523\nuget-populate-build.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\ingsa\OneDrive\Documentos\Pruebas\AndromedaApp\build\windows\x64\_deps\nuget-subbuild\CMakeFiles\f946685794b4c82b21fbcd398659f523\nuget-populate-install.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\ingsa\OneDrive\Documentos\Pruebas\AndromedaApp\build\windows\x64\_deps\nuget-subbuild\CMakeFiles\f946685794b4c82b21fbcd398659f523\nuget-populate-test.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\ingsa\OneDrive\Documentos\Pruebas\AndromedaApp\build\windows\x64\_deps\nuget-subbuild\CMakeFiles\839b8b7f5c08962692cd54b8911e571a\nuget-populate-complete.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\ingsa\OneDrive\Documentos\Pruebas\AndromedaApp\build\windows\x64\_deps\nuget-subbuild\CMakeFiles\3892cd5f2672f1d883820a67af402ae5\nuget-populate.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\ingsa\OneDrive\Documentos\Pruebas\AndromedaApp\build\windows\x64\_deps\nuget-subbuild\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="C:\Users\ingsa\OneDrive\Documentos\Pruebas\AndromedaApp\build\windows\x64\_deps\nuget-subbuild\CMakeFiles\nuget-populate" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{C318C343-7D7A-38B6-B3D9-44F30CE32D7B}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

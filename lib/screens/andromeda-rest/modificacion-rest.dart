@@ -1,18 +1,29 @@
 import 'package:flutter/material.dart';
 
 class ModificacionRestaurante extends StatefulWidget {
+  const ModificacionRestaurante({super.key, required this.data});
+  final Map<dynamic, dynamic> data;
+
   @override
-  _ModificacionRestaurante createState() =>
-      _ModificacionRestaurante();
+  _ModificacionRestaurante createState() => _ModificacionRestaurante();
 }
 
-class _ModificacionRestaurante
-    extends State<ModificacionRestaurante> {
+class _ModificacionRestaurante extends State<ModificacionRestaurante> {
   TextEditingController _nombreController = TextEditingController();
   TextEditingController _descripcionController = TextEditingController();
   TextEditingController _horariosController = TextEditingController();
   TextEditingController _tiposComidaController = TextEditingController();
   TextEditingController _contrasenaController = TextEditingController();
+
+  setData() {
+    _nombreController.text = widget.data['name'];
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    setData();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,10 +69,4 @@ class _ModificacionRestaurante
       ),
     );
   }
-}
-
-void main() {
-  runApp(MaterialApp(
-    home: ModificacionRestaurante(),
-  ));
 }
