@@ -7,15 +7,14 @@ import 'package:andromeda/services/api.dart';
 import 'package:andromeda/services/db.dart';
 
 class MyLoginPage extends StatefulWidget {
-  const MyLoginPage({super.key, required this.type});
-  final int type;
+  const MyLoginPage({super.key});
 
   @override
   State<MyLoginPage> createState() => _MyLoginPageState();
 }
 
 class _MyLoginPageState extends State<MyLoginPage> {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKeyLogin = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool typePassword = true;
@@ -63,7 +62,7 @@ class _MyLoginPageState extends State<MyLoginPage> {
       backgroundColor: Background_Color,
       body: SingleChildScrollView(
         child: Form(
-          key: _formKey,
+          key: _formKeyLogin,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
@@ -227,7 +226,7 @@ class _MyLoginPageState extends State<MyLoginPage> {
                     onPressed: _isButtonDisabled
                         ? () {}
                         : () async {
-                            if (_formKey.currentState!.validate()) {
+                            if (_formKeyLogin.currentState!.validate()) {
                               setState(() {
                                 _isButtonDisabled = !_isButtonDisabled;
                               });
@@ -329,7 +328,7 @@ class _MyLoginPageState extends State<MyLoginPage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => MyRegisterPage(type: widget.type),
+                        builder: (context) => MyRegisterPage(type: 0),
                       ),
                     );
                   },
@@ -393,7 +392,7 @@ class _MyLoginPageState extends State<MyLoginPage> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => MyLoginPage(type: 0)),
+                                builder: (context) => MyLoginPage()),
                           );
                         },
                         style: ElevatedButton.styleFrom(
@@ -426,7 +425,7 @@ class _MyLoginPageState extends State<MyLoginPage> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => MyLoginPage(type: 1)),
+                                builder: (context) => MyLoginPage()),
                           );
                         },
                         style: ElevatedButton.styleFrom(

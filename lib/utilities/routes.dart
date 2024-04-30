@@ -57,8 +57,8 @@ class Router {
       case 'list-reservation':
         return MaterialPageRoute(builder: (_) => const listReservacion());
       case 'login':
-        final type = settings.arguments as int;
-        return MaterialPageRoute(builder: (_) => MyLoginPage(type: type));
+        //final type = settings.arguments as int;
+        return MaterialPageRoute(builder: (_) => MyLoginPage());
       case 'notifications':
         return MaterialPageRoute(builder: (_) => const MyNotificationsPage());
       case 'search':

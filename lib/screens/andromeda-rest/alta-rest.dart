@@ -125,11 +125,41 @@ class _AltaRestState extends State<AltaRest> {
     return categories['items'];
   }
 
+  Future<List<Map<dynamic, dynamic>>> setStates() async {
+    final estados = await serviceDB.instance.queryRecord('states');
+
+    if (estados.isNotEmpty) {
+      print('hay datos en bd');
+      print(estados);
+      return estados;
+    }
+
+    //Llenar base de datos local
+    final estadosEndpoint = await get('', '', 'states?countryCode=MX');
+    if (estadosEndpoint == null) {
+      print('no hay datos en endpoint');
+      return [];
+    }
+
+    print('recorremos endpoint');
+    print(estadosEndpoint);
+    estadosEndpoint['items'].forEach((element) async {
+      print('insertar');
+      print(element);
+      //await serviceDB.instance.insertRecord('states', element);
+    });
+
+    print('Regresamos');
+    print(estadosEndpoint['items']);
+    return [];
+  }
+
   @override
   void initState() {
     super.initState();
-    getCategories();
+    //getCategories();
     getUserData();
+    setStates();
   }
 
   @override

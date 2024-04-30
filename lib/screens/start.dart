@@ -55,8 +55,7 @@ class _MyStartPageState extends State<MyStartPage> {
                   //Navigator.pushNamed(context, 'login-rest');
                   Navigator.push(
                     context,
-                    MaterialPageRoute(
-                        builder: (context) => MyLoginPage(type: 1)),
+                    MaterialPageRoute(builder: (context) => MyLoginPage()),
                   );
                 },
                 child: SizedBox(
@@ -82,8 +81,7 @@ class _MyStartPageState extends State<MyStartPage> {
                   //Navigator.pushNamed(context, 'login');
                   Navigator.push(
                     context,
-                    MaterialPageRoute(
-                        builder: (context) => MyLoginPage(type: 0)),
+                    MaterialPageRoute(builder: (context) => MyLoginPage()),
                   );
                 },
                 child: SizedBox(
