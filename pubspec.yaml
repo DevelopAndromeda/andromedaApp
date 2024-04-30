@@ -56,6 +56,8 @@ flutter:
     - assets/image5.jpg
     - assets/IniciarSesionCliente.png
     - assets/IniciarSesionRest.png
+    - assets/Login.png
+    - assets/LogoWhite.png
     - .env
 
   # To add assets to your application, add an assets section, like this:

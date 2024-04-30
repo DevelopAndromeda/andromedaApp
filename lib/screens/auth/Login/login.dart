@@ -22,6 +22,10 @@ class _MyLoginPageState extends State<MyLoginPage> {
   final TextEditingController _passwordController = TextEditingController();
   bool typePassword = true;
   bool _isButtonDisabled = false;
+  int selectedButton = 0;
+  bool isClicked = false;
+  bool isComensalSelected = false;
+  bool isRestauranteSelected = false;
 
   Future<void> getSesion() async {
     print('getSession');
@@ -96,7 +100,7 @@ class _MyLoginPageState extends State<MyLoginPage> {
                 ),
               ),
               Divider(
-                height: 50, // Altura del separador
+                height: 20, // Altura del separador
                 color: const Color.fromARGB(
                     255, 255, 255, 255), // Color del separador
                 thickness: 2, // Grosor del separador
@@ -115,7 +119,7 @@ class _MyLoginPageState extends State<MyLoginPage> {
                 ),
               ),
               Divider(
-                height: 50, // Altura del separador
+                height: 20, // Altura del separador
                 color: const Color.fromARGB(
                     255, 255, 255, 255), // Color del separador
                 thickness: 2, // Grosor del separador
@@ -336,7 +340,7 @@ class _MyLoginPageState extends State<MyLoginPage> {
                 ),
               ),
  Divider(
-                height: 50, // Altura del separador
+                height: 30, // Altura del separador
                 color: const Color.fromARGB(
                     255, 255, 255, 255), // Color del separador
                 thickness: 2, // Grosor del separador
@@ -367,58 +371,73 @@ class _MyLoginPageState extends State<MyLoginPage> {
               ),
 
             Container(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    width: 200,//Ancho del primer Boton
-                    height: 50,//Alto del primer boton
-                    child: MaterialButton(onPressed: (){
-                      //Acción al presionar
-                    },
-                    color: Colors.white,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0),),
-                    child: Text('Comensal',
-                    style: TextStyle(color: Colors.black),),
-                    ),
-                  ),
-                  SizedBox(width: 10,),//Espacio entre botones
-                  SizedBox(
-                    width: 200,//Ancho del segundo boton
-                    height: 50, //Alto del segundo boton
-                    child: MaterialButton(onPressed: (){
-                  /**    Navigator.popAndPushNamed(context,'');
-                      Navigator.of(context).pushNamedAndRemoveUntil(
-                    '', (Route<dynamic> route) => false);
-                      
-                      */
-
-
-                    },
-                    color: Color.fromARGB(255, 255, 255, 255),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0),),
-                    child: Text('Restaurante',
-                    style: TextStyle(color: Color.fromARGB(255, 114, 113, 113)),),),
-                  ),
-                ],
-              ),
-
-              
-            ),  
+  child: Row(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: [
+      SizedBox(
+        width: 200, // Ancho del primer Boton
+        height: 50, // Alto del primer boton
+        child: ElevatedButton(
+          onPressed: () {
+            setState(() {
+              isComensalSelected = true;
+              isRestauranteSelected = false;
+            });
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => MyLoginPage(type: 0)),
+            );
+          },
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.white,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(0),
+            ),
+            elevation: 0, // Establece la elevación a 0 para que no haya sombra
+          ),
+          child: Text(
+            'Comensal',
+            style: TextStyle(color: isComensalSelected ? Colors.red : Colors.black),
+          ),
+        ),
+      ),
+      SizedBox(width: 10), // Espacio entre botones
+      SizedBox(
+        width: 200, // Ancho del segundo boton
+        height: 50, // Alto del segundo boton
+        child: ElevatedButton(
+          onPressed: () {
+            setState((){
+              isComensalSelected = false;
+              isRestauranteSelected = true;
+            });
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => MyLoginPage(type: 1)),
+            );
+            
+          },
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.white,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(0),
+            ),
+            elevation: 0, // Establece la elevación a 0 para que no haya sombra
+          ),
+          child: Text(
+            'Restaurante',
+            style: TextStyle(color: isRestauranteSelected ? Colors.red: Color.fromARGB(255, 0, 0, 0)),
+          ),
+        ),
+      ),
+    ],
+  ),
+),
             ],
 
           ),
         ),
-      ),
-
-
-
-
-
-
-
-
-      
+      ),     
     );
   }
 }
