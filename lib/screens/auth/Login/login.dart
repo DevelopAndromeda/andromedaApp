@@ -206,9 +206,8 @@ class _MyLoginPageState extends State<MyLoginPage> {
                           typePassword = !typePassword;
                         });
                       },
-                      child: Icon(typePassword == true
-                          ? Icons.lock_outline
-                          : Icons.lock_open),
+                      child: Icon(
+                          typePassword ? Icons.lock_outline : Icons.lock_open),
                     ),
                   ),
                   validator: (value) {

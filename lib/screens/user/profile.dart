@@ -103,8 +103,8 @@ class _MyProfilePageState extends State<MyProfilePage> {
             Text("Apellido: $apellido"),
             SizedBox(height: 10),
             Text("Correo: $correo"),
-            SizedBox(height: 10),
-            Text("Teléfono: $telefono"),
+            /*SizedBox(height: 10),
+            Text("Teléfono: $telefono"),*/
             SizedBox(height: 20),
             SizedBox(
               height: 250,
