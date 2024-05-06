@@ -6,6 +6,8 @@ import 'package:andromeda/services/db.dart';
 
 import 'package:andromeda/Witgets/General/Colores_Base.dart';
 
+import 'package:andromeda/models/estados.dart';
+
 class AltaRest extends StatefulWidget {
   const AltaRest({super.key});
 
@@ -19,6 +21,8 @@ class _AltaRestState extends State<AltaRest> {
   final TextEditingController _nombreController = TextEditingController();
   final TextEditingController _descripcionController = TextEditingController();
   final TextEditingController _tipoController = TextEditingController();
+  final TextEditingController _pais = TextEditingController();
+  final TextEditingController _estado = TextEditingController();
   final TextEditingController _direccionController = TextEditingController();
   final TextEditingController _max_capacity = TextEditingController();
   final TextEditingController _slot_duration = TextEditingController();
@@ -83,7 +87,7 @@ class _AltaRestState extends State<AltaRest> {
       ]
     }
   ];
-
+  late Future<List<dynamic>> Estados;
   List<String> _timeOptions = [
     '6:00 am',
     '7:00 am',
@@ -105,6 +109,7 @@ class _AltaRestState extends State<AltaRest> {
     '11:00 pm'
   ];
 
+  List<String> Paises = ['México'];
   Future<void> getUserData() async {
     var sesion = await serviceDB.instance.getById('users', 'id_user', 1);
 
@@ -125,15 +130,15 @@ class _AltaRestState extends State<AltaRest> {
     return categories['items'];
   }
 
-  Future<List<Map<dynamic, dynamic>>> setStates() async {
-    await serviceDB.instance.initBD();
+  Future<List<dynamic>> setStates() async {
+    /*await serviceDB.instance.initBD();
     final estados = await serviceDB.instance.queryRecord('states');
 
     if (estados.isNotEmpty) {
       print('hay datos en bd');
       print(estados);
       return estados;
-    }
+    }*/
 
     //Llenar base de datos local
     final estadosEndpoint = await get('', '', 'states?countryCode=MX');
@@ -142,17 +147,18 @@ class _AltaRestState extends State<AltaRest> {
       return [];
     }
 
-    print('recorremos endpoint');
+    /*print('recorremos endpoint');
     print(estadosEndpoint);
     estadosEndpoint['items'].forEach((element) async {
       print('insertar');
       print(element);
+      Estados.add(Estado.fromJson(element));
       //await serviceDB.instance.insertRecord('states', element);
-    });
+    });*/
 
     print('Regresamos');
     print(estadosEndpoint['items']);
-    return [];
+    return estadosEndpoint['items'];
   }
 
   @override
@@ -160,7 +166,7 @@ class _AltaRestState extends State<AltaRest> {
     super.initState();
     //getCategories();
     getUserData();
-    setStates();
+    Estados = setStates();
   }
 
   @override
@@ -215,35 +221,67 @@ class _AltaRestState extends State<AltaRest> {
                       }
                       return null;
                     }),
+                SizedBox(height: 20.0),
+                Text(
+                  'Informacion de Contacto',
+                  style: TextStyle(fontSize: 25),
+                ),
                 SizedBox(height: 10.0),
-                /*Column(
-                  children: [
-                    DropdownButton<String>(
-                      // Initial Value
-                      //value: dropdownvalue,
-
-                      // Down Arrow Icon
-                      icon: const Icon(Icons.keyboard_arrow_down),
-
-                      // Array list of items
-                      items: [],
-                      /*items.map((String items) { 
-                return DropdownMenuItem( 
-                  value: items, 
-                  child: Text(items), 
-                ); 
-              }).toList(), */
-                      // After selecting the desired option,it will
-                      // change button value to selected value
+                Row(children: <Widget>[
+                  Flexible(
+                      child: Padding(
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                    child: DropdownButtonFormField<String>(
+                      //value: _pais.text,
+                      items: Paises.map((String time) {
+                        return DropdownMenuItem<String>(
+                          value: time,
+                          child: Text(time),
+                        );
+                      }).toList(),
+                      decoration: InputDecoration(labelText: 'Pais'),
                       onChanged: (String? newValue) {
-                        print(newValue);
-                        //setState(() {
-                        //  dropdownvalue = newValue!;
-                        //});
+                        setState(() {
+                          _pais.text = newValue!;
+                        });
                       },
                     ),
-                  ],
-                ),*/
+                  )),
+                  Flexible(
+                      child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 5, horizontal: 5),
+                          child: FutureBuilder<List<dynamic>>(
+                              future: Estados,
+                              builder: (context, snapshot) {
+                                if (snapshot.hasData) {
+                                  print(snapshot.data);
+                                  return DropdownButtonFormField<String>(
+                                    items: snapshot.data!.map((element) {
+                                      return DropdownMenuItem<String>(
+                                        value: element['id'].toString(),
+                                        child:
+                                            Text(element['label'].toString()),
+                                      );
+                                    }).toList(),
+                                    decoration:
+                                        InputDecoration(labelText: 'Estado'),
+                                    onChanged: (String? newValue) {
+                                      setState(() {
+                                        _estado.text = newValue!;
+                                      });
+                                    },
+                                  );
+                                } else if (snapshot.hasError) {
+                                  return Text('${snapshot.error}');
+                                }
+
+                                // By default, show a loading spinner.
+                                return const CircularProgressIndicator();
+                              })))
+                ]),
+                SizedBox(height: 10.0),
                 TextFormField(
                   controller: _direccionController,
                   decoration:
@@ -327,8 +365,8 @@ class _AltaRestState extends State<AltaRest> {
                         keyboardType: TextInputType.number,
                         decoration: const InputDecoration(
                             border: OutlineInputBorder(),
-                            labelText: 'Duracion',
-                            hintText: 'Ingrese Tiempo'),
+                            labelText: 'Prgramacion',
+                            hintText: 'Evitar Prgramacion'),
                         validator: (String? value) {
                           if (value == null || value.isEmpty) {
                             return 'Ingrese Tiempo';
@@ -514,7 +552,10 @@ class _AltaRestState extends State<AltaRest> {
                             'value': _direccionController.text
                           },
                           {"attribute_code": "hotel_country", "value": "MX"},
-                          {"attribute_code": "hotel_state", "value": "955"},
+                          {
+                            "attribute_code": "hotel_state",
+                            "value": _estado.text
+                          },
                           {
                             "attribute_code": "location",
                             "value":
