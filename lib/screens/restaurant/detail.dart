@@ -151,7 +151,7 @@ class _MyDetailPageState extends State<MyDetailPage>
       }
 
       if (item['title'] == 'Charged Per') {
-        value = "Table (2 Guests)";
+        value = "Table (4 Guests)";
       }
 
       if (item['title'] == 'ejemplo de mesa') {
@@ -173,7 +173,7 @@ class _MyDetailPageState extends State<MyDetailPage>
       //{"option_id": "parent_slot_id", "option_value": 0},
       {"option_id": "slot_id", "option_value": slot_id},
       {"option_id": "slot_day_index", "option_value": _selectedDate.weekday},
-      {"option_id": "charged_per_count", "option_value": 2},
+      {"option_id": "charged_per_count", "option_value": 4},
     ]);
     print('***configurable_item_options***');
     print(configurable_item_options);
@@ -191,7 +191,7 @@ class _MyDetailPageState extends State<MyDetailPage>
           }
         }
       },
-      "booking_date": DateFormat('dd/MM/yyy').format(_selectedDate).toString(),
+      "booking_date": DateFormat('MM/dd/yyy').format(_selectedDate).toString(),
       "booking_time": Hora
     };
 

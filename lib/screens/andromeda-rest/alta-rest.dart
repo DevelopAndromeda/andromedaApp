@@ -108,7 +108,6 @@ class _AltaRestState extends State<AltaRest> {
     '10:00 pm',
     '11:00 pm'
   ];
-
   List<String> Paises = ['México'];
   Future<void> getUserData() async {
     var sesion = await serviceDB.instance.getById('users', 'id_user', 1);
@@ -131,30 +130,12 @@ class _AltaRestState extends State<AltaRest> {
   }
 
   Future<List<dynamic>> setStates() async {
-    /*await serviceDB.instance.initBD();
-    final estados = await serviceDB.instance.queryRecord('states');
-
-    if (estados.isNotEmpty) {
-      print('hay datos en bd');
-      print(estados);
-      return estados;
-    }*/
-
     //Llenar base de datos local
     final estadosEndpoint = await get('', '', 'states?countryCode=MX');
     if (estadosEndpoint == null) {
       print('no hay datos en endpoint');
       return [];
     }
-
-    /*print('recorremos endpoint');
-    print(estadosEndpoint);
-    estadosEndpoint['items'].forEach((element) async {
-      print('insertar');
-      print(element);
-      Estados.add(Estado.fromJson(element));
-      //await serviceDB.instance.insertRecord('states', element);
-    });*/
 
     print('Regresamos');
     print(estadosEndpoint['items']);
