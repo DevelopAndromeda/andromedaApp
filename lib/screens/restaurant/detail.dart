@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:andromeda/screens/restaurant/contact.dart';
 import 'package:andromeda/services/api.dart';
 import 'package:andromeda/services/db.dart';
@@ -8,6 +6,8 @@ import 'package:andromeda/Witgets/bottomBar.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:andromeda/screens/restaurant/review.dart';
 import 'package:intl/intl.dart';
+
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class MyDetailPage extends StatefulWidget {
   //final int data;
@@ -29,13 +29,7 @@ class _MyDetailPageState extends State<MyDetailPage>
   //final _personasController = TextEditingController();
   //final _notasController = TextEditingController();
   //late List<dynamic> _options = [];
-  final List<String> imagenes = [
-    'assets/image1.jpg',
-    'assets/image2.jpg',
-    'assets/image3.jpg',
-    'assets/image4.jpg',
-    'assets/image5.jpg',
-  ];
+  List<String> imagenes = [];
   //late Future<Map<String, dynamic>> _daySlot;
   final List<String> _diasSemana = [
     '',
@@ -51,6 +45,8 @@ class _MyDetailPageState extends State<MyDetailPage>
   Map _slot = {};
   List<dynamic> _slotDay = [];
   List<dynamic> _allSlotDay = [];
+  String? _url =
+      "${dotenv.env['PROTOCOL']}://${dotenv.env['URL']}/media/catalog/product";
   //List<Map<String, dynamic>> _timeSlot = [];
   Future<void> getSlot(String? id) async {
     print('getSlot -> $id');
@@ -308,17 +304,32 @@ class _MyDetailPageState extends State<MyDetailPage>
     }
   }
 
+  setImgs() {
+    //print('media_gallery_entries');
+    //print(widget.data['media_gallery_entries']);
+    if (widget.data['media_gallery_entries'] != null) {
+      imagenes.add(widget.data['media_gallery_entries'][0]['file']);
+      widget.data['media_gallery_entries'].forEach((element) {
+        imagenes.add(element['file']);
+      });
+    } else {
+      imagenes.add('assets/notFoundImg.png');
+    }
+
+    //print('imagenes');
+    //print(imagenes);
+  }
+
   @override
   void initState() {
-    print(widget.data);
+    //print(widget.data);
     super.initState();
     //_daySlot = getSlot(widget.data['id']);
     _tabController = TabController(length: 3, vsync: this);
     getOptions(widget.data['sku']);
     getSlot(widget.data['id'].toString());
     //_options = getOptions(widget.data['sku']);
-
-    //print('options $_options');
+    setImgs();
   }
 
   @override
@@ -360,10 +371,17 @@ class _MyDetailPageState extends State<MyDetailPage>
                       decoration: BoxDecoration(
                         color: Colors.grey,
                       ),
-                      child: Image.asset(
-                        imagen,
-                        fit: BoxFit.cover,
-                      ),
+                      child: widget.data['media_gallery_entries'] != null
+                          ? Image.network(
+                              _url! + imagen,
+                              fit: BoxFit.cover,
+                            )
+                          : Image.asset(
+                              imagen,
+                              width: double.infinity,
+                              height: 150,
+                              fit: BoxFit.cover,
+                            ),
                     );
                   },
                 );

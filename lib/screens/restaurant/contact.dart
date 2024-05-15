@@ -50,7 +50,7 @@ class _MyContactPageState extends State<MyContactPage> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: Text('Ubicacion'),
+        title: Text(widget.data['name']),
         centerTitle: true,
         leading: BackButton(),
         backgroundColor: Colors.transparent,
@@ -58,9 +58,31 @@ class _MyContactPageState extends State<MyContactPage> {
       ),
       body: SingleChildScrollView(
           child: Padding(
-        padding: EdgeInsets.all(20),
+        padding: EdgeInsets.only(top: 75),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          SizedBox(height: 8),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+            child: Text(
+              'Detalles',
+              style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: Text(
+              'Direccion del restaurante',
+              style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+            child: Text(
+              getCustomAttribute(
+                  widget.data['custom_attributes'], 'hotel_address'),
+              style: TextStyle(fontSize: 13),
+            ),
+          ),
+          SizedBox(height: 10),
           SizedBox(
             height: 300,
             child: GoogleMap(
@@ -68,7 +90,79 @@ class _MyContactPageState extends State<MyContactPage> {
                 onMapCreated: _onMapCreated,
                 initialCameraPosition: _initialPosition,
                 markers: {Marker(markerId: MarkerId("Yo"), position: _marker)}),
-          )
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+            child: Text(
+              'Informacion adicional',
+              style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+            ),
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+            child: Row(
+              children: [
+                Icon(Icons.phone),
+                SizedBox(
+                  width: 20,
+                ),
+                Text(
+                  'Telefono',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+            child: Row(
+              children: [
+                SizedBox(
+                  width: 44,
+                ),
+                Text(
+                  '',
+                  style: TextStyle(fontSize: 15),
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+            child: Row(
+              children: [
+                Icon(Icons.coffee),
+                SizedBox(
+                  width: 20,
+                ),
+                Text(
+                  'Cocina',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+            child: Row(
+              children: [
+                SizedBox(
+                  width: 44,
+                ),
+                Text(
+                  getCustomAttribute(
+                      widget.data['custom_attributes'], 'category_string'),
+                  style: TextStyle(fontSize: 15),
+                ),
+              ],
+            ),
+          ),
         ]),
       )),
     );

@@ -94,7 +94,7 @@ class _MySavedPageState extends State<MySavedPage> {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
               image: DecorationImage(
-                image: AssetImage('assets/ExampleRest.png'),
+                image: AssetImage('assets/notFoundImg.png'),
                 fit: BoxFit.cover,
               ),
             ),

@@ -220,7 +220,7 @@ class _MyHistoryPageState extends State<MyHistoryPage> {
       return BoxDecoration(
           borderRadius: BorderRadius.circular(4),
           image: DecorationImage(
-              image: NetworkImage(_url! + img!), fit: BoxFit.cover));
+              image: NetworkImage(_url! + img), fit: BoxFit.cover));
     } else {
       return BoxDecoration(
           borderRadius: BorderRadius.circular(4),
