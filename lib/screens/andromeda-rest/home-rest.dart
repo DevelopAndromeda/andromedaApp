@@ -32,40 +32,7 @@ class _MyHomeRestPageState extends State<MyHomeRestPage> {
         title: Text('Panel'),
         backgroundColor: Colors.black,
       ),
-      body: Center(
-          /*child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pushNamed(context, 'alta-rest');
-              },
-              child: Text('Alta de Restaurante'),
-            ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pushNamed(context, 'list-rest');
-              },
-              child: Text('Lista de Restaurantes'),
-            ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pushNamed(context, 'list-reservation');
-              },
-              child: Text('lista de Reservaciones'),
-            ),
-            ElevatedButton(
-                onPressed: () async {
-                  await serviceDB.instance.cleanAllTable();
-                  Navigator.of(context).pushNamedAndRemoveUntil(
-                      'start', (Route<dynamic> route) => false);
-                },
-                child: Text('Cerrar Sesion'))
-          ],
-        ),*/
-          ),
+      body: Center(),
     );
   }
 }

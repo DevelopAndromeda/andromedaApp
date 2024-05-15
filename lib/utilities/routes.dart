@@ -6,6 +6,7 @@ import 'package:andromeda/screens/andromeda-rest/home-rest.dart';
 import 'package:andromeda/screens/andromeda-rest/alta-rest.dart';
 import 'package:andromeda/screens/andromeda-rest/list-rest.dart';
 import 'package:andromeda/screens/andromeda-rest/list-reservacion.dart';
+import 'package:andromeda/screens/andromeda-rest/list-reviews.dart';
 import 'package:andromeda/screens/andromeda/history.dart';
 import 'package:andromeda/screens/andromeda/notifications.dart';
 import 'package:andromeda/screens/andromeda/saved.dart';
@@ -48,6 +49,8 @@ class Router {
         return MaterialPageRoute(builder: (_) => const MyHistoryPage());
       case 'list-rest':
         return MaterialPageRoute(builder: (_) => const ListRest());
+      case 'list-reviews':
+        return MaterialPageRoute(builder: (_) => const ListReview());
       case 'modification':
         final data = settings.arguments as Map<String, dynamic>;
         return MaterialPageRoute(

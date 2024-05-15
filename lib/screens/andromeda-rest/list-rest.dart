@@ -5,6 +5,8 @@ import 'package:andromeda/services/api.dart';
 import 'package:andromeda/services/db.dart';
 import 'package:andromeda/screens/andromeda-rest/menu.dart';
 
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 class ListRest extends StatefulWidget {
   const ListRest({super.key});
 
@@ -13,6 +15,8 @@ class ListRest extends StatefulWidget {
 }
 
 class _ListRestState extends State<ListRest> {
+  String? _url =
+      "${dotenv.env['PROTOCOL']}://${dotenv.env['URL']}/media/catalog/product";
   Future getRestaurant() async {
     final user = await serviceDB.instance.getById('users', 'id_user', 1);
 
@@ -63,7 +67,7 @@ class _ListRestState extends State<ListRest> {
     List<Widget> lists = <Widget>[];
     if (items.length > 0) {
       for (dynamic data in items) {
-        print(data);
+        print(data['media_gallery_entries']);
         lists.add(_buildCard(
           data,
         ));
@@ -80,10 +84,14 @@ class _ListRestState extends State<ListRest> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Image(
-            image: AssetImage('assets/image1.jpg'),
-            fit: BoxFit.cover,
-          ),
+          data['media_gallery_entries'] != null &&
+                  data['media_gallery_entries'].isNotEmpty
+              ? Image.network(
+                  _url! + data['media_gallery_entries'][0]['file'],
+                  width: double.infinity,
+                  height: 180,
+                )
+              : Image.asset('assets/notFoundImg.png', width: 350, height: 180),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(

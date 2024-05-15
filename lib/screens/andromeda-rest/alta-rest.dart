@@ -118,45 +118,15 @@ class _AltaRestState extends State<AltaRest> {
     '10:00 pm',
     '11:00 pm'
   ];
-  static List<Categoria> _categoria = [
-    Categoria(id: 1, name: "Lion"),
-    Categoria(id: 2, name: "Flamingo"),
-    Categoria(id: 3, name: "Hippo"),
-    Categoria(id: 4, name: "Horse"),
-    Categoria(id: 5, name: "Tiger"),
-    Categoria(id: 6, name: "Penguin"),
-    Categoria(id: 7, name: "Spider"),
-    Categoria(id: 8, name: "Snake"),
-    Categoria(id: 9, name: "Bear"),
-    Categoria(id: 10, name: "Beaver"),
-    Categoria(id: 11, name: "Cat"),
-    Categoria(id: 12, name: "Fish"),
-    Categoria(id: 13, name: "Rabbit"),
-    Categoria(id: 14, name: "Mouse"),
-    Categoria(id: 15, name: "Dog"),
-    Categoria(id: 16, name: "Zebra"),
-    Categoria(id: 17, name: "Cow"),
-    Categoria(id: 18, name: "Frog"),
-    Categoria(id: 19, name: "Blue Jay"),
-    Categoria(id: 20, name: "Moose"),
-    Categoria(id: 21, name: "Gecko"),
-    Categoria(id: 22, name: "Kangaroo"),
-    Categoria(id: 23, name: "Shark"),
-    Categoria(id: 24, name: "Crocodile"),
-    Categoria(id: 25, name: "Owl"),
-    Categoria(id: 26, name: "Dragonfly"),
-    Categoria(id: 27, name: "Dolphin"),
-  ];
-  final _items = _categoria
-      .map((cat) => MultiSelectItem<Categoria>(cat, cat.name))
-      .toList();
+  List<Categoria> _categoria = [];
+  List<String> _finalCategories = [];
   List<String> Paises = ['México'];
   Future<void> getUserData() async {
     var sesion = await serviceDB.instance.getById('users', 'id_user', 1);
 
     if (sesion.isNotEmpty) {
-      print('sesion');
-      print(sesion[0]);
+      //print('sesion');
+      //print(sesion[0]);
       if (sesion[0]['lat'] == null || sesion[0]['long'] == null) {
         _setCoords();
       } else {
@@ -169,8 +139,8 @@ class _AltaRestState extends State<AltaRest> {
 
   Future<void> _setCoords() async {
     dynamic geo = await determinePosition();
-    print('geo');
-    print(geo);
+    //print('geo');
+    //print(geo);
     Map<String, dynamic> _update = {'lat': geo.longitude, 'long': geo.latitude};
     await serviceDB.instance.updateRecord('users', _update, 'id_user', 1);
 
@@ -179,26 +149,36 @@ class _AltaRestState extends State<AltaRest> {
         CameraUpdate.newLatLngZoom(LatLng(geo.longitude, geo.latitude), 15));
   }
 
-  Future<List<Map<dynamic, dynamic>>> getCategories() async {
+  Future<void> getCategories() async {
     final categories = await get('', 'integration',
-        '{{url}}/rest/V1/categories/list?searchCriteria[filterGroups][0][filters][1][field]=is_visible_app&searchCriteria[filterGroups][0][filters][1][value]=1&searchCriteria[filterGroups][0][filters][1][conditionType]=eq&searchCriteria[sortOrders][0][field]=name&searchCriteria[sortOrders][0][direction]=ASC');
-    if (categories != null) {
-      return [];
-    }
+        'categories/list?searchCriteria[filterGroups][0][filters][1][field]=is_visible_app&searchCriteria[filterGroups][0][filters][1][value]=1&searchCriteria[filterGroups][0][filters][1][conditionType]=eq&searchCriteria[sortOrders][0][field]=name&searchCriteria[sortOrders][0][direction]=ASC');
 
-    return categories['items'];
+    //print('categories');
+    //print(categories);
+    if (categories.isNotEmpty) {
+      /*for (dynamic element in categories['items']) {
+        print(element);
+        _categoria.add(Categoria(id: element['id'], name: element['name']));
+      }*/
+      categories['items'].forEach((element) {
+        /*print('element');
+        print(element);*/
+        _categoria.add(Categoria(id: element['id'], name: element['name']));
+      });
+      setState(() {});
+    }
   }
 
   Future<List<dynamic>> setStates() async {
     //Llenar base de datos local
     final estadosEndpoint = await get('', '', 'states?countryCode=MX');
     if (estadosEndpoint == null) {
-      print('no hay datos en endpoint');
+      //print('no hay datos en endpoint');
       return [];
     }
 
-    print('Regresamos');
-    print(estadosEndpoint['items']);
+    //print('Regresamos');
+    //print(estadosEndpoint['items']);
     return estadosEndpoint['items'];
   }
 
@@ -209,7 +189,7 @@ class _AltaRestState extends State<AltaRest> {
   @override
   void initState() {
     super.initState();
-    //getCategories();
+    getCategories();
     getUserData();
     Estados = setStates();
   }
@@ -253,7 +233,7 @@ class _AltaRestState extends State<AltaRest> {
                   },
                 ),
                 SizedBox(height: 10.0),
-                TextFormField(
+                /*TextFormField(
                     controller: _tipoController,
                     decoration:
                         InputDecoration(labelText: 'Tipo de Restaurante'),
@@ -263,20 +243,31 @@ class _AltaRestState extends State<AltaRest> {
                       }
                       return null;
                     }),
-                SizedBox(height: 20.0),
+                SizedBox(height: 20.0),*/
                 MultiSelectBottomSheetField(
                   initialChildSize: 0.4,
                   listType: MultiSelectListType.CHIP,
                   searchable: true,
-                  buttonText: Text("Favorite Animals"),
-                  title: Text("Animals"),
-                  items: _items,
+                  buttonText: Text("Tipo de Restaurantes"),
+                  title: Text("Categorias"),
+                  items: _categoria
+                      .map((cat) => MultiSelectItem<Categoria>(cat, cat.name))
+                      .toList(),
                   onConfirm: (values) {
                     //_selectedCategorias = values!;
+                    print('onConfirm');
                     print(values);
+                    for (dynamic element in values) {
+                      print(element.id);
+                      _finalCategories.add(element.id.toString());
+                    }
+                    /*values.forEach((element) {
+                      print(element?.id);
+                    });*/
                   },
                   chipDisplay: MultiSelectChipDisplay(
                     onTap: (value) {
+                      print('onTap');
                       print(value);
                       /*setState(() {
                             _selectedCategorias.remove(value);
@@ -330,7 +321,7 @@ class _AltaRestState extends State<AltaRest> {
                               future: Estados,
                               builder: (context, snapshot) {
                                 if (snapshot.hasData) {
-                                  print(snapshot.data);
+                                  //print(snapshot.data);
                                   return DropdownButtonFormField<String>(
                                     items: snapshot.data!.map((element) {
                                       return DropdownMenuItem<String>(
@@ -369,9 +360,9 @@ class _AltaRestState extends State<AltaRest> {
                   onChanged: (value) async {
                     //print('este valor ira al api de mapas: $value');
                     if (value.length > 4) {
-                      print('ir geo');
+                      //print('ir geo');
                       final data = await getDirByGeocoding(value);
-                      print(data);
+                      //print(data);
                       //GeocodingResponse response =
                       //    await geocoding.searchByAddress(value);
                       //print(response);
@@ -450,10 +441,10 @@ class _AltaRestState extends State<AltaRest> {
                         }),
                   )),
                   Flexible(
-                      child: Padding(
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-                    child: TextFormField(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 5, horizontal: 5),
+                      child: TextFormField(
                         controller: _break_time_bw_slot,
                         keyboardType: TextInputType.number,
                         decoration: const InputDecoration(
@@ -465,8 +456,10 @@ class _AltaRestState extends State<AltaRest> {
                             return 'Ingrese Tiempo';
                           }
                           return null;
-                        }),
-                  )),
+                        },
+                      ),
+                    ),
+                  ),
                 ]),
                 SizedBox(height: 10.0),
                 SingleChildScrollView(
@@ -477,8 +470,8 @@ class _AltaRestState extends State<AltaRest> {
                         itemBuilder: (context, index) {
                           //var data = _daysOfWeek.toList();
                           //print(data[index]);
-                          print(index);
-                          print(_daysOfWeek[index]['name']);
+                          //print(index);
+                          //print(_daysOfWeek[index]['name']);
                           return Column(
                             children: [
                               Container(
@@ -633,7 +626,7 @@ class _AltaRestState extends State<AltaRest> {
                           {"attribute_code": "city", "value": "cancun"},
                           {
                             "attribute_code": "category_ids",
-                            "value": ["6", "3"]
+                            "value": _finalCategories
                           },
                           {
                             "attribute_code": "description",

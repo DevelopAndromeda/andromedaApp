@@ -10,6 +10,6 @@ class Categoria {
 
   @override
   String toString() {
-    return "Estado(id: $id, name: $name)";
+    return "Categoria(id: $id, name: $name)";
   }
 }

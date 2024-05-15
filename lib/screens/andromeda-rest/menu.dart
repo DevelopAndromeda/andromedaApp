@@ -24,7 +24,8 @@ class NavDrawer extends StatelessWidget {
         'name': 'Lista de Reservaciones',
         'url': 'list-reservation',
         'icon': 0xe533
-      }
+      },
+      {'name': 'Lista de Comentarios', 'url': 'list-reviews', 'icon': 0xe533}
     ];
     List<Widget> lista = <Widget>[];
     lista.add(Container(
