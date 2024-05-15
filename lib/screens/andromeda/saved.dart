@@ -48,32 +48,19 @@ class _MySavedPageState extends State<MySavedPage> {
             child: FutureBuilder(
               future: getFavorites(),
               builder: (BuildContext context, AsyncSnapshot snapshot) {
-                if (snapshot.hasError) {
-                  return const Text('Something went wrong');
-                }
-
-                if (snapshot.connectionState == ConnectionState.waiting) {
+                if (!snapshot.hasData) {
                   return const Center(
                     child: CircularProgressIndicator(),
                   );
                 }
 
-                /*return Expanded(
-                  child: SizedBox(
-                    height: 800,
-                    width: double.infinity,
-                    child: ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: snapshot.data!['data'].length,
-                        itemBuilder: (context, index) {
-                          return _buildCard(snapshot.data!['data'][index]);
-                        }),
-                  ),
-                );*/
-
-                return Column(
-                  children: _createList(snapshot.data!['data']),
-                );
+                if (snapshot.hasData) {
+                  return Column(
+                    children: _createList(snapshot.data!['data']),
+                  );
+                } else {
+                  return const Text('Error en api');
+                }
               },
             ),
           ),
@@ -132,6 +119,8 @@ class _MySavedPageState extends State<MySavedPage> {
                       await delete(token, 'custom',
                           'wishlist/customer/item/${data['product_id']}');
                       setState(() {});
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('Se borro favorito')));
                     },
                   ),
                 )
@@ -144,12 +133,7 @@ class _MySavedPageState extends State<MySavedPage> {
           ),
           SizedBox(height: 8.0),
           Text(
-            'Tipo de Comida: ',
-            style: TextStyle(fontSize: 16.0),
-          ),
-          SizedBox(height: 4.0),
-          Text(
-            'Horario de Atención: ',
+            'SKU: ${data['sku']}',
             style: TextStyle(fontSize: 16.0),
           ),
         ],

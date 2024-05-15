@@ -4,6 +4,8 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:andromeda/services/api.dart';
 import 'package:andromeda/services/db.dart';
 
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 class RestuarentScreen extends StatefulWidget {
   final Map<dynamic, dynamic> data;
   const RestuarentScreen({Key? key, required this.data}) : super(key: key);
@@ -13,9 +15,12 @@ class RestuarentScreen extends StatefulWidget {
 }
 
 class _RestuarentScreenState extends State<RestuarentScreen> {
+  String? _url =
+      "${dotenv.env['PROTOCOL']}://${dotenv.env['URL']}/media/catalog/product";
+
   @override
   Widget build(BuildContext context) {
-    print(widget.data['image']);
+    //print(widget.data['media_gallery_entries']);
     final height = MediaQuery.of(context).size.height * 1;
     final width = MediaQuery.of(context).size.width * 1;
     return InkWell(
@@ -40,11 +45,15 @@ class _RestuarentScreenState extends State<RestuarentScreen> {
                 children: [
                   ClipRRect(
                       borderRadius: BorderRadius.circular(10),
-                      child: Image.network(
-                          "http://82.165.212.67/media/catalog/product" +
-                              widget.data['media_gallery_entries'][0]['file'],
-                          width: 300,
-                          height: 180)),
+                      child: widget.data['media_gallery_entries'] != null
+                          ? Image.network(
+                              _url! +
+                                  widget.data['media_gallery_entries'][0]
+                                      ['file'],
+                              width: 300,
+                              height: 180)
+                          : Image.asset('assets/notFoundImg.png',
+                              width: 350, height: 180)),
                   /*Padding(
                     padding: const EdgeInsets.symmetric(vertical: 15),
                     child: Container(
@@ -117,6 +126,10 @@ class _RestuarentScreenState extends State<RestuarentScreen> {
                           'wishlist/customer/product/${widget.data["id"]}',
                           {},
                           '');
+                      if (favorite['success']) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('Se agrego a favoritos')));
+                      }
 
                       print(favorite);
                     },

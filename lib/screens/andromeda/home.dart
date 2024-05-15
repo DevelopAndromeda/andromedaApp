@@ -33,10 +33,10 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Future getSecondSection() async {
-    return await get('', 'integration',
-        'products/?searchCriteria[sortOrders][0][direction]=ASC&searchCriteria[currentPage]=2&searchCriteria[pageSize]=3&searchCriteria[filterGroups][0][filters][1][field]=category_id&searchCriteria[filterGroups][0][filters][1][value]=3&searchCriteria[filterGroups][0][filters][1][conditionType]=eq');
-    //return await get(
-    //    '', 'integration', 'threedadv-catalog/most-viewed?pageSize=10&city=2');
+    //return await get('', 'integration',
+    //    'products/?searchCriteria[sortOrders][0][direction]=ASC&searchCriteria[currentPage]=2&searchCriteria[pageSize]=3&searchCriteria[filterGroups][0][filters][1][field]=category_id&searchCriteria[filterGroups][0][filters][1][value]=3&searchCriteria[filterGroups][0][filters][1][conditionType]=eq');
+    return await get(
+        '', 'integration', 'threedadv-catalog/most-viewed?pageSize=10&city=2');
   }
 
   Future getAllRestaurants() async {
@@ -143,7 +143,6 @@ class _MyHomePageState extends State<MyHomePage> {
                       }),
                 ),
               ),
-            
               const Text(
                 'Mas Vistos',
                 style: TextStyle(

@@ -29,7 +29,8 @@ class _MyHomeRestPageState extends State<MyHomeRestPage> {
     return Scaffold(
       drawer: NavDrawer(changeSalida: () {}),
       appBar: AppBar(
-        title: Text('Panel de Administración'),
+        title: Text('Panel'),
+        backgroundColor: Colors.black,
       ),
       body: Center(
           /*child: Column(

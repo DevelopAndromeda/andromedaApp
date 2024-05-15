@@ -80,20 +80,15 @@ class _MyLoginPageState extends State<MyLoginPage> {
                   ),
                 ),
               ),
-              Positioned(
-                bottom: 0,
-                left: 10,
-                right: 0,
-                child: Container(
-                  color: Colors.black,
-                  padding: EdgeInsets.all(5),
-                  child: Text(
-                    'Recomendacion del mes, Black food - Roma CDMX                         ',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 14,
-                    ),
+              Container(
+                color: Colors.black,
+                padding: EdgeInsets.all(5),
+                child: Text(
+                  'Recomendacion del mes, Black food - Roma CDMX                         ',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 14,
                   ),
                 ),
               ),

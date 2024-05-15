@@ -1,3 +1,6 @@
+import 'dart:ffi';
+
+import 'package:andromeda/screens/restaurant/contact.dart';
 import 'package:andromeda/services/api.dart';
 import 'package:andromeda/services/db.dart';
 import 'package:flutter/material.dart';
@@ -57,9 +60,10 @@ class _MyDetailPageState extends State<MyDetailPage>
   }
 
   Future<void> getOptions(String? sku) async {
-    print('getOptions -> $sku');
+    print('************* getOptions *************');
+    print('************* SKU: ${sku} *************');
     _options = await get('', 'integration', 'products/$sku/options');
-    print(_options);
+    print('************* options: ${_options} *************');
   }
 
   //final String nombre = "Nombre del Restaurante";
@@ -114,6 +118,7 @@ class _MyDetailPageState extends State<MyDetailPage>
   }*/
 
   Future<void> generateOrden() async {
+    print('************* Obtener Sesion *************');
     final sesion = await serviceDB.instance.getById('users', 'id_user', 1);
     // Generar carrito vacio
     if (sesion.isEmpty) {
@@ -121,22 +126,21 @@ class _MyDetailPageState extends State<MyDetailPage>
           SnackBar(content: Text('Nesecitas iniciar una sesion')));
       return;
     }
+    print('************* Sesion: ${sesion} *************');
 
-    print('llamar con post');
-    //Creamos Carrito y lo guardamos
-    var myCart = await post(sesion[0]['token'], 'custom', 'carts/mine', {}, '')
-        .then((value) async {
-      return await get(sesion[0]['token'], 'custom', 'carts/mine');
-    });
-    print(myCart);
-
+    print('************* Generar custom_options: *************');
     List<Map<String, dynamic>> custom_options = [];
     if (_options.isEmpty) {
       await getOptions(widget.data['sku']);
     }
-    print(_options);
+    print('************* options: ${_options} *************');
+    if (_options.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('No Existen Labels para este producto')));
+      return;
+    }
+
     for (dynamic item in _options) {
-      print('item $item');
       String value = '';
       if (item['title'] == 'Booking Date') {
         value = DateFormat('yyyy-MM-dd').format(_selectedDate).toString();
@@ -161,8 +165,15 @@ class _MyDetailPageState extends State<MyDetailPage>
       custom_options
           .add({"option_id": item['option_id'], "option_value": value});
     }
-    print('***custom_options***');
-    print(custom_options);
+    print('************* custom_options: ${custom_options} *************');
+
+    print('************* Crear Carrito *************');
+    //Creamos Carrito y lo guardamos
+    var myCart = await post(sesion[0]['token'], 'custom', 'carts/mine', {}, '')
+        .then((value) async {
+      return await get(sesion[0]['token'], 'custom', 'carts/mine');
+    });
+    print('************* Carrito: ${myCart} *************');
 
     List<Map<String, dynamic>> configurable_item_options = [];
     configurable_item_options.addAll([
@@ -175,8 +186,8 @@ class _MyDetailPageState extends State<MyDetailPage>
       {"option_id": "slot_day_index", "option_value": _selectedDate.weekday},
       {"option_id": "charged_per_count", "option_value": 4},
     ]);
-    print('***configurable_item_options***');
-    print(configurable_item_options);
+    print(
+        '************* configurable_item_options: ${configurable_item_options} *************');
 
     Map<String, dynamic> _cartItem = {
       "cartItem": {
@@ -195,23 +206,23 @@ class _MyDetailPageState extends State<MyDetailPage>
       "booking_time": Hora
     };
 
-    print('_cartItem');
-    print(_cartItem);
+    print('************* cartItem: ${_cartItem} *************');
 
     //Revisar productos
+    print('************* Obtener Items en Carrito *************');
     final items = await get(sesion[0]['token'], 'custom', 'carts/mine/items');
-    print('***items***');
-    print(items);
+    print('************* items: ${items} *************');
 
     if (items.isEmpty) {
       //Agregar item al carrito
       final addItem = await post(
           sesion[0]['token'], 'custom', 'carts/mine/items', _cartItem, 'v2');
-      print("***addItem***");
-      print(addItem);
+      print('************* Agregar Item: ${addItem} *************');
     } else {
       bool bandera = true;
       for (dynamic data in items) {
+        print('************* SKU: ${data['sku']} *************');
+        print('************* SKU-Actual: ${widget.data['sku']} *************');
         if (data['sku'] == widget.data['sku']) {
           bandera = false;
         }
@@ -221,8 +232,7 @@ class _MyDetailPageState extends State<MyDetailPage>
         //Agregar item al carrito
         final addItem = await post(
             sesion[0]['token'], 'custom', 'carts/mine/items', _cartItem, 'v2');
-        print("***addItem***");
-        print(addItem);
+        print('************* Agregar Item: ${addItem} *************');
       }
     }
 
@@ -263,8 +273,7 @@ class _MyDetailPageState extends State<MyDetailPage>
     //Set info
     final shippingInfo = await post(sesion[0]['token'], 'custom',
         'carts/mine/shipping-information', _info, '');
-    print('shippingInfo');
-    print(shippingInfo);
+    print('************* shippingInfo: ${shippingInfo} *************');
 
     //Generate Order
     final orden = await put(
@@ -275,25 +284,28 @@ class _MyDetailPageState extends State<MyDetailPage>
           "paymentMethod": {"method": "checkmo"}
         },
         '');
-    print('orden');
-    print(orden);
-
-    //
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text('Reserva Realizada'),
-        content: Text('Tu reserva ha sido realizada con éxito.'),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            child: Text('OK'),
-          ),
-        ],
-      ),
-    );
+    print('************* ORDEN: ${orden} *************');
+    print('************* ORDEN-TYPE: ${orden.runtimeType} *************');
+    if (orden.runtimeType != int) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(orden['message'])));
+    } else {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text('Reserva Realizada'),
+          content: Text('Tu reserva ha sido realizada con éxito.'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('OK'),
+            ),
+          ],
+        ),
+      );
+    }
   }
 
   @override
@@ -404,6 +416,10 @@ class _MyDetailPageState extends State<MyDetailPage>
                         });
                         Navigator.of(context).push(_createRoute());
                       }
+
+                      if (index == 2) {
+                        Navigator.of(context).push(_createRouteContac());
+                      }
                     },
                     tabs: const <Widget>[
                       Tab(
@@ -418,7 +434,7 @@ class _MyDetailPageState extends State<MyDetailPage>
                     ],
                   ),
                   SizedBox(
-                    height: 500,
+                    height: 700,
                     child: TabBarView(
                       controller: _tabController,
                       children: <Widget>[
@@ -564,7 +580,6 @@ class _MyDetailPageState extends State<MyDetailPage>
                                       fontSize: 20,
                                       color: Color.fromARGB(255, 255, 255, 255),
                                     ),
-                                    minimumSize: Size(200, 50),
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(4),
                                     )),
@@ -684,6 +699,26 @@ class _MyDetailPageState extends State<MyDetailPage>
         );
       },
     );
+  }
+
+  Route _createRouteContac() {
+    return PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) => MyContactPage(
+              data: widget.data,
+            ),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          const begin = Offset(0.0, 1.0);
+          const end = Offset.zero;
+          const curve = Curves.ease;
+
+          var tween =
+              Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+          return SlideTransition(
+            position: animation.drive(tween),
+            child: child,
+          );
+        });
   }
 
   getCustomAttribute(data, type) {

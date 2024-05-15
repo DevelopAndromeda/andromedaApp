@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import 'package:andromeda/services/api.dart';
@@ -5,8 +7,12 @@ import 'package:andromeda/services/gps.dart';
 import 'package:andromeda/services/db.dart';
 
 import 'package:andromeda/Witgets/General/Colores_Base.dart';
+import 'package:andromeda/models/categorias.dart';
+import 'package:multi_select_flutter/multi_select_flutter.dart';
 
-import 'package:andromeda/models/estados.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+//import "package:google_maps_webservice/geocoding.dart";
+import 'package:andromeda/screens/andromeda-rest/menu.dart';
 
 class AltaRest extends StatefulWidget {
   const AltaRest({super.key});
@@ -28,7 +34,11 @@ class _AltaRestState extends State<AltaRest> {
   final TextEditingController _slot_duration = TextEditingController();
   final TextEditingController _prevent_scheduling_before =
       TextEditingController();
+  List<Categoria> _selectedCategorias = [];
   final TextEditingController _break_time_bw_slot = TextEditingController();
+  CameraPosition _initialPosition =
+      CameraPosition(target: LatLng(23.3231416, -103.8384764));
+  Completer<GoogleMapController> _controller = Completer();
   final List<Map<String, dynamic>> _daysOfWeek = [
     {
       'name': 'Lunes',
@@ -108,23 +118,73 @@ class _AltaRestState extends State<AltaRest> {
     '10:00 pm',
     '11:00 pm'
   ];
+  static List<Categoria> _categoria = [
+    Categoria(id: 1, name: "Lion"),
+    Categoria(id: 2, name: "Flamingo"),
+    Categoria(id: 3, name: "Hippo"),
+    Categoria(id: 4, name: "Horse"),
+    Categoria(id: 5, name: "Tiger"),
+    Categoria(id: 6, name: "Penguin"),
+    Categoria(id: 7, name: "Spider"),
+    Categoria(id: 8, name: "Snake"),
+    Categoria(id: 9, name: "Bear"),
+    Categoria(id: 10, name: "Beaver"),
+    Categoria(id: 11, name: "Cat"),
+    Categoria(id: 12, name: "Fish"),
+    Categoria(id: 13, name: "Rabbit"),
+    Categoria(id: 14, name: "Mouse"),
+    Categoria(id: 15, name: "Dog"),
+    Categoria(id: 16, name: "Zebra"),
+    Categoria(id: 17, name: "Cow"),
+    Categoria(id: 18, name: "Frog"),
+    Categoria(id: 19, name: "Blue Jay"),
+    Categoria(id: 20, name: "Moose"),
+    Categoria(id: 21, name: "Gecko"),
+    Categoria(id: 22, name: "Kangaroo"),
+    Categoria(id: 23, name: "Shark"),
+    Categoria(id: 24, name: "Crocodile"),
+    Categoria(id: 25, name: "Owl"),
+    Categoria(id: 26, name: "Dragonfly"),
+    Categoria(id: 27, name: "Dolphin"),
+  ];
+  final _items = _categoria
+      .map((cat) => MultiSelectItem<Categoria>(cat, cat.name))
+      .toList();
   List<String> Paises = ['México'];
   Future<void> getUserData() async {
     var sesion = await serviceDB.instance.getById('users', 'id_user', 1);
 
     if (sesion.isNotEmpty) {
+      print('sesion');
       print(sesion[0]);
+      if (sesion[0]['lat'] == null || sesion[0]['long'] == null) {
+        _setCoords();
+      } else {
+        GoogleMapController controller = await _controller.future;
+        controller.animateCamera(CameraUpdate.newLatLngZoom(
+            LatLng(sesion[0]['lat'], sesion[0]['long']), 15));
+      }
     }
+  }
+
+  Future<void> _setCoords() async {
+    dynamic geo = await determinePosition();
+    print('geo');
+    print(geo);
+    Map<String, dynamic> _update = {'lat': geo.longitude, 'long': geo.latitude};
+    await serviceDB.instance.updateRecord('users', _update, 'id_user', 1);
+
+    GoogleMapController controller = await _controller.future;
+    controller.animateCamera(
+        CameraUpdate.newLatLngZoom(LatLng(geo.longitude, geo.latitude), 15));
   }
 
   Future<List<Map<dynamic, dynamic>>> getCategories() async {
     final categories = await get('', 'integration',
-        'categories/list?searchCriteria[filterGroups][0][filters][1][field]=is_visible_app&searchCriteria[filterGroups][0][filters][1][value]=1&searchCriteria[filterGroups][0][filters][1][conditionType]=eq&searchCriteria[sortOrders][0][field]=name&searchCriteria[sortOrders][0][direction]=ASC&searchCriteria[currentPage]=1&searchCriteria[pageSize]=100');
+        '{{url}}/rest/V1/categories/list?searchCriteria[filterGroups][0][filters][1][field]=is_visible_app&searchCriteria[filterGroups][0][filters][1][value]=1&searchCriteria[filterGroups][0][filters][1][conditionType]=eq&searchCriteria[sortOrders][0][field]=name&searchCriteria[sortOrders][0][direction]=ASC');
     if (categories != null) {
       return [];
     }
-
-    print(categories);
 
     return categories['items'];
   }
@@ -142,6 +202,10 @@ class _AltaRestState extends State<AltaRest> {
     return estadosEndpoint['items'];
   }
 
+  void _onMapCreated(GoogleMapController controller) {
+    _controller.complete(controller);
+  }
+
   @override
   void initState() {
     super.initState();
@@ -153,13 +217,10 @@ class _AltaRestState extends State<AltaRest> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Background_Color,
+      drawer: NavDrawer(changeSalida: () {}),
       appBar: AppBar(
-        title: Text('Alta de Restaurante'),
-        centerTitle: true,
-        leading: BackButton(),
-        elevation: 1,
-        backgroundColor: Colors.black12,
+        title: Text('Alta'),
+        backgroundColor: Colors.black,
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -203,6 +264,38 @@ class _AltaRestState extends State<AltaRest> {
                       return null;
                     }),
                 SizedBox(height: 20.0),
+                MultiSelectBottomSheetField(
+                  initialChildSize: 0.4,
+                  listType: MultiSelectListType.CHIP,
+                  searchable: true,
+                  buttonText: Text("Favorite Animals"),
+                  title: Text("Animals"),
+                  items: _items,
+                  onConfirm: (values) {
+                    //_selectedCategorias = values!;
+                    print(values);
+                  },
+                  chipDisplay: MultiSelectChipDisplay(
+                    onTap: (value) {
+                      print(value);
+                      /*setState(() {
+                            _selectedCategorias.remove(value);
+                          });*/
+                    },
+                  ),
+                ),
+                _selectedCategorias == null || _selectedCategorias.isEmpty
+                    ? Container(
+                        padding: EdgeInsets.all(10),
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          "None selected",
+                          style: TextStyle(color: Colors.black54),
+                        ))
+                    : Container(),
+                SizedBox(
+                  height: 20.0,
+                ),
                 Text(
                   'Informacion de Contacto',
                   style: TextStyle(fontSize: 25),
@@ -273,6 +366,25 @@ class _AltaRestState extends State<AltaRest> {
                     }
                     return null;
                   },
+                  onChanged: (value) async {
+                    //print('este valor ira al api de mapas: $value');
+                    if (value.length > 4) {
+                      print('ir geo');
+                      final data = await getDirByGeocoding(value);
+                      print(data);
+                      //GeocodingResponse response =
+                      //    await geocoding.searchByAddress(value);
+                      //print(response);
+                    }
+                  },
+                ),
+                SizedBox(
+                  height: 300,
+                  child: GoogleMap(
+                    myLocationEnabled: true,
+                    onMapCreated: _onMapCreated,
+                    initialCameraPosition: _initialPosition,
+                  ),
                 ),
                 SizedBox(height: 20.0),
                 Text(
@@ -359,7 +471,6 @@ class _AltaRestState extends State<AltaRest> {
                 SizedBox(height: 10.0),
                 SingleChildScrollView(
                   child: SizedBox(
-                    width: double.infinity,
                     child: ListView.builder(
                         shrinkWrap: true,
                         itemCount: _daysOfWeek.length,
@@ -368,103 +479,80 @@ class _AltaRestState extends State<AltaRest> {
                           //print(data[index]);
                           print(index);
                           print(_daysOfWeek[index]['name']);
-                          return Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          return Column(
                             children: [
-                              Checkbox(
-                                value: _daysOfWeek[index]['checked'],
-                                onChanged: (bool? value) {
-                                  print(value);
-                                  setState(() {
-                                    _daysOfWeek[index]['checked'] = value;
-                                  });
-                                },
+                              Container(
+                                //color: Colors.blue,
+                                child: Row(children: [
+                                  Checkbox(
+                                    value: _daysOfWeek[index]['checked'],
+                                    onChanged: (bool? value) {
+                                      print(value);
+                                      setState(() {
+                                        _daysOfWeek[index]['checked'] = value;
+                                      });
+                                    },
+                                  ),
+                                  Text(_daysOfWeek[index]['name']),
+                                ]),
                               ),
-                              Text(_daysOfWeek[index]['name']),
-                              Flexible(
-                                  child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 3, horizontal: 3),
-                                child: DropdownButtonFormField<String>(
-                                  //value: _daysOfWeek[index]['hora'][0]['from'],
-                                  items: _timeOptions.map((String time) {
-                                    return DropdownMenuItem<String>(
-                                      value: time,
-                                      child: Text(time),
-                                    );
-                                  }).toList(),
-                                  decoration:
-                                      InputDecoration(labelText: 'Inicio'),
-                                  onChanged: (String? newValue) {
-                                    setState(() {
-                                      // _restaurant.horaFin = newValue!;
-                                      _daysOfWeek[index]['hora'][0]['from'] =
-                                          newValue!;
-                                    });
-                                  },
-                                ),
-                              )),
-                              Flexible(
-                                  child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 3, horizontal: 3),
-                                child: DropdownButtonFormField<String>(
-                                  //value: _restaurant.horaInicio,
-                                  items: _timeOptions.map((String time) {
-                                    return DropdownMenuItem<String>(
-                                      value: time,
-                                      child: Text(time),
-                                    );
-                                  }).toList(),
-                                  decoration:
-                                      InputDecoration(labelText: 'Final'),
-                                  onChanged: (String? newValue) {
-                                    setState(() {
-                                      _daysOfWeek[index]['hora'][0]['to'] =
-                                          newValue!;
-                                    });
-                                  },
-                                ),
-                              )),
-                              /*Expanded(
-                                child: DropdownButtonFormField<String>(
-                                  //value: _daysOfWeek[index]['hora'][0]['from'],
-                                  items: _timeOptions.map((String time) {
-                                    return DropdownMenuItem<String>(
-                                      value: time,
-                                      child: Text(time),
-                                    );
-                                  }).toList(),
-                                  decoration:
-                                      InputDecoration(labelText: 'Inicio'),
-                                  onChanged: (String? newValue) {
-                                    setState(() {
-                                      // _restaurant.horaFin = newValue!;
-                                      _daysOfWeek[index]['hora'][0]['from'] =
-                                          newValue!;
-                                    });
-                                  },
+                              Container(
+                                //color: Colors.red,
+                                child: Row(
+                                  children: [
+                                    Flexible(
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 2, horizontal: 2),
+                                        child: DropdownButtonFormField<String>(
+                                          //value: _daysOfWeek[index]['hora'][0]['from'],
+                                          items:
+                                              _timeOptions.map((String time) {
+                                            return DropdownMenuItem<String>(
+                                              value: time,
+                                              child: Text(time),
+                                            );
+                                          }).toList(),
+                                          decoration: InputDecoration(
+                                              labelText: 'Inicio'),
+                                          onChanged: (String? newValue) {
+                                            setState(() {
+                                              // _restaurant.horaFin = newValue!;
+                                              _daysOfWeek[index]['hora'][0]
+                                                  ['from'] = newValue!;
+                                            });
+                                          },
+                                        ),
+                                      ),
+                                    ),
+                                    Flexible(
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 2, horizontal: 2),
+                                        child: DropdownButtonFormField<String>(
+                                          //value: _restaurant.horaInicio,
+                                          items:
+                                              _timeOptions.map((String time) {
+                                            return DropdownMenuItem<String>(
+                                              value: time,
+                                              child: Text(time),
+                                            );
+                                          }).toList(),
+                                          decoration: InputDecoration(
+                                              labelText: 'Final'),
+                                          onChanged: (String? newValue) {
+                                            setState(() {
+                                              _daysOfWeek[index]['hora'][0]
+                                                  ['to'] = newValue!;
+                                            });
+                                          },
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
-                              Expanded(
-                                child: DropdownButtonFormField<String>(
-                                  //value: _restaurant.horaInicio,
-                                  items: _timeOptions.map((String time) {
-                                    return DropdownMenuItem<String>(
-                                      value: time,
-                                      child: Text(time),
-                                    );
-                                  }).toList(),
-                                  decoration:
-                                      InputDecoration(labelText: 'Final'),
-                                  onChanged: (String? newValue) {
-                                    setState(() {
-                                      _daysOfWeek[index]['hora'][0]['to'] =
-                                          newValue!;
-                                    });
-                                  },
-                                ),
-                              ),*/
+                              SizedBox(height: 10.0),
                             ],
                           );
                         }),

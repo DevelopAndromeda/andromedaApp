@@ -3,6 +3,7 @@ import 'package:andromeda/screens/andromeda-rest/modificacion-rest.dart';
 import 'package:andromeda/Witgets/General/Colores_Base.dart';
 import 'package:andromeda/services/api.dart';
 import 'package:andromeda/services/db.dart';
+import 'package:andromeda/screens/andromeda-rest/menu.dart';
 
 class ListRest extends StatefulWidget {
   const ListRest({super.key});
@@ -26,10 +27,13 @@ class _ListRestState extends State<ListRest> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: NavDrawer(changeSalida: () {}),
       backgroundColor: Background_Color,
       appBar: AppBar(
-        title: Text('Lista de restaurantes'),
-        backgroundColor: Base_ColorClaro,
+        title: Text('Retaurantes'),
+        centerTitle: true,
+        elevation: 1,
+        backgroundColor: Colors.black,
       ),
       body: SafeArea(
         child: SingleChildScrollView(

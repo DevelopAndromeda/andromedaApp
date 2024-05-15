@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:andromeda/services/api.dart';
 
 import 'package:andromeda/Witgets/bottomBar.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class MySearchPage extends StatefulWidget {
   const MySearchPage({super.key});
@@ -13,10 +14,13 @@ class MySearchPage extends StatefulWidget {
 
 class _MySearchPageState extends State<MySearchPage> {
   final search = TextEditingController();
+  String? _url =
+      "${dotenv.env['PROTOCOL']}://${dotenv.env['URL']}/media/catalog/product";
 
   Future getRestaurantsSearch(input) async {
-    return await get('', 'integration',
-        'products/?searchCriteria[filterGroups][0][filters][0][field]=name&searchCriteria[filterGroups][0][filters][0][value]=%25${input}%25&searchCriteria[filterGroups][0][filters][0][conditionType]=like&searchCriteria[sortOrders][0][field]=name&searchCriteria[sortOrders][0][direction]=ASC&searchCriteria[currentPage]=1&searchCriteria[pageSize]=20');
+    //return await get('', 'integration',
+    //    'products/?searchCriteria[filterGroups][0][filters][0][field]=name&searchCriteria[filterGroups][0][filters][0][value]=%25${input}%25&searchCriteria[filterGroups][0][filters][0][conditionType]=like&searchCriteria[sortOrders][0][field]=name&searchCriteria[sortOrders][0][direction]=ASC&searchCriteria[currentPage]=1&searchCriteria[pageSize]=20');
+    return await get('', '', 'restaurant/product/search?q=${input}');
   }
 
   @override
@@ -98,16 +102,7 @@ class _MySearchPageState extends State<MySearchPage> {
 
   List<Widget> _createList(items) {
     List<Widget> lists = <Widget>[];
-
-    if (items.length > 0) {
-      for (dynamic data in items) {
-        print(data);
-        lists.add(_buildCard(data));
-      }
-    } else {
-      lists.add(const Center(child: Text('Sin Registros')));
-    }
-
+    items.forEach((element) => {lists.add(_buildCard(element))});
     return lists;
   }
 
@@ -123,13 +118,20 @@ class _MySearchPageState extends State<MySearchPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Image.network(
-              "http://82.165.212.67/media/catalog/product" +
-                  data['media_gallery_entries'][0]['file'],
-              height: 150.0,
-              width: double.infinity,
-              fit: BoxFit.cover,
-            ),
+            getCustomAttribute(data['custom_attributes'], 'image') != ""
+                ? Image.network(
+                    _url! +
+                        getCustomAttribute(data['custom_attributes'], 'image'),
+                    height: 150.0,
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                  )
+                : Image.asset(
+                    'assets/notFoundImg.png',
+                    width: double.infinity,
+                    height: 150,
+                    fit: BoxFit.cover,
+                  ),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Column(
@@ -162,5 +164,20 @@ class _MySearchPageState extends State<MySearchPage> {
         ),
       ),
     );
+  }
+
+  getCustomAttribute(data, type) {
+    if (data.length == 0) {
+      return '';
+    }
+
+    Map<String, String> typeValue = {'product_score': '0'};
+    String? value = typeValue[type] ?? '';
+    for (dynamic attr in data) {
+      if (attr['attribute_code'] == type) {
+        value = attr['value'];
+      }
+    }
+    return value;
   }
 }

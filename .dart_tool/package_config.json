@@ -44,6 +44,12 @@
       "languageVersion": "2.19"
     },
     {
+      "name": "csslib",
+      "rootUri": "file:///Users/emmanuelsantizfelipe/.pub-cache/hosted/pub.dev/csslib-1.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.19"
+    },
+    {
       "name": "cupertino_icons",
       "rootUri": "file:///Users/emmanuelsantizfelipe/.pub-cache/hosted/pub.dev/cupertino_icons-1.0.6",
       "packageUri": "lib/",
@@ -82,6 +88,12 @@
     {
       "name": "flutter_lints",
       "rootUri": "file:///Users/emmanuelsantizfelipe/.pub-cache/hosted/pub.dev/flutter_lints-2.0.3",
+      "packageUri": "lib/",
+      "languageVersion": "2.19"
+    },
+    {
+      "name": "flutter_plugin_android_lifecycle",
+      "rootUri": "file:///Users/emmanuelsantizfelipe/.pub-cache/hosted/pub.dev/flutter_plugin_android_lifecycle-2.0.17",
       "packageUri": "lib/",
       "languageVersion": "2.19"
     },
@@ -140,6 +152,48 @@
       "languageVersion": "2.15"
     },
     {
+      "name": "google_maps",
+      "rootUri": "file:///Users/emmanuelsantizfelipe/.pub-cache/hosted/pub.dev/google_maps-6.3.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "google_maps_flutter",
+      "rootUri": "file:///Users/emmanuelsantizfelipe/.pub-cache/hosted/pub.dev/google_maps_flutter-2.3.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.18"
+    },
+    {
+      "name": "google_maps_flutter_android",
+      "rootUri": "file:///Users/emmanuelsantizfelipe/.pub-cache/hosted/pub.dev/google_maps_flutter_android-2.5.3",
+      "packageUri": "lib/",
+      "languageVersion": "2.19"
+    },
+    {
+      "name": "google_maps_flutter_ios",
+      "rootUri": "file:///Users/emmanuelsantizfelipe/.pub-cache/hosted/pub.dev/google_maps_flutter_ios-2.3.2",
+      "packageUri": "lib/",
+      "languageVersion": "2.19"
+    },
+    {
+      "name": "google_maps_flutter_platform_interface",
+      "rootUri": "file:///Users/emmanuelsantizfelipe/.pub-cache/hosted/pub.dev/google_maps_flutter_platform_interface-2.4.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.19"
+    },
+    {
+      "name": "google_maps_flutter_web",
+      "rootUri": "file:///Users/emmanuelsantizfelipe/.pub-cache/hosted/pub.dev/google_maps_flutter_web-0.5.4+1",
+      "packageUri": "lib/",
+      "languageVersion": "2.19"
+    },
+    {
+      "name": "html",
+      "rootUri": "file:///Users/emmanuelsantizfelipe/.pub-cache/hosted/pub.dev/html-0.15.4",
+      "packageUri": "lib/",
+      "languageVersion": "2.19"
+    },
+    {
       "name": "http",
       "rootUri": "file:///Users/emmanuelsantizfelipe/.pub-cache/hosted/pub.dev/http-0.13.6",
       "packageUri": "lib/",
@@ -164,6 +218,12 @@
       "languageVersion": "2.16"
     },
     {
+      "name": "js_wrapping",
+      "rootUri": "file:///Users/emmanuelsantizfelipe/.pub-cache/hosted/pub.dev/js_wrapping-0.7.4",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "lints",
       "rootUri": "file:///Users/emmanuelsantizfelipe/.pub-cache/hosted/pub.dev/lints-2.0.1",
       "packageUri": "lib/",
@@ -184,6 +244,12 @@
     {
       "name": "meta",
       "rootUri": "file:///Users/emmanuelsantizfelipe/.pub-cache/hosted/pub.dev/meta-1.8.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "multi_select_flutter",
+      "rootUri": "file:///Users/emmanuelsantizfelipe/.pub-cache/hosted/pub.dev/multi_select_flutter-4.1.3",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -260,6 +326,12 @@
       "languageVersion": "2.16"
     },
     {
+      "name": "sanitize_html",
+      "rootUri": "file:///Users/emmanuelsantizfelipe/.pub-cache/hosted/pub.dev/sanitize_html-2.1.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "sky_engine",
       "rootUri": "file:///Users/emmanuelsantizfelipe/development/flutter/bin/cache/pkg/sky_engine",
       "packageUri": "lib/",
@@ -298,6 +370,12 @@
     {
       "name": "stream_channel",
       "rootUri": "file:///Users/emmanuelsantizfelipe/.pub-cache/hosted/pub.dev/stream_channel-2.1.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.14"
+    },
+    {
+      "name": "stream_transform",
+      "rootUri": "file:///Users/emmanuelsantizfelipe/.pub-cache/hosted/pub.dev/stream_transform-2.1.0",
       "packageUri": "lib/",
       "languageVersion": "2.14"
     },
@@ -362,7 +440,7 @@
       "languageVersion": "2.19"
     }
   ],
-  "generated": "2024-04-30T17:03:10.345510Z",
+  "generated": "2024-05-14T21:49:31.155360Z",
   "generator": "pub",
   "generatorVersion": "2.19.6"
 }
