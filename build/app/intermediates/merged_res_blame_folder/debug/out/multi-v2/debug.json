@@ -1140,7 +1140,7 @@
             "outputFile": "com.example.andromeda.app-merged_res-14:/values-night-v8_values-night-v8.arsc.flat",
             "map": [
                 {
-                    "source": "/Users/emmanuelsantizfelipe/Documents/flutter/AndromedaApp/android/app/src/main/res/values-night/styles.xml",
+                    "source": "/Users/emmanuelsantizfelipe/Documents/flutter/andromedaapp/android/app/src/main/res/values-night/styles.xml",
                     "from": {
                         "startLines": "3,14",
                         "startColumns": "4,4",
@@ -4538,6 +4538,25 @@
                     }
                 },
                 {
+                    "source": "/Users/emmanuelsantizfelipe/Documents/flutter/andromedaapp/android/app/src/main/res/values/styles.xml",
+                    "from": {
+                        "startLines": "3,14",
+                        "startColumns": "4,4",
+                        "startOffsets": "173,818",
+                        "endLines": "7,16",
+                        "endColumns": "12,12",
+                        "endOffsets": "476,982"
+                    },
+                    "to": {
+                        "startLines": "121,125",
+                        "startColumns": "4,4",
+                        "startOffsets": "8627,8808",
+                        "endLines": "124,127",
+                        "endColumns": "12,12",
+                        "endOffsets": "8803,8972"
+                    }
+                },
+                {
                     "source": "/Users/emmanuelsantizfelipe/.gradle/caches/transforms-3/f46b9773282b7a3d38863a46e0e0b5d1/transformed/jetified-play-services-basement-18.1.0/res/values/values.xml",
                     "from": {
                         "startLines": "4,7",
@@ -4590,25 +4609,6 @@
                         "endLines": "13,14,15,16,17,18,19,20,102,103,104,105,106,107,108,109,111,112,113,114,115,116,117,118,119,272,291",
                         "endColumns": "89,79,89,89,79,80,79,79,104,180,124,106,179,122,115,102,187,104,180,124,174,147,62,61,78,20,20",
                         "endOffsets": "746,826,916,1006,1086,1167,1247,1327,6323,6504,6629,6736,6916,7039,7155,7258,7613,7718,7899,8024,8199,8347,8410,8472,8551,14275,14692"
-                    }
-                },
-                {
-                    "source": "/Users/emmanuelsantizfelipe/Documents/flutter/AndromedaApp/android/app/src/main/res/values/styles.xml",
-                    "from": {
-                        "startLines": "3,14",
-                        "startColumns": "4,4",
-                        "startOffsets": "173,818",
-                        "endLines": "7,16",
-                        "endColumns": "12,12",
-                        "endOffsets": "476,982"
-                    },
-                    "to": {
-                        "startLines": "121,125",
-                        "startColumns": "4,4",
-                        "startOffsets": "8627,8808",
-                        "endLines": "124,127",
-                        "endColumns": "12,12",
-                        "endOffsets": "8803,8972"
                     }
                 }
             ]
