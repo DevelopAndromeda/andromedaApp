@@ -15,14 +15,24 @@ class baseButtom extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-                  onPressed: onPressed, 
+    return SizedBox(
+      width: 500, // Ancho deseado
+    height: 40, // Alto deseado
+    child: ElevatedButton(
+ onPressed: onPressed, 
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Base_ColorDorado,
+                    backgroundColor: Colors.black,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(4),
+                  ),
                   ),
                   child: Text(text,
                   style: const TextStyle(
-                    fontSize: 18),),
+                    fontSize: 17,
+                    color: Colors.white),),
+
+    ),
+                 
                   );
   }
 }

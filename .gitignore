@@ -44,3 +44,7 @@
 !/var/package/*.xml
 
 *.env
+
+*.apk
+*.ap_
+*.aab

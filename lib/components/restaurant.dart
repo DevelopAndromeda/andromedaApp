@@ -4,41 +4,23 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:andromeda/services/api.dart';
 import 'package:andromeda/services/db.dart';
 
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 class RestuarentScreen extends StatefulWidget {
-  /*final int id;
-  final String name,
-      image,
-      remainingTime,
-      subTitle,
-      rating,
-      deliveryTime,
-      totalRating,
-      deliveryPrice;*/
   final Map<dynamic, dynamic> data;
-  const RestuarentScreen(
-      /*{Key? key,
-      required this.id,
-      required this.name,
-      required this.image,
-      required this.remainingTime,
-      required this.rating,
-      required this.deliveryTime,
-      required this.totalRating,
-      required this.subTitle,
-      required this.deliveryPrice})
-      : super(key: key);*/
-      {Key? key,
-      required this.data})
-      : super(key: key);
+  const RestuarentScreen({Key? key, required this.data}) : super(key: key);
 
   @override
   _RestuarentScreenState createState() => _RestuarentScreenState();
 }
 
 class _RestuarentScreenState extends State<RestuarentScreen> {
+  String? _url =
+      "${dotenv.env['PROTOCOL']}://${dotenv.env['URL']}/media/catalog/product";
+
   @override
   Widget build(BuildContext context) {
-    print(widget.data['image']);
+    //print(widget.data['media_gallery_entries']);
     final height = MediaQuery.of(context).size.height * 1;
     final width = MediaQuery.of(context).size.width * 1;
     return InkWell(
@@ -63,11 +45,15 @@ class _RestuarentScreenState extends State<RestuarentScreen> {
                 children: [
                   ClipRRect(
                       borderRadius: BorderRadius.circular(10),
-                      child: Image.network(
-                          "http://82.165.212.67/media/catalog/product" +
-                              widget.data['media_gallery_entries'][0]['file'],
-                          width: 300,
-                          height: 180)),
+                      child: widget.data['media_gallery_entries'] != null
+                          ? Image.network(
+                              _url! +
+                                  widget.data['media_gallery_entries'][0]
+                                      ['file'],
+                              width: 300,
+                              height: 180)
+                          : Image.asset('assets/notFoundImg.png',
+                              width: 350, height: 180)),
                   /*Padding(
                     padding: const EdgeInsets.symmetric(vertical: 15),
                     child: Container(
@@ -134,8 +120,16 @@ class _RestuarentScreenState extends State<RestuarentScreen> {
                         return;
                       }
                       String token = user[0]['token'];
-                      final favorite = await post(token, 'custom',
-                          'wishlist/customer/product/${widget.data["id"]}', {});
+                      final favorite = await post(
+                          token,
+                          'custom',
+                          'wishlist/customer/product/${widget.data["id"]}',
+                          {},
+                          '');
+                      if (favorite['success']) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('Se agrego a favoritos')));
+                      }
 
                       print(favorite);
                     },
@@ -164,7 +158,7 @@ class _RestuarentScreenState extends State<RestuarentScreen> {
                             .toString()),
                         itemBuilder: (context, index) => Icon(
                           Icons.star,
-                          color: Colors.amber,
+                          color: const Color.fromARGB(255, 20, 20, 20),
                         ),
                         itemCount: 5,
                         itemSize: 12.0,

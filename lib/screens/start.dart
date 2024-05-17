@@ -1,3 +1,4 @@
+import 'package:andromeda/screens/auth/Login/login.dart';
 import 'package:flutter/material.dart';
 
 class MyStartPage extends StatefulWidget {
@@ -49,12 +50,13 @@ class _MyStartPageState extends State<MyStartPage> {
             Expanded(
               child: GestureDetector(
                 onTap: () {
-                  Navigator.of(context).pushNamedAndRemoveUntil(
-                      'login-rest', (Route<dynamic> route) => false);
-                  /*Navigator.push(
+                  //Navigator.of(context).pushNamedAndRemoveUntil(
+                  //    'login-rest', (Route<dynamic> route) => false);
+                  //Navigator.pushNamed(context, 'login-rest');
+                  Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => LoginPageRest()),
-                  );*/
+                    MaterialPageRoute(builder: (context) => MyLoginPage()),
+                  );
                 },
                 child: SizedBox(
                   width: 300,
@@ -74,8 +76,13 @@ class _MyStartPageState extends State<MyStartPage> {
             Expanded(
               child: GestureDetector(
                 onTap: () {
-                  Navigator.of(context).pushNamedAndRemoveUntil(
-                      'login', (Route<dynamic> route) => false);
+                  //Navigator.of(context).pushNamedAndRemoveUntil(
+                  //    'login', (Route<dynamic> route) => false);
+                  //Navigator.pushNamed(context, 'login');
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => MyLoginPage()),
+                  );
                 },
                 child: SizedBox(
                   width: double.infinity,
