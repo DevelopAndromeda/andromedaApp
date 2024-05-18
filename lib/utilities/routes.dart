@@ -12,6 +12,7 @@ import 'package:andromeda/screens/andromeda/notifications.dart';
 import 'package:andromeda/screens/andromeda/saved.dart';
 import 'package:andromeda/screens/andromeda/search.dart';
 import 'package:andromeda/screens/andromeda-rest/modificacion-rest.dart';
+import 'package:andromeda/screens/andromeda-rest/reviews.dart';
 //Auth
 import 'package:andromeda/screens/auth/Login/login.dart';
 import 'package:andromeda/screens/auth/Register/register_custom.dart';
@@ -100,6 +101,13 @@ class Router {
         final data = settings.arguments as Map<String, dynamic>;
         return MaterialPageRoute(
           builder: (_) => MyReviewPage(
+            data: data,
+          ),
+        );
+      case 'reviews':
+        final data = settings.arguments as Map<String, dynamic>;
+        return MaterialPageRoute(
+          builder: (_) => Reviews(
             data: data,
           ),
         );

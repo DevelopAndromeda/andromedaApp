@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:andromeda/models/estados.dart';
 import 'package:flutter/material.dart';
 
 import 'package:andromeda/services/api.dart';
@@ -29,6 +30,7 @@ class _AltaRestState extends State<AltaRest> {
   final TextEditingController _tipoController = TextEditingController();
   final TextEditingController _pais = TextEditingController();
   final TextEditingController _estado = TextEditingController();
+  final TextEditingController _ciudad = TextEditingController();
   final TextEditingController _direccionController = TextEditingController();
   final TextEditingController _max_capacity = TextEditingController();
   final TextEditingController _slot_duration = TextEditingController();
@@ -98,6 +100,8 @@ class _AltaRestState extends State<AltaRest> {
     }
   ];
   late Future<List<dynamic>> Estados;
+  List<Estado> _Estados = [];
+  List<dynamic> Ciudades = [];
   List<String> _timeOptions = [
     '6:00 am',
     '7:00 am',
@@ -177,9 +181,20 @@ class _AltaRestState extends State<AltaRest> {
       return [];
     }
 
-    //print('Regresamos');
-    //print(estadosEndpoint['items']);
+    estadosEndpoint['items'].forEach((element) {
+      _Estados.add(Estado(
+          id: element['id'], label: element['label'], code: element['icoded']));
+    });
+
+    print('Regresamos');
+    print(estadosEndpoint['items']);
     return estadosEndpoint['items'];
+  }
+
+  Future setCities() async {
+    var cities = await get(
+        '', 'integration', 'product/cities?search=oax&pageSize=20&page=1');
+    print(cities);
   }
 
   void _onMapCreated(GoogleMapController controller) {
@@ -333,6 +348,7 @@ class _AltaRestState extends State<AltaRest> {
                                     decoration:
                                         InputDecoration(labelText: 'Estado'),
                                     onChanged: (String? newValue) {
+                                      print(newValue);
                                       setState(() {
                                         _estado.text = newValue!;
                                       });
@@ -347,6 +363,25 @@ class _AltaRestState extends State<AltaRest> {
                               })))
                 ]),
                 SizedBox(height: 10.0),
+                Padding(
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                    child: DropdownButtonFormField<String>(
+                      items: Ciudades.map((element) {
+                        return DropdownMenuItem<String>(
+                          value: element['id'].toString(),
+                          child: Text(element['label'].toString()),
+                        );
+                      }).toList(),
+                      decoration: InputDecoration(labelText: 'Estado'),
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          _estado.text = newValue!;
+                        });
+
+                        setCities();
+                      },
+                    )),
                 TextFormField(
                   controller: _direccionController,
                   decoration:
@@ -464,6 +499,8 @@ class _AltaRestState extends State<AltaRest> {
                 SizedBox(height: 10.0),
                 SingleChildScrollView(
                   child: SizedBox(
+                    height: 500,
+                    width: double.infinity,
                     child: ListView.builder(
                         shrinkWrap: true,
                         itemCount: _daysOfWeek.length,

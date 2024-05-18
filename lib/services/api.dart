@@ -92,7 +92,7 @@ Future<dynamic> put(String? tokenCustomer, String type, String url,
   try {
     final TOKEN = getTokenHeader(type, tokenCustomer);
     print(
-        '************* Endpoint: ${Uri.parse(endPoint! + url)}  *************');
+        '************* Endpoint: ${Uri.parse(endPoint! + url + id)}  *************');
     print('************* Paramas: ${params} *************');
     print('************* TYPE: ${type} *************');
     if (TOKEN.isNotEmpty) {
