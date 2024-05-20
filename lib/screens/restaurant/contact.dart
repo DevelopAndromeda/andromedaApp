@@ -71,9 +71,7 @@ class _MyContactPageState extends State<MyContactPage> {
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Text(
               'Direccion del restaurante',
-              style: TextStyle(
-                fontSize: 15,
-              ),
+              style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
             ),
           ),
           Padding(

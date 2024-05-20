@@ -29,10 +29,50 @@ class _MyHomeRestPageState extends State<MyHomeRestPage> {
     return Scaffold(
       drawer: NavDrawer(changeSalida: () {}),
       appBar: AppBar(
-        title: Text('Panel'),
-        backgroundColor: Colors.black,
+        title: Text('Panel de Administración'),
       ),
-      body: Center(),
+        body: Padding(
+        padding: const EdgeInsets.all(5.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Stack(
+              alignment: Alignment.center,
+              children: [
+                // Imagen de portada
+                Image.asset(
+                  "assets/Black.jpg", // Reemplaza con la ruta de tu imagen de portada
+                  height: 200, // Ajusta la altura según tus necesidades
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                ),
+
+                Positioned(
+                  top: 100,
+                  child: CircleAvatar(
+                    radius: 50,
+                    backgroundImage: AssetImage("assets/Profile.png"),
+                  ),
+                ),
+                // Imagen de perfil
+              ],
+            ),
+            SizedBox(height: 20),
+            Text("Nombre:"),
+            SizedBox(height: 10),
+            Text("Apellido: "),
+            SizedBox(height: 10),
+            Text("Correo: "),
+            /*SizedBox(height: 10),
+            Text("Teléfono: $telefono"),*/
+            SizedBox(height: 20),
+            SizedBox(
+              height: 250,
+            ),
+         
+          ],
+        ),
+      ),
     );
   }
 }

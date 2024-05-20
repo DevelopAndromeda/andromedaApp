@@ -33,10 +33,12 @@ class _listReservacionState extends State<listReservacion> {
       drawer: NavDrawer(changeSalida: () {}),
       backgroundColor: Background_Color,
       appBar: AppBar(
-        title: Text('Reservaciones'),
+        title: Text('Reservaciones',
+        style: TextStyle(color: Colors.white,
+        fontWeight: FontWeight.bold),),
         centerTitle: true,
         elevation: 1,
-        backgroundColor: Colors.black,
+        backgroundColor: const Color.fromARGB(255, 0, 0, 0),
       ),
       body: FutureBuilder(
         future: getHistory(),

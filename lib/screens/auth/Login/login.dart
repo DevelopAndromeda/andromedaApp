@@ -70,7 +70,7 @@ class _MyLoginPageState extends State<MyLoginPage> {
               ClipPath(
                 child: Container(
                   width: 450,
-                  height: 250,
+                  height: 180,
                   decoration: BoxDecoration(
                       color: Colors.black,
                       borderRadius: BorderRadius.circular(10)),
@@ -80,15 +80,20 @@ class _MyLoginPageState extends State<MyLoginPage> {
                   ),
                 ),
               ),
-              Container(
-                color: Colors.black,
-                padding: EdgeInsets.all(5),
-                child: Text(
-                  'Recomendacion del mes, Black food - Roma CDMX                         ',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 14,
+              Positioned(
+                bottom: 0,
+                left: 10,
+                right: 0,
+                child: Container(
+                  color: Colors.black,
+                  padding: EdgeInsets.all(5),
+                  child: Text(
+                    'Recomendacion del mes, Black food - Roma CDMX                         ',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 14,
+                    ),
                   ),
                 ),
               ),
@@ -213,6 +218,9 @@ class _MyLoginPageState extends State<MyLoginPage> {
                   },
                 ),
               ),
+
+               SizedBox(width: 200),
+
               Container(
                 width: double.infinity,
                 margin:
@@ -315,8 +323,9 @@ class _MyLoginPageState extends State<MyLoginPage> {
                           },
                     text: 'Iniciar Sesion'),
               ),
+               SizedBox(width: 10),
               SizedBox(
-                width: 312, // Ancho deseado para el botón
+                width: 290, // Ancho deseado para el botón
                 height: 35, // Alto deseado para el botón
                 child: MaterialButton(
                   onPressed: () {
@@ -343,7 +352,7 @@ class _MyLoginPageState extends State<MyLoginPage> {
                 ),
               ),
               Divider(
-                height: 30, // Altura del separador
+                height: 90, // Altura del separador
                 color: const Color.fromARGB(
                     255, 255, 255, 255), // Color del separador
                 thickness: 2, // Grosor del separador
@@ -376,7 +385,7 @@ class _MyLoginPageState extends State<MyLoginPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     SizedBox(
-                      width: 200, // Ancho del primer Boton
+                      width: 150, // Ancho del primer Boton
                       height: 50, // Alto del primer boton
                       child: ElevatedButton(
                         onPressed: () {
@@ -411,7 +420,7 @@ class _MyLoginPageState extends State<MyLoginPage> {
                     ),
                     SizedBox(width: 10), // Espacio entre botones
                     SizedBox(
-                      width: 200, // Ancho del segundo boton
+                      width: 150, // Ancho del segundo boton
                       height: 50, // Alto del segundo boton
                       child: ElevatedButton(
                         onPressed: () {

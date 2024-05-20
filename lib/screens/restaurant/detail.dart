@@ -343,7 +343,9 @@ class _MyDetailPageState extends State<MyDetailPage>
     final size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        title: Text('Información y Reserva del Restaurante'),
+        title: Text('Información del restaurante',
+        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+        backgroundColor: Colors.black,
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -522,7 +524,7 @@ class _MyDetailPageState extends State<MyDetailPage>
                                               children: <Widget>[
                                                 Icon(
                                                   Icons.timer_sharp,
-                                                  size: 20,
+                                                  size: 15,
                                                 ),
                                                 Text(
                                                   "${_allSlotDay[index]['time']}",
@@ -587,9 +589,10 @@ class _MyDetailPageState extends State<MyDetailPage>
                                     ))),
                               ),
                             ]),*/
+                                SizedBox(height: 30.0),
                             Padding(
                               padding:
-                                  const EdgeInsets.symmetric(vertical: 16.0),
+                                  const EdgeInsets.symmetric(vertical: 20.0),
                               child: ElevatedButton(
                                 onPressed: generateOrden,
                                 style: ElevatedButton.styleFrom(
@@ -599,7 +602,7 @@ class _MyDetailPageState extends State<MyDetailPage>
                                       color: Color.fromARGB(255, 255, 255, 255),
                                     ),
                                     shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(4),
+                                      borderRadius: BorderRadius.circular(2),
                                     )),
                                 child: Text(
                                   'Generar Reserva',

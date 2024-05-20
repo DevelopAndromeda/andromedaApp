@@ -14,6 +14,15 @@ class _MyNotificationsPageState extends State<MyNotificationsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Notificaciones',
+        style: TextStyle(color: Colors.white,
+        fontWeight: FontWeight.bold),),
+        centerTitle: true,
+      
+        backgroundColor: const Color.fromARGB(255, 0, 0, 0),
+      
+      ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
         child: SingleChildScrollView(
@@ -21,7 +30,7 @@ class _MyNotificationsPageState extends State<MyNotificationsPage> {
             title: "Confirmacion de tu reservación",
             subtitle: "Nombre del Restaurante",
             description: "Datos de la reservación",
-            imagePath: "assets/ExampleRest.png",
+            imagePath: "assets/Login.png",
             onClose: () {
               print("Notificaciones");
             },

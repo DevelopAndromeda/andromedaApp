@@ -40,25 +40,41 @@ class _MyHistoryPageState extends State<MyHistoryPage> {
 
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
-      backgroundColor: Background_Color,
-      body: FutureBuilder(
-          future: getHistory(),
-          builder: (BuildContext context, AsyncSnapshot snapshot) {
-            if (!snapshot.hasData) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-            if (snapshot.hasData) {
-              return ListView(
-                padding: const EdgeInsets.all(5.0),
-                children: _createList(snapshot.data['items']),
-              );
-            } else {
-              return const Text('Error en api');
-            }
-          }),
+      appBar: AppBar(
+        title: Text('Historial',
+        style: TextStyle(color: Colors.white,
+        fontWeight: FontWeight.bold),),
+        centerTitle: true,
+      
+        backgroundColor: const Color.fromARGB(255, 0, 0, 0),
+      
+      ),
+      body: Column(
+        children: [
+          SizedBox(height: 20,),
+          Expanded(child: FutureBuilder(
+            
+              future: getHistory(),
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                if (!snapshot.hasData) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+                if (snapshot.hasData) {
+                  return ListView(
+                    padding: const EdgeInsets.all(5.0),
+                    children: _createList(snapshot.data['items']),
+                  );
+                } else {
+                  return const Text('Error en api');
+                }
+              }),),
+          
+        ],
+      ),
       bottomNavigationBar: MyBottomBar(
         index: 1,
       ),

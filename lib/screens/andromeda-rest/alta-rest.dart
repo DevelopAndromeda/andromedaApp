@@ -256,7 +256,11 @@ class _AltaRestState extends State<AltaRest> {
     return Scaffold(
       drawer: NavDrawer(changeSalida: () {}),
       appBar: AppBar(
-        title: Text('Alta'),
+        title: Text(
+          'Alta',
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        ),
+        centerTitle: true,
         backgroundColor: Colors.black,
       ),
       body: SingleChildScrollView(
@@ -687,7 +691,7 @@ class _AltaRestState extends State<AltaRest> {
                         }),
                   ),
                 ),
-                SizedBox(height: 10.0),
+                SizedBox(height: 20.0),
                 ElevatedButton(
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
@@ -827,7 +831,14 @@ class _AltaRestState extends State<AltaRest> {
                       }
                     }
                   },
-                  child: Text('Registrar Restaurante'),
+                  child: Text(
+                    'Registrar Restaurante',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.black,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(2))),
                 )
               ],
             ),

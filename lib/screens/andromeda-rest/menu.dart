@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:andromeda/services/db.dart';
-
+import 'package:andromeda/screens/andromeda-rest/home-rest.dart';
 class NavDrawer extends StatelessWidget {
   const NavDrawer({super.key, required this.changeSalida});
   final Function changeSalida;
@@ -45,22 +45,22 @@ class NavDrawer extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               const Text("Ir a mi perfil",
-                  style: TextStyle(color: Color(0xff369FFF))),
+                  style: TextStyle(color: Color.fromARGB(255, 0, 0, 0))),
               InkWell(
                 onTap: () {
-                  /*Navigator.pop(context);
-                  Navigator.of(context).pushNamed('perfil');*/
+                  Navigator.pop(context);
+                  Navigator.of(context).pushNamed('home-rest');
                 },
                 child: Container(
                   height: 30,
                   width: 30,
                   decoration: BoxDecoration(
-                    border: Border.all(color: const Color(0xff369FFF)),
+                    border: Border.all(color: Color.fromARGB(110, 59, 59, 59)),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: const Icon(
                     Icons.keyboard_arrow_right,
-                    color: Color(0xff369FFF),
+                    color: Color.fromARGB(90, 56, 56, 56),
                   ),
                 ),
               )
