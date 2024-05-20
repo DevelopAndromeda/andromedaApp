@@ -33,9 +33,10 @@ class _listReservacionState extends State<listReservacion> {
       drawer: NavDrawer(changeSalida: () {}),
       backgroundColor: Background_Color,
       appBar: AppBar(
-        title: Text('Reservaciones',
-        style: TextStyle(color: Colors.white,
-        fontWeight: FontWeight.bold),),
+        title: Text(
+          'Reservaciones',
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        ),
         centerTitle: true,
         elevation: 1,
         backgroundColor: const Color.fromARGB(255, 0, 0, 0),
@@ -132,7 +133,14 @@ class _listReservacionState extends State<listReservacion> {
 
   List<Widget> _createList(datas) {
     print('_createList');
+    print(datas);
     List<Widget> lists = <Widget>[];
+    if (datas == null) {
+      lists.add(Center(
+        child: Text("Se caduco la sesion"),
+      ));
+      return lists;
+    }
     if (datas.length == 0) {
       lists.add(Center(
         child: Text("Aún no cuentas con historial para mostrar."),
@@ -140,6 +148,8 @@ class _listReservacionState extends State<listReservacion> {
       return lists;
     }
     for (dynamic data in datas) {
+      print('data');
+      print(data);
       lists.add(_buildCard({
         "title": data['billing_firstname'] ?? '',
         "ruta": "",
