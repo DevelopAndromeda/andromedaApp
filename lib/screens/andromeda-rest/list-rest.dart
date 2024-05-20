@@ -4,6 +4,7 @@ import 'package:andromeda/Witgets/General/Colores_Base.dart';
 import 'package:andromeda/services/api.dart';
 import 'package:andromeda/services/db.dart';
 import 'package:andromeda/screens/andromeda-rest/menu.dart';
+import 'package:flutter/widgets.dart';
 
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
@@ -34,7 +35,9 @@ class _ListRestState extends State<ListRest> {
       drawer: NavDrawer(changeSalida: () {}),
       backgroundColor: Background_Color,
       appBar: AppBar(
-        title: Text('Retaurantes'),
+        title: Text('Retaurantes',
+        style: TextStyle(color: Colors.white,
+        fontWeight: FontWeight.bold),),
         centerTitle: true,
         elevation: 1,
         backgroundColor: Colors.black,
@@ -55,7 +58,9 @@ class _ListRestState extends State<ListRest> {
                 }
 
                 return Column(
-                  children: _createList(snapshot.data!['items']),
+                  children: [
+                    SizedBox(height: 20.0,),
+                    ..._createList(snapshot.data!['items']),]
                 );
               }),
         ),
@@ -73,7 +78,9 @@ class _ListRestState extends State<ListRest> {
         ));
       }
     } else {
-      lists.add(Text('No se encontraron datos'));
+      lists.add(
+        Center( child: Text('No se encontraron datos')),
+       );
     }
     return lists;
   }

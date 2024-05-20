@@ -32,6 +32,17 @@ class _MySavedPageState extends State<MySavedPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        
+appBar: AppBar(
+        title: Text('Guardado',
+        style: TextStyle(color: Colors.white,
+        fontWeight: FontWeight.bold),),
+        centerTitle: true,
+      
+        backgroundColor: const Color.fromARGB(255, 0, 0, 0),
+      
+      ),
+
       body: _body(),
       bottomNavigationBar: MyBottomBar(
         index: 3,
@@ -89,8 +100,8 @@ class _MySavedPageState extends State<MySavedPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            width: double.infinity,
-            height: 150,
+            width: 150,
+            height: 120,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
               image: DecorationImage(

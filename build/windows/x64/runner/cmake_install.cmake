@@ -1,4 +1,4 @@
-# Install script for directory: C:/Users/ingsa/OneDrive/Documentos/Pruebas/AndromedaApp/windows/runner
+# Install script for directory: C:/Users/ingsa/OneDrive/Documentos/Sprint04/AndromedaApp/windows/runner
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)

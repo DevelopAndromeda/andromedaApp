@@ -1,25 +1,25 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="C:\Users\ingsa\OneDrive\Documentos\Pruebas\AndromedaApp\windows\flutter\ephemeral\cpp_client_wrapper\core_implementations.cc">
+    <ClCompile Include="C:\Users\ingsa\OneDrive\Documentos\Sprint04\AndromedaApp\windows\flutter\ephemeral\cpp_client_wrapper\core_implementations.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\ingsa\OneDrive\Documentos\Pruebas\AndromedaApp\windows\flutter\ephemeral\cpp_client_wrapper\standard_codec.cc">
+    <ClCompile Include="C:\Users\ingsa\OneDrive\Documentos\Sprint04\AndromedaApp\windows\flutter\ephemeral\cpp_client_wrapper\standard_codec.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\ingsa\OneDrive\Documentos\Pruebas\AndromedaApp\windows\flutter\ephemeral\cpp_client_wrapper\plugin_registrar.cc">
+    <ClCompile Include="C:\Users\ingsa\OneDrive\Documentos\Sprint04\AndromedaApp\windows\flutter\ephemeral\cpp_client_wrapper\plugin_registrar.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="C:\Users\ingsa\OneDrive\Documentos\Pruebas\AndromedaApp\windows\flutter\CMakeLists.txt" />
+    <CustomBuild Include="C:\Users\ingsa\OneDrive\Documentos\Sprint04\AndromedaApp\windows\flutter\CMakeLists.txt" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="CMake Rules">
-      <UniqueIdentifier>{560CB0E4-DF65-373C-81FF-4401F13E53BD}</UniqueIdentifier>
+      <UniqueIdentifier>{F270F00F-3471-37A9-9F51-015439E93D4C}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files">
-      <UniqueIdentifier>{F4AECCB8-7B68-3FED-B714-C833336EFD80}</UniqueIdentifier>
+      <UniqueIdentifier>{132D6299-0D48-31F8-81FD-802795DA866C}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

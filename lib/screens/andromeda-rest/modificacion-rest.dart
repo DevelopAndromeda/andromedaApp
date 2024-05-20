@@ -144,7 +144,7 @@ class _ModificacionRestaurante extends State<ModificacionRestaurante> {
     return Scaffold(
         backgroundColor: Background_Color,
         appBar: AppBar(
-          title: Text('Modificación'),
+          title: Text('Modificación',),
           centerTitle: true,
           leading: BackButton(),
           elevation: 1,
@@ -266,8 +266,14 @@ class _ModificacionRestaurante extends State<ModificacionRestaurante> {
                         },
                       ),
                       SizedBox(height: 20.0),
+                      ElevatedButton( onPressed: () {  },
+                      child: const Text('Modificar')),
                     ],
-                  ))),
+                  ))
+                  
+                  
+                 
+                  ),
         )
         /*Padding(
         padding: EdgeInsets.all(16.0),

@@ -99,8 +99,8 @@ class _MyHomePageState extends State<MyHomePage> {
                         radius: 30,
                         /*minRadius: 20,
                         maxRadius: 50,*/
-                        //backgroundImage: AssetImage('assets/burger.jpg'),
-                        backgroundColor: Color.fromARGB(255, 8, 8, 8),
+                        backgroundImage: AssetImage('assets/Masculino.jpg'),
+                      //  backgroundColor: Color.fromARGB(255, 8, 8, 8),
                       ),
                       onTap: () {
                         Navigator.of(context).pushNamedAndRemoveUntil(

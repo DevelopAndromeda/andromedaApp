@@ -4,19 +4,19 @@
 cmake_minimum_required(VERSION 3.5)
 
 file(MAKE_DIRECTORY
-  "C:/Users/ingsa/OneDrive/Documentos/Pruebas/AndromedaApp/build/windows/x64/_deps/nuget-src"
-  "C:/Users/ingsa/OneDrive/Documentos/Pruebas/AndromedaApp/build/windows/x64/_deps/nuget-build"
-  "C:/Users/ingsa/OneDrive/Documentos/Pruebas/AndromedaApp/build/windows/x64/_deps/nuget-subbuild/nuget-populate-prefix"
-  "C:/Users/ingsa/OneDrive/Documentos/Pruebas/AndromedaApp/build/windows/x64/_deps/nuget-subbuild/nuget-populate-prefix/tmp"
-  "C:/Users/ingsa/OneDrive/Documentos/Pruebas/AndromedaApp/build/windows/x64/_deps/nuget-subbuild/nuget-populate-prefix/src/nuget-populate-stamp"
-  "C:/Users/ingsa/OneDrive/Documentos/Pruebas/AndromedaApp/build/windows/x64/_deps/nuget-subbuild/nuget-populate-prefix/src"
-  "C:/Users/ingsa/OneDrive/Documentos/Pruebas/AndromedaApp/build/windows/x64/_deps/nuget-subbuild/nuget-populate-prefix/src/nuget-populate-stamp"
+  "C:/Users/ingsa/OneDrive/Documentos/Sprint04/AndromedaApp/build/windows/x64/_deps/nuget-src"
+  "C:/Users/ingsa/OneDrive/Documentos/Sprint04/AndromedaApp/build/windows/x64/_deps/nuget-build"
+  "C:/Users/ingsa/OneDrive/Documentos/Sprint04/AndromedaApp/build/windows/x64/_deps/nuget-subbuild/nuget-populate-prefix"
+  "C:/Users/ingsa/OneDrive/Documentos/Sprint04/AndromedaApp/build/windows/x64/_deps/nuget-subbuild/nuget-populate-prefix/tmp"
+  "C:/Users/ingsa/OneDrive/Documentos/Sprint04/AndromedaApp/build/windows/x64/_deps/nuget-subbuild/nuget-populate-prefix/src/nuget-populate-stamp"
+  "C:/Users/ingsa/OneDrive/Documentos/Sprint04/AndromedaApp/build/windows/x64/_deps/nuget-subbuild/nuget-populate-prefix/src"
+  "C:/Users/ingsa/OneDrive/Documentos/Sprint04/AndromedaApp/build/windows/x64/_deps/nuget-subbuild/nuget-populate-prefix/src/nuget-populate-stamp"
 )
 
 set(configSubDirs Debug)
 foreach(subDir IN LISTS configSubDirs)
-    file(MAKE_DIRECTORY "C:/Users/ingsa/OneDrive/Documentos/Pruebas/AndromedaApp/build/windows/x64/_deps/nuget-subbuild/nuget-populate-prefix/src/nuget-populate-stamp/${subDir}")
+    file(MAKE_DIRECTORY "C:/Users/ingsa/OneDrive/Documentos/Sprint04/AndromedaApp/build/windows/x64/_deps/nuget-subbuild/nuget-populate-prefix/src/nuget-populate-stamp/${subDir}")
 endforeach()
 if(cfgdir)
-  file(MAKE_DIRECTORY "C:/Users/ingsa/OneDrive/Documentos/Pruebas/AndromedaApp/build/windows/x64/_deps/nuget-subbuild/nuget-populate-prefix/src/nuget-populate-stamp${cfgdir}") # cfgdir has leading slash
+  file(MAKE_DIRECTORY "C:/Users/ingsa/OneDrive/Documentos/Sprint04/AndromedaApp/build/windows/x64/_deps/nuget-subbuild/nuget-populate-prefix/src/nuget-populate-stamp${cfgdir}") # cfgdir has leading slash
 endif()

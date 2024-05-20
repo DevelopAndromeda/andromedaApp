@@ -1,0 +1,1 @@
+ C:\\Users\\ingsa\\OneDrive\\Documentos\\Sprint04\\AndromedaApp\\.dart_tool\\flutter_build\\155c643e1f46a8c5945baa3c60372301\\native_assets.yaml: 
