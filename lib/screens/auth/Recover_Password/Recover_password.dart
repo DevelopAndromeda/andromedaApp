@@ -17,14 +17,15 @@ class _MyRecoverPasswordState extends State<MyRecoverPassword> {
     return Scaffold(
       backgroundColor: Background_Color,
       appBar: AppBar(
-        title: Text("Recuperar Contraseña"),
+        title: Text("Recuperar Contraseña",
+        style: TextStyle(color: Colors.white),),
         centerTitle: true,
-        leading: BackButton(),
-        backgroundColor: const Color.fromARGB(255, 154, 126, 43),
+        leading: BackButton(color: Colors.white,),
+        backgroundColor: Color.fromARGB(255, 0, 0, 0),
         elevation: 1,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: const EdgeInsets.all(30.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
@@ -42,13 +43,15 @@ class _MyRecoverPasswordState extends State<MyRecoverPassword> {
                 return null;
               },
             ),
-            SizedBox(height: 20.0),
+            SizedBox(height: 30.0),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: Color.fromARGB(
-                    255, 154, 126, 43), // Cambia el color de fondo a dorado
+                backgroundColor: Color.fromARGB(255, 0, 0, 0), // Cambia el color de fondo a dorado
                 foregroundColor: Color.fromARGB(
-                    255, 255, 255, 255), // Cambia el color del texto a blanco
+                    255, 255, 255, 255),
+                     shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(4), // Modifica el radio de borde según sea necesario
+    ), // Cambia el color del texto a blanco
               ),
               onPressed: () {
                 _resetPassword();

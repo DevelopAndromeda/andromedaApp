@@ -12,6 +12,7 @@ class MyRegisterPage extends StatefulWidget {
   const MyRegisterPage({super.key, required this.type});
   final int type;
 
+
   @override
   _MyRegisterContet createState() => _MyRegisterContet();
 }
@@ -27,6 +28,13 @@ class _MyRegisterContet extends State<MyRegisterPage> {
   bool typePassword = true;
   bool typePasswordConfirm = true;
   bool _isButtonDisabled = false;
+  String selectedGender = '';
+
+   void selectGender(String gender) {
+    setState(() {
+      selectedGender = gender;
+    });
+  }
   //List<String> dropdownItems = <String>[];
 
   /*List<DropdownMenuItem<String>> get dropdownItems {
@@ -68,12 +76,15 @@ class _MyRegisterContet extends State<MyRegisterPage> {
     }
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: const Color.fromARGB(255, 255, 255, 255),
       appBar: AppBar(
-        title: Text(widget.type == 0 ? 'Comensal' : 'Restaurant'),
+        title: Text(widget.type == 0 ? 'Comensal' : 'Restaurantero',
+        style: TextStyle(
+          color: Colors.white
+        ),),
         centerTitle: true,
-        leading: BackButton(),
-        backgroundColor: Colors.transparent,
+        leading: BackButton(color: Colors.white,),
+        backgroundColor: Color.fromARGB(255, 0, 0, 0),
         elevation: 1,
       ),
       body: SingleChildScrollView(
@@ -84,7 +95,7 @@ class _MyRegisterContet extends State<MyRegisterPage> {
               ClipPath(
                 child: Container(
                   width: 450,
-                  height: 250,
+                  height: 180,
                   decoration: BoxDecoration(
                       color: Colors.black,
                       borderRadius: BorderRadius.circular(10)),
@@ -120,8 +131,8 @@ class _MyRegisterContet extends State<MyRegisterPage> {
                 endIndent: 20, // Espaciado derecho del separador
               ),
               Container(
-                width: 150,
-                height: 150,
+                width: 100,
+                height: 100,
                 decoration: BoxDecoration(
                     color: const Color.fromARGB(255, 255, 255, 255),
                     borderRadius: BorderRadius.circular(10)),
@@ -138,7 +149,7 @@ class _MyRegisterContet extends State<MyRegisterPage> {
                 indent: 20, // Espaciado izquierdo del separador
                 endIndent: 20, // Espaciado derecho del separador
               ),
-              const SizedBox(height: 50),
+              const SizedBox(height: 20),
               Container(
                 margin: const EdgeInsets.symmetric(horizontal: 20),
                 child: TextFormField(
@@ -300,10 +311,75 @@ class _MyRegisterContet extends State<MyRegisterPage> {
                   },
                 ),
               ),
-              const SizedBox(height: 50),
+              const SizedBox(height: 20),
+
+            Padding(padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children:<Widget> [
+                Text('Seleccione su género:', 
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),
+
+                SizedBox(height: 20,),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    ElevatedButton.icon(
+                  onPressed: () => selectGender('Masculino'),
+                  icon: Icon(
+                    Icons.male,
+                    color: selectedGender == 'Masculino' ? Colors.blue : Colors.grey,
+                  ),
+                  label: Text(
+                    'Masculino',
+                    style: TextStyle(
+                      color: selectedGender == 'Femenino' ? Colors.blue : Colors.grey,
+                    ),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: selectedGender == 'Masculino'
+                        ? Colors.blue.shade100
+                        : Colors.grey.shade200,
+                    shadowColor: Colors.blue,
+                  ),
+                ), 
+                 ElevatedButton.icon(
+                  onPressed: () => selectGender('Femenino'),
+                  icon: Icon(
+                    Icons.female,
+                    color: selectedGender == 'Femenino' ? Colors.pink : Colors.grey,
+                  ),
+                  label: Text(
+                    'Femenino',
+                    style: TextStyle(
+                      color: selectedGender == 'Femenino' ? Colors.pink : Colors.grey,
+                    ),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: selectedGender == 'female'
+                        ? Colors.pink.shade100
+                        : Colors.grey.shade200,
+                    shadowColor: Colors.pink,
+                  ),
+                ),
+                
+                ],
+                ),
+                SizedBox(height: 20),
+            Text(
+              'Género seleccionado: $selectedGender',
+              style: TextStyle(fontSize: 16),
+            ),
+              ],
+            ),
+            ),
+
+
+
+
               Container(
                 // width: double.maxFinite,
-                margin: const EdgeInsets.symmetric(horizontal: 100),
+                margin: const EdgeInsets.symmetric(horizontal: 50, vertical: 10),
                 child: baseButtom(
                   text: 'Registrarse',
                   onPressed: _isButtonDisabled
@@ -426,10 +502,15 @@ class _MyRegisterContet extends State<MyRegisterPage> {
                         },
                 ),
               ),
+              const SizedBox(height: 30),
             ],
+            
           ),
+          
         ),
+        
       ),
+      
     );
   }
 }
