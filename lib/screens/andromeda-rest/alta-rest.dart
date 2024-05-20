@@ -132,6 +132,9 @@ class _AltaRestState extends State<AltaRest> {
   ];
   List<Categoria> _categoria = [];
   List<String> _finalCategories = [];
+  List<Categoria> _tiposRest = [];
+  List<int> tiposRest = [4, 16, 42, 71, 72, 73, 75, 76, 77, 78, 79, 80];
+  Categoria? _selectedTipoRest;
   //List<String> Paises = ['México'];
   Future<void> getUserData() async {
     var sesion = await serviceDB.instance.getById('users', 'id_user', 1);
@@ -144,7 +147,9 @@ class _AltaRestState extends State<AltaRest> {
       } else {
         GoogleMapController controller = await _controller.future;
         controller.animateCamera(CameraUpdate.newLatLngZoom(
-            LatLng(sesion[0]['lat'], sesion[0]['long']), 15));
+            LatLng(double.parse(sesion[0]['lat']),
+                double.parse(sesion[0]['long'])),
+            15));
       }
     }
   }
@@ -166,7 +171,22 @@ class _AltaRestState extends State<AltaRest> {
         'categories/list?searchCriteria[filterGroups][0][filters][1][field]=is_visible_app&searchCriteria[filterGroups][0][filters][1][value]=1&searchCriteria[filterGroups][0][filters][1][conditionType]=eq&searchCriteria[sortOrders][0][field]=name&searchCriteria[sortOrders][0][direction]=ASC');
     if (categories.isNotEmpty) {
       categories['items'].forEach((element) {
-        _categoria.add(Categoria(id: element['id'], name: element['name']));
+        /*for (int value in tiposRest) {
+          print('aca toy');
+          print(value);
+          print(element['id']);
+          if (value == element['id']) {
+            _tiposRest.add(Categoria(id: element['id'], name: element['name']));
+            break;
+          }
+        }
+        _categoria.add(Categoria(id: element['id'], name: element['name']));*/
+        print(tiposRest.contains(element['id']));
+        if (tiposRest.contains(element['id'])) {
+          _tiposRest.add(Categoria(id: element['id'], name: element['name']));
+        } else {
+          _categoria.add(Categoria(id: element['id'], name: element['name']));
+        }
       });
       setState(() {});
     }
@@ -270,22 +290,40 @@ class _AltaRestState extends State<AltaRest> {
                   },
                 ),
                 SizedBox(height: 10.0),
-                TextFormField(
-                    controller: _tipoController,
-                    decoration:
-                        InputDecoration(labelText: 'Tipo de Restaurante'),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Por favor ingrese el tipo de restaurante';
-                      }
-                      return null;
-                    }),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                  child: DropdownButton<Categoria>(
+                    value: _selectedTipoRest,
+                    icon: const Icon(Icons.arrow_downward),
+                    elevation: 16,
+                    style: const TextStyle(color: Colors.deepPurple),
+                    underline: Container(
+                      height: 2,
+                      color: Colors.deepPurpleAccent,
+                    ),
+                    onChanged: (Categoria? value) {
+                      // This is called when the user selects an item.
+                      setState(() {
+                        _selectedTipoRest = value!;
+                        _finalCategories.add(value.id.toString());
+                      });
+                    },
+                    items: _tiposRest
+                        .map<DropdownMenuItem<Categoria>>((Categoria value) {
+                      return DropdownMenuItem<Categoria>(
+                        value: value,
+                        child: Text(value.name),
+                      );
+                    }).toList(),
+                  ),
+                ),
                 SizedBox(height: 20.0),
                 MultiSelectBottomSheetField(
                   initialChildSize: 0.4,
                   listType: MultiSelectListType.CHIP,
                   searchable: true,
-                  buttonText: Text("Tipo de Restaurantes"),
+                  buttonText: Text("Tipo de Comida"),
                   title: Text("Categorias"),
                   items: _categoria
                       .map((cat) => MultiSelectItem<Categoria>(cat, cat.name))
@@ -294,21 +332,16 @@ class _AltaRestState extends State<AltaRest> {
                     //_selectedCategorias = values!;
                     print('onConfirm');
                     print(values);
+                    _finalCategories = [];
                     for (dynamic element in values) {
                       print(element.id);
                       _finalCategories.add(element.id.toString());
                     }
-                    /*values.forEach((element) {
-                      print(element?.id);
-                    });*/
                   },
                   chipDisplay: MultiSelectChipDisplay(
                     onTap: (value) {
                       print('onTap');
                       print(value);
-                      /*setState(() {
-                            _selectedCategorias.remove(value);
-                          });*/
                     },
                   ),
                 ),
@@ -727,7 +760,7 @@ class _AltaRestState extends State<AltaRest> {
                           {
                             "attribute_code": "location",
                             "value":
-                                "De Los Ferrocarriles Sur, Norte, Puente de Ixtla, ${_selectedEstado?.label}., ${_selectedPais?.name}"
+                                "${_direccionController.text}, ${_selectedEstado?.label}., ${_selectedPais?.name}"
                           },
                           {
                             "attribute_code": "city",

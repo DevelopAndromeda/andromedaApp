@@ -77,6 +77,10 @@ class _MySavedPageState extends State<MySavedPage> {
 
   List<Widget> _createList(items) {
     List<Widget> lists = <Widget>[];
+    if (items == null) {
+      lists.add(const Center(child: Text('Tu Sesion a Expirado!')));
+      return lists;
+    }
 
     if (items.length > 0) {
       for (dynamic data in items) {

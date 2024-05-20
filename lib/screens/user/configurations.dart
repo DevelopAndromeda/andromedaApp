@@ -467,11 +467,9 @@ class _MyConfigProfilePageState extends State<MyConfigProfilePage> {
                                   .updateRecord('users', data, 'id_user', 1);
                             }
 
-                            print('customer');
-                            print(customer);
-
                             ScaffoldMessenger.of(context)
                                 .showSnackBar(SnackBar(content: Text('Exito')));
+                            setState(() {});
                           } catch (e) {
                             print(e);
                             ScaffoldMessenger.of(context).showSnackBar(

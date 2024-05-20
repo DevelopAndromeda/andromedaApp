@@ -144,7 +144,9 @@ class _ModificacionRestaurante extends State<ModificacionRestaurante> {
       } else {
         GoogleMapController controller = await _controller.future;
         controller.animateCamera(CameraUpdate.newLatLngZoom(
-            LatLng(sesion[0]['lat'], sesion[0]['long']), 15));
+            LatLng(double.parse(sesion[0]['lat']),
+                double.parse(sesion[0]['long'])),
+            15));
       }
     }
   }
@@ -185,18 +187,19 @@ class _ModificacionRestaurante extends State<ModificacionRestaurante> {
     }
     """);
 
-    /*responseJson['data'].forEach((data) {
+    responseJson['data'].forEach((data) {
       print('data');
       print(getCustomAttribute(
           widget.data['custom_attributes'], 'hotel_country'));
-      print(data);
       print(data['code']);
-      if (getCustomAttribute(
+      /*if (getCustomAttribute(
               widget.data['custom_attributes'], 'hotel_country') ==
           data['code']) {
-        _selectedPais = Pais.fromJson(data);
-      }
-    });*/
+        setState(() {
+          _selectedPais = Pais.fromJson(data);
+        });
+      }*/
+    });
 
     return (responseJson['data'] as List)
         .map((data) => Pais.fromJson(data))
@@ -235,7 +238,6 @@ class _ModificacionRestaurante extends State<ModificacionRestaurante> {
   }
 
   setData() {
-    print(widget.data);
     _nombreController.text = widget.data['name'];
     _descripcionController.text = getCustomAttribute(
         widget.data['custom_attributes'], 'short_description');
