@@ -1,13 +1,15 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:andromeda/models/estados.dart';
+import 'package:andromeda/models/paises.dart';
+import 'package:andromeda/models/ciudades.dart';
 import 'package:flutter/material.dart';
 
 import 'package:andromeda/services/api.dart';
 import 'package:andromeda/services/gps.dart';
 import 'package:andromeda/services/db.dart';
 
-import 'package:andromeda/Witgets/General/Colores_Base.dart';
 import 'package:andromeda/models/categorias.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 
@@ -28,10 +30,9 @@ class _AltaRestState extends State<AltaRest> {
   final TextEditingController _nombreController = TextEditingController();
   final TextEditingController _descripcionController = TextEditingController();
   final TextEditingController _tipoController = TextEditingController();
-  final TextEditingController _pais = TextEditingController();
-  final TextEditingController _estado = TextEditingController();
-  final TextEditingController _ciudad = TextEditingController();
+  final TextEditingController _numberPhone = TextEditingController();
   final TextEditingController _direccionController = TextEditingController();
+  final TextEditingController _no_of_guests = TextEditingController();
   final TextEditingController _max_capacity = TextEditingController();
   final TextEditingController _slot_duration = TextEditingController();
   final TextEditingController _prevent_scheduling_before =
@@ -99,9 +100,16 @@ class _AltaRestState extends State<AltaRest> {
       ]
     }
   ];
-  late Future<List<dynamic>> Estados;
-  List<Estado> _Estados = [];
-  List<dynamic> Ciudades = [];
+
+  late Future<List<Pais>> futurePais;
+  Pais? _selectedPais;
+
+  Future<List<Estado>>? futureEstado;
+  Estado? _selectedEstado;
+
+  Future<List<Ciudad>>? futureCiudad;
+  Ciudad? _selectedCiudad;
+
   List<String> _timeOptions = [
     '6:00 am',
     '7:00 am',
@@ -124,7 +132,7 @@ class _AltaRestState extends State<AltaRest> {
   ];
   List<Categoria> _categoria = [];
   List<String> _finalCategories = [];
-  List<String> Paises = ['México'];
+  //List<String> Paises = ['México'];
   Future<void> getUserData() async {
     var sesion = await serviceDB.instance.getById('users', 'id_user', 1);
 
@@ -156,45 +164,57 @@ class _AltaRestState extends State<AltaRest> {
   Future<void> getCategories() async {
     final categories = await get('', 'integration',
         'categories/list?searchCriteria[filterGroups][0][filters][1][field]=is_visible_app&searchCriteria[filterGroups][0][filters][1][value]=1&searchCriteria[filterGroups][0][filters][1][conditionType]=eq&searchCriteria[sortOrders][0][field]=name&searchCriteria[sortOrders][0][direction]=ASC');
-
-    //print('categories');
-    //print(categories);
     if (categories.isNotEmpty) {
-      /*for (dynamic element in categories['items']) {
-        print(element);
-        _categoria.add(Categoria(id: element['id'], name: element['name']));
-      }*/
       categories['items'].forEach((element) {
-        /*print('element');
-        print(element);*/
         _categoria.add(Categoria(id: element['id'], name: element['name']));
       });
       setState(() {});
     }
   }
 
-  Future<List<dynamic>> setStates() async {
+  Future<List<Pais>> fetchPaises() async {
+    final responseJson = json.decode("""
+    {
+      "data": [
+        {
+          "id": "1",
+          "name": "México",
+          "code": "MX"
+        }
+      ]
+    }
+    """);
+
+    return (responseJson['data'] as List)
+        .map((data) => Pais.fromJson(data))
+        .toList();
+  }
+
+  Future<List<Estado>> fetchEstados() async {
     //Llenar base de datos local
-    final estadosEndpoint = await get('', '', 'states?countryCode=MX');
-    if (estadosEndpoint == null) {
+    final responseJson =
+        await get('', '', 'states?countryCode=${_selectedPais?.code}');
+    if (responseJson == null) {
       //print('no hay datos en endpoint');
       return [];
     }
 
-    estadosEndpoint['items'].forEach((element) {
-      _Estados.add(Estado(
-          id: element['id'], label: element['label'], code: element['icoded']));
-    });
-
-    print('Regresamos');
-    print(estadosEndpoint['items']);
-    return estadosEndpoint['items'];
+    return (responseJson['items'] as List)
+        .map((data) => Estado.fromJson(data))
+        .toList();
   }
 
-  Future setCities() async {
-    var cities = await get(
-        '', 'integration', 'product/cities?search=oax&pageSize=20&page=1');
-    print(cities);
+  Future<List<Ciudad>> fetchCiudades() async {
+    final responseJson = await get(
+        '', 'integration', 'product/cities?search=${_selectedEstado?.code}');
+    if (responseJson == null) {
+      //print('no hay datos en endpoint');
+      return [];
+    }
+
+    return (responseJson['items'] as List)
+        .map((data) => Ciudad.fromJson(data))
+        .toList();
   }
 
   void _onMapCreated(GoogleMapController controller) {
@@ -204,9 +224,11 @@ class _AltaRestState extends State<AltaRest> {
   @override
   void initState() {
     super.initState();
-    getCategories();
     getUserData();
-    Estados = setStates();
+    futurePais = fetchPaises();
+    //futureEstado = [] as Future<List<Estado>>?;
+    //futureCiudad = [] as Future<List<Ciudad>>?;
+    getCategories();
   }
 
   @override
@@ -248,7 +270,7 @@ class _AltaRestState extends State<AltaRest> {
                   },
                 ),
                 SizedBox(height: 10.0),
-                /*TextFormField(
+                TextFormField(
                     controller: _tipoController,
                     decoration:
                         InputDecoration(labelText: 'Tipo de Restaurante'),
@@ -258,7 +280,7 @@ class _AltaRestState extends State<AltaRest> {
                       }
                       return null;
                     }),
-                SizedBox(height: 20.0),*/
+                SizedBox(height: 20.0),
                 MultiSelectBottomSheetField(
                   initialChildSize: 0.4,
                   listType: MultiSelectListType.CHIP,
@@ -307,81 +329,125 @@ class _AltaRestState extends State<AltaRest> {
                   style: TextStyle(fontSize: 25),
                 ),
                 SizedBox(height: 10.0),
-                Row(children: <Widget>[
-                  Flexible(
-                      child: Padding(
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-                    child: DropdownButtonFormField<String>(
-                      //value: _pais.text,
-                      items: Paises.map((String time) {
-                        return DropdownMenuItem<String>(
-                          value: time,
-                          child: Text(time),
-                        );
-                      }).toList(),
-                      decoration: InputDecoration(labelText: 'Pais'),
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          _pais.text = newValue!;
-                        });
-                      },
-                    ),
-                  )),
-                  Flexible(
-                      child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 5, horizontal: 5),
-                          child: FutureBuilder<List<dynamic>>(
-                              future: Estados,
-                              builder: (context, snapshot) {
-                                if (snapshot.hasData) {
-                                  //print(snapshot.data);
-                                  return DropdownButtonFormField<String>(
-                                    items: snapshot.data!.map((element) {
-                                      return DropdownMenuItem<String>(
-                                        value: element['id'].toString(),
-                                        child:
-                                            Text(element['label'].toString()),
-                                      );
-                                    }).toList(),
-                                    decoration:
-                                        InputDecoration(labelText: 'Estado'),
-                                    onChanged: (String? newValue) {
-                                      print(newValue);
-                                      setState(() {
-                                        _estado.text = newValue!;
-                                      });
-                                    },
-                                  );
-                                } else if (snapshot.hasError) {
-                                  return Text('${snapshot.error}');
-                                }
-
-                                // By default, show a loading spinner.
-                                return const CircularProgressIndicator();
-                              })))
-                ]),
+                TextFormField(
+                    controller: _numberPhone,
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(labelText: 'Telefono'),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Por favor ingrese el Telefono de contacto';
+                      }
+                      return null;
+                    }),
                 SizedBox(height: 10.0),
                 Padding(
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-                    child: DropdownButtonFormField<String>(
-                      items: Ciudades.map((element) {
-                        return DropdownMenuItem<String>(
-                          value: element['id'].toString(),
-                          child: Text(element['label'].toString()),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                  child: FutureBuilder<List<Pais>>(
+                    future: futurePais,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        //return Text('aa');
+                        return DropdownButton(
+                          value: _selectedPais,
+                          icon: Icon(Icons.arrow_drop_down),
+                          iconSize: 30,
+                          elevation: 16,
+                          style: TextStyle(color: Colors.black),
+                          onChanged: (Pais? newValue) {
+                            print(newValue);
+                            setState(() {
+                              _selectedPais = newValue as Pais;
+                              futureEstado = fetchEstados();
+                            });
+                          },
+                          items: snapshot.data
+                              ?.map<DropdownMenuItem<Pais>>((Pais value) {
+                            return DropdownMenuItem<Pais>(
+                              value: value,
+                              child: Text(value.name),
+                            );
+                          }).toList(),
                         );
-                      }).toList(),
-                      decoration: InputDecoration(labelText: 'Estado'),
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          _estado.text = newValue!;
-                        });
-
-                        setCities();
-                      },
-                    )),
+                      } else if (snapshot.hasError) {
+                        return Text("${snapshot.error}");
+                      }
+                      return CircularProgressIndicator();
+                    },
+                  ),
+                ),
+                SizedBox(height: 10.0),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                  child: FutureBuilder<List<Estado>>(
+                    future: futureEstado,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return DropdownButton(
+                          value: _selectedEstado,
+                          icon: Icon(Icons.arrow_drop_down),
+                          iconSize: 30,
+                          elevation: 16,
+                          style: TextStyle(color: Colors.black),
+                          onChanged: (Estado? newValue) {
+                            print(newValue);
+                            setState(() {
+                              _selectedEstado = newValue as Estado;
+                              futureCiudad = fetchCiudades();
+                            });
+                          },
+                          items: snapshot.data
+                              ?.map<DropdownMenuItem<Estado>>((Estado value) {
+                            return DropdownMenuItem<Estado>(
+                              value: value,
+                              child: Text(value.label),
+                            );
+                          }).toList(),
+                        );
+                      } else if (snapshot.hasError) {
+                        return Text("${snapshot.error}");
+                      }
+                      return Text('Seleccione Pais');
+                    },
+                  ),
+                ),
+                SizedBox(height: 10.0),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                  child: FutureBuilder<List<Ciudad>>(
+                    future: futureCiudad,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return DropdownButton(
+                          value: _selectedCiudad,
+                          icon: Icon(Icons.arrow_drop_down),
+                          iconSize: 30,
+                          elevation: 16,
+                          style: TextStyle(color: Colors.black),
+                          onChanged: (Ciudad? newValue) {
+                            print(newValue);
+                            setState(() {
+                              _selectedCiudad = newValue as Ciudad;
+                            });
+                          },
+                          items: snapshot.data
+                              ?.map<DropdownMenuItem<Ciudad>>((Ciudad value) {
+                            return DropdownMenuItem<Ciudad>(
+                              value: value,
+                              child: Text(value.statecity),
+                            );
+                          }).toList(),
+                        );
+                      } else if (snapshot.hasError) {
+                        return Text("${snapshot.error}");
+                      }
+                      return Text('Seleccion Estado');
+                    },
+                  ),
+                ),
+                SizedBox(height: 10.0),
                 TextFormField(
                   controller: _direccionController,
                   decoration:
@@ -397,7 +463,7 @@ class _AltaRestState extends State<AltaRest> {
                     if (value.length > 4) {
                       //print('ir geo');
                       final data = await getDirByGeocoding(value);
-                      //print(data);
+                      print(data);
                       //GeocodingResponse response =
                       //    await geocoding.searchByAddress(value);
                       //print(response);
@@ -499,7 +565,7 @@ class _AltaRestState extends State<AltaRest> {
                 SizedBox(height: 10.0),
                 SingleChildScrollView(
                   child: SizedBox(
-                    height: 500,
+                    height: 380,
                     width: double.infinity,
                     child: ListView.builder(
                         shrinkWrap: true,
@@ -627,7 +693,7 @@ class _AltaRestState extends State<AltaRest> {
                           },
                           {
                             "attribute_code": "no_of_guests",
-                            "value": _max_capacity.text
+                            "value": _no_of_guests.text
                           },
                           {
                             "attribute_code": "max_capacity",
@@ -650,17 +716,23 @@ class _AltaRestState extends State<AltaRest> {
                             'attribute_code': 'hotel_address',
                             'value': _direccionController.text
                           },
-                          {"attribute_code": "hotel_country", "value": "MX"},
+                          {
+                            "attribute_code": "hotel_country",
+                            "value": _selectedPais?.code
+                          },
                           {
                             "attribute_code": "hotel_state",
-                            "value": _estado.text
+                            "value": _selectedEstado?.label
                           },
                           {
                             "attribute_code": "location",
                             "value":
-                                "De Los Ferrocarriles Sur, Norte, Puente de Ixtla, Mor., México"
+                                "De Los Ferrocarriles Sur, Norte, Puente de Ixtla, ${_selectedEstado?.label}., ${_selectedPais?.name}"
                           },
-                          {"attribute_code": "city", "value": "cancun"},
+                          {
+                            "attribute_code": "city",
+                            "value": _selectedCiudad?.statecity
+                          },
                           {
                             "attribute_code": "category_ids",
                             "value": _finalCategories
@@ -677,7 +749,15 @@ class _AltaRestState extends State<AltaRest> {
                           {
                             "attribute_code": "updated_by",
                             "value": user[0]['id']
-                          }
+                          },
+                          {
+                            "attribute_code": "product_city",
+                            "value": _selectedCiudad?.statecity
+                          },
+                          {
+                            "attribute_code": "restaurant_number",
+                            "value": _numberPhone.text
+                          },
                         ]);
 
                         Map<String, dynamic> producto = {

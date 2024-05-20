@@ -4,6 +4,8 @@ import 'package:andromeda/Witgets/bottomBar.dart';
 import 'package:andromeda/services/api.dart';
 import 'package:andromeda/services/db.dart';
 
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 class MySavedPage extends StatefulWidget {
   const MySavedPage({super.key});
 
@@ -12,6 +14,9 @@ class MySavedPage extends StatefulWidget {
 }
 
 class _MySavedPageState extends State<MySavedPage> {
+  String? _url =
+      "${dotenv.env['PROTOCOL']}://${dotenv.env['URL']}/media/catalog/product";
+
   Future getFavorites() async {
     final user = await serviceDB.instance.getById('users', 'id_user', 1);
     if (user.isEmpty) {
@@ -55,6 +60,7 @@ class _MySavedPageState extends State<MySavedPage> {
                 }
 
                 if (snapshot.hasData) {
+                  print(snapshot.data);
                   return Column(
                     children: _createList(snapshot.data!['data']),
                   );
@@ -91,13 +97,8 @@ class _MySavedPageState extends State<MySavedPage> {
           Container(
             width: double.infinity,
             height: 150,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              image: DecorationImage(
-                image: AssetImage('assets/notFoundImg.png'),
-                fit: BoxFit.cover,
-              ),
-            ),
+            decoration: getImg(
+                data['images'] != null ? data['images'][0]['file'] : null),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.end,
@@ -139,5 +140,36 @@ class _MySavedPageState extends State<MySavedPage> {
         ],
       ),
     );
+  }
+
+  BoxDecoration getImg(String? img) {
+    if (img != null) {
+      return BoxDecoration(
+          borderRadius: BorderRadius.circular(4),
+          image: DecorationImage(
+              image: NetworkImage(_url! + img), fit: BoxFit.cover));
+    } else {
+      return BoxDecoration(
+          borderRadius: BorderRadius.circular(4),
+          image: const DecorationImage(
+            image: AssetImage('assets/notFoundImg.png'),
+            fit: BoxFit.cover,
+          ));
+    }
+  }
+
+  getCustomAttribute(data, type) {
+    if (data.length == 0) {
+      return '';
+    }
+
+    Map<String, String> typeValue = {'product_score': '0'};
+    String? value = typeValue[type] ?? '';
+    for (dynamic attr in data) {
+      if (attr['attribute_code'] == type) {
+        value = attr['value'];
+      }
+    }
+    return value;
   }
 }

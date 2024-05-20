@@ -129,7 +129,7 @@ class _MyContactPageState extends State<MyContactPage> {
                   width: 44,
                 ),
                 Text(
-                  '',
+                  '${getCustomAttribute(widget.data['custom_attributes'], 'restaurant_number')}',
                   style: TextStyle(fontSize: 15),
                 ),
               ],

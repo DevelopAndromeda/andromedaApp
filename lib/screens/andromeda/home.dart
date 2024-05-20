@@ -40,8 +40,10 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Future getAllRestaurants() async {
+    //return await get('', 'integration',
+    //    'products/?searchCriteria[sortOrders][0][direction]=ASC&searchCriteria[currentPage]=1&searchCriteria[pageSize]=10&searchCriteria[filterGroups][0][filters][1][field]=category_id&searchCriteria[filterGroups][0][filters][1][value]=3&searchCriteria[filterGroups][0][filters][1][conditionType]=eq');
     return await get('', 'integration',
-        'products/?searchCriteria[sortOrders][0][direction]=ASC&searchCriteria[currentPage]=1&searchCriteria[pageSize]=10&searchCriteria[filterGroups][0][filters][1][field]=category_id&searchCriteria[filterGroups][0][filters][1][value]=3&searchCriteria[filterGroups][0][filters][1][conditionType]=eq');
+        'products/?searchCriteria[sortOrders][0][direction]=ASC');
   }
 
   Future<void> getUserData() async {
@@ -188,7 +190,6 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: FutureBuilder(
                     future: getAllRestaurants(),
                     builder: (BuildContext context, AsyncSnapshot snapshot) {
-                      //print(snapshot.data['items']);
                       if (!snapshot.hasData) {
                         return const Center(
                           child: CircularProgressIndicator(),
@@ -196,6 +197,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       }
 
                       if (snapshot.hasData) {
+                        print(snapshot.data['items']);
                         return ListView(
                           scrollDirection: Axis.horizontal,
                           children: _createList(snapshot.data['items']),
@@ -221,6 +223,9 @@ class _MyHomePageState extends State<MyHomePage> {
   List<Widget> _createList(datas) {
     List<Widget> lists = <Widget>[];
     for (dynamic data in datas) {
+      if (data['images'] != null) {
+        data['media_gallery_entries'] = data['images'];
+      }
       //final score = getScore(data['custom_attributes']);
       /*lists.add(RestuarentScreen(
         id: data['id'],

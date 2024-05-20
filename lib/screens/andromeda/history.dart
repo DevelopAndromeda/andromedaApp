@@ -201,13 +201,15 @@ class _MyHistoryPageState extends State<MyHistoryPage> {
     }
     for (dynamic data in datas) {
       print('data');
-      print(data['items']);
+      print(data['items'][0]['extension_attributes']);
       lists.add(_buildCard({
         "title": data['items'][0]['name'],
         "ruta": "",
         "status": data['status'],
         "numberOfPeople": 0,
-        "imagePath": null,
+        "imagePath": data['items'][0]['extension_attributes'] != null
+            ? data['items'][0]['extension_attributes']['image'][0]
+            : null,
         "date": data['created_at'],
         "hora": ''
       }));

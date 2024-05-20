@@ -102,6 +102,10 @@ class _MySearchPageState extends State<MySearchPage> {
 
   List<Widget> _createList(items) {
     List<Widget> lists = <Widget>[];
+    if (items.isEmpty) {
+      lists.add(const Center(child: Text('Ingresa otros datos')));
+      return lists;
+    }
     items.forEach((element) => {lists.add(_buildCard(element))});
     return lists;
   }
