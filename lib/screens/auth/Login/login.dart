@@ -249,7 +249,7 @@ class _MyLoginPageState extends State<MyLoginPage> {
                                   return;
                                 }
 
-                                //print(login);
+                                print(login);
 
                                 /*if (login["message"] != null) {
                             ScaffoldMessenger.of(context).showSnackBar(
@@ -268,8 +268,8 @@ class _MyLoginPageState extends State<MyLoginPage> {
                                 final customer =
                                     await get(login, 'custom', 'customers/me');
 
-                                //print('customer');
-                                //print(customer);
+                                print('customer');
+                                print(customer);
 
                                 if (customer != null) {
                                   data['id'] = customer['id'];
@@ -279,9 +279,9 @@ class _MyLoginPageState extends State<MyLoginPage> {
                                   data['group_id'] = customer['group_id'];
                                 }
 
-                                //print('data');
-                                //print(data);
-                                //print('token: $login');
+                                print('data');
+                                print(data);
+                                print('token: $login');
                                 //Obtenemos datos de la base local
                                 final user = await serviceDB.instance
                                     .getById('users', 'id_user', 1);

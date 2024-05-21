@@ -1,5 +1,6 @@
 import 'package:andromeda/screens/andromeda-rest/menu.dart';
 import 'package:flutter/material.dart';
+import 'package:andromeda/services/db.dart';
 
 class MyHomeRestPage extends StatefulWidget {
   const MyHomeRestPage({super.key});
@@ -10,7 +11,19 @@ class MyHomeRestPage extends StatefulWidget {
 }
 
 class _MyHomeRestPageState extends State<MyHomeRestPage> {
-  Future<void> getUserData() async {}
+  final TextEditingController _firstController = TextEditingController();
+  final TextEditingController _lastController = TextEditingController();
+  final TextEditingController _mailController = TextEditingController();
+  late Future<Map<String, dynamic>> usuario;
+  Future<void> getUserData() async {
+    var sesion = await serviceDB.instance.getById('users', 'id_user', 1);
+    if (sesion.isNotEmpty) {
+      _firstController.text = sesion[0]['nombre'];
+      _lastController.text = sesion[0]['apellido_paterno'];
+      _mailController.text = sesion[0]['username'];
+    }
+    setState(() {});
+  }
 
   @override
   void initState() {
@@ -52,11 +65,11 @@ class _MyHomeRestPageState extends State<MyHomeRestPage> {
               ],
             ),
             const SizedBox(height: 20),
-            const Text("Nombre:"),
+            Text("Nombre: ${_firstController.text}"),
             const SizedBox(height: 10),
-            const Text("Apellido: "),
+            Text("Apellido: ${_lastController.text}"),
             const SizedBox(height: 10),
-            const Text("Correo: "),
+            Text("Correo: ${_mailController.text}"),
             /*SizedBox(height: 10),
             Text("Teléfono: $telefono"),*/
             const SizedBox(height: 20),

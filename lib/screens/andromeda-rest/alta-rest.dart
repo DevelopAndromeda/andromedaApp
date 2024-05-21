@@ -36,6 +36,7 @@ class _AltaRestState extends State<AltaRest> {
   final TextEditingController _slot_duration = TextEditingController();
   final TextEditingController _prevent_scheduling_before =
       TextEditingController();
+  final TextEditingController _nombreMesa = TextEditingController();
   List<Categoria> _selectedCategorias = [];
   final TextEditingController _break_time_bw_slot = TextEditingController();
   CameraPosition _initialPosition =
@@ -134,6 +135,12 @@ class _AltaRestState extends State<AltaRest> {
   List<Categoria> _tiposRest = [];
   List<int> tiposRest = [4, 16, 42, 71, 72, 73, 75, 76, 77, 78, 79, 80];
   Categoria? _selectedTipoRest;
+  final List<Map<String, dynamic>> mesas = [
+    {
+      'nombre': 'NOMBRE',
+      'accion': 'ACCION',
+    }
+  ];
   //List<String> Paises = ['México'];
   Future<void> getUserData() async {
     var sesion = await serviceDB.instance.getById('users', 'id_user', 1);
@@ -599,6 +606,37 @@ class _AltaRestState extends State<AltaRest> {
                   ),
                 ]),
                 const SizedBox(height: 10.0),
+                const Text(
+                  'Informacion de Mesas',
+                  style: TextStyle(fontSize: 25),
+                ),
+                const SizedBox(height: 10.0),
+                TextFormField(
+                    controller: _nombreMesa,
+                    decoration:
+                        const InputDecoration(labelText: 'Nombre de la mesa')),
+                const SizedBox(height: 10.0),
+                ElevatedButton(
+                    onPressed: () {
+                      agregarMesa();
+                    },
+                    child: Text(
+                      'Agregar Mesa',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.black,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(2)))),
+                const SizedBox(height: 10.0),
+                mesas.length == 1
+                    ? const Center(child: Text('Sin mesas registradas'))
+                    : _table(),
+                const SizedBox(height: 20.0),
+                const Text(
+                  'Informacion de Servicio',
+                  style: TextStyle(fontSize: 25),
+                ),
                 SingleChildScrollView(
                   child: SizedBox(
                     height: 380,
@@ -796,6 +834,37 @@ class _AltaRestState extends State<AltaRest> {
                           },
                         ]);
 
+                        List<Map<String, dynamic>> options = [];
+                        Map<String, dynamic> table = {
+                          "title": "mesa ${_nombreController.text}",
+                          "type": "drop_down",
+                          "sort_order": 1,
+                          "is_require": true,
+                          "product_sku": "mesa ${_nombreController.text}",
+                          "values": []
+                        };
+                        options.add(table);
+
+                        int indice = 0;
+                        for (dynamic data in mesas) {
+                          //print('data');
+                          //print(data);
+
+                          if (data['nombre'] != 'NOMBRE') {
+                            table['values'].add({
+                              "title": data['nombre'],
+                              "price": 0,
+                              "price_type": "fixed",
+                              "sku": data['nombre'],
+                              "sort_order": indice
+                            });
+                          }
+                          indice++;
+                        }
+
+                        //print(table);
+                        //print(options);
+
                         Map<String, dynamic> producto = {
                           'product': {
                             'name': _nombreController.text,
@@ -807,6 +876,7 @@ class _AltaRestState extends State<AltaRest> {
                             'type_id': 'booking',
                             'extension_attributes': extensionAttributes,
                             'custom_attributes': customAttributes,
+                            'options': options
                           },
                           'saveOptions': true
                         };
@@ -844,6 +914,54 @@ class _AltaRestState extends State<AltaRest> {
           ),
         ),
       ),
+    );
+  }
+
+  agregarMesa() {
+    if (_nombreMesa.text == '') {
+      return;
+    }
+    FocusManager.instance.primaryFocus?.unfocus();
+    mesas.add({'nombre': _nombreMesa.text});
+    setState(() {
+      _nombreMesa.text = '';
+    });
+  }
+
+  SingleChildScrollView _table() {
+    return SingleChildScrollView(
+      child: SizedBox(
+        height: 100,
+        width: double.infinity,
+        child: ListView.builder(
+            shrinkWrap: true,
+            itemCount: mesas.length,
+            itemBuilder: (context, index) {
+              return tr(index);
+            }),
+      ),
+    );
+  }
+
+  Row tr(int index) {
+    var id = index == 0 ? '#' : index;
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        Flexible(child: Text("$id")),
+        Flexible(child: Text("${mesas[index]['nombre']}")),
+        Flexible(
+            child: index == 0
+                ? Text("${mesas[index]['accion']}")
+                : IconButton(
+                    onPressed: () {
+                      mesas.removeAt(index);
+                      setState(() {});
+                    },
+                    icon: Icon(Icons.delete))),
+        //Flexible(child: Text("${mesas[index]['pago']}")),
+        //Flexible(child: Text("${mesas[index]['total']}"))
+      ],
     );
   }
 }
