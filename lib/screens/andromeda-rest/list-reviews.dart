@@ -13,7 +13,7 @@ class ListReview extends StatefulWidget {
 }
 
 class _ListReviewState extends State<ListReview> {
-  String? _url =
+  final String _url =
       "${dotenv.env['PROTOCOL']}://${dotenv.env['URL']}/media/catalog/product";
   Future getRestaurant() async {
     final user = await serviceDB.instance.getById('users', 'id_user', 1);
@@ -32,7 +32,7 @@ class _ListReviewState extends State<ListReview> {
       drawer: NavDrawer(changeSalida: () {}),
       backgroundColor: Background_Color,
       appBar: AppBar(
-        title: Text('Retaurantes'),
+        title: const Text('Retaurantes'),
         centerTitle: true,
         elevation: 1,
         backgroundColor: Colors.black,
@@ -65,27 +65,27 @@ class _ListReviewState extends State<ListReview> {
     List<Widget> lists = <Widget>[];
     if (items.length > 0) {
       for (dynamic data in items) {
-        print(data['media_gallery_entries']);
+        //print(data['media_gallery_entries']);
         lists.add(_buildCard(
           data,
         ));
       }
     } else {
-      lists.add(Text('No se encontraron datos'));
+      lists.add(const Center(child: Text('No se encontraron datos')));
     }
     return lists;
   }
 
   Widget _buildCard(data) {
     return Card(
-      margin: EdgeInsets.all(20),
+      margin: const EdgeInsets.all(20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           data['media_gallery_entries'] != null &&
                   data['media_gallery_entries'].isNotEmpty
               ? Image.network(
-                  _url! + data['media_gallery_entries'][0]['file'],
+                  _url + data['media_gallery_entries'][0]['file'],
                   width: double.infinity,
                   height: 180,
                 )
@@ -94,15 +94,15 @@ class _ListReviewState extends State<ListReview> {
             padding: const EdgeInsets.all(8.0),
             child: Text(
               data['name'],
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           ElevatedButton(
             onPressed: () {
               Navigator.pushNamed(context, 'reviews', arguments: data);
             },
-            child: Text('Ver Comentarios'),
+            child: const Text('Ver Comentarios'),
           ),
         ],
       ),

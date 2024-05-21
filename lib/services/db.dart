@@ -62,7 +62,7 @@ class serviceDB {
     return _database;
   }
 
-  /*** CRUD ***/
+  //CRUD
   //Insert - Create
   Future<int> insertRecord(String table, Map<String, dynamic> row) async {
     Database? db = await instance.database;
@@ -76,11 +76,11 @@ class serviceDB {
   }
 
   //Update - Update
-  Future<int> updateRecord(String table, Map<String, dynamic> _update,
+  Future<int> updateRecord(String table, Map<String, dynamic> update,
       String columnId, int id) async {
     Database? db = await instance.database;
     return await db!
-        .update(table, _update, where: '$columnId = ?', whereArgs: [id]);
+        .update(table, update, where: '$columnId = ?', whereArgs: [id]);
   }
 
   //Delete - Delete
@@ -91,18 +91,18 @@ class serviceDB {
 
   //Like
   Future<List<Map<String, dynamic>>> searchResults(
-      String table, String columnId, String Search) async {
+      String table, String columnId, String search) async {
     Database? db = await instance.database;
     return await db!
-        .query(table, where: '$columnId LIKE ?', whereArgs: ['%$Search%']);
+        .query(table, where: '$columnId LIKE ?', whereArgs: ['%$search%']);
     //var response = await db.query(TABLE_WORDS, where: '$COL_ENGLISH_WORD = ? OR $COL_GERMAN_WORD = ?', whereArgs: [userSearch, userSearch]);
   }
 
   //ById
   Future<List<Map<String, dynamic>>> getById(
-      String table, String columnId, int Id) async {
+      String table, String columnId, int id) async {
     Database? db = await instance.database;
-    return await db!.query(table, where: '$columnId = ?', whereArgs: [Id]);
+    return await db!.query(table, where: '$columnId = ?', whereArgs: [id]);
     //var response = await db.query(TABLE_WORDS, where: '$COL_ENGLISH_WORD = ? OR $COL_GERMAN_WORD = ?', whereArgs: [userSearch, userSearch]);
   }
 }

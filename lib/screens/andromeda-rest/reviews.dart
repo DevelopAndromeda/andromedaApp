@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:andromeda/Witgets/General/Colores_Base.dart';
 import 'package:andromeda/services/api.dart';
-import 'package:andromeda/services/db.dart';
 import 'package:andromeda/screens/andromeda-rest/menu.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class Reviews extends StatefulWidget {
   const Reviews({super.key, required this.data});
@@ -14,11 +12,11 @@ class Reviews extends StatefulWidget {
 }
 
 class _Reviews extends State<Reviews> {
-  int _status = 2;
+  final int _status = 2;
 
   Future getReviews() async {
     return await get('', 'integration',
-        'reviews?searchCriteria[filterGroups][0][filters][0][field]=entity_pk_value&searchCriteria[filterGroups][0][filters][0][value]=${widget.data['id']}&searchCriteria[filterGroups][0][filters][0][conditionType]=eq&searchCriteria[filterGroups][1][filters][0][field]=status_id&searchCriteria[filterGroups][1][filters][0][conditionType]=eq&searchCriteria[filterGroups][1][filters][0][value]=${_status}');
+        'reviews?searchCriteria[filterGroups][0][filters][0][field]=entity_pk_value&searchCriteria[filterGroups][0][filters][0][value]=${widget.data['id']}&searchCriteria[filterGroups][0][filters][0][conditionType]=eq&searchCriteria[filterGroups][1][filters][0][field]=status_id&searchCriteria[filterGroups][1][filters][0][conditionType]=eq&searchCriteria[filterGroups][1][filters][0][value]=$_status');
   }
 
   setNewState(data, int status) async {
@@ -46,7 +44,7 @@ class _Reviews extends State<Reviews> {
       drawer: NavDrawer(changeSalida: () {}),
       backgroundColor: Background_Color,
       appBar: AppBar(
-        title: Text('Review Pendientes'),
+        title: const Text('Review Pendientes'),
         centerTitle: true,
         elevation: 1,
         backgroundColor: Colors.black,
@@ -62,8 +60,8 @@ class _Reviews extends State<Reviews> {
                   );
                 }
 
-                print('snapshot.data');
-                print(snapshot.data);
+                //print('snapshot.data');
+                //print(snapshot.data);
 
                 if (snapshot.hasData) {
                   return Column(
@@ -85,14 +83,14 @@ class _Reviews extends State<Reviews> {
         lists.add(_buildCard(data));
       }
     } else {
-      lists.add(Text('No se encontraron datos'));
+      lists.add(const Center(child: Text('No se encontraron datos')));
     }
     return lists;
   }
 
   Widget _buildCard(data) {
-    print('_buildCard');
-    print(data);
+    //print('_buildCard');
+    //print(data);
     return Card(
       margin: const EdgeInsets.all(5),
       elevation: 10,

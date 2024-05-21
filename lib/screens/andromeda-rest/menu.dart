@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-
 import 'package:andromeda/services/db.dart';
-import 'package:andromeda/screens/andromeda-rest/home-rest.dart';
+
 class NavDrawer extends StatelessWidget {
   const NavDrawer({super.key, required this.changeSalida});
   final Function changeSalida;
@@ -55,7 +54,8 @@ class NavDrawer extends StatelessWidget {
                   height: 30,
                   width: 30,
                   decoration: BoxDecoration(
-                    border: Border.all(color: Color.fromARGB(110, 59, 59, 59)),
+                    border: Border.all(
+                        color: const Color.fromARGB(110, 59, 59, 59)),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: const Icon(

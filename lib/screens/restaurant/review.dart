@@ -25,24 +25,24 @@ class _MyReviewPageState extends State<MyReviewPage> {
       appBar: AppBar(
         title: Text(widget.data['name']),
         centerTitle: true,
-        leading: BackButton(),
+        leading: const BackButton(),
         backgroundColor: Colors.transparent,
         elevation: 1,
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.all(20),
+          padding: const EdgeInsets.all(20),
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            SizedBox(height: 60),
-            Text(
+            const SizedBox(height: 60),
+            const Text(
               "Las evaluaciones y reseñas están verificadas y provienen de personas que usan el mismo tipo de dispositivo que usted.",
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 30,
             ),
             Row(
@@ -53,11 +53,11 @@ class _MyReviewPageState extends State<MyReviewPage> {
                         getCustomAttribute(widget.data['custom_attributes'],
                                 'product_score')
                             .toString(),
-                        style: TextStyle(fontSize: 50))),
+                        style: const TextStyle(fontSize: 50))),
                 Expanded(
                   flex: 7,
                   child: Column(
-                    children: [
+                    children: const [
                       RatingProgressIndicador(
                         text: '5',
                         value: 1.0,
@@ -89,12 +89,12 @@ class _MyReviewPageState extends State<MyReviewPage> {
                   .toString()),
               itemSize: 20,
               unratedColor: Colors.grey,
-              itemBuilder: (_, __) => Icon(
+              itemBuilder: (_, __) => const Icon(
                 Icons.star,
                 color: Colors.amber,
               ),
             ),
-            Text('12,600'),
+            const Text('12,600'),
             const SizedBox(
               height: 20,
             ),
@@ -110,8 +110,6 @@ class _MyReviewPageState extends State<MyReviewPage> {
                       child: CircularProgressIndicator(),
                     );
                   }
-
-                  print(snapshot.data);
 
                   //return Text('data');
 
@@ -188,7 +186,6 @@ class UsersReviewCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(data);
     return Column(
       children: [
         Row(
@@ -203,7 +200,7 @@ class UsersReviewCard extends StatelessWidget {
                   width: 20,
                 ),
                 Text(data['nickname'],
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 17,
                       fontWeight: FontWeight.bold,
                     ))
@@ -221,7 +218,7 @@ class UsersReviewCard extends StatelessWidget {
               rating: 3,
               itemSize: 15,
               unratedColor: Colors.grey,
-              itemBuilder: (_, __) => Icon(
+              itemBuilder: (_, __) => const Icon(
                 Icons.star,
                 color: Colors.amber,
               ),
@@ -238,7 +235,7 @@ class UsersReviewCard extends StatelessWidget {
         Row(
           children: [
             Text(data['title'],
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 17,
                   fontWeight: FontWeight.bold,
                 )),

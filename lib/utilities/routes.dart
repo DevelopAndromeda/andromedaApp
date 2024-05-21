@@ -62,7 +62,7 @@ class Router {
         return MaterialPageRoute(builder: (_) => const listReservacion());
       case 'login':
         //final type = settings.arguments as int;
-        return MaterialPageRoute(builder: (_) => MyLoginPage());
+        return MaterialPageRoute(builder: (_) => const MyLoginPage());
       case 'notifications':
         return MaterialPageRoute(builder: (_) => const MyNotificationsPage());
       case 'search':
@@ -72,10 +72,10 @@ class Router {
       case 'start':
         return MaterialPageRoute(builder: (_) => const MyStartPage());
       case 'store':
-        final ID = settings.arguments as int;
+        final id = settings.arguments as int;
         return MaterialPageRoute(
           builder: (_) => MyStorePage(
-            id: ID,
+            id: id,
           ),
         );
       case 'profile':

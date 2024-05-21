@@ -5,7 +5,6 @@ import 'package:andromeda/services/db.dart';
 import 'package:andromeda/services/api.dart';
 import 'package:intl/intl.dart';
 import 'package:andromeda/Witgets/LabelCard.dart';
-import 'package:andromeda/Witgets/General/Colores_Base.dart';
 
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
@@ -17,7 +16,7 @@ class MyHistoryPage extends StatefulWidget {
 }
 
 class _MyHistoryPageState extends State<MyHistoryPage> {
-  String? _url =
+  final String _url =
       "${dotenv.env['PROTOCOL']}://${dotenv.env['URL']}/media/catalog/product";
 
   Future getHistory() async {
@@ -33,49 +32,48 @@ class _MyHistoryPageState extends State<MyHistoryPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     //getUserData();
   }
 
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
       appBar: AppBar(
-        title: Text('Historial',
-        style: TextStyle(color: Colors.white,
-        fontWeight: FontWeight.bold),),
+        title: const Text(
+          'Historial',
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        ),
         centerTitle: true,
-      
         backgroundColor: const Color.fromARGB(255, 0, 0, 0),
-      
       ),
       body: Column(
         children: [
-          SizedBox(height: 20,),
-          Expanded(child: FutureBuilder(
-            
-              future: getHistory(),
-              builder: (BuildContext context, AsyncSnapshot snapshot) {
-                if (!snapshot.hasData) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
-                if (snapshot.hasData) {
-                  return ListView(
-                    padding: const EdgeInsets.all(5.0),
-                    children: _createList(snapshot.data['items']),
-                  );
-                } else {
-                  return const Text('Error en api');
-                }
-              }),),
-          
+          const SizedBox(
+            height: 20,
+          ),
+          Expanded(
+            child: FutureBuilder(
+                future: getHistory(),
+                builder: (BuildContext context, AsyncSnapshot snapshot) {
+                  if (!snapshot.hasData) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                  if (snapshot.hasData) {
+                    return ListView(
+                      padding: const EdgeInsets.all(5.0),
+                      children: _createList(snapshot.data['items']),
+                    );
+                  } else {
+                    return const Text('Error en api');
+                  }
+                }),
+          ),
         ],
       ),
-      bottomNavigationBar: MyBottomBar(
+      bottomNavigationBar: const MyBottomBar(
         index: 1,
       ),
     );
@@ -85,7 +83,7 @@ class _MyHistoryPageState extends State<MyHistoryPage> {
     DateTime dateTimeWithTimeZone = DateTime.parse(data['date']);
     return InkWell(
       onTap: () {
-        print(data);
+        //print(data);
         /*Navigator.of(context).pushNamedAndRemoveUntil(
             data['ruta'], (Route<dynamic> route) => false);*/
       },
@@ -210,14 +208,14 @@ class _MyHistoryPageState extends State<MyHistoryPage> {
   List<Widget> _createList(datas) {
     List<Widget> lists = <Widget>[];
     if (datas.length == 0) {
-      lists.add(Center(
+      lists.add(const Center(
         child: Text("Aún no cuentas con historial para mostrar."),
       ));
       return lists;
     }
     for (dynamic data in datas) {
-      print('data');
-      print(data['items'][0]['extension_attributes']);
+      //print('data');
+      //print(data['items'][0]['extension_attributes']);
       lists.add(_buildCard({
         "title": data['items'][0]['name'],
         "ruta": "",
@@ -238,7 +236,7 @@ class _MyHistoryPageState extends State<MyHistoryPage> {
       return BoxDecoration(
           borderRadius: BorderRadius.circular(4),
           image: DecorationImage(
-              image: NetworkImage(_url! + img), fit: BoxFit.cover));
+              image: NetworkImage(_url + img), fit: BoxFit.cover));
     } else {
       return BoxDecoration(
           borderRadius: BorderRadius.circular(4),

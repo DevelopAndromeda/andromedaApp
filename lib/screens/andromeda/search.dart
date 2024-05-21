@@ -14,13 +14,13 @@ class MySearchPage extends StatefulWidget {
 
 class _MySearchPageState extends State<MySearchPage> {
   final search = TextEditingController();
-  String? _url =
+  final String _url =
       "${dotenv.env['PROTOCOL']}://${dotenv.env['URL']}/media/catalog/product";
 
   Future getRestaurantsSearch(input) async {
     //return await get('', 'integration',
     //    'products/?searchCriteria[filterGroups][0][filters][0][field]=name&searchCriteria[filterGroups][0][filters][0][value]=%25${input}%25&searchCriteria[filterGroups][0][filters][0][conditionType]=like&searchCriteria[sortOrders][0][field]=name&searchCriteria[sortOrders][0][direction]=ASC&searchCriteria[currentPage]=1&searchCriteria[pageSize]=20');
-    return await get('', '', 'restaurant/product/search?q=${input}');
+    return await get('', '', 'restaurant/product/search?q=$input');
   }
 
   @override
@@ -43,10 +43,10 @@ class _MySearchPageState extends State<MySearchPage> {
                 Expanded(
                   child: CupertinoTextField(
                       //controller: search,
-                      padding:
-                          EdgeInsets.symmetric(vertical: 12, horizontal: 10),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 12, horizontal: 10),
                       placeholder: "Buscar",
-                      prefix: Padding(
+                      prefix: const Padding(
                         padding: EdgeInsets.only(left: 10),
                         child: Icon(
                           Icons.search,
@@ -54,9 +54,9 @@ class _MySearchPageState extends State<MySearchPage> {
                         ),
                       ),
                       decoration: BoxDecoration(
-                          color: Color(0xfff7f7f7),
+                          color: const Color(0xfff7f7f7),
                           borderRadius: BorderRadius.circular(10)),
-                      style: TextStyle(
+                      style: const TextStyle(
                           color: Color(0xff707070),
                           fontSize: 16,
                           fontFamily: 'Exo Regular'),
@@ -124,7 +124,7 @@ class _MySearchPageState extends State<MySearchPage> {
           children: [
             getCustomAttribute(data['custom_attributes'], 'image') != ""
                 ? Image.network(
-                    _url! +
+                    _url +
                         getCustomAttribute(data['custom_attributes'], 'image'),
                     height: 150.0,
                     width: double.infinity,
@@ -143,21 +143,21 @@ class _MySearchPageState extends State<MySearchPage> {
                 children: [
                   Text(
                     data['name'],
-                    style: TextStyle(
+                    style: const TextStyle(
                         fontSize: 20.0,
                         color: Colors.white,
                         fontWeight: FontWeight.bold),
                   ),
-                  SizedBox(height: 8.0),
-                  Text(
+                  const SizedBox(height: 8.0),
+                  const Text(
                     'Tipo de Comida: ',
                     style: TextStyle(
                       fontSize: 16.0,
                       color: Colors.white,
                     ),
                   ),
-                  SizedBox(height: 4.0),
-                  Text(
+                  const SizedBox(height: 4.0),
+                  const Text(
                     'Horario de Atención: ',
                     style: TextStyle(fontSize: 16.0, color: Colors.white),
                   ),

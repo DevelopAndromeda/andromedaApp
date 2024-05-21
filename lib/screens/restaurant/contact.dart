@@ -29,10 +29,10 @@ class _MyContactPageState extends State<MyContactPage> {
       _marker = LatLng(double.parse(splitter[0]), double.parse(splitter[1]));
       controller.animateCamera(CameraUpdate.newLatLngZoom(
           LatLng(double.parse(splitter[0]), double.parse(splitter[1])), 5));
-    } else {
-      print(splitter.length);
-      print('ver opciones de coors');
-    }
+    } //else {
+    //print(splitter.length);
+    //print('ver opciones de coors');
+    //}
   }
 
   void _onMapCreated(GoogleMapController controller) {
@@ -52,23 +52,23 @@ class _MyContactPageState extends State<MyContactPage> {
       appBar: AppBar(
         title: Text(widget.data['name']),
         centerTitle: true,
-        leading: BackButton(),
+        leading: const BackButton(),
         backgroundColor: Colors.transparent,
         elevation: 1,
       ),
       body: SingleChildScrollView(
           child: Padding(
-        padding: EdgeInsets.only(top: 75),
+        padding: const EdgeInsets.only(top: 75),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+          const Padding(
+            padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
             child: Text(
               'Detalles',
               style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 10),
             child: Text(
               'Direccion del restaurante',
               style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
@@ -79,35 +79,37 @@ class _MyContactPageState extends State<MyContactPage> {
             child: Text(
               getCustomAttribute(
                   widget.data['custom_attributes'], 'hotel_address'),
-              style: TextStyle(fontSize: 13),
+              style: const TextStyle(fontSize: 13),
             ),
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           SizedBox(
             height: 300,
             child: GoogleMap(
                 myLocationEnabled: true,
                 onMapCreated: _onMapCreated,
                 initialCameraPosition: _initialPosition,
-                markers: {Marker(markerId: MarkerId("Yo"), position: _marker)}),
+                markers: {
+                  Marker(markerId: const MarkerId("Yo"), position: _marker)
+                }),
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+          const Padding(
+            padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
             child: Text(
               'Informacion adicional',
               style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
             child: Row(
-              children: [
+              children: const [
                 Icon(Icons.phone),
                 SizedBox(
                   width: 20,
@@ -123,12 +125,12 @@ class _MyContactPageState extends State<MyContactPage> {
             padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
             child: Row(
               children: [
-                SizedBox(
+                const SizedBox(
                   width: 44,
                 ),
                 Text(
                   '${getCustomAttribute(widget.data['custom_attributes'], 'restaurant_number')}',
-                  style: TextStyle(fontSize: 15),
+                  style: const TextStyle(fontSize: 15),
                 ),
               ],
             ),
@@ -136,7 +138,7 @@ class _MyContactPageState extends State<MyContactPage> {
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
             child: Row(
-              children: [
+              children: const [
                 Icon(Icons.coffee),
                 SizedBox(
                   width: 20,
@@ -152,13 +154,13 @@ class _MyContactPageState extends State<MyContactPage> {
             padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
             child: Row(
               children: [
-                SizedBox(
+                const SizedBox(
                   width: 44,
                 ),
                 Text(
                   getCustomAttribute(
                       widget.data['custom_attributes'], 'category_string'),
-                  style: TextStyle(fontSize: 15),
+                  style: const TextStyle(fontSize: 15),
                 ),
               ],
             ),

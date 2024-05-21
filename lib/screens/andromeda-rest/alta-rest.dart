@@ -29,7 +29,6 @@ class _AltaRestState extends State<AltaRest> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _nombreController = TextEditingController();
   final TextEditingController _descripcionController = TextEditingController();
-  final TextEditingController _tipoController = TextEditingController();
   final TextEditingController _numberPhone = TextEditingController();
   final TextEditingController _direccionController = TextEditingController();
   final TextEditingController _no_of_guests = TextEditingController();
@@ -110,7 +109,7 @@ class _AltaRestState extends State<AltaRest> {
   Future<List<Ciudad>>? futureCiudad;
   Ciudad? _selectedCiudad;
 
-  List<String> _timeOptions = [
+  final List<String> _timeOptions = [
     '6:00 am',
     '7:00 am',
     '8:00 am',
@@ -181,7 +180,7 @@ class _AltaRestState extends State<AltaRest> {
           }
         }
         _categoria.add(Categoria(id: element['id'], name: element['name']));*/
-        print(tiposRest.contains(element['id']));
+        //print(tiposRest.contains(element['id']));
         if (tiposRest.contains(element['id'])) {
           _tiposRest.add(Categoria(id: element['id'], name: element['name']));
         } else {
@@ -256,7 +255,7 @@ class _AltaRestState extends State<AltaRest> {
     return Scaffold(
       drawer: NavDrawer(changeSalida: () {}),
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'Alta',
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
@@ -273,19 +272,19 @@ class _AltaRestState extends State<AltaRest> {
               children: <Widget>[
                 TextFormField(
                     controller: _nombreController,
-                    decoration:
-                        InputDecoration(labelText: 'Nombre del Restaurante'),
+                    decoration: const InputDecoration(
+                        labelText: 'Nombre del Restaurante'),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Por favor ingrese el nombre del restaurante';
                       }
                       return null;
                     }),
-                SizedBox(height: 10.0),
+                const SizedBox(height: 10.0),
                 TextFormField(
                   controller: _descripcionController,
-                  decoration:
-                      InputDecoration(labelText: 'Descripción del Restaurante'),
+                  decoration: const InputDecoration(
+                      labelText: 'Descripción del Restaurante'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Por favor ingrese la descripción del restaurante';
@@ -293,7 +292,7 @@ class _AltaRestState extends State<AltaRest> {
                     return null;
                   },
                 ),
-                SizedBox(height: 10.0),
+                const SizedBox(height: 10.0),
                 Padding(
                   padding:
                       const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
@@ -322,61 +321,61 @@ class _AltaRestState extends State<AltaRest> {
                     }).toList(),
                   ),
                 ),
-                SizedBox(height: 20.0),
+                const SizedBox(height: 20.0),
                 MultiSelectBottomSheetField(
                   initialChildSize: 0.4,
                   listType: MultiSelectListType.CHIP,
                   searchable: true,
-                  buttonText: Text("Tipo de Comida"),
-                  title: Text("Categorias"),
+                  buttonText: const Text("Tipo de Comida"),
+                  title: const Text("Categorias"),
                   items: _categoria
                       .map((cat) => MultiSelectItem<Categoria>(cat, cat.name))
                       .toList(),
                   onConfirm: (values) {
                     //_selectedCategorias = values!;
-                    print('onConfirm');
-                    print(values);
+                    //print('onConfirm');
+                    //print(values);
                     _finalCategories = [];
                     for (dynamic element in values) {
-                      print(element.id);
+                      //print(element.id);
                       _finalCategories.add(element.id.toString());
                     }
                   },
                   chipDisplay: MultiSelectChipDisplay(
                     onTap: (value) {
-                      print('onTap');
-                      print(value);
+                      //print('onTap');
+                      //print(value);
                     },
                   ),
                 ),
-                _selectedCategorias == null || _selectedCategorias.isEmpty
+                _selectedCategorias.isEmpty
                     ? Container(
-                        padding: EdgeInsets.all(10),
+                        padding: const EdgeInsets.all(10),
                         alignment: Alignment.centerLeft,
-                        child: Text(
+                        child: const Text(
                           "None selected",
                           style: TextStyle(color: Colors.black54),
                         ))
                     : Container(),
-                SizedBox(
+                const SizedBox(
                   height: 20.0,
                 ),
-                Text(
+                const Text(
                   'Informacion de Contacto',
                   style: TextStyle(fontSize: 25),
                 ),
-                SizedBox(height: 10.0),
+                const SizedBox(height: 10.0),
                 TextFormField(
                     controller: _numberPhone,
                     keyboardType: TextInputType.number,
-                    decoration: InputDecoration(labelText: 'Telefono'),
+                    decoration: const InputDecoration(labelText: 'Telefono'),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Por favor ingrese el Telefono de contacto';
                       }
                       return null;
                     }),
-                SizedBox(height: 10.0),
+                const SizedBox(height: 10.0),
                 Padding(
                   padding:
                       const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
@@ -387,12 +386,12 @@ class _AltaRestState extends State<AltaRest> {
                         //return Text('aa');
                         return DropdownButton(
                           value: _selectedPais,
-                          icon: Icon(Icons.arrow_drop_down),
+                          icon: const Icon(Icons.arrow_drop_down),
                           iconSize: 30,
                           elevation: 16,
-                          style: TextStyle(color: Colors.black),
+                          style: const TextStyle(color: Colors.black),
                           onChanged: (Pais? newValue) {
-                            print(newValue);
+                            //print(newValue);
                             setState(() {
                               _selectedPais = newValue as Pais;
                               futureEstado = fetchEstados();
@@ -409,11 +408,11 @@ class _AltaRestState extends State<AltaRest> {
                       } else if (snapshot.hasError) {
                         return Text("${snapshot.error}");
                       }
-                      return CircularProgressIndicator();
+                      return const CircularProgressIndicator();
                     },
                   ),
                 ),
-                SizedBox(height: 10.0),
+                const SizedBox(height: 10.0),
                 Padding(
                   padding:
                       const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
@@ -423,12 +422,12 @@ class _AltaRestState extends State<AltaRest> {
                       if (snapshot.hasData) {
                         return DropdownButton(
                           value: _selectedEstado,
-                          icon: Icon(Icons.arrow_drop_down),
+                          icon: const Icon(Icons.arrow_drop_down),
                           iconSize: 30,
                           elevation: 16,
-                          style: TextStyle(color: Colors.black),
+                          style: const TextStyle(color: Colors.black),
                           onChanged: (Estado? newValue) {
-                            print(newValue);
+                            //print(newValue);
                             setState(() {
                               _selectedEstado = newValue as Estado;
                               futureCiudad = fetchCiudades();
@@ -445,11 +444,11 @@ class _AltaRestState extends State<AltaRest> {
                       } else if (snapshot.hasError) {
                         return Text("${snapshot.error}");
                       }
-                      return Text('Seleccione Pais');
+                      return const Text('Seleccione Pais');
                     },
                   ),
                 ),
-                SizedBox(height: 10.0),
+                const SizedBox(height: 10.0),
                 Padding(
                   padding:
                       const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
@@ -459,12 +458,12 @@ class _AltaRestState extends State<AltaRest> {
                       if (snapshot.hasData) {
                         return DropdownButton(
                           value: _selectedCiudad,
-                          icon: Icon(Icons.arrow_drop_down),
+                          icon: const Icon(Icons.arrow_drop_down),
                           iconSize: 30,
                           elevation: 16,
-                          style: TextStyle(color: Colors.black),
+                          style: const TextStyle(color: Colors.black),
                           onChanged: (Ciudad? newValue) {
-                            print(newValue);
+                            //print(newValue);
                             setState(() {
                               _selectedCiudad = newValue as Ciudad;
                             });
@@ -480,15 +479,15 @@ class _AltaRestState extends State<AltaRest> {
                       } else if (snapshot.hasError) {
                         return Text("${snapshot.error}");
                       }
-                      return Text('Seleccion Estado');
+                      return const Text('Seleccion Estado');
                     },
                   ),
                 ),
-                SizedBox(height: 10.0),
+                const SizedBox(height: 10.0),
                 TextFormField(
                   controller: _direccionController,
-                  decoration:
-                      InputDecoration(labelText: 'Dirección del Restaurante'),
+                  decoration: const InputDecoration(
+                      labelText: 'Dirección del Restaurante'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Por favor ingrese la dirección del restaurante';
@@ -500,7 +499,7 @@ class _AltaRestState extends State<AltaRest> {
                     if (value.length > 4) {
                       //print('ir geo');
                       final data = await getDirByGeocoding(value);
-                      print(data);
+                      //print(data);
                       //GeocodingResponse response =
                       //    await geocoding.searchByAddress(value);
                       //print(response);
@@ -515,12 +514,12 @@ class _AltaRestState extends State<AltaRest> {
                     initialCameraPosition: _initialPosition,
                   ),
                 ),
-                SizedBox(height: 20.0),
-                Text(
+                const SizedBox(height: 20.0),
+                const Text(
                   'Informacion de Reserva',
                   style: TextStyle(fontSize: 25),
                 ),
-                SizedBox(height: 10.0),
+                const SizedBox(height: 10.0),
                 Row(children: <Widget>[
                   Flexible(
                       child: Padding(
@@ -599,7 +598,7 @@ class _AltaRestState extends State<AltaRest> {
                     ),
                   ),
                 ]),
-                SizedBox(height: 10.0),
+                const SizedBox(height: 10.0),
                 SingleChildScrollView(
                   child: SizedBox(
                     height: 380,
@@ -614,13 +613,13 @@ class _AltaRestState extends State<AltaRest> {
                           //print(_daysOfWeek[index]['name']);
                           return Column(
                             children: [
-                              Container(
+                              SizedBox(
                                 //color: Colors.blue,
                                 child: Row(children: [
                                   Checkbox(
                                     value: _daysOfWeek[index]['checked'],
                                     onChanged: (bool? value) {
-                                      print(value);
+                                      //print(value);
                                       setState(() {
                                         _daysOfWeek[index]['checked'] = value;
                                       });
@@ -629,7 +628,7 @@ class _AltaRestState extends State<AltaRest> {
                                   Text(_daysOfWeek[index]['name']),
                                 ]),
                               ),
-                              Container(
+                              SizedBox(
                                 //color: Colors.red,
                                 child: Row(
                                   children: [
@@ -646,7 +645,7 @@ class _AltaRestState extends State<AltaRest> {
                                               child: Text(time),
                                             );
                                           }).toList(),
-                                          decoration: InputDecoration(
+                                          decoration: const InputDecoration(
                                               labelText: 'Inicio'),
                                           onChanged: (String? newValue) {
                                             setState(() {
@@ -671,7 +670,7 @@ class _AltaRestState extends State<AltaRest> {
                                               child: Text(time),
                                             );
                                           }).toList(),
-                                          decoration: InputDecoration(
+                                          decoration: const InputDecoration(
                                               labelText: 'Final'),
                                           onChanged: (String? newValue) {
                                             setState(() {
@@ -685,13 +684,13 @@ class _AltaRestState extends State<AltaRest> {
                                   ],
                                 ),
                               ),
-                              SizedBox(height: 10.0),
+                              const SizedBox(height: 10.0),
                             ],
                           );
                         }),
                   ),
                 ),
-                SizedBox(height: 20.0),
+                const SizedBox(height: 20.0),
                 ElevatedButton(
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
@@ -699,27 +698,27 @@ class _AltaRestState extends State<AltaRest> {
                         final user = await serviceDB.instance
                             .getById('users', 'id_user', 1);
                         if (user.isEmpty) {
-                          print('error user empty');
+                          //print('error user empty');
                           return;
                         }
 
                         Map<String, dynamic> arraSlot = {};
                         _daysOfWeek.forEach((element) {
                           if (element['checked'] == true) {
-                            print(element);
+                            //print(element);
                             //arraSlot[element['index'].toString()] =
                             arraSlot[element['index'].toString()] =
                                 element['hora'];
                           }
                         });
 
-                        Map<String, dynamic> ExtensionAttributes = {
+                        Map<String, dynamic> extensionAttributes = {
                           'stock_item': {'qty': 99999999, 'is_in_stock': true},
                           'slot_data': arraSlot
                         };
 
-                        List<Map<String, dynamic>> CustomAttributes = [];
-                        CustomAttributes.addAll([
+                        List<Map<String, dynamic>> customAttributes = [];
+                        customAttributes.addAll([
                           {
                             "attribute_code": "short_description",
                             "value": _descripcionController.text
@@ -806,16 +805,16 @@ class _AltaRestState extends State<AltaRest> {
                             'status': 1,
                             'visibility': 4,
                             'type_id': 'booking',
-                            'extension_attributes': ExtensionAttributes,
-                            'custom_attributes': CustomAttributes,
+                            'extension_attributes': extensionAttributes,
+                            'custom_attributes': customAttributes,
                           },
                           'saveOptions': true
                         };
 
                         final restaurante = await post(
                             '', 'integration', 'products', producto, 'v2');
-                        print('rest --->');
-                        print(restaurante);
+                        //print('rest --->');
+                        //print(restaurante);
 
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
@@ -825,7 +824,7 @@ class _AltaRestState extends State<AltaRest> {
                           ),
                         );
                       } catch (e) {
-                        print(e);
+                        //print(e);
                         ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(content: Text(e.toString())));
                       }

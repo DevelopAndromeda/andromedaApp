@@ -39,14 +39,14 @@ Future<dynamic> get(String? tokenCustomer, String type, String url) async {
     final TOKEN = getTokenHeader(type, tokenCustomer);
     print(
         '************* Endpoint: ${Uri.parse(endPoint! + url)}  *************');
-    print('************* TYPE: ${type} *************');
+    print('************* TYPE: $type *************');
 
     if (TOKEN.isNotEmpty) {
       _headers["Authorization"] = TOKEN;
     } else {
       _headers.remove("Authorization");
     }
-    print('************* headers: ${_headers} *************');
+    print('************* headers: $_headers *************');
     final resp = await http.get(Uri.parse(endPoint! + url), headers: _headers);
     if (resp.statusCode < 500) {
       return json.decode(resp.body);
@@ -64,14 +64,14 @@ Future<dynamic> post(String? tokenCustomer, String type, String url,
     final TOKEN = getTokenHeader(type, tokenCustomer);
     print(
         '************* Endpoint: ${Uri.parse(version == '' ? endPoint! + url : endPointV2! + url)}  *************');
-    print('************* Paramas: ${params} *************');
-    print('************* TYPE: ${type} *************');
+    print('************* Paramas: $params *************');
+    print('************* TYPE: $type *************');
     if (TOKEN.isNotEmpty) {
       _headers["Authorization"] = TOKEN;
     } else {
       _headers.remove("Authorization");
     }
-    print('************* headers: ${_headers} *************');
+    print('************* headers: $_headers *************');
 
     final resp = await http.post(
         Uri.parse(version == '' ? endPoint! + url : endPointV2! + url),
@@ -93,14 +93,14 @@ Future<dynamic> put(String? tokenCustomer, String type, String url,
     final TOKEN = getTokenHeader(type, tokenCustomer);
     print(
         '************* Endpoint: ${Uri.parse(endPoint! + url + id)}  *************');
-    print('************* Paramas: ${params} *************');
-    print('************* TYPE: ${type} *************');
+    print('************* Paramas: $params *************');
+    print('************* TYPE: $type *************');
     if (TOKEN.isNotEmpty) {
       _headers["Authorization"] = TOKEN;
     } else {
       _headers.remove("Authorization");
     }
-    print('************* headers: ${_headers} *************');
+    print('************* headers: $_headers *************');
     //_headers["Authorization"] = getTokenHeader(type, tokenCustomer);
     final resp = await http.put(Uri.parse(endPoint! + url + id),
         headers: _headers, body: jsonEncode(params));
@@ -119,14 +119,14 @@ Future<dynamic> delete(String? tokenCustomer, String type, String url) async {
     final TOKEN = getTokenHeader(type, tokenCustomer);
     print(
         '************* Endpoint: ${Uri.parse(endPoint! + url)}  *************');
-    print('************* TYPE: ${type} *************');
+    print('************* TYPE: $type *************');
     //_headers["Authorization"] = getTokenHeader(type, tokenCustomer);
     if (TOKEN.isNotEmpty) {
       _headers["Authorization"] = TOKEN;
     } else {
       _headers.remove("Authorization");
     }
-    print('************* headers: ${_headers} *************');
+    print('************* headers: $_headers *************');
     final resp =
         await http.delete(Uri.parse(endPoint! + url), headers: _headers);
     if (resp.statusCode == 200) {
@@ -140,9 +140,9 @@ Future<dynamic> delete(String? tokenCustomer, String type, String url) async {
 
 Future<dynamic> getDirByGeocoding(String value) async {
   value = value.replaceAll(" ", "+");
-  print(Uri.parse(
-      'https://maps.googleapis.com/maps/api/geocode/json?address=${value}&key=${dotenv.env['TOKEN_GOOGLE_MAPS']}'));
+  //print(Uri.parse(
+  //    'https://maps.googleapis.com/maps/api/geocode/json?address=${value}&key=${dotenv.env['TOKEN_GOOGLE_MAPS']}'));
   final resp = await http.get(Uri.parse(
-      'https://maps.googleapis.com/maps/api/geocode/json?address=${value}&key=${dotenv.env['TOKEN_GOOGLE_MAPS']}'));
+      'https://maps.googleapis.com/maps/api/geocode/json?address=$value&key=${dotenv.env['TOKEN_GOOGLE_MAPS']}'));
   return json.decode(resp.body);
 }

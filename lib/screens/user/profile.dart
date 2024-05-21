@@ -43,7 +43,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
         backgroundColor: Colors.white,
         flexibleSpace: Row(
           children: [
-            Spacer(),
+            const Spacer(),
             // Spacer se utiliza para empujar el título al centro
             const Center(
               child: Text(
@@ -53,7 +53,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
                 ),
               ),
             ),
-            Spacer(),
+            const Spacer(),
             IconButton(
               icon: const Icon(
                 Icons.exit_to_app_rounded,
@@ -87,7 +87,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
                   fit: BoxFit.cover,
                 ),
 
-                Positioned(
+                const Positioned(
                   top: 150,
                   child: CircleAvatar(
                     radius: 50,
@@ -97,16 +97,16 @@ class _MyProfilePageState extends State<MyProfilePage> {
                 // Imagen de perfil
               ],
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Text("Nombre: $nombre"),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Text("Apellido: $apellido"),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Text("Correo: $correo"),
             /*SizedBox(height: 10),
             Text("Teléfono: $telefono"),*/
-            SizedBox(height: 20),
-            SizedBox(
+            const SizedBox(height: 20),
+            const SizedBox(
               height: 250,
             ),
             Center(
@@ -115,17 +115,17 @@ class _MyProfilePageState extends State<MyProfilePage> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => MyConfigProfilePage(),
+                        builder: (context) => const MyConfigProfilePage(),
                       ));
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.black,
-                  minimumSize: Size(250, 40),
+                  minimumSize: const Size(250, 40),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(4),
                   ),
                 ),
-                child: Text(
+                child: const Text(
                   "Modificar Perfil",
                   style: TextStyle(color: Colors.white),
                 ),
@@ -134,7 +134,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
           ],
         ),
       ),
-      bottomNavigationBar: MyBottomBar(
+      bottomNavigationBar: const MyBottomBar(
         index: 2,
       ),
     );

@@ -155,8 +155,8 @@ class _ModificacionRestaurante extends State<ModificacionRestaurante> {
     dynamic geo = await determinePosition();
     //print('geo');
     //print(geo);
-    Map<String, dynamic> _update = {'lat': geo.longitude, 'long': geo.latitude};
-    await serviceDB.instance.updateRecord('users', _update, 'id_user', 1);
+    Map<String, dynamic> update = {'lat': geo.longitude, 'long': geo.latitude};
+    await serviceDB.instance.updateRecord('users', update, 'id_user', 1);
 
     GoogleMapController controller = await _controller.future;
     controller.animateCamera(
@@ -186,20 +186,6 @@ class _ModificacionRestaurante extends State<ModificacionRestaurante> {
       ]
     }
     """);
-
-    responseJson['data'].forEach((data) {
-      print('data');
-      print(getCustomAttribute(
-          widget.data['custom_attributes'], 'hotel_country'));
-      print(data['code']);
-      /*if (getCustomAttribute(
-              widget.data['custom_attributes'], 'hotel_country') ==
-          data['code']) {
-        setState(() {
-          _selectedPais = Pais.fromJson(data);
-        });
-      }*/
-    });
 
     return (responseJson['data'] as List)
         .map((data) => Pais.fromJson(data))
@@ -278,7 +264,7 @@ class _ModificacionRestaurante extends State<ModificacionRestaurante> {
     return Scaffold(
       drawer: NavDrawer(changeSalida: () {}),
       appBar: AppBar(
-        title: Text('Modificacion'),
+        title: const Text('Modificacion'),
         backgroundColor: Colors.black,
       ),
       body: SingleChildScrollView(
@@ -291,19 +277,19 @@ class _ModificacionRestaurante extends State<ModificacionRestaurante> {
               children: [
                 TextFormField(
                     controller: _nombreController,
-                    decoration:
-                        InputDecoration(labelText: 'Nombre del Restaurante'),
+                    decoration: const InputDecoration(
+                        labelText: 'Nombre del Restaurante'),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Por favor ingrese el nombre del restaurante';
                       }
                       return null;
                     }),
-                SizedBox(height: 10.0),
+                const SizedBox(height: 10.0),
                 TextFormField(
                   controller: _descripcionController,
-                  decoration:
-                      InputDecoration(labelText: 'Descripción del Restaurante'),
+                  decoration: const InputDecoration(
+                      labelText: 'Descripción del Restaurante'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Por favor ingrese la descripción del restaurante';
@@ -311,33 +297,33 @@ class _ModificacionRestaurante extends State<ModificacionRestaurante> {
                     return null;
                   },
                 ),
-                SizedBox(height: 10.0),
+                const SizedBox(height: 10.0),
                 TextFormField(
                     controller: _tipoController,
                     decoration:
-                        InputDecoration(labelText: 'Tipo de Restaurante'),
+                        const InputDecoration(labelText: 'Tipo de Restaurante'),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Por favor ingrese el tipo de restaurante';
                       }
                       return null;
                     }),
-                SizedBox(height: 20.0),
+                const SizedBox(height: 20.0),
                 MultiSelectBottomSheetField(
                   initialChildSize: 0.4,
                   listType: MultiSelectListType.CHIP,
                   searchable: true,
-                  buttonText: Text("Tipo de Restaurantes"),
-                  title: Text("Categorias"),
+                  buttonText: const Text("Tipo de Restaurantes"),
+                  title: const Text("Categorias"),
                   items: _categoria
                       .map((cat) => MultiSelectItem<Categoria>(cat, cat.name))
                       .toList(),
                   onConfirm: (values) {
                     //_selectedCategorias = values!;
-                    print('onConfirm');
-                    print(values);
+                    //print('onConfirm');
+                    //print(values);
                     for (dynamic element in values) {
-                      print(element.id);
+                      //print(element.id);
                       _finalCategories.add(element.id.toString());
                     }
                     /*values.forEach((element) {
@@ -346,42 +332,42 @@ class _ModificacionRestaurante extends State<ModificacionRestaurante> {
                   },
                   chipDisplay: MultiSelectChipDisplay(
                     onTap: (value) {
-                      print('onTap');
-                      print(value);
+                      //print('onTap');
+                      //print(value);
                       /*setState(() {
                             _selectedCategorias.remove(value);
                           });*/
                     },
                   ),
                 ),
-                _selectedCategorias == null || _selectedCategorias.isEmpty
+                _selectedCategorias.isEmpty
                     ? Container(
-                        padding: EdgeInsets.all(10),
+                        padding: const EdgeInsets.all(10),
                         alignment: Alignment.centerLeft,
-                        child: Text(
+                        child: const Text(
                           "None selected",
                           style: TextStyle(color: Colors.black54),
                         ))
                     : Container(),
-                SizedBox(
+                const SizedBox(
                   height: 20.0,
                 ),
-                Text(
+                const Text(
                   'Informacion de Contacto',
                   style: TextStyle(fontSize: 25),
                 ),
-                SizedBox(height: 10.0),
+                const SizedBox(height: 10.0),
                 TextFormField(
                     controller: _numberPhone,
                     keyboardType: TextInputType.number,
-                    decoration: InputDecoration(labelText: 'Telefono'),
+                    decoration: const InputDecoration(labelText: 'Telefono'),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Por favor ingrese el Telefono de contacto';
                       }
                       return null;
                     }),
-                SizedBox(height: 10.0),
+                const SizedBox(height: 10.0),
                 Padding(
                   padding:
                       const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
@@ -392,12 +378,12 @@ class _ModificacionRestaurante extends State<ModificacionRestaurante> {
                         //return Text('aa');
                         return DropdownButton(
                           value: _selectedPais,
-                          icon: Icon(Icons.arrow_drop_down),
+                          icon: const Icon(Icons.arrow_drop_down),
                           iconSize: 30,
                           elevation: 16,
-                          style: TextStyle(color: Colors.black),
+                          style: const TextStyle(color: Colors.black),
                           onChanged: (Pais? newValue) {
-                            print(newValue);
+                            //print(newValue);
                             setState(() {
                               _selectedPais = newValue as Pais;
                               futureEstado = fetchEstados();
@@ -414,11 +400,11 @@ class _ModificacionRestaurante extends State<ModificacionRestaurante> {
                       } else if (snapshot.hasError) {
                         return Text("${snapshot.error}");
                       }
-                      return CircularProgressIndicator();
+                      return const CircularProgressIndicator();
                     },
                   ),
                 ),
-                SizedBox(height: 10.0),
+                const SizedBox(height: 10.0),
                 Padding(
                   padding:
                       const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
@@ -428,12 +414,12 @@ class _ModificacionRestaurante extends State<ModificacionRestaurante> {
                       if (snapshot.hasData) {
                         return DropdownButton(
                           value: _selectedEstado,
-                          icon: Icon(Icons.arrow_drop_down),
+                          icon: const Icon(Icons.arrow_drop_down),
                           iconSize: 30,
                           elevation: 16,
-                          style: TextStyle(color: Colors.black),
+                          style: const TextStyle(color: Colors.black),
                           onChanged: (Estado? newValue) {
-                            print(newValue);
+                            //print(newValue);
                             setState(() {
                               _selectedEstado = newValue as Estado;
                               futureCiudad = fetchCiudades();
@@ -450,11 +436,11 @@ class _ModificacionRestaurante extends State<ModificacionRestaurante> {
                       } else if (snapshot.hasError) {
                         return Text("${snapshot.error}");
                       }
-                      return Text('Seleccione Pais');
+                      return const Text('Seleccione Pais');
                     },
                   ),
                 ),
-                SizedBox(height: 10.0),
+                const SizedBox(height: 10.0),
                 Padding(
                   padding:
                       const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
@@ -464,12 +450,12 @@ class _ModificacionRestaurante extends State<ModificacionRestaurante> {
                       if (snapshot.hasData) {
                         return DropdownButton(
                           value: _selectedCiudad,
-                          icon: Icon(Icons.arrow_drop_down),
+                          icon: const Icon(Icons.arrow_drop_down),
                           iconSize: 30,
                           elevation: 16,
-                          style: TextStyle(color: Colors.black),
+                          style: const TextStyle(color: Colors.black),
                           onChanged: (Ciudad? newValue) {
-                            print(newValue);
+                            //print(newValue);
                             setState(() {
                               _selectedCiudad = newValue as Ciudad;
                             });
@@ -485,15 +471,15 @@ class _ModificacionRestaurante extends State<ModificacionRestaurante> {
                       } else if (snapshot.hasError) {
                         return Text("${snapshot.error}");
                       }
-                      return Text('Seleccion Estado');
+                      return const Text('Seleccion Estado');
                     },
                   ),
                 ),
-                SizedBox(height: 10.0),
+                const SizedBox(height: 10.0),
                 TextFormField(
                   controller: _direccionController,
-                  decoration:
-                      InputDecoration(labelText: 'Dirección del Restaurante'),
+                  decoration: const InputDecoration(
+                      labelText: 'Dirección del Restaurante'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Por favor ingrese la dirección del restaurante';
@@ -505,7 +491,7 @@ class _ModificacionRestaurante extends State<ModificacionRestaurante> {
                     if (value.length > 4) {
                       //print('ir geo');
                       final data = await getDirByGeocoding(value);
-                      print(data);
+                      //print(data);
                       //GeocodingResponse response =
                       //    await geocoding.searchByAddress(value);
                       //print(response);
@@ -520,12 +506,12 @@ class _ModificacionRestaurante extends State<ModificacionRestaurante> {
                     initialCameraPosition: _initialPosition,
                   ),
                 ),
-                SizedBox(height: 20.0),
-                Text(
+                const SizedBox(height: 20.0),
+                const Text(
                   'Informacion de Reserva',
                   style: TextStyle(fontSize: 25),
                 ),
-                SizedBox(height: 10.0),
+                const SizedBox(height: 10.0),
                 Row(children: <Widget>[
                   Flexible(
                       child: Padding(
@@ -546,43 +532,45 @@ class _ModificacionRestaurante extends State<ModificacionRestaurante> {
                         }),
                   )),
                   Flexible(
-                      child: Padding(
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-                    child: TextFormField(
-                        controller: _slot_duration,
-                        keyboardType: TextInputType.number,
-                        decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: 'Duracion',
-                            hintText: 'Ingrese Tiempo'),
-                        validator: (String? value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Ingrese Tiempo';
-                          }
-                          return null;
-                        }),
-                  )),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 5, horizontal: 5),
+                      child: TextFormField(
+                          controller: _slot_duration,
+                          keyboardType: TextInputType.number,
+                          decoration: const InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: 'Duracion',
+                              hintText: 'Ingrese Tiempo'),
+                          validator: (String? value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Ingrese Tiempo';
+                            }
+                            return null;
+                          }),
+                    ),
+                  ),
                 ]),
                 Row(children: <Widget>[
                   Flexible(
-                      child: Padding(
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-                    child: TextFormField(
-                        controller: _prevent_scheduling_before,
-                        keyboardType: TextInputType.number,
-                        decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: 'Tiempo de Descanso',
-                            hintText: 'Tiempo de Descanso'),
-                        validator: (String? value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Ingrese Tiempo de Descanso';
-                          }
-                          return null;
-                        }),
-                  )),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 5, horizontal: 5),
+                      child: TextFormField(
+                          controller: _prevent_scheduling_before,
+                          keyboardType: TextInputType.number,
+                          decoration: const InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: 'Tiempo de Descanso',
+                              hintText: 'Tiempo de Descanso'),
+                          validator: (String? value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Ingrese Tiempo de Descanso';
+                            }
+                            return null;
+                          }),
+                    ),
+                  ),
                   Flexible(
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
@@ -604,7 +592,7 @@ class _ModificacionRestaurante extends State<ModificacionRestaurante> {
                     ),
                   ),
                 ]),
-                SizedBox(height: 10.0),
+                const SizedBox(height: 10.0),
                 SingleChildScrollView(
                   child: SizedBox(
                     height: 380,
@@ -619,13 +607,13 @@ class _ModificacionRestaurante extends State<ModificacionRestaurante> {
                           //print(_daysOfWeek[index]['name']);
                           return Column(
                             children: [
-                              Container(
+                              SizedBox(
                                 //color: Colors.blue,
                                 child: Row(children: [
                                   Checkbox(
                                     value: _daysOfWeek[index]['checked'],
                                     onChanged: (bool? value) {
-                                      print(value);
+                                      //print(value);
                                       setState(() {
                                         _daysOfWeek[index]['checked'] = value;
                                       });
@@ -634,7 +622,7 @@ class _ModificacionRestaurante extends State<ModificacionRestaurante> {
                                   Text(_daysOfWeek[index]['name']),
                                 ]),
                               ),
-                              Container(
+                              SizedBox(
                                 //color: Colors.red,
                                 child: Row(
                                   children: [
@@ -651,7 +639,7 @@ class _ModificacionRestaurante extends State<ModificacionRestaurante> {
                                               child: Text(time),
                                             );
                                           }).toList(),
-                                          decoration: InputDecoration(
+                                          decoration: const InputDecoration(
                                               labelText: 'Inicio'),
                                           onChanged: (String? newValue) {
                                             setState(() {
@@ -676,7 +664,7 @@ class _ModificacionRestaurante extends State<ModificacionRestaurante> {
                                               child: Text(time),
                                             );
                                           }).toList(),
-                                          decoration: InputDecoration(
+                                          decoration: const InputDecoration(
                                               labelText: 'Final'),
                                           onChanged: (String? newValue) {
                                             setState(() {
@@ -690,13 +678,13 @@ class _ModificacionRestaurante extends State<ModificacionRestaurante> {
                                   ],
                                 ),
                               ),
-                              SizedBox(height: 10.0),
+                              const SizedBox(height: 10.0),
                             ],
                           );
                         }),
                   ),
                 ),
-                SizedBox(height: 10.0),
+                const SizedBox(height: 10.0),
                 ElevatedButton(
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
@@ -704,27 +692,27 @@ class _ModificacionRestaurante extends State<ModificacionRestaurante> {
                         final user = await serviceDB.instance
                             .getById('users', 'id_user', 1);
                         if (user.isEmpty) {
-                          print('error user empty');
+                          //print('error user empty');
                           return;
                         }
 
                         Map<String, dynamic> arraSlot = {};
                         _daysOfWeek.forEach((element) {
                           if (element['checked'] == true) {
-                            print(element);
+                            //print(element);
                             //arraSlot[element['index'].toString()] =
                             arraSlot[element['index'].toString()] =
                                 element['hora'];
                           }
                         });
 
-                        Map<String, dynamic> ExtensionAttributes = {
+                        Map<String, dynamic> extensionAttributes = {
                           'stock_item': {'qty': 99999999, 'is_in_stock': true},
                           'slot_data': arraSlot
                         };
 
-                        List<Map<String, dynamic>> CustomAttributes = [];
-                        CustomAttributes.addAll([
+                        List<Map<String, dynamic>> customAttributes = [];
+                        customAttributes.addAll([
                           {
                             "attribute_code": "short_description",
                             "value": _descripcionController.text
@@ -811,16 +799,16 @@ class _ModificacionRestaurante extends State<ModificacionRestaurante> {
                             'status': 1,
                             'visibility': 4,
                             'type_id': 'booking',
-                            'extension_attributes': ExtensionAttributes,
-                            'custom_attributes': CustomAttributes,
+                            'extension_attributes': extensionAttributes,
+                            'custom_attributes': customAttributes,
                           },
                           'saveOptions': true
                         };
 
                         final restaurante = await post(
                             '', 'integration', 'products', producto, 'v2');
-                        print('rest --->');
-                        print(restaurante);
+                        //print('rest --->');
+                        //print(restaurante);
 
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
@@ -830,13 +818,13 @@ class _ModificacionRestaurante extends State<ModificacionRestaurante> {
                           ),
                         );
                       } catch (e) {
-                        print(e);
+                        //print(e);
                         ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(content: Text(e.toString())));
                       }
                     }
                   },
-                  child: Text('Registrar Restaurante'),
+                  child: const Text('Registrar Restaurante'),
                 )
               ],
             ),

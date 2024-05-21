@@ -14,7 +14,7 @@ class MySavedPage extends StatefulWidget {
 }
 
 class _MySavedPageState extends State<MySavedPage> {
-  String? _url =
+  final String _url =
       "${dotenv.env['PROTOCOL']}://${dotenv.env['URL']}/media/catalog/product";
 
   Future getFavorites() async {
@@ -38,7 +38,7 @@ class _MySavedPageState extends State<MySavedPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'Guardado',
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
@@ -46,14 +46,13 @@ class _MySavedPageState extends State<MySavedPage> {
         backgroundColor: const Color.fromARGB(255, 0, 0, 0),
       ),
       body: _body(),
-      bottomNavigationBar: MyBottomBar(
+      bottomNavigationBar: const MyBottomBar(
         index: 3,
       ),
     );
   }
 
   Stack _body() {
-    Size size = MediaQuery.of(context).size;
     return Stack(
       children: [
         SafeArea(
@@ -68,7 +67,7 @@ class _MySavedPageState extends State<MySavedPage> {
                 }
 
                 if (snapshot.hasData) {
-                  print(snapshot.data);
+                  //print(snapshot.data);
                   return Column(
                     children: _createList(snapshot.data!['data']),
                   );
@@ -142,12 +141,12 @@ class _MySavedPageState extends State<MySavedPage> {
           ),
           Text(
             data['name'],
-            style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+            style: const TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
           ),
-          SizedBox(height: 8.0),
+          const SizedBox(height: 8.0),
           Text(
             'SKU: ${data['sku']}',
-            style: TextStyle(fontSize: 16.0),
+            style: const TextStyle(fontSize: 16.0),
           ),
         ],
       ),
@@ -159,7 +158,7 @@ class _MySavedPageState extends State<MySavedPage> {
       return BoxDecoration(
           borderRadius: BorderRadius.circular(4),
           image: DecorationImage(
-              image: NetworkImage(_url! + img), fit: BoxFit.cover));
+              image: NetworkImage(_url + img), fit: BoxFit.cover));
     } else {
       return BoxDecoration(
           borderRadius: BorderRadius.circular(4),

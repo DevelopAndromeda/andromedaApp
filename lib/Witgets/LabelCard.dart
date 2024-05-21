@@ -16,7 +16,7 @@ class LabelCard extends StatelessWidget {
       width: 90,
       height: 24,
       alignment: Alignment.center,
-      margin: EdgeInsets.all(10),
+      margin: const EdgeInsets.all(10),
       padding: const EdgeInsets.symmetric(vertical: 3.5, horizontal: 15),
       decoration: BoxDecoration(
         color: color,

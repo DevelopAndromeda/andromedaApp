@@ -17,11 +17,15 @@ class _MyRecoverPasswordState extends State<MyRecoverPassword> {
     return Scaffold(
       backgroundColor: Background_Color,
       appBar: AppBar(
-        title: Text("Recuperar Contraseña",
-        style: TextStyle(color: Colors.white),),
+        title: const Text(
+          "Recuperar Contraseña",
+          style: TextStyle(color: Colors.white),
+        ),
         centerTitle: true,
-        leading: BackButton(color: Colors.white,),
-        backgroundColor: Color.fromARGB(255, 0, 0, 0),
+        leading: const BackButton(
+          color: Colors.white,
+        ),
+        backgroundColor: const Color.fromARGB(255, 0, 0, 0),
         elevation: 1,
       ),
       body: Padding(
@@ -32,7 +36,7 @@ class _MyRecoverPasswordState extends State<MyRecoverPassword> {
             TextFormField(
               controller: _emailController,
               keyboardType: TextInputType.emailAddress,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Correo Electrónico',
                 hintText: 'Ingrese su correo electrónico',
               ),
@@ -43,20 +47,21 @@ class _MyRecoverPasswordState extends State<MyRecoverPassword> {
                 return null;
               },
             ),
-            SizedBox(height: 30.0),
+            const SizedBox(height: 30.0),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: Color.fromARGB(255, 0, 0, 0), // Cambia el color de fondo a dorado
-                foregroundColor: Color.fromARGB(
-                    255, 255, 255, 255),
-                     shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(4), // Modifica el radio de borde según sea necesario
-    ), // Cambia el color del texto a blanco
+                backgroundColor: const Color.fromARGB(
+                    255, 0, 0, 0), // Cambia el color de fondo a dorado
+                foregroundColor: const Color.fromARGB(255, 255, 255, 255),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(
+                      4), // Modifica el radio de borde según sea necesario
+                ), // Cambia el color del texto a blanco
               ),
               onPressed: () {
                 _resetPassword();
               },
-              child: Text('Recuperar Contraseña'),
+              child: const Text('Recuperar Contraseña'),
             ),
           ],
         ),
@@ -92,7 +97,7 @@ class _MyRecoverPasswordState extends State<MyRecoverPassword> {
         }
       }
     } catch (e) {
-      print(e);
+      //print(e);
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text(e.toString())));
     }

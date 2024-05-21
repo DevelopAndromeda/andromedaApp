@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:andromeda/Witgets/Notifications/Successful_Notification_.dart';
 import 'package:andromeda/Witgets/Notifications/Reservation_Notificacion.dart';
 import 'package:andromeda/Witgets/bottomBar.dart';
 
@@ -15,13 +14,12 @@ class _MyNotificationsPageState extends State<MyNotificationsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Notificaciones',
-        style: TextStyle(color: Colors.white,
-        fontWeight: FontWeight.bold),),
+        title: const Text(
+          'Notificaciones',
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        ),
         centerTitle: true,
-      
         backgroundColor: const Color.fromARGB(255, 0, 0, 0),
-      
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
@@ -32,12 +30,12 @@ class _MyNotificationsPageState extends State<MyNotificationsPage> {
             description: "Datos de la reservación",
             imagePath: "assets/Login.png",
             onClose: () {
-              print("Notificaciones");
+              //print("Notificaciones");
             },
           ),
         ),
       ),
-      bottomNavigationBar: MyBottomBar(
+      bottomNavigationBar: const MyBottomBar(
         index: 4,
       ),
     );

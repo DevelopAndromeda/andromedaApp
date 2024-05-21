@@ -45,21 +45,21 @@ class _MyDetailPageState extends State<MyDetailPage>
   Map _slot = {};
   List<dynamic> _slotDay = [];
   List<dynamic> _allSlotDay = [];
-  String? _url =
+  final String _url =
       "${dotenv.env['PROTOCOL']}://${dotenv.env['URL']}/media/catalog/product";
   //List<Map<String, dynamic>> _timeSlot = [];
   Future<void> getSlot(String? id) async {
-    print('getSlot -> $id');
-    _slot = await get('', '', 'restaurant/product/${id}');
+    //print('getSlot -> $id');
+    _slot = await get('', '', 'restaurant/product/$id');
     _slot = _slot['data']['info'];
-    print(_slot);
+    //print(_slot);
   }
 
   Future<void> getOptions(String? sku) async {
-    print('************* getOptions *************');
-    print('************* SKU: ${sku} *************');
+    //print('************* getOptions *************');
+    //print('************* SKU: ${sku} *************');
     _options = await get('', 'integration', 'products/$sku/options');
-    print('************* options: ${_options} *************');
+    //print('************* options: ${_options} *************');
   }
 
   //final String nombre = "Nombre del Restaurante";
@@ -82,7 +82,7 @@ class _MyDetailPageState extends State<MyDetailPage>
         return;
       }
     });
-    print(_slotDay);
+    //print(_slotDay);
     _allSlotDay = [];
     _slotDay.forEach((e) {
       if (e['slots_info'].runtimeType == List) {
@@ -91,8 +91,8 @@ class _MyDetailPageState extends State<MyDetailPage>
         _allSlotDay.addAll(e['slots_info'].values);
       }
     });
-    print('_allSlotDay');
-    print(_allSlotDay);
+    //print('_allSlotDay');
+    //print(_allSlotDay);
     if (picked != null && picked != _selectedDate) {
       setState(() {
         _selectedDate = picked;
@@ -114,7 +114,7 @@ class _MyDetailPageState extends State<MyDetailPage>
   }*/
 
   Future<void> generateOrden() async {
-    print('************* Obtener Sesion *************');
+    //print('************* Obtener Sesion *************');
     final sesion = await serviceDB.instance.getById('users', 'id_user', 1);
     // Generar carrito vacio
     if (sesion.isEmpty) {
@@ -122,14 +122,14 @@ class _MyDetailPageState extends State<MyDetailPage>
           SnackBar(content: Text('Nesecitas iniciar una sesion')));
       return;
     }
-    print('************* Sesion: ${sesion} *************');
+    //print('************* Sesion: ${sesion} *************');
 
-    print('************* Generar custom_options: *************');
+    //print('************* Generar custom_options: *************');
     List<Map<String, dynamic>> custom_options = [];
     if (_options.isEmpty) {
       await getOptions(widget.data['sku']);
     }
-    print('************* options: ${_options} *************');
+    //print('************* options: ${_options} *************');
     if (_options.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('No Existen Labels para este producto')));
@@ -161,15 +161,15 @@ class _MyDetailPageState extends State<MyDetailPage>
       custom_options
           .add({"option_id": item['option_id'], "option_value": value});
     }
-    print('************* custom_options: ${custom_options} *************');
+    //print('************* custom_options: ${custom_options} *************');
 
-    print('************* Crear Carrito *************');
+    //print('************* Crear Carrito *************');
     //Creamos Carrito y lo guardamos
     var myCart = await post(sesion[0]['token'], 'custom', 'carts/mine', {}, '')
         .then((value) async {
       return await get(sesion[0]['token'], 'custom', 'carts/mine');
     });
-    print('************* Carrito: ${myCart} *************');
+    //print('************* Carrito: ${myCart} *************');
 
     List<Map<String, dynamic>> configurable_item_options = [];
     configurable_item_options.addAll([
@@ -182,10 +182,10 @@ class _MyDetailPageState extends State<MyDetailPage>
       {"option_id": "slot_day_index", "option_value": _selectedDate.weekday},
       {"option_id": "charged_per_count", "option_value": 4},
     ]);
-    print(
-        '************* configurable_item_options: ${configurable_item_options} *************');
+    //print(
+    //    '************* configurable_item_options: ${configurable_item_options} *************');
 
-    Map<String, dynamic> _cartItem = {
+    Map<String, dynamic> cartItem = {
       "cartItem": {
         "quote_id": myCart['id'],
         "sku": widget.data['sku'],
@@ -202,23 +202,23 @@ class _MyDetailPageState extends State<MyDetailPage>
       "booking_time": Hora
     };
 
-    print('************* cartItem: ${_cartItem} *************');
+    //print('************* cartItem: ${_cartItem} *************');
 
     //Revisar productos
-    print('************* Obtener Items en Carrito *************');
+    //print('************* Obtener Items en Carrito *************');
     final items = await get(sesion[0]['token'], 'custom', 'carts/mine/items');
-    print('************* items: ${items} *************');
+    //print('************* items: ${items} *************');
 
     if (items.isEmpty) {
       //Agregar item al carrito
-      final addItem = await post(
-          sesion[0]['token'], 'custom', 'carts/mine/items', _cartItem, 'v2');
-      print('************* Agregar Item: ${addItem} *************');
+      await post(
+          sesion[0]['token'], 'custom', 'carts/mine/items', cartItem, 'v2');
+      //print('************* Agregar Item: ${addItem} *************');
     } else {
       bool bandera = true;
       for (dynamic data in items) {
-        print('************* SKU: ${data['sku']} *************');
-        print('************* SKU-Actual: ${widget.data['sku']} *************');
+        //print('************* SKU: ${data['sku']} *************');
+        //print('************* SKU-Actual: ${widget.data['sku']} *************');
         if (data['sku'] == widget.data['sku']) {
           bandera = false;
         }
@@ -226,14 +226,14 @@ class _MyDetailPageState extends State<MyDetailPage>
 
       if (bandera) {
         //Agregar item al carrito
-        final addItem = await post(
-            sesion[0]['token'], 'custom', 'carts/mine/items', _cartItem, 'v2');
-        print('************* Agregar Item: ${addItem} *************');
+        await post(
+            sesion[0]['token'], 'custom', 'carts/mine/items', cartItem, 'v2');
+        //print('************* Agregar Item: ${addItem} *************');
       }
     }
 
     //Agregamos Bulling y
-    Map<String, dynamic> _info = {
+    Map<String, dynamic> info = {
       "addressInformation": {
         "billing_address": {
           "firstname": "le aza",
@@ -267,9 +267,9 @@ class _MyDetailPageState extends State<MyDetailPage>
     };
 
     //Set info
-    final shippingInfo = await post(sesion[0]['token'], 'custom',
-        'carts/mine/shipping-information', _info, '');
-    print('************* shippingInfo: ${shippingInfo} *************');
+    await post(sesion[0]['token'], 'custom', 'carts/mine/shipping-information',
+        info, '');
+    //print('************* shippingInfo: ${shippingInfo} *************');
 
     //Generate Order
     final orden = await put(
@@ -280,8 +280,8 @@ class _MyDetailPageState extends State<MyDetailPage>
           "paymentMethod": {"method": "checkmo"}
         },
         '');
-    print('************* ORDEN: ${orden} *************');
-    print('************* ORDEN-TYPE: ${orden.runtimeType} *************');
+    //print('************* ORDEN: ${orden} *************');
+    //print('************* ORDEN-TYPE: ${orden.runtimeType} *************');
     if (orden.runtimeType != int) {
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text(orden['message'])));
@@ -289,7 +289,7 @@ class _MyDetailPageState extends State<MyDetailPage>
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: Text('Reserva Realizada'),
+          title: const Text('Reserva Realizada'),
           content: Text('Tu reserva ha sido realizada con éxito.'),
           actions: <Widget>[
             TextButton(
@@ -343,8 +343,8 @@ class _MyDetailPageState extends State<MyDetailPage>
     final size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        title: Text('Información del restaurante',
-        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+        title: const Text('Información del restaurante',
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
         backgroundColor: Colors.black,
       ),
       body: SingleChildScrollView(
@@ -357,8 +357,8 @@ class _MyDetailPageState extends State<MyDetailPage>
                 enlargeCenterPage: true,
                 autoPlay: true,
                 aspectRatio: 16 / 9,
-                autoPlayInterval: Duration(seconds: 3),
-                autoPlayAnimationDuration: Duration(milliseconds: 800),
+                autoPlayInterval: const Duration(seconds: 3),
+                autoPlayAnimationDuration: const Duration(milliseconds: 800),
                 autoPlayCurve: Curves.fastOutSlowIn,
                 pauseAutoPlayOnTouch: true,
                 enableInfiniteScroll: true,
@@ -369,13 +369,13 @@ class _MyDetailPageState extends State<MyDetailPage>
                   builder: (BuildContext context) {
                     return Container(
                       width: MediaQuery.of(context).size.width,
-                      margin: EdgeInsets.symmetric(horizontal: 5.0),
-                      decoration: BoxDecoration(
+                      margin: const EdgeInsets.symmetric(horizontal: 5.0),
+                      decoration: const BoxDecoration(
                         color: Colors.grey,
                       ),
                       child: widget.data['media_gallery_entries'] != null
                           ? Image.network(
-                              _url! + imagen,
+                              _url + imagen,
                               fit: BoxFit.cover,
                             )
                           : Image.asset(
@@ -396,40 +396,41 @@ class _MyDetailPageState extends State<MyDetailPage>
                 children: [
                   Text(
                     widget.data['name'],
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                        fontSize: 24, fontWeight: FontWeight.bold),
                   ),
-                  SizedBox(height: 8),
-                  Text(
+                  const SizedBox(height: 8),
+                  const Text(
                     'Direccion',
                     style: TextStyle(fontSize: 16),
                   ),
-                  SizedBox(height: 8),
-                  Text(
+                  const SizedBox(height: 8),
+                  const Text(
                     'Tipo de Comida: ',
                     style: TextStyle(fontSize: 16),
                   ),
-                  SizedBox(height: 8),
-                  Text(
+                  const SizedBox(height: 8),
+                  const Text(
                     'Horarios de Servicio: ',
                     style: TextStyle(fontSize: 16),
                   ),
-                  SizedBox(height: 16),
-                  Text(
+                  const SizedBox(height: 16),
+                  const Text(
                     'Descripción:',
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
                   Text(
                     getCustomAttribute(
                         widget.data['custom_attributes'], 'short_description'),
-                    style: TextStyle(fontSize: 16),
+                    style: const TextStyle(fontSize: 16),
                   ),
                   TabBar(
                     controller: _tabController,
-                    labelColor: Color.fromARGB(255, 0, 0, 0),
+                    labelColor: const Color.fromARGB(255, 0, 0, 0),
                     indicatorColor: Colors.black,
                     onTap: (index) {
-                      print(index);
+                      //print(index);
                       if (index == 1) {
                         setState(() {
                           index = 0;
@@ -460,12 +461,12 @@ class _MyDetailPageState extends State<MyDetailPage>
                       children: <Widget>[
                         Column(
                           children: [
-                            SizedBox(height: 20.0),
-                            Text(
+                            const SizedBox(height: 20.0),
+                            const Text(
                               'Día y Hora de Reserva',
                               style: TextStyle(fontSize: 25),
                             ),
-                            SizedBox(height: 10.0),
+                            const SizedBox(height: 10.0),
                             Flexible(
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(
@@ -473,12 +474,12 @@ class _MyDetailPageState extends State<MyDetailPage>
                                 child: ListTile(
                                   title: Text(
                                       "Fecha: ${DateFormat('yyyy-MM-dd').format(_selectedDate)}"),
-                                  trailing: Icon(Icons.calendar_today),
+                                  trailing: const Icon(Icons.calendar_today),
                                   onTap: () => _selectDate(context),
                                 ),
                               ),
                             ),
-                            SizedBox(height: 10.0),
+                            const SizedBox(height: 10.0),
                             Expanded(
                               child: Container(
                                 padding: const EdgeInsets.only(top: 3),
@@ -487,7 +488,7 @@ class _MyDetailPageState extends State<MyDetailPage>
                                 child: GridView.builder(
                                     itemCount: _allSlotDay.length,
                                     gridDelegate:
-                                        SliverGridDelegateWithFixedCrossAxisCount(
+                                        const SliverGridDelegateWithFixedCrossAxisCount(
                                             childAspectRatio: 1.5,
                                             crossAxisCount: 4,
                                             crossAxisSpacing: 4.0,
@@ -497,14 +498,14 @@ class _MyDetailPageState extends State<MyDetailPage>
                                       return ClipRRect(
                                         borderRadius: BorderRadius.circular(13),
                                         child: Container(
-                                          padding: EdgeInsets.symmetric(
+                                          padding: const EdgeInsets.symmetric(
                                               vertical: 10, horizontal: 10),
                                           decoration: BoxDecoration(
-                                            color: Color.fromARGB(
+                                            color: const Color.fromARGB(
                                                 255, 232, 239, 243),
                                             borderRadius:
                                                 BorderRadius.circular(20),
-                                            boxShadow: [
+                                            boxShadow: const [
                                               BoxShadow(
                                                 offset: Offset(0, 17),
                                                 blurRadius: 17,
@@ -515,14 +516,14 @@ class _MyDetailPageState extends State<MyDetailPage>
                                           ),
                                           child: InkWell(
                                             onTap: () {
-                                              print(index);
-                                              print(_allSlotDay[index]);
+                                              //print(index);
+                                              //print(_allSlotDay[index]);
                                               Hora = _allSlotDay[index]['time'];
                                               slot_id = index;
                                             },
                                             child: Column(
                                               children: <Widget>[
-                                                Icon(
+                                                const Icon(
                                                   Icons.timer_sharp,
                                                   size: 15,
                                                 ),
@@ -540,15 +541,15 @@ class _MyDetailPageState extends State<MyDetailPage>
                                     }),
                               ),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 20.0,
                             ),
                             Flexible(
-                              child: Container(
+                              child: SizedBox(
                                 child: DropdownButtonFormField<String>(
-                                  items: [],
-                                  decoration:
-                                      InputDecoration(labelText: 'Personas'),
+                                  items: const [],
+                                  decoration: const InputDecoration(
+                                      labelText: 'Personas'),
                                   onChanged: (String? newValue) {},
                                 ),
                               ),
@@ -570,7 +571,7 @@ class _MyDetailPageState extends State<MyDetailPage>
                                                 Text(
                                                     "${_slotDay[index]['from']} - ${_slotDay[index]['to']}"),
                                                 DropdownButtonFormField<String>(
-                                                    items: _tiemposSlot(
+                                                    items: timepostSlot(
                                                         _slotDay[index]
                                                             ['slots_info']),
                                                     decoration: InputDecoration(
@@ -589,7 +590,7 @@ class _MyDetailPageState extends State<MyDetailPage>
                                     ))),
                               ),
                             ]),*/
-                                SizedBox(height: 30.0),
+                            const SizedBox(height: 30.0),
                             Padding(
                               padding:
                                   const EdgeInsets.symmetric(vertical: 20.0),
@@ -597,14 +598,14 @@ class _MyDetailPageState extends State<MyDetailPage>
                                 onPressed: generateOrden,
                                 style: ElevatedButton.styleFrom(
                                     backgroundColor: Colors.black,
-                                    textStyle: TextStyle(
+                                    textStyle: const TextStyle(
                                       fontSize: 20,
                                       color: Color.fromARGB(255, 255, 255, 255),
                                     ),
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(2),
                                     )),
-                                child: Text(
+                                child: const Text(
                                   'Generar Reserva',
                                   style: TextStyle(color: Colors.white),
                                 ),
@@ -621,13 +622,13 @@ class _MyDetailPageState extends State<MyDetailPage>
           ],
         ),
       ),
-      bottomNavigationBar: MyBottomBar(
+      bottomNavigationBar: const MyBottomBar(
         index: 2,
       ),
     );
   }
 
-  List<DropdownMenuItem<String>> _tiemposSlot(data) {
+  List<DropdownMenuItem<String>> timepostSlot(data) {
     //print(data.runtimeType);
     List<DropdownMenuItem<String>> lista = [];
     if (data.runtimeType == List) {
@@ -644,8 +645,8 @@ class _MyDetailPageState extends State<MyDetailPage>
       //print(data);
       //print(data.length);
       data.forEach((ele, value) {
-        print(ele);
-        print(value);
+        //print(ele);
+        //print(value);
         lista.add(DropdownMenuItem<String>(
           value: value['time'],
           child: Text(value['time']),
@@ -655,17 +656,15 @@ class _MyDetailPageState extends State<MyDetailPage>
     return lista;
   }
 
-  Widget createDia(data, Function? _onChanged) {
-    print(data);
+  Widget createDia(data, Function? onChanged) {
     List<DropdownMenuItem<String>> menuItems = [];
     data.forEach((i, value) {
-      print('index=$i, value=$value');
       menuItems.add(DropdownMenuItem(
           value: i.toString(), child: Text(_diasSemana[int.parse(i)])));
     });
     return DropdownButtonFormField<String>(
-        decoration: InputDecoration(
-          border: const OutlineInputBorder(),
+        decoration: const InputDecoration(
+          border: OutlineInputBorder(),
           filled: true,
           hintText: 'Seleccione',
           labelText: 'Dia',
@@ -677,12 +676,12 @@ class _MyDetailPageState extends State<MyDetailPage>
           return null;
         },
         onChanged: (String? newValue) {
-          _onChanged!(newValue);
+          onChanged!(newValue);
         },
         items: menuItems);
   }
 
-  Widget createSelect(dropdownItems, Function? _onChanged, String? titulo) {
+  Widget createSelect(dropdownItems, Function? onChanged, String? titulo) {
     return DropdownButtonFormField(
         decoration: InputDecoration(
           border: const OutlineInputBorder(),
@@ -697,7 +696,7 @@ class _MyDetailPageState extends State<MyDetailPage>
           return null;
         },
         onChanged: (String? newValue) {
-          _onChanged!(newValue);
+          onChanged!(newValue);
         },
         items: dropdownItems);
   }

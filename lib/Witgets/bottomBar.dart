@@ -31,7 +31,7 @@ class _MyBottomPageBar extends State<MyBottomBar> {
       type: BottomNavigationBarType.fixed,
       currentIndex: widget.index,
       onTap: (index) {
-        print(index);
+        //print(index);
         //Navigator.of(context).pushNamed(rutas[index].toString());
 
         Navigator.of(context).pushNamedAndRemoveUntil(

@@ -26,10 +26,10 @@ class _MyLoginPageState extends State<MyLoginPage> {
   int type = 0;
 
   Future<void> getSesion() async {
-    print('getSession');
+    //print('getSession');
     var sesion = await serviceDB.instance.getById('users', 'id_user', 1);
     if (sesion.isNotEmpty) {
-      print('Sesion is alredy');
+      //print('Sesion is alredy');
       Navigator.of(context).pushNamedAndRemoveUntil(
           sesion[0]['group_id'] == 5 ? 'home' : 'home-rest',
           (Route<dynamic> route) => false);
@@ -70,7 +70,7 @@ class _MyLoginPageState extends State<MyLoginPage> {
               ClipPath(
                 child: Container(
                   width: 450,
-                  height: 180,
+                  height: 250,
                   decoration: BoxDecoration(
                       color: Colors.black,
                       borderRadius: BorderRadius.circular(10)),
@@ -80,27 +80,22 @@ class _MyLoginPageState extends State<MyLoginPage> {
                   ),
                 ),
               ),
-              Positioned(
-                bottom: 0,
-                left: 10,
-                right: 0,
-                child: Container(
-                  color: Colors.black,
-                  padding: EdgeInsets.all(5),
-                  child: Text(
-                    'Recomendacion del mes, Black food - Roma CDMX                         ',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 14,
-                    ),
+              Container(
+                color: Colors.black,
+                padding: const EdgeInsets.all(5),
+                child: const Text(
+                  'Recomendacion del mes, Black food - Roma CDMX                         ',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 14,
                   ),
                 ),
               ),
-              Divider(
+              const Divider(
                 height: 20, // Altura del separador
-                color: const Color.fromARGB(
-                    255, 255, 255, 255), // Color del separador
+                color:
+                    Color.fromARGB(255, 255, 255, 255), // Color del separador
                 thickness: 2, // Grosor del separador
                 indent: 20, // Espaciado izquierdo del separador
                 endIndent: 20, // Espaciado derecho del separador
@@ -116,10 +111,10 @@ class _MyLoginPageState extends State<MyLoginPage> {
                   fit: BoxFit.cover,
                 ),
               ),
-              Divider(
+              const Divider(
                 height: 20, // Altura del separador
-                color: const Color.fromARGB(
-                    255, 255, 255, 255), // Color del separador
+                color:
+                    Color.fromARGB(255, 255, 255, 255), // Color del separador
                 thickness: 2, // Grosor del separador
                 indent: 20, // Espaciado izquierdo del separador
                 endIndent: 20, // Espaciado derecho del separador
@@ -135,22 +130,22 @@ class _MyLoginPageState extends State<MyLoginPage> {
                     contentPadding: const EdgeInsets.all(10),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(4.0),
-                      borderSide: BorderSide(
-                        color: const Color.fromARGB(
+                      borderSide: const BorderSide(
+                        color: Color.fromARGB(
                             255, 117, 117, 117), // Color del contorno
                         width: 1.0, // Grosor del contorno
                       ),
                     ),
                     filled: true,
-                    fillColor: Color.fromARGB(255, 255, 255, 255),
+                    fillColor: const Color.fromARGB(255, 255, 255, 255),
                     labelText: 'Correo', // Cambiar label por labelText
-                    labelStyle:
-                        TextStyle(color: Color.fromARGB(255, 107, 106, 106)),
-                    suffixIcon: Icon(Icons.email_outlined),
+                    labelStyle: const TextStyle(
+                        color: Color.fromARGB(255, 107, 106, 106)),
+                    suffixIcon: const Icon(Icons.email_outlined),
                     enabledBorder: OutlineInputBorder(
                       // Estilo de contorno cuando está habilitado
                       borderRadius: BorderRadius.circular(4.0),
-                      borderSide: BorderSide(
+                      borderSide: const BorderSide(
                         color: Colors.grey, // Color del contorno
                         width: 2.0, // Grosor del contorno
                       ),
@@ -158,8 +153,8 @@ class _MyLoginPageState extends State<MyLoginPage> {
                     focusedBorder: OutlineInputBorder(
                       // Estilo de contorno cuando está enfocado
                       borderRadius: BorderRadius.circular(4.0),
-                      borderSide: BorderSide(
-                        color: const Color.fromARGB(255, 36, 35,
+                      borderSide: const BorderSide(
+                        color: Color.fromARGB(255, 36, 35,
                             35), // Color del contorno al estar enfocado
                         width: 2.0, // Grosor del contorno al estar enfocado
                       ),
@@ -190,13 +185,13 @@ class _MyLoginPageState extends State<MyLoginPage> {
                     contentPadding: const EdgeInsets.all(5),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(4.0),
-                      borderSide: BorderSide(
+                      borderSide: const BorderSide(
                         color: Colors.red, // Cambiar color del contorno aquí
                         width: 5.0,
                       ),
                     ),
                     filled: true,
-                    fillColor: Color.fromARGB(255, 255, 255, 255),
+                    fillColor: const Color.fromARGB(255, 255, 255, 255),
                     labelText: 'Contraseña',
                     labelStyle: const TextStyle(
                         color: Color.fromARGB(255, 129, 129, 129)),
@@ -218,9 +213,6 @@ class _MyLoginPageState extends State<MyLoginPage> {
                   },
                 ),
               ),
-
-               SizedBox(width: 200),
-
               Container(
                 width: double.infinity,
                 margin:
@@ -246,8 +238,8 @@ class _MyLoginPageState extends State<MyLoginPage> {
 
                                 //Revision de respuesta
                                 if (login.runtimeType != String) {
-                                  print('hay error');
-                                  print(login['message']);
+                                  //print('hay error');
+                                  //print(login['message']);
                                   ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
                                           content: Text(login['message'])));
@@ -257,7 +249,7 @@ class _MyLoginPageState extends State<MyLoginPage> {
                                   return;
                                 }
 
-                                print(login);
+                                //print(login);
 
                                 /*if (login["message"] != null) {
                             ScaffoldMessenger.of(context).showSnackBar(
@@ -276,8 +268,8 @@ class _MyLoginPageState extends State<MyLoginPage> {
                                 final customer =
                                     await get(login, 'custom', 'customers/me');
 
-                                print('customer');
-                                print(customer);
+                                //print('customer');
+                                //print(customer);
 
                                 if (customer != null) {
                                   data['id'] = customer['id'];
@@ -287,9 +279,9 @@ class _MyLoginPageState extends State<MyLoginPage> {
                                   data['group_id'] = customer['group_id'];
                                 }
 
-                                print('data');
-                                print(data);
-                                print('token: $login');
+                                //print('data');
+                                //print(data);
+                                //print('token: $login');
                                 //Obtenemos datos de la base local
                                 final user = await serviceDB.instance
                                     .getById('users', 'id_user', 1);
@@ -317,15 +309,14 @@ class _MyLoginPageState extends State<MyLoginPage> {
                                 setState(() {
                                   _isButtonDisabled = !_isButtonDisabled;
                                 });
-                                print(e);
+                                //print(e);
                               }
                             }
                           },
                     text: 'Iniciar Sesion'),
               ),
-               SizedBox(width: 10),
               SizedBox(
-                width: 290, // Ancho deseado para el botón
+                width: 312, // Ancho deseado para el botón
                 height: 35, // Alto deseado para el botón
                 child: MaterialButton(
                   onPressed: () {
@@ -336,13 +327,13 @@ class _MyLoginPageState extends State<MyLoginPage> {
                       ),
                     );
                   },
-                  color: Color.fromARGB(
+                  color: const Color.fromARGB(
                       255, 85, 85, 85), // Color de fondo del botón
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(
                         4), // Ajusta el radio del borde a 0 para quitar el redondeo
                   ),
-                  child: Text(
+                  child: const Text(
                     "Crear Cuenta",
                     style: TextStyle(
                       fontSize: 18,
@@ -351,10 +342,10 @@ class _MyLoginPageState extends State<MyLoginPage> {
                   ),
                 ),
               ),
-              Divider(
-                height: 90, // Altura del separador
-                color: const Color.fromARGB(
-                    255, 255, 255, 255), // Color del separador
+              const Divider(
+                height: 30, // Altura del separador
+                color:
+                    Color.fromARGB(255, 255, 255, 255), // Color del separador
                 thickness: 2, // Grosor del separador
                 indent: 20, // Espaciado izquierdo del separador
                 endIndent: 20, // Espaciado derecho del separador
@@ -380,17 +371,17 @@ class _MyLoginPageState extends State<MyLoginPage> {
                   ),
                 ),
               ),
-              Container(
+              SizedBox(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     SizedBox(
-                      width: 150, // Ancho del primer Boton
+                      width: 200, // Ancho del primer Boton
                       height: 50, // Alto del primer boton
                       child: ElevatedButton(
                         onPressed: () {
                           type = 0;
-                          print('tipo -> ${type}');
+                          //print('tipo -> ${type}');
                           /*setState(() {
                             isComensalSelected = true;
                             isRestauranteSelected = false;
@@ -418,14 +409,14 @@ class _MyLoginPageState extends State<MyLoginPage> {
                         ),
                       ),
                     ),
-                    SizedBox(width: 10), // Espacio entre botones
+                    const SizedBox(width: 10), // Espacio entre botones
                     SizedBox(
-                      width: 150, // Ancho del segundo boton
+                      width: 200, // Ancho del segundo boton
                       height: 50, // Alto del segundo boton
                       child: ElevatedButton(
                         onPressed: () {
                           type = 1;
-                          print('tipo -> ${type}');
+                          //print('tipo -> ${type}');
                           /*setState(() {
                             isComensalSelected = false;
                             isRestauranteSelected = true;
@@ -449,7 +440,7 @@ class _MyLoginPageState extends State<MyLoginPage> {
                           style: TextStyle(
                               color: isRestauranteSelected
                                   ? Colors.red
-                                  : Color.fromARGB(255, 0, 0, 0)),
+                                  : const Color.fromARGB(255, 0, 0, 0)),
                         ),
                       ),
                     ),

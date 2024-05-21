@@ -50,7 +50,7 @@ class _MyHomePageState extends State<MyHomePage> {
     var sesion = await serviceDB.instance.getById('users', 'id_user', 1);
 
     if (sesion.isNotEmpty) {
-      print(sesion[0]);
+      //print(sesion[0]);
       username = sesion[0]['nombre'];
     }
     setState(() {});
@@ -58,9 +58,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Future<void> _setCoords() async {
     dynamic geo = await determinePosition();
-    print(geo);
-    Map<String, dynamic> _update = {'lat': geo.longitude, 'long': geo.latitude};
-    await serviceDB.instance.updateRecord('users', _update, 'id_user', 1);
+    //print(geo);
+    Map<String, dynamic> update = {'lat': geo.longitude, 'long': geo.latitude};
+    await serviceDB.instance.updateRecord('users', update, 'id_user', 1);
   }
 
   @override
@@ -74,7 +74,6 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height * 1;
-    final width = MediaQuery.of(context).size.width * 1;
     return Scaffold(
       //body: rutas[_currentIndex],
       body: Padding(
@@ -84,14 +83,14 @@ class _MyHomePageState extends State<MyHomePage> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Container(
+              SizedBox(
                 child: Column(
                   children: [
                     const SizedBox(height: 40),
                     ListTile(
                       contentPadding: const EdgeInsets.symmetric(horizontal: 2),
                       title: Text(
-                        "Buenas Tardes, ${username}",
+                        "Buenas Tardes, $username",
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 20,
@@ -102,7 +101,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         /*minRadius: 20,
                         maxRadius: 50,*/
                         backgroundImage: AssetImage('assets/Masculino.jpg'),
-                      //  backgroundColor: Color.fromARGB(255, 8, 8, 8),
+                        //  backgroundColor: Color.fromARGB(255, 8, 8, 8),
                       ),
                       onTap: () {
                         Navigator.of(context).pushNamedAndRemoveUntil(
@@ -122,7 +121,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 10),
-                child: Container(
+                child: SizedBox(
                   height: MediaQuery.of(context).size.height * .3,
                   child: FutureBuilder(
                       future: getFirstSection(),
@@ -154,27 +153,28 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 10),
-                child: Container(
+                child: SizedBox(
                   height: MediaQuery.of(context).size.height * .3,
                   child: FutureBuilder(
-                      future: getSecondSection(),
-                      builder: (BuildContext context, AsyncSnapshot snapshot) {
-                        //print(snapshot.data['items']);
-                        if (!snapshot.hasData) {
-                          return const Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        }
+                    future: getSecondSection(),
+                    builder: (BuildContext context, AsyncSnapshot snapshot) {
+                      //print(snapshot.data['items']);
+                      if (!snapshot.hasData) {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
 
-                        if (snapshot.hasData) {
-                          return ListView(
-                            scrollDirection: Axis.horizontal,
-                            children: _createList(snapshot.data['items']),
-                          );
-                        } else {
-                          return const Text('Error en api');
-                        }
-                      }),
+                      if (snapshot.hasData) {
+                        return ListView(
+                          scrollDirection: Axis.horizontal,
+                          children: _createList(snapshot.data['items']),
+                        );
+                      } else {
+                        return const Text('Error en api');
+                      }
+                    },
+                  ),
                 ),
               ),
               const Text(
@@ -197,7 +197,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       }
 
                       if (snapshot.hasData) {
-                        print(snapshot.data['items']);
+                        //print(snapshot.data['items']);
                         return ListView(
                           scrollDirection: Axis.horizontal,
                           children: _createList(snapshot.data['items']),
@@ -214,7 +214,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ),
       ),
-      bottomNavigationBar: MyBottomBar(
+      bottomNavigationBar: const MyBottomBar(
         index: 2,
       ),
     );

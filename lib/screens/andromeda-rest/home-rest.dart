@@ -1,10 +1,5 @@
-import 'package:flutter/material.dart';
-
-import 'package:andromeda/services/api.dart';
-import 'package:andromeda/services/gps.dart';
-import 'package:andromeda/services/db.dart';
-
 import 'package:andromeda/screens/andromeda-rest/menu.dart';
+import 'package:flutter/material.dart';
 
 class MyHomeRestPage extends StatefulWidget {
   const MyHomeRestPage({super.key});
@@ -29,9 +24,9 @@ class _MyHomeRestPageState extends State<MyHomeRestPage> {
     return Scaffold(
       drawer: NavDrawer(changeSalida: () {}),
       appBar: AppBar(
-        title: Text('Panel de Administración'),
+        title: const Text('Panel de Administración'),
       ),
-        body: Padding(
+      body: Padding(
         padding: const EdgeInsets.all(5.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -46,8 +41,7 @@ class _MyHomeRestPageState extends State<MyHomeRestPage> {
                   width: double.infinity,
                   fit: BoxFit.cover,
                 ),
-
-                Positioned(
+                const Positioned(
                   top: 100,
                   child: CircleAvatar(
                     radius: 50,
@@ -57,19 +51,18 @@ class _MyHomeRestPageState extends State<MyHomeRestPage> {
                 // Imagen de perfil
               ],
             ),
-            SizedBox(height: 20),
-            Text("Nombre:"),
-            SizedBox(height: 10),
-            Text("Apellido: "),
-            SizedBox(height: 10),
-            Text("Correo: "),
+            const SizedBox(height: 20),
+            const Text("Nombre:"),
+            const SizedBox(height: 10),
+            const Text("Apellido: "),
+            const SizedBox(height: 10),
+            const Text("Correo: "),
             /*SizedBox(height: 10),
             Text("Teléfono: $telefono"),*/
-            SizedBox(height: 20),
-            SizedBox(
+            const SizedBox(height: 20),
+            const SizedBox(
               height: 250,
             ),
-         
           ],
         ),
       ),

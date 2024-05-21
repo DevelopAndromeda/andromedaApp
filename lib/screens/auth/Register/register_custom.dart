@@ -1,8 +1,4 @@
-import 'package:andromeda/Witgets/General/Colores_Base.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
-// ignore: unused_import
-import 'package:provider/provider.dart';
 import 'package:andromeda/Witgets/General/Button_Base.dart';
 
 import 'package:andromeda/services/api.dart';
@@ -11,7 +7,6 @@ import 'package:andromeda/services/db.dart';
 class MyRegisterPage extends StatefulWidget {
   const MyRegisterPage({super.key, required this.type});
   final int type;
-
 
   @override
   _MyRegisterContet createState() => _MyRegisterContet();
@@ -30,7 +25,7 @@ class _MyRegisterContet extends State<MyRegisterPage> {
   bool _isButtonDisabled = false;
   String selectedGender = '';
 
-   void selectGender(String gender) {
+  void selectGender(String gender) {
     setState(() {
       selectedGender = gender;
     });
@@ -78,13 +73,15 @@ class _MyRegisterContet extends State<MyRegisterPage> {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 255, 255, 255),
       appBar: AppBar(
-        title: Text(widget.type == 0 ? 'Comensal' : 'Restaurantero',
-        style: TextStyle(
-          color: Colors.white
-        ),),
+        title: Text(
+          widget.type == 0 ? 'Comensal' : 'Restaurantero',
+          style: const TextStyle(color: Colors.white),
+        ),
         centerTitle: true,
-        leading: BackButton(color: Colors.white,),
-        backgroundColor: Color.fromARGB(255, 0, 0, 0),
+        leading: const BackButton(
+          color: Colors.white,
+        ),
+        backgroundColor: const Color.fromARGB(255, 0, 0, 0),
         elevation: 1,
       ),
       body: SingleChildScrollView(
@@ -111,8 +108,8 @@ class _MyRegisterContet extends State<MyRegisterPage> {
                 right: 0,
                 child: Container(
                   color: Colors.black,
-                  padding: EdgeInsets.all(5),
-                  child: Text(
+                  padding: const EdgeInsets.all(5),
+                  child: const Text(
                     'Recomendacion del mes, Black food - Roma CDMX                         ',
                     textAlign: TextAlign.center,
                     style: TextStyle(
@@ -122,10 +119,10 @@ class _MyRegisterContet extends State<MyRegisterPage> {
                   ),
                 ),
               ),
-              Divider(
+              const Divider(
                 height: 20, // Altura del separador
-                color: const Color.fromARGB(
-                    255, 255, 255, 255), // Color del separador
+                color:
+                    Color.fromARGB(255, 255, 255, 255), // Color del separador
                 thickness: 2, // Grosor del separador
                 indent: 20, // Espaciado izquierdo del separador
                 endIndent: 20, // Espaciado derecho del separador
@@ -141,10 +138,10 @@ class _MyRegisterContet extends State<MyRegisterPage> {
                   fit: BoxFit.cover,
                 ),
               ),
-              Divider(
+              const Divider(
                 height: 1, // Altura del separador
-                color: const Color.fromARGB(
-                    255, 255, 255, 255), // Color del separador
+                color:
+                    Color.fromARGB(255, 255, 255, 255), // Color del separador
                 thickness: 2, // Grosor del separador
                 indent: 20, // Espaciado izquierdo del separador
                 endIndent: 20, // Espaciado derecho del separador
@@ -159,12 +156,12 @@ class _MyRegisterContet extends State<MyRegisterPage> {
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(4.0)),
                       filled: true,
-                      fillColor: Color.fromARGB(255, 255, 255, 255),
-                      label: Text(
+                      fillColor: const Color.fromARGB(255, 255, 255, 255),
+                      label: const Text(
                         'Nombre',
-                        style: const TextStyle(color: Colors.grey),
+                        style: TextStyle(color: Colors.grey),
                       ),
-                      suffixIcon: Icon(Icons.person_2_outlined),
+                      suffixIcon: const Icon(Icons.person_2_outlined),
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -184,12 +181,12 @@ class _MyRegisterContet extends State<MyRegisterPage> {
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(4.0)),
                       filled: true,
-                      fillColor: Color.fromARGB(255, 255, 255, 255),
-                      label: Text(
+                      fillColor: const Color.fromARGB(255, 255, 255, 255),
+                      label: const Text(
                         'Apellido',
-                        style: const TextStyle(color: Colors.grey),
+                        style: TextStyle(color: Colors.grey),
                       ),
-                      suffixIcon: Icon(Icons.person_2_outlined),
+                      suffixIcon: const Icon(Icons.person_2_outlined),
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -210,12 +207,12 @@ class _MyRegisterContet extends State<MyRegisterPage> {
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(4.0)),
                       filled: true,
-                      fillColor: Color.fromARGB(255, 255, 255, 255),
-                      label: Text(
+                      fillColor: const Color.fromARGB(255, 255, 255, 255),
+                      label: const Text(
                         'Correo',
-                        style: const TextStyle(color: Colors.grey),
+                        style: TextStyle(color: Colors.grey),
                       ),
-                      suffixIcon: Icon(Icons.email_outlined),
+                      suffixIcon: const Icon(Icons.email_outlined),
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -241,10 +238,10 @@ class _MyRegisterContet extends State<MyRegisterPage> {
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(4.0)),
                     filled: true,
-                    fillColor: Color.fromARGB(255, 255, 255, 255),
-                    label: Text(
+                    fillColor: const Color.fromARGB(255, 255, 255, 255),
+                    label: const Text(
                       'Contraseña',
-                      style: const TextStyle(color: Colors.grey),
+                      style: TextStyle(color: Colors.grey),
                     ),
                     suffixIcon: GestureDetector(
                       onTap: () {
@@ -282,10 +279,10 @@ class _MyRegisterContet extends State<MyRegisterPage> {
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(4.0)),
                     filled: true,
-                    fillColor: Color.fromARGB(255, 255, 255, 255),
-                    label: Text(
+                    fillColor: const Color.fromARGB(255, 255, 255, 255),
+                    label: const Text(
                       'Confirmar contraseña',
-                      style: const TextStyle(color: Colors.grey),
+                      style: TextStyle(color: Colors.grey),
                     ),
                     suffixIcon: GestureDetector(
                       onTap: () {
@@ -312,74 +309,82 @@ class _MyRegisterContet extends State<MyRegisterPage> {
                 ),
               ),
               const SizedBox(height: 20),
-
-            Padding(padding: const EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children:<Widget> [
-                Text('Seleccione su género:', 
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),
-
-                SizedBox(height: 20,),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    ElevatedButton.icon(
-                  onPressed: () => selectGender('Masculino'),
-                  icon: Icon(
-                    Icons.male,
-                    color: selectedGender == 'Masculino' ? Colors.blue : Colors.grey,
-                  ),
-                  label: Text(
-                    'Masculino',
-                    style: TextStyle(
-                      color: selectedGender == 'Femenino' ? Colors.blue : Colors.grey,
+                    const Text(
+                      'Seleccione su género:',
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: selectedGender == 'Masculino'
-                        ? Colors.blue.shade100
-                        : Colors.grey.shade200,
-                    shadowColor: Colors.blue,
-                  ),
-                ), 
-                 ElevatedButton.icon(
-                  onPressed: () => selectGender('Femenino'),
-                  icon: Icon(
-                    Icons.female,
-                    color: selectedGender == 'Femenino' ? Colors.pink : Colors.grey,
-                  ),
-                  label: Text(
-                    'Femenino',
-                    style: TextStyle(
-                      color: selectedGender == 'Femenino' ? Colors.pink : Colors.grey,
+                    const SizedBox(
+                      height: 20,
                     ),
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: selectedGender == 'female'
-                        ? Colors.pink.shade100
-                        : Colors.grey.shade200,
-                    shadowColor: Colors.pink,
-                  ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        ElevatedButton.icon(
+                          onPressed: () => selectGender('Masculino'),
+                          icon: Icon(
+                            Icons.male,
+                            color: selectedGender == 'Masculino'
+                                ? Colors.blue
+                                : Colors.grey,
+                          ),
+                          label: Text(
+                            'Masculino',
+                            style: TextStyle(
+                              color: selectedGender == 'Femenino'
+                                  ? Colors.blue
+                                  : Colors.grey,
+                            ),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: selectedGender == 'Masculino'
+                                ? Colors.blue.shade100
+                                : Colors.grey.shade200,
+                            shadowColor: Colors.blue,
+                          ),
+                        ),
+                        ElevatedButton.icon(
+                          onPressed: () => selectGender('Femenino'),
+                          icon: Icon(
+                            Icons.female,
+                            color: selectedGender == 'Femenino'
+                                ? Colors.pink
+                                : Colors.grey,
+                          ),
+                          label: Text(
+                            'Femenino',
+                            style: TextStyle(
+                              color: selectedGender == 'Femenino'
+                                  ? Colors.pink
+                                  : Colors.grey,
+                            ),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: selectedGender == 'female'
+                                ? Colors.pink.shade100
+                                : Colors.grey.shade200,
+                            shadowColor: Colors.pink,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 20),
+                    Text(
+                      'Género seleccionado: $selectedGender',
+                      style: const TextStyle(fontSize: 16),
+                    ),
+                  ],
                 ),
-                
-                ],
-                ),
-                SizedBox(height: 20),
-            Text(
-              'Género seleccionado: $selectedGender',
-              style: TextStyle(fontSize: 16),
-            ),
-              ],
-            ),
-            ),
-
-
-
-
+              ),
               Container(
                 // width: double.maxFinite,
-                margin: const EdgeInsets.symmetric(horizontal: 50, vertical: 10),
+                margin:
+                    const EdgeInsets.symmetric(horizontal: 50, vertical: 10),
                 child: baseButtom(
                   text: 'Registrarse',
                   onPressed: _isButtonDisabled
@@ -403,11 +408,11 @@ class _MyRegisterContet extends State<MyRegisterPage> {
                                   },
                                   '');
 
-                              print('registro');
+                              //print('registro');
 
                               if (registro == null) {
-                                print('hay error');
-                                print(registro);
+                                //print('hay error');
+                                //print(registro);
                                 //ScaffoldMessenger.of(context).showSnackBar(
                                 //    SnackBar(
                                 //        content: Text(registro['message'])));
@@ -434,8 +439,8 @@ class _MyRegisterContet extends State<MyRegisterPage> {
                                 'group_id': registro['group_id']
                               };
 
-                              print(data);
-                              print('data');
+                              //print(data);
+                              //print('data');
 
                               final login = await post(
                                   '',
@@ -449,8 +454,8 @@ class _MyRegisterContet extends State<MyRegisterPage> {
 
                               //Revision de respuesta
                               if (login.runtimeType != String) {
-                                print('hay error');
-                                print(login['message']);
+                                //print('hay error');
+                                //print(login['message']);
                                 ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(content: Text(login['message'])));
                                 setState(() {
@@ -459,14 +464,14 @@ class _MyRegisterContet extends State<MyRegisterPage> {
                                 return;
                               }
 
-                              print(login);
+                              //print(login);
 
                               if (widget.type == 1 &&
                                   registro['group_id'] == 5) {
                                 final update = await put(
                                     login, 'custom', 'customergroup/', {}, '4');
 
-                                print(update);
+                                //print(update);
 
                                 if (update != null) {
                                   data['group_id'] =
@@ -476,8 +481,8 @@ class _MyRegisterContet extends State<MyRegisterPage> {
 
                               final user = await serviceDB.instance
                                   .getById('users', 'id_user', 1);
-                              print('usuario');
-                              print(user);
+                              //print('usuario');
+                              //print(user);
                               //Si existen datos en base de datos local actualizamos datos en mapa
                               if (user.isNotEmpty) {
                                 await serviceDB.instance
@@ -496,7 +501,7 @@ class _MyRegisterContet extends State<MyRegisterPage> {
                               setState(() {
                                 _isButtonDisabled = !_isButtonDisabled;
                               });
-                              print(e);
+                              //print(e);
                             }
                           }
                         },
@@ -504,13 +509,9 @@ class _MyRegisterContet extends State<MyRegisterPage> {
               ),
               const SizedBox(height: 30),
             ],
-            
           ),
-          
         ),
-        
       ),
-      
     );
   }
 }

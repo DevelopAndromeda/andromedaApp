@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:andromeda/screens/andromeda-rest/modificacion-rest.dart';
 import 'package:andromeda/Witgets/General/Colores_Base.dart';
 import 'package:andromeda/services/api.dart';
 import 'package:andromeda/services/db.dart';
 import 'package:andromeda/screens/andromeda-rest/menu.dart';
-import 'package:flutter/widgets.dart';
 
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
@@ -16,7 +14,7 @@ class ListRest extends StatefulWidget {
 }
 
 class _ListRestState extends State<ListRest> {
-  String? _url =
+  final String _url =
       "${dotenv.env['PROTOCOL']}://${dotenv.env['URL']}/media/catalog/product";
   Future getRestaurant() async {
     final user = await serviceDB.instance.getById('users', 'id_user', 1);
@@ -35,7 +33,7 @@ class _ListRestState extends State<ListRest> {
       drawer: NavDrawer(changeSalida: () {}),
       backgroundColor: Background_Color,
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'Retaurantes',
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
@@ -59,7 +57,7 @@ class _ListRestState extends State<ListRest> {
                 }
 
                 return Column(children: [
-                  SizedBox(
+                  const SizedBox(
                     height: 20.0,
                   ),
                   ..._createList(snapshot.data!['items']),
@@ -73,21 +71,21 @@ class _ListRestState extends State<ListRest> {
   List<Widget> _createList(items) {
     List<Widget> lists = <Widget>[];
     if (items == null) {
-      lists.add(Center(
+      lists.add(const Center(
         child: Text('Tu sesion caduco'),
       ));
       return lists;
     }
     if (items.length > 0) {
       for (dynamic data in items) {
-        print(data['media_gallery_entries']);
+        //print(data['media_gallery_entries']);
         lists.add(_buildCard(
           data,
         ));
       }
     } else {
       lists.add(
-        Center(child: Text('No se encontraron datos')),
+        const Center(child: Text('No se encontraron datos')),
       );
     }
     return lists;
@@ -95,14 +93,14 @@ class _ListRestState extends State<ListRest> {
 
   Widget _buildCard(data) {
     return Card(
-      margin: EdgeInsets.all(20),
+      margin: const EdgeInsets.all(20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           data['media_gallery_entries'] != null &&
                   data['media_gallery_entries'].isNotEmpty
               ? Image.network(
-                  _url! + data['media_gallery_entries'][0]['file'],
+                  _url + data['media_gallery_entries'][0]['file'],
                   width: double.infinity,
                   height: 180,
                 )
@@ -111,15 +109,15 @@ class _ListRestState extends State<ListRest> {
             padding: const EdgeInsets.all(8.0),
             child: Text(
               data['name'],
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           ElevatedButton(
             onPressed: () {
               Navigator.pushNamed(context, 'modification', arguments: data);
             },
-            child: Text('Modificación'),
+            child: const Text('Modificación'),
           ),
         ],
       ),
