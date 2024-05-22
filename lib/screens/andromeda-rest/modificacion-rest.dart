@@ -103,14 +103,17 @@ class _ModificacionRestaurante extends State<ModificacionRestaurante> {
 
   late Future<List<Pais>> futurePais;
   Pais? _selectedPais;
+  bool isPaisUpdate = false;
 
   Future<List<Estado>>? futureEstado;
   Estado? _selectedEstado;
+  bool isEstadoUpdate = false;
 
   Future<List<Ciudad>>? futureCiudad;
   Ciudad? _selectedCiudad;
+  bool isCiudadUpdate = false;
 
-  List<String> _timeOptions = [
+  final List<String> _timeOptions = [
     '6:00 am',
     '7:00 am',
     '8:00 am',
@@ -368,113 +371,169 @@ class _ModificacionRestaurante extends State<ModificacionRestaurante> {
                       return null;
                     }),
                 const SizedBox(height: 10.0),
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-                  child: FutureBuilder<List<Pais>>(
-                    future: futurePais,
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        //return Text('aa');
-                        return DropdownButton(
-                          value: _selectedPais,
-                          icon: const Icon(Icons.arrow_drop_down),
-                          iconSize: 30,
-                          elevation: 16,
-                          style: const TextStyle(color: Colors.black),
-                          onChanged: (Pais? newValue) {
-                            //print(newValue);
-                            setState(() {
-                              _selectedPais = newValue as Pais;
-                              futureEstado = fetchEstados();
-                            });
+                isPaisUpdate
+                    ? Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 5, horizontal: 5),
+                        child: FutureBuilder<List<Pais>>(
+                          future: futurePais,
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              //return Text('aa');
+                              return DropdownButton(
+                                value: _selectedPais,
+                                icon: const Icon(Icons.arrow_drop_down),
+                                iconSize: 30,
+                                elevation: 16,
+                                style: const TextStyle(color: Colors.black),
+                                onChanged: (Pais? newValue) {
+                                  //print(newValue);
+                                  setState(() {
+                                    _selectedPais = newValue as Pais;
+                                    futureEstado = fetchEstados();
+                                  });
+                                },
+                                items: snapshot.data
+                                    ?.map<DropdownMenuItem<Pais>>((Pais value) {
+                                  return DropdownMenuItem<Pais>(
+                                    value: value,
+                                    child: Text(value.name),
+                                  );
+                                }).toList(),
+                              );
+                            } else if (snapshot.hasError) {
+                              return Text("${snapshot.error}");
+                            }
+                            return const CircularProgressIndicator();
                           },
-                          items: snapshot.data
-                              ?.map<DropdownMenuItem<Pais>>((Pais value) {
-                            return DropdownMenuItem<Pais>(
-                              value: value,
-                              child: Text(value.name),
-                            );
-                          }).toList(),
-                        );
-                      } else if (snapshot.hasError) {
-                        return Text("${snapshot.error}");
-                      }
-                      return const CircularProgressIndicator();
-                    },
-                  ),
-                ),
+                        ),
+                      )
+                    : Container(
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(getCustomAttribute(
+                                  widget.data['custom_attributes'],
+                                  'hotel_country')),
+                              ElevatedButton(
+                                onPressed: () async {
+                                  setState(() {
+                                    isPaisUpdate = true;
+                                  });
+                                },
+                                child: Text('Modificar'),
+                              )
+                            ]),
+                      ),
                 const SizedBox(height: 10.0),
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-                  child: FutureBuilder<List<Estado>>(
-                    future: futureEstado,
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        return DropdownButton(
-                          value: _selectedEstado,
-                          icon: const Icon(Icons.arrow_drop_down),
-                          iconSize: 30,
-                          elevation: 16,
-                          style: const TextStyle(color: Colors.black),
-                          onChanged: (Estado? newValue) {
-                            //print(newValue);
-                            setState(() {
-                              _selectedEstado = newValue as Estado;
-                              futureCiudad = fetchCiudades();
-                            });
+                isEstadoUpdate
+                    ? Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 5, horizontal: 5),
+                        child: FutureBuilder<List<Estado>>(
+                          future: futureEstado,
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              return DropdownButton(
+                                value: _selectedEstado,
+                                icon: const Icon(Icons.arrow_drop_down),
+                                iconSize: 30,
+                                elevation: 16,
+                                style: const TextStyle(color: Colors.black),
+                                onChanged: (Estado? newValue) {
+                                  //print(newValue);
+                                  setState(() {
+                                    _selectedEstado = newValue as Estado;
+                                    futureCiudad = fetchCiudades();
+                                  });
+                                },
+                                items: snapshot.data
+                                    ?.map<DropdownMenuItem<Estado>>(
+                                        (Estado value) {
+                                  return DropdownMenuItem<Estado>(
+                                    value: value,
+                                    child: Text(value.label),
+                                  );
+                                }).toList(),
+                              );
+                            } else if (snapshot.hasError) {
+                              return Text("${snapshot.error}");
+                            }
+                            return const Text('Seleccione Pais');
                           },
-                          items: snapshot.data
-                              ?.map<DropdownMenuItem<Estado>>((Estado value) {
-                            return DropdownMenuItem<Estado>(
-                              value: value,
-                              child: Text(value.label),
-                            );
-                          }).toList(),
-                        );
-                      } else if (snapshot.hasError) {
-                        return Text("${snapshot.error}");
-                      }
-                      return const Text('Seleccione Pais');
-                    },
-                  ),
-                ),
+                        ),
+                      )
+                    : Container(
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(getCustomAttribute(
+                                  widget.data['custom_attributes'],
+                                  'product_city')),
+                              ElevatedButton(
+                                onPressed: () async {
+                                  setState(() {
+                                    isEstadoUpdate = true;
+                                  });
+                                },
+                                child: Text('Modificar'),
+                              )
+                            ]),
+                      ),
                 const SizedBox(height: 10.0),
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-                  child: FutureBuilder<List<Ciudad>>(
-                    future: futureCiudad,
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        return DropdownButton(
-                          value: _selectedCiudad,
-                          icon: const Icon(Icons.arrow_drop_down),
-                          iconSize: 30,
-                          elevation: 16,
-                          style: const TextStyle(color: Colors.black),
-                          onChanged: (Ciudad? newValue) {
-                            //print(newValue);
-                            setState(() {
-                              _selectedCiudad = newValue as Ciudad;
-                            });
+                isCiudadUpdate
+                    ? Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 5, horizontal: 5),
+                        child: FutureBuilder<List<Ciudad>>(
+                          future: futureCiudad,
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              return DropdownButton(
+                                value: _selectedCiudad,
+                                icon: const Icon(Icons.arrow_drop_down),
+                                iconSize: 30,
+                                elevation: 16,
+                                style: const TextStyle(color: Colors.black),
+                                onChanged: (Ciudad? newValue) {
+                                  //print(newValue);
+                                  setState(() {
+                                    _selectedCiudad = newValue as Ciudad;
+                                  });
+                                },
+                                items: snapshot.data
+                                    ?.map<DropdownMenuItem<Ciudad>>(
+                                        (Ciudad value) {
+                                  return DropdownMenuItem<Ciudad>(
+                                    value: value,
+                                    child: Text(value.statecity),
+                                  );
+                                }).toList(),
+                              );
+                            } else if (snapshot.hasError) {
+                              return Text("${snapshot.error}");
+                            }
+                            return const Text('Seleccion Municipio');
                           },
-                          items: snapshot.data
-                              ?.map<DropdownMenuItem<Ciudad>>((Ciudad value) {
-                            return DropdownMenuItem<Ciudad>(
-                              value: value,
-                              child: Text(value.statecity),
-                            );
-                          }).toList(),
-                        );
-                      } else if (snapshot.hasError) {
-                        return Text("${snapshot.error}");
-                      }
-                      return const Text('Seleccion Estado');
-                    },
-                  ),
-                ),
+                        ),
+                      )
+                    : Container(
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(getCustomAttribute(
+                                  widget.data['custom_attributes'],
+                                  'product_city')),
+                              ElevatedButton(
+                                onPressed: () async {
+                                  setState(() {
+                                    isCiudadUpdate = true;
+                                  });
+                                },
+                                child: Text('Modificar'),
+                              )
+                            ]),
+                      ),
                 const SizedBox(height: 10.0),
                 TextFormField(
                   controller: _direccionController,

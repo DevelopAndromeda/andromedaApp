@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shimmer/shimmer.dart';
 
 import 'package:andromeda/services/db.dart';
 import 'package:andromeda/services/api.dart';
@@ -45,15 +46,66 @@ class _listReservacionState extends State<listReservacion> {
         future: getHistory(),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (!snapshot.hasData) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
+            return Column(children: [
+              const SizedBox(
+                height: 20.0,
+              ),
+              Shimmer.fromColors(
+                  baseColor: Colors.grey.shade300,
+                  highlightColor: Colors.grey.shade100,
+                  enabled: true,
+                  child: SingleChildScrollView(
+                    physics: NeverScrollableScrollPhysics(),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Card(
+                          margin: const EdgeInsets.all(5),
+                          elevation: 10,
+                          child: SizedBox(
+                            width: double.infinity,
+                            height: 150,
+                            child: Container(width: 100, height: 90),
+                          ),
+                        ),
+                        Card(
+                          margin: const EdgeInsets.all(5),
+                          elevation: 10,
+                          child: SizedBox(
+                            width: double.infinity,
+                            height: 150,
+                            child: Container(width: 100, height: 90),
+                          ),
+                        ),
+                        Card(
+                          margin: const EdgeInsets.all(5),
+                          elevation: 10,
+                          child: SizedBox(
+                            width: double.infinity,
+                            height: 150,
+                            child: Container(width: 100, height: 90),
+                          ),
+                        ),
+                        Card(
+                          margin: const EdgeInsets.all(5),
+                          elevation: 10,
+                          child: SizedBox(
+                            width: double.infinity,
+                            height: 150,
+                            child: Container(width: 100, height: 90),
+                          ),
+                        ),
+                      ],
+                    ),
+                  )),
+            ]);
           }
 
           if (snapshot.hasData) {
             return ListView(
               padding: const EdgeInsets.all(5.0),
-              children: _createList(snapshot.data['data']['data']),
+              children: _createList(snapshot.data['data']),
             );
           } else {
             return const Text('Error en api');
@@ -132,8 +184,8 @@ class _listReservacionState extends State<listReservacion> {
   }
 
   List<Widget> _createList(datas) {
-    //print('_createList');
-    //print(datas);
+    print('_createList');
+    print(datas);
     List<Widget> lists = <Widget>[];
     if (datas == null) {
       lists.add(const Center(
@@ -141,13 +193,13 @@ class _listReservacionState extends State<listReservacion> {
       ));
       return lists;
     }
-    if (datas.length == 0) {
+    if (datas['data'].length == 0) {
       lists.add(const Center(
         child: Text("Aún no cuentas con historial para mostrar."),
       ));
       return lists;
     }
-    for (dynamic data in datas) {
+    for (dynamic data in datas['data']) {
       //print('data');
       //print(data);
       lists.add(_buildCard({

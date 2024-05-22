@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:andromeda/services/db.dart';
+
+import 'package:andromeda/utilities/constanst.dart';
 
 class NavDrawer extends StatelessWidget {
   const NavDrawer({super.key, required this.changeSalida});
@@ -91,9 +92,7 @@ class NavDrawer extends StatelessWidget {
         icon: const Icon(Icons.login_outlined),
         title: "Cerrar Sesion",
         onTap: () async {
-          await serviceDB.instance.cleanAllTable();
-          Navigator.of(context).pushNamedAndRemoveUntil(
-              'login', (Route<dynamic> route) => false);
+          closeSession(context);
         }));
 
     return lista;

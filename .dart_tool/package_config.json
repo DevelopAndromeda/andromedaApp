@@ -116,6 +116,12 @@
       "languageVersion": "2.17"
     },
     {
+      "name": "ftoast",
+      "rootUri": "file:///Users/emmanuelsantizfelipe/.pub-cache/hosted/pub.dev/ftoast-2.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "geolocator",
       "rootUri": "file:///Users/emmanuelsantizfelipe/.pub-cache/hosted/pub.dev/geolocator-10.1.1",
       "packageUri": "lib/",
@@ -260,6 +266,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "panara_dialogs",
+      "rootUri": "file:///Users/emmanuelsantizfelipe/.pub-cache/hosted/pub.dev/panara_dialogs-0.1.4",
+      "packageUri": "lib/",
+      "languageVersion": "2.15"
+    },
+    {
       "name": "path",
       "rootUri": "file:///Users/emmanuelsantizfelipe/.pub-cache/hosted/pub.dev/path-1.8.2",
       "packageUri": "lib/",
@@ -328,6 +340,12 @@
     {
       "name": "sanitize_html",
       "rootUri": "file:///Users/emmanuelsantizfelipe/.pub-cache/hosted/pub.dev/sanitize_html-2.1.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "shimmer",
+      "rootUri": "file:///Users/emmanuelsantizfelipe/.pub-cache/hosted/pub.dev/shimmer-2.0.0",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -440,7 +458,7 @@
       "languageVersion": "2.19"
     }
   ],
-  "generated": "2024-05-21T07:04:11.375597Z",
+  "generated": "2024-05-22T08:33:52.233829Z",
   "generator": "pub",
   "generatorVersion": "2.19.6"
 }
