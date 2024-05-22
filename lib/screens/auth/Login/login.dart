@@ -146,7 +146,7 @@ class _MyLoginPageState extends State<MyLoginPage> {
                       // Estilo de contorno cuando está habilitado
                       borderRadius: BorderRadius.circular(4.0),
                       borderSide: const BorderSide(
-                        color: Colors.grey, // Color del contorno
+                        color: Color.fromARGB(255, 0, 0, 0), // Color del contorno
                         width: 2.0, // Grosor del contorno
                       ),
                     ),
@@ -154,8 +154,7 @@ class _MyLoginPageState extends State<MyLoginPage> {
                       // Estilo de contorno cuando está enfocado
                       borderRadius: BorderRadius.circular(4.0),
                       borderSide: const BorderSide(
-                        color: Color.fromARGB(255, 36, 35,
-                            35), // Color del contorno al estar enfocado
+                        color: Color.fromARGB(255, 0, 0, 0), // Color del contorno al estar enfocado
                         width: 2.0, // Grosor del contorno al estar enfocado
                       ),
                     ),
@@ -179,39 +178,51 @@ class _MyLoginPageState extends State<MyLoginPage> {
                 margin:
                     const EdgeInsets.symmetric(horizontal: 35, vertical: 10),
                 child: TextFormField(
-                  controller: _passwordController,
-                  obscureText: typePassword,
-                  decoration: InputDecoration(
-                    contentPadding: const EdgeInsets.all(5),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(4.0),
-                      borderSide: const BorderSide(
-                        color: Colors.red, // Cambiar color del contorno aquí
-                        width: 5.0,
-                      ),
-                    ),
-                    filled: true,
-                    fillColor: const Color.fromARGB(255, 255, 255, 255),
-                    labelText: 'Contraseña',
-                    labelStyle: const TextStyle(
-                        color: Color.fromARGB(255, 129, 129, 129)),
-                    suffixIcon: GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          typePassword = !typePassword;
-                        });
-                      },
-                      child: Icon(
-                          typePassword ? Icons.lock_outline : Icons.lock_open),
-                    ),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Ingresa tu contraseña';
-                    }
-                    return null;
-                  },
-                ),
+  controller: _passwordController,
+  obscureText: typePassword,
+  decoration: InputDecoration(
+    contentPadding: const EdgeInsets.all(5),
+    enabledBorder: OutlineInputBorder( // Borde cuando está habilitado
+      borderRadius: BorderRadius.circular(4.0),
+      borderSide: const BorderSide(
+        color: Colors.black, // Color negro
+        width: 2.0, 
+      ),
+    ),
+    focusedBorder: OutlineInputBorder( // Borde cuando está enfocado
+      borderRadius: BorderRadius.circular(4.0),
+      borderSide: const BorderSide(
+        color: Colors.black, // Color negro
+        width: 2.0, 
+      ),
+    ),
+    filled: true,
+    fillColor: const Color.fromARGB(255, 255, 255, 255),
+    labelText: 'Contraseña',
+    labelStyle: const TextStyle(
+      color: Color.fromARGB(255, 129, 129, 129)
+    ),
+    suffixIcon: Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        IconButton( // Botón tipo icono para mostrar/ocultar contraseña
+          icon: Icon(typePassword ? Icons.visibility_off : Icons.visibility),
+          onPressed: () {
+            setState(() {
+              typePassword = !typePassword;
+            });
+          },
+        ),
+      ],
+    ),
+  ),
+  validator: (value) {
+    if (value == null || value.isEmpty) {
+      return 'Ingresa tu contraseña';
+    }
+    return null;
+  },
+),
               ),
               Container(
                 width: double.infinity,
