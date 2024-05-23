@@ -5,7 +5,7 @@ import 'package:andromeda/services/db.dart';
 import 'package:andromeda/screens/andromeda-rest/menu.dart';
 import 'package:shimmer/shimmer.dart';
 
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:andromeda/utilities/constanst.dart';
 
 class ListReview extends StatefulWidget {
   const ListReview({super.key});
@@ -15,8 +15,6 @@ class ListReview extends StatefulWidget {
 }
 
 class _ListReviewState extends State<ListReview> {
-  final String _url =
-      "${dotenv.env['PROTOCOL']}://${dotenv.env['URL']}/media/catalog/product";
   Future getRestaurant() async {
     final user = await serviceDB.instance.getById('users', 'id_user', 1);
 
@@ -153,7 +151,7 @@ class _ListReviewState extends State<ListReview> {
           data['media_gallery_entries'] != null &&
                   data['media_gallery_entries'].isNotEmpty
               ? Image.network(
-                  _url + data['media_gallery_entries'][0]['file'],
+                  pathMedia(data['media_gallery_entries'][0]['file']),
                   width: double.infinity,
                   height: 180,
                 )

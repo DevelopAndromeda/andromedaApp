@@ -4,7 +4,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:andromeda/services/api.dart';
 import 'package:andromeda/services/db.dart';
 
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:andromeda/utilities/constanst.dart';
 
 class RestuarentScreen extends StatefulWidget {
   final Map<dynamic, dynamic> data;
@@ -15,9 +15,6 @@ class RestuarentScreen extends StatefulWidget {
 }
 
 class _RestuarentScreenState extends State<RestuarentScreen> {
-  final String _url =
-      "${dotenv.env['PROTOCOL']}://${dotenv.env['URL']}/media/catalog/product";
-
   @override
   Widget build(BuildContext context) {
     //print(widget.data['media_gallery_entries']);
@@ -47,8 +44,8 @@ class _RestuarentScreenState extends State<RestuarentScreen> {
                     borderRadius: BorderRadius.circular(10),
                     child: widget.data['media_gallery_entries'] != null
                         ? Image.network(
-                            _url +
-                                widget.data['media_gallery_entries'][0]['file'],
+                            pathMedia(widget.data['media_gallery_entries'][0]
+                                ['file']),
                             width: 300,
                             height: 180)
                         : Image.asset('assets/notFoundImg.png',
@@ -162,20 +159,5 @@ class _RestuarentScreenState extends State<RestuarentScreen> {
         ),
       ),
     );
-  }
-
-  getCustomAttribute(data, type) {
-    if (data.length == 0) {
-      return '';
-    }
-
-    Map<String, String> typeValue = {'product_score': '0'};
-    String? value = typeValue[type] ?? '';
-    for (dynamic attr in data) {
-      if (attr['attribute_code'] == type) {
-        value = attr['value'];
-      }
-    }
-    return value;
   }
 }

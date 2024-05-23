@@ -7,7 +7,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:andromeda/screens/restaurant/review.dart';
 import 'package:intl/intl.dart';
 
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:andromeda/utilities/constanst.dart';
 
 class MyDetailPage extends StatefulWidget {
   //final int data;
@@ -45,8 +45,6 @@ class _MyDetailPageState extends State<MyDetailPage>
   Map _slot = {};
   List<dynamic> _slotDay = [];
   List<dynamic> _allSlotDay = [];
-  final String _url =
-      "${dotenv.env['PROTOCOL']}://${dotenv.env['URL']}/media/catalog/product";
   //List<Map<String, dynamic>> _timeSlot = [];
   Future<void> getSlot(String? id) async {
     //print('getSlot -> $id');
@@ -375,7 +373,7 @@ class _MyDetailPageState extends State<MyDetailPage>
                       ),
                       child: widget.data['media_gallery_entries'] != null
                           ? Image.network(
-                              _url + imagen,
+                              pathMedia(imagen),
                               fit: BoxFit.cover,
                             )
                           : Image.asset(
@@ -739,20 +737,5 @@ class _MyDetailPageState extends State<MyDetailPage>
             child: child,
           );
         });
-  }
-
-  getCustomAttribute(data, type) {
-    if (data.length == 0) {
-      return '';
-    }
-
-    Map<String, String> typeValue = {'product_score': '0'};
-    String? value = typeValue[type] ?? '';
-    for (dynamic attr in data) {
-      if (attr['attribute_code'] == type) {
-        value = attr['value'];
-      }
-    }
-    return value;
   }
 }

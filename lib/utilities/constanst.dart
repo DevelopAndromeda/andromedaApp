@@ -6,6 +6,8 @@ import 'package:andromeda/utilities/strings.dart';
 
 import 'package:andromeda/services/db.dart';
 
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 responseErrorWarning(context, String msj) {
   return FToast.toast(
     context,
@@ -61,4 +63,23 @@ String? validateEmail(String? value) {
   return value!.isEmpty || !regex.hasMatch(value)
       ? 'Ingresa un correo valido'
       : null;
+}
+
+getCustomAttribute(data, type) {
+  if (data.length == 0) {
+    return '';
+  }
+
+  Map<String, String> typeValue = {'product_score': '0'};
+  String? value = typeValue[type] ?? '';
+  for (dynamic attr in data) {
+    if (attr['attribute_code'] == type) {
+      value = attr['value'];
+    }
+  }
+  return value;
+}
+
+String pathMedia(String media) {
+  return "${dotenv.env['PROTOCOL']}://${dotenv.env['URL']}/media/catalog/product$media";
 }

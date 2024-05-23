@@ -4,7 +4,7 @@ import 'package:andromeda/Witgets/bottomBar.dart';
 import 'package:andromeda/services/api.dart';
 import 'package:andromeda/services/db.dart';
 
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:andromeda/utilities/constanst.dart';
 
 class MySavedPage extends StatefulWidget {
   const MySavedPage({super.key});
@@ -14,9 +14,6 @@ class MySavedPage extends StatefulWidget {
 }
 
 class _MySavedPageState extends State<MySavedPage> {
-  final String _url =
-      "${dotenv.env['PROTOCOL']}://${dotenv.env['URL']}/media/catalog/product";
-
   Future getFavorites() async {
     final user = await serviceDB.instance.getById('users', 'id_user', 1);
     if (user.isEmpty) {
@@ -158,7 +155,7 @@ class _MySavedPageState extends State<MySavedPage> {
       return BoxDecoration(
           borderRadius: BorderRadius.circular(4),
           image: DecorationImage(
-              image: NetworkImage(_url + img), fit: BoxFit.cover));
+              image: NetworkImage(pathMedia(img)), fit: BoxFit.cover));
     } else {
       return BoxDecoration(
           borderRadius: BorderRadius.circular(4),
@@ -167,20 +164,5 @@ class _MySavedPageState extends State<MySavedPage> {
             fit: BoxFit.cover,
           ));
     }
-  }
-
-  getCustomAttribute(data, type) {
-    if (data.length == 0) {
-      return '';
-    }
-
-    Map<String, String> typeValue = {'product_score': '0'};
-    String? value = typeValue[type] ?? '';
-    for (dynamic attr in data) {
-      if (attr['attribute_code'] == type) {
-        value = attr['value'];
-      }
-    }
-    return value;
   }
 }

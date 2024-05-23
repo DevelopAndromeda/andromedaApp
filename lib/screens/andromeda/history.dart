@@ -7,7 +7,7 @@ import 'package:andromeda/services/api.dart';
 import 'package:intl/intl.dart';
 import 'package:andromeda/Witgets/LabelCard.dart';
 
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:andromeda/utilities/constanst.dart';
 
 class MyHistoryPage extends StatefulWidget {
   const MyHistoryPage({Key? key}) : super(key: key);
@@ -17,9 +17,6 @@ class MyHistoryPage extends StatefulWidget {
 }
 
 class _MyHistoryPageState extends State<MyHistoryPage> {
-  final String _url =
-      "${dotenv.env['PROTOCOL']}://${dotenv.env['URL']}/media/catalog/product";
-
   Future getHistory() async {
     var sesion = await serviceDB.instance.getById('users', 'id_user', 1);
 
@@ -290,7 +287,7 @@ class _MyHistoryPageState extends State<MyHistoryPage> {
       return BoxDecoration(
           borderRadius: BorderRadius.circular(4),
           image: DecorationImage(
-              image: NetworkImage(_url + img), fit: BoxFit.cover));
+              image: NetworkImage(pathMedia(img)), fit: BoxFit.cover));
     } else {
       return BoxDecoration(
           borderRadius: BorderRadius.circular(4),
@@ -299,20 +296,5 @@ class _MyHistoryPageState extends State<MyHistoryPage> {
             fit: BoxFit.cover,
           ));
     }
-  }
-
-  getCustomAttribute(data, type) {
-    if (data.length == 0) {
-      return '';
-    }
-
-    Map<String, String> typeValue = {'product_score': '0'};
-    String? value = typeValue[type] ?? '';
-    for (dynamic attr in data) {
-      if (attr['attribute_code'] == type) {
-        value = attr['value'];
-      }
-    }
-    return value;
   }
 }

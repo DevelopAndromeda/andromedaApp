@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:andromeda/services/api.dart';
 
 import 'package:andromeda/Witgets/bottomBar.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:andromeda/utilities/constanst.dart';
 
 class MySearchPage extends StatefulWidget {
   const MySearchPage({super.key});
@@ -14,8 +14,6 @@ class MySearchPage extends StatefulWidget {
 
 class _MySearchPageState extends State<MySearchPage> {
   final search = TextEditingController();
-  final String _url =
-      "${dotenv.env['PROTOCOL']}://${dotenv.env['URL']}/media/catalog/product";
 
   Future getRestaurantsSearch(input) async {
     //return await get('', 'integration',
@@ -124,8 +122,9 @@ class _MySearchPageState extends State<MySearchPage> {
           children: [
             getCustomAttribute(data['custom_attributes'], 'image') != ""
                 ? Image.network(
-                    _url +
-                        getCustomAttribute(data['custom_attributes'], 'image'),
+                    pathMedia(
+                      getCustomAttribute(data['custom_attributes'], 'image'),
+                    ),
                     height: 150.0,
                     width: double.infinity,
                     fit: BoxFit.cover,
@@ -168,20 +167,5 @@ class _MySearchPageState extends State<MySearchPage> {
         ),
       ),
     );
-  }
-
-  getCustomAttribute(data, type) {
-    if (data.length == 0) {
-      return '';
-    }
-
-    Map<String, String> typeValue = {'product_score': '0'};
-    String? value = typeValue[type] ?? '';
-    for (dynamic attr in data) {
-      if (attr['attribute_code'] == type) {
-        value = attr['value'];
-      }
-    }
-    return value;
   }
 }

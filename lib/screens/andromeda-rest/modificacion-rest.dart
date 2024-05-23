@@ -16,6 +16,7 @@ import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 //import "package:google_maps_webservice/geocoding.dart";
 import 'package:andromeda/screens/andromeda-rest/menu.dart';
+import 'package:andromeda/utilities/constanst.dart';
 
 class ModificacionRestaurante extends StatefulWidget {
   const ModificacionRestaurante({super.key, required this.data});
@@ -891,20 +892,5 @@ class _ModificacionRestaurante extends State<ModificacionRestaurante> {
         ),
       ),
     );
-  }
-
-  getCustomAttribute(data, type) {
-    if (data.length == 0) {
-      return '';
-    }
-
-    Map<String, String> typeValue = {'product_score': '0'};
-    String? value = typeValue[type] ?? '';
-    for (dynamic attr in data) {
-      if (attr['attribute_code'] == type) {
-        value = attr['value'];
-      }
-    }
-    return value;
   }
 }

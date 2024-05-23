@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:andromeda/utilities/constanst.dart';
 
 class MyContactPage extends StatefulWidget {
   final Map<String, dynamic> data;
@@ -168,20 +169,5 @@ class _MyContactPageState extends State<MyContactPage> {
         ]),
       )),
     );
-  }
-
-  getCustomAttribute(data, type) {
-    if (data.length == 0) {
-      return '';
-    }
-
-    Map<String, String> typeValue = {'product_score': '0'};
-    String? value = typeValue[type] ?? '';
-    for (dynamic attr in data) {
-      if (attr['attribute_code'] == type) {
-        value = attr['value'];
-      }
-    }
-    return value;
   }
 }

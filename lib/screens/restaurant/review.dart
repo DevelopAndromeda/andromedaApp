@@ -3,6 +3,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:readmore/readmore.dart';
 
 import 'package:andromeda/services/api.dart';
+import 'package:andromeda/utilities/constanst.dart';
 
 class MyReviewPage extends StatefulWidget {
   final Map<String, dynamic> data;
@@ -132,21 +133,6 @@ class _MyReviewPageState extends State<MyReviewPage> {
       lists.add(UsersReviewCard(data: data));
     }
     return lists;
-  }
-
-  getCustomAttribute(data, type) {
-    if (data.length == 0) {
-      return '';
-    }
-
-    Map<String, String> typeValue = {'product_score': '0'};
-    String? value = typeValue[type] ?? '';
-    for (dynamic attr in data) {
-      if (attr['attribute_code'] == type) {
-        value = attr['value'];
-      }
-    }
-    return value;
   }
 }
 
