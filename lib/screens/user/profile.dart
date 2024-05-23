@@ -4,6 +4,8 @@ import 'package:andromeda/Witgets/bottomBar.dart';
 
 import 'package:andromeda/services/db.dart';
 
+import 'package:andromeda/utilities/constanst.dart';
+
 class MyProfilePage extends StatefulWidget {
   const MyProfilePage({super.key});
 
@@ -60,10 +62,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
                 size: 30, // Tamaño del icono
               ),
               onPressed: () async {
-                //await serviceDB.instance.cleanAllTable();
-                await serviceDB.instance.cleanAllTable();
-                Navigator.of(context).pushNamedAndRemoveUntil(
-                    'login', (Route<dynamic> route) => false);
+                closeSession(context);
               },
             ),
           ],

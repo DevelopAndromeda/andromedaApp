@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:andromeda/Witgets/General/Colores_Base.dart';
+import 'package:andromeda/Witgets/Colores_Base.dart';
 import 'package:andromeda/services/api.dart';
 import 'package:andromeda/screens/andromeda-rest/menu.dart';
 

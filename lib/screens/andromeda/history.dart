@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:andromeda/Witgets/bottomBar.dart';
+import 'package:shimmer/shimmer.dart';
 
 import 'package:andromeda/services/db.dart';
 import 'package:andromeda/services/api.dart';
@@ -57,8 +58,61 @@ class _MyHistoryPageState extends State<MyHistoryPage> {
                 future: getHistory(),
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
                   if (!snapshot.hasData) {
-                    return const Center(
+                    /*return const Center(
                       child: CircularProgressIndicator(),
+                    );*/
+                    return SizedBox(
+                      width: double.infinity,
+                      height: 100.0,
+                      child: Shimmer.fromColors(
+                          baseColor: Colors.grey.shade300,
+                          highlightColor: Colors.grey.shade100,
+                          enabled: true,
+                          child: SingleChildScrollView(
+                            physics: NeverScrollableScrollPhysics(),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                Card(
+                                  margin: const EdgeInsets.all(5),
+                                  elevation: 10,
+                                  child: SizedBox(
+                                    width: double.infinity,
+                                    height: 150,
+                                    child: Container(width: 100, height: 90),
+                                  ),
+                                ),
+                                Card(
+                                  margin: const EdgeInsets.all(5),
+                                  elevation: 10,
+                                  child: SizedBox(
+                                    width: double.infinity,
+                                    height: 150,
+                                    child: Container(width: 100, height: 90),
+                                  ),
+                                ),
+                                Card(
+                                  margin: const EdgeInsets.all(5),
+                                  elevation: 10,
+                                  child: SizedBox(
+                                    width: double.infinity,
+                                    height: 150,
+                                    child: Container(width: 100, height: 90),
+                                  ),
+                                ),
+                                Card(
+                                  margin: const EdgeInsets.all(5),
+                                  elevation: 10,
+                                  child: SizedBox(
+                                    width: double.infinity,
+                                    height: 150,
+                                    child: Container(width: 100, height: 90),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )),
                     );
                   }
                   if (snapshot.hasData) {

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:andromeda/Witgets/General/Colores_Base.dart';
+import 'package:andromeda/Witgets/Colores_Base.dart';
 import 'package:andromeda/services/api.dart';
 import 'package:andromeda/services/db.dart';
 import 'package:andromeda/screens/andromeda-rest/menu.dart';
+import 'package:shimmer/shimmer.dart';
 
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
@@ -51,9 +52,72 @@ class _ListRestState extends State<ListRest> {
                 }
 
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
+                  return Column(children: [
+                    const SizedBox(
+                      height: 20.0,
+                    ),
+                    Shimmer.fromColors(
+                      baseColor: Colors.grey.shade300,
+                      highlightColor: Colors.grey.shade100,
+                      enabled: true,
+                      child: SingleChildScrollView(
+                        physics: NeverScrollableScrollPhysics(),
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              Card(
+                                margin: const EdgeInsets.all(20),
+                                elevation: 10,
+                                child: SizedBox(
+                                  width: double.infinity,
+                                  height: 150,
+                                  child: Container(
+                                    width: 100,
+                                    height: 90,
+                                  ),
+                                ),
+                              ),
+                              Card(
+                                margin: const EdgeInsets.all(20),
+                                elevation: 10,
+                                child: SizedBox(
+                                  width: double.infinity,
+                                  height: 150,
+                                  child: Container(
+                                    width: 100,
+                                    height: 90,
+                                  ),
+                                ),
+                              ),
+                              Card(
+                                margin: const EdgeInsets.all(20),
+                                elevation: 10,
+                                child: SizedBox(
+                                  width: double.infinity,
+                                  height: 150,
+                                  child: Container(
+                                    width: 100,
+                                    height: 90,
+                                  ),
+                                ),
+                              ),
+                              Card(
+                                margin: const EdgeInsets.all(20),
+                                elevation: 10,
+                                child: SizedBox(
+                                  width: double.infinity,
+                                  height: 150,
+                                  child: Container(
+                                    width: 100,
+                                    height: 90,
+                                  ),
+                                ),
+                              ),
+                            ]),
+                      ),
+                    ),
+                  ]);
                 }
 
                 return Column(children: [

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:andromeda/services/db.dart';
+
+import 'package:andromeda/utilities/constanst.dart';
 
 class NavDrawer extends StatelessWidget {
   const NavDrawer({super.key, required this.changeSalida});
@@ -17,14 +18,26 @@ class NavDrawer extends StatelessWidget {
 
   List<Widget> _createContet(BuildContext context) {
     final menuItem = [
-      {'name': 'Alta de Restaurante', 'url': 'alta-rest', 'icon': 0xe533},
-      {'name': 'Lista de Restaurantes', 'url': 'list-rest', 'icon': 0xe533},
+      {
+        'name': 'Alta de Restaurante',
+        'url': 'alta-rest',
+        'icon': Icons.add_business
+      },
+      {
+        'name': 'Lista de Restaurantes',
+        'url': 'list-rest',
+        'icon': Icons.restaurant
+      },
       {
         'name': 'Lista de Reservaciones',
         'url': 'list-reservation',
-        'icon': 0xe533
+        'icon': Icons.book_online
       },
-      {'name': 'Lista de Comentarios', 'url': 'list-reviews', 'icon': 0xe533}
+      {
+        'name': 'Lista de Comentarios',
+        'url': 'list-reviews',
+        'icon': Icons.comment
+      }
     ];
     List<Widget> lista = <Widget>[];
     lista.add(Container(
@@ -71,29 +84,27 @@ class NavDrawer extends StatelessWidget {
     ));
 
     menuItem.forEach((element) {
-      lista.add(DrawerListTile(
-          title: element['name'].toString(),
-          icon: Icon(
-              IconData(
-                int.parse(
-                  element['icon'].toString(),
-                ),
-              ),
-              color: Colors.black,
-              size: 30),
-          onTap: () async {
-            Navigator.pop(context);
-            Navigator.pushNamed(context, element['url'].toString());
-          }));
+      lista.add(ListTile(
+        leading: Icon(
+          element['icon'] as IconData, // Convertir explícitamente a IconData
+          color: Colors.grey[800],
+        ),
+        title: Text(
+          element['name'].toString(),
+          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+        ),
+        onTap: () async {
+          Navigator.pop(context);
+          Navigator.pushNamed(context, element['url'].toString());
+        },
+      ));
     });
 
-    lista.add(DrawerListTile(
-        icon: const Icon(Icons.login_outlined),
-        title: "Cerrar Sesion",
+    lista.add(ListTile(
+        leading: const Icon(Icons.login_outlined),
+        title: const Text("Cerrar Sesion"),
         onTap: () async {
-          await serviceDB.instance.cleanAllTable();
-          Navigator.of(context).pushNamedAndRemoveUntil(
-              'login', (Route<dynamic> route) => false);
+          closeSession(context);
         }));
 
     return lista;

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:andromeda/Witgets/General/Colores_Base.dart';
+import 'package:andromeda/Witgets/Colores_Base.dart';
 import 'package:andromeda/services/api.dart';
+
+import 'package:andromeda/utilities/constanst.dart';
 
 class MyRecoverPassword extends StatefulWidget {
   const MyRecoverPassword({Key? key}) : super(key: key);
@@ -10,25 +12,32 @@ class MyRecoverPassword extends StatefulWidget {
 }
 
 class _MyRecoverPasswordState extends State<MyRecoverPassword> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Background_Color,
-      appBar: AppBar(
-        title: const Text(
-          "Recuperar Contraseña",
-          style: TextStyle(color: Colors.white),
+        backgroundColor: Background_Color,
+        appBar: AppBar(
+          title: const Text(
+            "Recuperar Contraseña",
+            style: TextStyle(color: Colors.white),
+          ),
+          centerTitle: true,
+          leading: const BackButton(
+            color: Colors.white,
+          ),
+          backgroundColor: const Color.fromARGB(255, 0, 0, 0),
+          elevation: 1,
         ),
-        centerTitle: true,
-        leading: const BackButton(
-          color: Colors.white,
-        ),
-        backgroundColor: const Color.fromARGB(255, 0, 0, 0),
-        elevation: 1,
-      ),
-      body: Padding(
+        body: _form());
+  }
+
+  Form _form() {
+    return Form(
+      key: _formKey,
+      child: Padding(
         padding: const EdgeInsets.all(30.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -44,6 +53,12 @@ class _MyRecoverPasswordState extends State<MyRecoverPassword> {
                 if (value == null || value.isEmpty) {
                   return 'Por favor ingrese su correo electrónico';
                 }
+
+                String? isValid = validateEmail(value);
+                if (isValid != null) {
+                  return isValid;
+                }
+
                 return null;
               },
             ),
@@ -59,7 +74,9 @@ class _MyRecoverPasswordState extends State<MyRecoverPassword> {
                 ), // Cambia el color del texto a blanco
               ),
               onPressed: () {
-                _resetPassword();
+                if (_formKey.currentState!.validate()) {
+                  _resetPassword();
+                }
               },
               child: const Text('Recuperar Contraseña'),
             ),
@@ -70,19 +87,8 @@ class _MyRecoverPasswordState extends State<MyRecoverPassword> {
   }
 
   void _resetPassword() async {
-    String email = _emailController.text.trim();
-    if (email.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Por favor ingrese su correo electrónico'),
-          duration: Duration(seconds: 2),
-        ),
-      );
-      return;
-    }
-
     Map<String, dynamic> data = {
-      "email": _emailController.text,
+      "email": _emailController.text.trim(),
       "template": "email_reset"
     };
 
@@ -92,14 +98,12 @@ class _MyRecoverPasswordState extends State<MyRecoverPassword> {
 
       if (updatePassword != null) {
         if (updatePassword) {
-          ScaffoldMessenger.of(context)
-              .showSnackBar(SnackBar(content: Text("Recuperacion Exitosa")));
+          responseSuccessWarning(
+              context, 'Te hemos enviado un correo electronico');
         }
       }
     } catch (e) {
-      //print(e);
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(e.toString())));
+      responseErrorWarning(context, e.toString());
     }
   }
 }
