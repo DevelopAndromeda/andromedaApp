@@ -4,6 +4,8 @@ import 'package:andromeda/Witgets/bottomBar.dart';
 
 import 'package:andromeda/services/db.dart';
 
+import 'package:andromeda/utilities/constanst.dart';
+
 class MyProfilePage extends StatefulWidget {
   const MyProfilePage({super.key});
 
@@ -43,7 +45,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
         backgroundColor: Colors.white,
         flexibleSpace: Row(
           children: [
-            Spacer(),
+            const Spacer(),
             // Spacer se utiliza para empujar el título al centro
             const Center(
               child: Text(
@@ -53,16 +55,14 @@ class _MyProfilePageState extends State<MyProfilePage> {
                 ),
               ),
             ),
-            Spacer(),
+            const Spacer(),
             IconButton(
               icon: const Icon(
                 Icons.exit_to_app_rounded,
                 size: 30, // Tamaño del icono
               ),
               onPressed: () async {
-                await serviceDB.instance.cleanAllTable();
-                Navigator.of(context).pushNamedAndRemoveUntil(
-                    'start', (Route<dynamic> route) => false);
+                closeSession(context);
               },
             ),
           ],
@@ -80,41 +80,60 @@ class _MyProfilePageState extends State<MyProfilePage> {
               children: [
                 // Imagen de portada
                 Image.asset(
-                  "assets/Back.png", // Reemplaza con la ruta de tu imagen de portada
+                  "assets/Black.jpg", // Reemplaza con la ruta de tu imagen de portada
                   height: 200, // Ajusta la altura según tus necesidades
                   width: double.infinity,
                   fit: BoxFit.cover,
                 ),
-                // Imagen de perfil
-                CircleAvatar(
-                  radius: 50,
-                  backgroundImage: AssetImage("assets/Profile.png"),
+
+                const Positioned(
+                  top: 150,
+                  child: CircleAvatar(
+                    radius: 50,
+                    backgroundImage: AssetImage("assets/Profile.png"),
+                  ),
                 ),
+                // Imagen de perfil
               ],
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Text("Nombre: $nombre"),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Text("Apellido: $apellido"),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Text("Correo: $correo"),
-            SizedBox(height: 10),
-            Text("Teléfono: $telefono"),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => MyConfigProfilePage(),
-                    ));
-              },
-              child: Text("Modificar Perfil"),
+            /*SizedBox(height: 10),
+            Text("Teléfono: $telefono"),*/
+            const SizedBox(height: 20),
+            const SizedBox(
+              height: 250,
+            ),
+            Center(
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const MyConfigProfilePage(),
+                      ));
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.black,
+                  minimumSize: const Size(250, 40),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                ),
+                child: const Text(
+                  "Modificar Perfil",
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
             ),
           ],
         ),
       ),
-      bottomNavigationBar: MyBottomBar(
+      bottomNavigationBar: const MyBottomBar(
         index: 2,
       ),
     );

@@ -4,6 +4,8 @@ import 'package:andromeda/Witgets/bottomBar.dart';
 import 'package:andromeda/services/api.dart';
 import 'package:andromeda/services/db.dart';
 
+import 'package:andromeda/utilities/constanst.dart';
+
 class MySavedPage extends StatefulWidget {
   const MySavedPage({super.key});
 
@@ -32,15 +34,22 @@ class _MySavedPageState extends State<MySavedPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          'Guardado',
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        ),
+        centerTitle: true,
+        backgroundColor: const Color.fromARGB(255, 0, 0, 0),
+      ),
       body: _body(),
-      bottomNavigationBar: MyBottomBar(
+      bottomNavigationBar: const MyBottomBar(
         index: 3,
       ),
     );
   }
 
   Stack _body() {
-    Size size = MediaQuery.of(context).size;
     return Stack(
       children: [
         SafeArea(
@@ -48,32 +57,20 @@ class _MySavedPageState extends State<MySavedPage> {
             child: FutureBuilder(
               future: getFavorites(),
               builder: (BuildContext context, AsyncSnapshot snapshot) {
-                if (snapshot.hasError) {
-                  return const Text('Something went wrong');
-                }
-
-                if (snapshot.connectionState == ConnectionState.waiting) {
+                if (!snapshot.hasData) {
                   return const Center(
                     child: CircularProgressIndicator(),
                   );
                 }
 
-                /*return Expanded(
-                  child: SizedBox(
-                    height: 800,
-                    width: double.infinity,
-                    child: ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: snapshot.data!['data'].length,
-                        itemBuilder: (context, index) {
-                          return _buildCard(snapshot.data!['data'][index]);
-                        }),
-                  ),
-                );*/
-
-                return Column(
-                  children: _createList(snapshot.data!['data']),
-                );
+                if (snapshot.hasData) {
+                  //print(snapshot.data);
+                  return Column(
+                    children: _createList(snapshot.data!['data']),
+                  );
+                } else {
+                  return const Text('Error en api');
+                }
               },
             ),
           ),
@@ -84,6 +81,10 @@ class _MySavedPageState extends State<MySavedPage> {
 
   List<Widget> _createList(items) {
     List<Widget> lists = <Widget>[];
+    if (items == null) {
+      lists.add(const Center(child: Text('Tu Sesion a Expirado!')));
+      return lists;
+    }
 
     if (items.length > 0) {
       for (dynamic data in items) {
@@ -104,13 +105,8 @@ class _MySavedPageState extends State<MySavedPage> {
           Container(
             width: double.infinity,
             height: 150,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              image: DecorationImage(
-                image: AssetImage('assets/ExampleRest.png'),
-                fit: BoxFit.cover,
-              ),
-            ),
+            decoration: getImg(
+                data['images'] != null ? data['images'][0]['file'] : null),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.end,
@@ -132,6 +128,8 @@ class _MySavedPageState extends State<MySavedPage> {
                       await delete(token, 'custom',
                           'wishlist/customer/item/${data['product_id']}');
                       setState(() {});
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('Se borro favorito')));
                     },
                   ),
                 )
@@ -140,20 +138,31 @@ class _MySavedPageState extends State<MySavedPage> {
           ),
           Text(
             data['name'],
-            style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+            style: const TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
           ),
-          SizedBox(height: 8.0),
+          const SizedBox(height: 8.0),
           Text(
-            'Tipo de Comida: ',
-            style: TextStyle(fontSize: 16.0),
-          ),
-          SizedBox(height: 4.0),
-          Text(
-            'Horario de Atención: ',
-            style: TextStyle(fontSize: 16.0),
+            'SKU: ${data['sku']}',
+            style: const TextStyle(fontSize: 16.0),
           ),
         ],
       ),
     );
+  }
+
+  BoxDecoration getImg(String? img) {
+    if (img != null) {
+      return BoxDecoration(
+          borderRadius: BorderRadius.circular(4),
+          image: DecorationImage(
+              image: NetworkImage(pathMedia(img)), fit: BoxFit.cover));
+    } else {
+      return BoxDecoration(
+          borderRadius: BorderRadius.circular(4),
+          image: const DecorationImage(
+            image: AssetImage('assets/notFoundImg.png'),
+            fit: BoxFit.cover,
+          ));
+    }
   }
 }

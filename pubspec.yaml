@@ -24,6 +24,11 @@ dependencies:
   intl: ^0.18.1
   carousel_slider: ^4.0.0
   readmore: ^2.2.0
+  google_maps_flutter: ^2.2.3
+  multi_select_flutter: ^4.1.3
+  ftoast: ^2.0.0
+  panara_dialogs: ^0.1.4
+  shimmer: ^2.0.0
 
 
 dev_dependencies:
@@ -44,18 +49,16 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
-    - assets/ExampleRest.png
-    - assets/ExampleRest1.png
-    - assets/ExampleRest2.png
-    - assets/Profile.png
     - assets/Back.png
-    - assets/image1.jpg
-    - assets/image2.jpg
-    - assets/image3.jpg
-    - assets/image4.jpg
-    - assets/image5.jpg
+    - assets/Black.jpg
     - assets/IniciarSesionCliente.png
     - assets/IniciarSesionRest.png
+    - assets/Login.png
+    - assets/LogoWhite.png
+    - assets/notFoundImg.png
+    - assets/Profile.png
+    - assets/Masculino.jpg
+    - assets/Femenino.jpg
     - .env
 
   # To add assets to your application, add an assets section, like this:
