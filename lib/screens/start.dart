@@ -1,3 +1,4 @@
+import 'package:andromeda/screens/auth/Login/login.dart';
 import 'package:flutter/material.dart';
 
 class MyStartPage extends StatefulWidget {
@@ -14,17 +15,17 @@ class _MyStartPageState extends State<MyStartPage> {
       body: Container(
         width: double.infinity, // Ocupa todo el ancho disponible
         height: double.infinity, // Ocupa todo el alto disponible
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           color: Color.fromARGB(255, 154, 126, 43), // Fondo dorado
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            SizedBox(height: 40),
+            const SizedBox(height: 40),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Column(
-                children: [
+                children: const [
                   Text(
                     'Bienvenido',
                     style: TextStyle(
@@ -49,12 +50,14 @@ class _MyStartPageState extends State<MyStartPage> {
             Expanded(
               child: GestureDetector(
                 onTap: () {
-                  Navigator.of(context).pushNamedAndRemoveUntil(
-                      'login-rest', (Route<dynamic> route) => false);
-                  /*Navigator.push(
+                  //Navigator.of(context).pushNamedAndRemoveUntil(
+                  //    'login-rest', (Route<dynamic> route) => false);
+                  //Navigator.pushNamed(context, 'login-rest');
+                  Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => LoginPageRest()),
-                  );*/
+                    MaterialPageRoute(
+                        builder: (context) => const MyLoginPage()),
+                  );
                 },
                 child: SizedBox(
                   width: 300,
@@ -74,8 +77,14 @@ class _MyStartPageState extends State<MyStartPage> {
             Expanded(
               child: GestureDetector(
                 onTap: () {
-                  Navigator.of(context).pushNamedAndRemoveUntil(
-                      'login', (Route<dynamic> route) => false);
+                  //Navigator.of(context).pushNamedAndRemoveUntil(
+                  //    'login', (Route<dynamic> route) => false);
+                  //Navigator.pushNamed(context, 'login');
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const MyLoginPage()),
+                  );
                 },
                 child: SizedBox(
                   width: double.infinity,

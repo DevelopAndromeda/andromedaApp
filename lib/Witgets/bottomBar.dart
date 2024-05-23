@@ -31,17 +31,17 @@ class _MyBottomPageBar extends State<MyBottomBar> {
       type: BottomNavigationBarType.fixed,
       currentIndex: widget.index,
       onTap: (index) {
-        print(index);
+        //print(index);
         //Navigator.of(context).pushNamed(rutas[index].toString());
 
         Navigator.of(context).pushNamedAndRemoveUntil(
             rutas[index].toString(), (Route<dynamic> route) => false);
       },
       selectedIconTheme: const IconThemeData(
-        color: Color.fromARGB(255, 154, 126, 43),
+        color: Color.fromARGB(255, 19, 19, 18),
       ), //Colores del iconos
       selectedLabelStyle: const TextStyle(
-        color: Color.fromARGB(255, 154, 126, 43),
+        color: Color.fromARGB(255, 19, 19, 18),
       ), //Colores de Label Nota: No hace cambios
       unselectedFontSize: 8,
       selectedFontSize: 10,
@@ -51,15 +51,15 @@ class _MyBottomPageBar extends State<MyBottomBar> {
           label: 'BUSQUEDA',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.history),
+          icon: Icon(Icons.event),
           label: 'HISTORIAL',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.home),
+          icon: Icon(Icons.settings),
           label: 'INICIO',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.bookmark_border),
+          icon: Icon(Icons.description_outlined),
           label: 'GUARDADO',
         ),
         BottomNavigationBarItem(

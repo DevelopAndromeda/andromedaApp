@@ -4,32 +4,11 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:andromeda/services/api.dart';
 import 'package:andromeda/services/db.dart';
 
+import 'package:andromeda/utilities/constanst.dart';
+
 class RestuarentScreen extends StatefulWidget {
-  /*final int id;
-  final String name,
-      image,
-      remainingTime,
-      subTitle,
-      rating,
-      deliveryTime,
-      totalRating,
-      deliveryPrice;*/
   final Map<dynamic, dynamic> data;
-  const RestuarentScreen(
-      /*{Key? key,
-      required this.id,
-      required this.name,
-      required this.image,
-      required this.remainingTime,
-      required this.rating,
-      required this.deliveryTime,
-      required this.totalRating,
-      required this.subTitle,
-      required this.deliveryPrice})
-      : super(key: key);*/
-      {Key? key,
-      required this.data})
-      : super(key: key);
+  const RestuarentScreen({Key? key, required this.data}) : super(key: key);
 
   @override
   _RestuarentScreenState createState() => _RestuarentScreenState();
@@ -38,7 +17,7 @@ class RestuarentScreen extends StatefulWidget {
 class _RestuarentScreenState extends State<RestuarentScreen> {
   @override
   Widget build(BuildContext context) {
-    print(widget.data['image']);
+    //print(widget.data['media_gallery_entries']);
     final height = MediaQuery.of(context).size.height * 1;
     final width = MediaQuery.of(context).size.width * 1;
     return InkWell(
@@ -48,7 +27,7 @@ class _RestuarentScreenState extends State<RestuarentScreen> {
       },
       child: Padding(
         padding: const EdgeInsets.only(right: 10),
-        child: Container(
+        child: SizedBox(
           /*decoration: BoxDecoration(
             border: Border.all(color: Colors.blueAccent),
           ),
@@ -62,57 +41,16 @@ class _RestuarentScreenState extends State<RestuarentScreen> {
               Stack(
                 children: [
                   ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
-                      child: Image.network(
-                          "http://82.165.212.67/media/catalog/product" +
-                              widget.data['media_gallery_entries'][0]['file'],
-                          width: 300,
-                          height: 180)),
-                  /*Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 15),
-                    child: Container(
-                      decoration: BoxDecoration(
-                          color: Color.fromARGB(255, 154, 126, 43),
-                          borderRadius: BorderRadius.only(
-                            topRight: Radius.circular(20),
-                            bottomRight: Radius.circular(20),
-                          )),
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                            top: 7, left: 5, right: 10, bottom: 7),
-                        child: Text(
-                          "Flash 20% OFF",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 10,
-                              fontFamily: 'Exo Bold'),
-                        ),
-                      ),
-                    ),
-                  ),*/
-                  /*Positioned(
-                    bottom: 0,
-                    left: 10,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 10),
-                      child: Container(
-                        decoration: BoxDecoration(
-                            color: Color(0xfffffcff),
-                            borderRadius: BorderRadius.circular(20.0)),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 5),
-                          child: Text(
-                            widget.remainingTime,
-                            style: TextStyle(
-                                color: Color(0xff323232),
-                                fontSize: 12,
-                                fontFamily: 'Exo Bold'),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),*/
+                    borderRadius: BorderRadius.circular(10),
+                    child: widget.data['media_gallery_entries'] != null
+                        ? Image.network(
+                            pathMedia(widget.data['media_gallery_entries'][0]
+                                ['file']),
+                            width: 300,
+                            height: 180)
+                        : Image.asset('assets/notFoundImg.png',
+                            width: 350, height: 180),
+                  ),
                 ],
               ),
               Row(
@@ -120,27 +58,34 @@ class _RestuarentScreenState extends State<RestuarentScreen> {
                 children: [
                   Text(
                     widget.data['name'],
-                    style: TextStyle(
+                    style: const TextStyle(
                         color: Color(0xff323232),
                         fontSize: 14,
                         fontFamily: 'Exo Bold'),
                   ),
                   IconButton(
                     onPressed: () async {
-                      print('click');
                       final user = await serviceDB.instance
                           .getById('users', 'id_user', 1);
                       if (user.isEmpty) {
                         return;
                       }
                       String token = user[0]['token'];
-                      final favorite = await post(token, 'custom',
-                          'wishlist/customer/product/${widget.data["id"]}', {});
+                      final favorite = await post(
+                          token,
+                          'custom',
+                          'wishlist/customer/product/${widget.data["id"]}',
+                          {},
+                          '');
+                      if (favorite['success']) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('Se agrego a favoritos')));
+                      }
 
-                      print(favorite);
+                      //print(favorite);
                     },
                     iconSize: 20,
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.bookmark_border,
                     ),
                   ),
@@ -148,7 +93,7 @@ class _RestuarentScreenState extends State<RestuarentScreen> {
               ),
               Row(
                 children: <Widget>[
-                  Text(
+                  const Text(
                     'Tipo de Comida',
                     style: TextStyle(
                         color: Color(0xff707070),
@@ -162,20 +107,17 @@ class _RestuarentScreenState extends State<RestuarentScreen> {
                                 widget.data['custom_attributes'],
                                 'product_score')
                             .toString()),
-                        itemBuilder: (context, index) => Icon(
+                        itemBuilder: (context, index) => const Icon(
                           Icons.star,
-                          color: Colors.amber,
+                          color: Color.fromARGB(255, 20, 20, 20),
                         ),
                         itemCount: 5,
                         itemSize: 12.0,
                         direction: Axis.horizontal,
                       ),
                       Text(
-                        " " +
-                            getCustomAttribute(widget.data['custom_attributes'],
-                                    'product_score')
-                                .toString(),
-                        style: TextStyle(
+                        "${getCustomAttribute(widget.data['custom_attributes'], 'product_score')}",
+                        style: const TextStyle(
                             color: Color(0xff323232),
                             fontSize: 12,
                             fontFamily: 'Exo Light'),
@@ -217,20 +159,5 @@ class _RestuarentScreenState extends State<RestuarentScreen> {
         ),
       ),
     );
-  }
-
-  getCustomAttribute(data, type) {
-    if (data.length == 0) {
-      return '';
-    }
-
-    Map<String, String> typeValue = {'product_score': '0'};
-    String? value = typeValue[type] ?? '';
-    for (dynamic attr in data) {
-      if (attr['attribute_code'] == type) {
-        value = attr['value'];
-      }
-    }
-    return value;
   }
 }

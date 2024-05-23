@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:andromeda/services/api.dart';
 
 import 'package:andromeda/Witgets/bottomBar.dart';
+import 'package:andromeda/utilities/constanst.dart';
 
 class MySearchPage extends StatefulWidget {
   const MySearchPage({super.key});
@@ -15,8 +16,9 @@ class _MySearchPageState extends State<MySearchPage> {
   final search = TextEditingController();
 
   Future getRestaurantsSearch(input) async {
-    return await get('', 'integration',
-        'products/?searchCriteria[filterGroups][0][filters][0][field]=name&searchCriteria[filterGroups][0][filters][0][value]=%25${input}%25&searchCriteria[filterGroups][0][filters][0][conditionType]=like&searchCriteria[sortOrders][0][field]=name&searchCriteria[sortOrders][0][direction]=ASC&searchCriteria[currentPage]=1&searchCriteria[pageSize]=20');
+    //return await get('', 'integration',
+    //    'products/?searchCriteria[filterGroups][0][filters][0][field]=name&searchCriteria[filterGroups][0][filters][0][value]=%25${input}%25&searchCriteria[filterGroups][0][filters][0][conditionType]=like&searchCriteria[sortOrders][0][field]=name&searchCriteria[sortOrders][0][direction]=ASC&searchCriteria[currentPage]=1&searchCriteria[pageSize]=20');
+    return await get('', '', 'restaurant/product/search?q=$input');
   }
 
   @override
@@ -39,10 +41,10 @@ class _MySearchPageState extends State<MySearchPage> {
                 Expanded(
                   child: CupertinoTextField(
                       //controller: search,
-                      padding:
-                          EdgeInsets.symmetric(vertical: 12, horizontal: 10),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 12, horizontal: 10),
                       placeholder: "Buscar",
-                      prefix: Padding(
+                      prefix: const Padding(
                         padding: EdgeInsets.only(left: 10),
                         child: Icon(
                           Icons.search,
@@ -50,9 +52,9 @@ class _MySearchPageState extends State<MySearchPage> {
                         ),
                       ),
                       decoration: BoxDecoration(
-                          color: Color(0xfff7f7f7),
+                          color: const Color(0xfff7f7f7),
                           borderRadius: BorderRadius.circular(10)),
-                      style: TextStyle(
+                      style: const TextStyle(
                           color: Color(0xff707070),
                           fontSize: 16,
                           fontFamily: 'Exo Regular'),
@@ -98,55 +100,71 @@ class _MySearchPageState extends State<MySearchPage> {
 
   List<Widget> _createList(items) {
     List<Widget> lists = <Widget>[];
-
-    if (items.length > 0) {
-      for (dynamic data in items) {
-        print(data);
-        lists.add(_buildCard(data));
-      }
-    } else {
-      lists.add(const Center(child: Text('Sin Registros')));
+    if (items.isEmpty) {
+      lists.add(const Center(child: Text('Ingresa otros datos')));
+      return lists;
     }
-
+    items.forEach((element) => {lists.add(_buildCard(element))});
     return lists;
   }
 
   Widget _buildCard(data) {
-    return Card(
-      elevation: 5.0,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Image.network(
-            "http://82.165.212.67/media/catalog/product" +
-                data['media_gallery_entries'][0]['file'],
-            height: 150.0,
-            width: double.infinity,
-            fit: BoxFit.cover,
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  data['name'],
-                  style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
-                ),
-                SizedBox(height: 8.0),
-                Text(
-                  'Tipo de Comida: ',
-                  style: TextStyle(fontSize: 16.0),
-                ),
-                SizedBox(height: 4.0),
-                Text(
-                  'Horario de Atención: ',
-                  style: TextStyle(fontSize: 16.0),
-                ),
-              ],
+    return InkWell(
+      onTap: () {
+        Navigator.of(context).pushNamedAndRemoveUntil(
+            'detail', arguments: data, (Route<dynamic> route) => false);
+      },
+      child: Card(
+        color: Colors.black,
+        elevation: 5.0,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            getCustomAttribute(data['custom_attributes'], 'image') != ""
+                ? Image.network(
+                    pathMedia(
+                      getCustomAttribute(data['custom_attributes'], 'image'),
+                    ),
+                    height: 150.0,
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                  )
+                : Image.asset(
+                    'assets/notFoundImg.png',
+                    width: double.infinity,
+                    height: 150,
+                    fit: BoxFit.cover,
+                  ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    data['name'],
+                    style: const TextStyle(
+                        fontSize: 20.0,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 8.0),
+                  const Text(
+                    'Tipo de Comida: ',
+                    style: TextStyle(
+                      fontSize: 16.0,
+                      color: Colors.white,
+                    ),
+                  ),
+                  const SizedBox(height: 4.0),
+                  const Text(
+                    'Horario de Atención: ',
+                    style: TextStyle(fontSize: 16.0, color: Colors.white),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
