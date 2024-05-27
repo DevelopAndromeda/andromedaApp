@@ -1,9 +1,9 @@
-#Sat May 25 12:35:51 CST 2024
-base.0=/Users/emmanuelsantizfelipe/Documents/flutter/andromedaapp/build/app/intermediates/dex/debug/mergeExtDexDebug/classes.dex
-base.1=/Users/emmanuelsantizfelipe/Documents/flutter/andromedaapp/build/app/intermediates/dex/debug/mergeLibDexDebug/0/classes.dex
-base.2=/Users/emmanuelsantizfelipe/Documents/flutter/andromedaapp/build/app/intermediates/dex/debug/mergeProjectDexDebug/0/classes.dex
-base.3=/Users/emmanuelsantizfelipe/Documents/flutter/andromedaapp/build/app/intermediates/dex/debug/mergeProjectDexDebug/1/classes.dex
-base.4=/Users/emmanuelsantizfelipe/Documents/flutter/andromedaapp/build/app/intermediates/dex/debug/mergeProjectDexDebug/4/classes.dex
+#Mon May 27 11:34:10 CST 2024
+base.0=C\:\\Users\\ingsa\\OneDrive\\Documentos\\Entrega\\AndromedaApp\\build\\app\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes.dex
+base.1=C\:\\Users\\ingsa\\OneDrive\\Documentos\\Entrega\\AndromedaApp\\build\\app\\intermediates\\dex\\debug\\mergeLibDexDebug\\0\\classes.dex
+base.2=C\:\\Users\\ingsa\\OneDrive\\Documentos\\Entrega\\AndromedaApp\\build\\app\\intermediates\\dex\\debug\\mergeProjectDexDebug\\0\\classes.dex
+base.3=C\:\\Users\\ingsa\\OneDrive\\Documentos\\Entrega\\AndromedaApp\\build\\app\\intermediates\\dex\\debug\\mergeProjectDexDebug\\1\\classes.dex
+base.4=C\:\\Users\\ingsa\\OneDrive\\Documentos\\Entrega\\AndromedaApp\\build\\app\\intermediates\\dex\\debug\\mergeProjectDexDebug\\4\\classes.dex
 path.0=classes.dex
 path.1=0/classes.dex
 path.2=0/classes.dex
