@@ -14,12 +14,10 @@ class Andromeda extends StatelessWidget {
         fontFamily: "Cairo",
         visualDensity: VisualDensity.adaptivePlatformDensity,
         brightness: Brightness.light,
-        primarySwatch: Colors.brown,
         primaryColor: Colors.black,
       ),
       darkTheme: ThemeData(
         brightness: Brightness.dark,
-        primarySwatch: Colors.brown,
         primaryColor: Colors.black,
       ),
       onGenerateRoute: rt.Router.generateRoute,

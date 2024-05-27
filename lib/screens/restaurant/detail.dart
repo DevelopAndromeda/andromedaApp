@@ -60,20 +60,38 @@ class _MyDetailPageState extends State<MyDetailPage>
     //print('************* options: ${_options} *************');
   }
 
-  //final String nombre = "Nombre del Restaurante";
-  //final String direccion = "Dirección del Restaurante";
-  //final String tipoComida = "Tipo de Comida";
-  //final String horarios = "Horarios de Servicio";
-  //final String descripcion =
-  //"Descripción del restaurante. Aquí puedes agregar una descripción detallada de lo que ofrece el restaurante.";
-
   _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: _selectedDate,
-      firstDate: DateTime.now(),
-      lastDate: DateTime(2101),
-    );
+        context: context,
+        initialDate: _selectedDate,
+        firstDate: DateTime.now(),
+        lastDate: DateTime(2101),
+        builder: (context, child) {
+          return Theme(
+            data: ThemeData.dark().copyWith(
+                colorScheme: const ColorScheme.dark(
+                    onPrimary: Colors.black, // selected text color
+                    onSurface: Colors.amberAccent, // default text color
+                    primary: Colors.amberAccent // circle color
+                    ),
+                dialogBackgroundColor: Colors.black54,
+                textButtonTheme: TextButtonThemeData(
+                    style: TextButton.styleFrom(
+                        textStyle: const TextStyle(
+                            color: Colors.amber,
+                            fontWeight: FontWeight.normal,
+                            fontSize: 12,
+                            fontFamily: 'Quicksand'),
+                        backgroundColor: Colors.black54, // Background color
+                        shape: RoundedRectangleBorder(
+                            side: const BorderSide(
+                                color: Colors.transparent,
+                                width: 1,
+                                style: BorderStyle.solid),
+                            borderRadius: BorderRadius.circular(50))))),
+            child: child!,
+          );
+        });
     _slot.forEach((key, value) {
       if (int.parse(key) == picked?.weekday) {
         _slotDay = value;
@@ -97,19 +115,6 @@ class _MyDetailPageState extends State<MyDetailPage>
       });
     }
   }
-
-  /*_selectTime(BuildContext context) async {
-    final TimeOfDay? picked = await showTimePicker(
-      context: context,
-      initialTime: _selectedTime,
-    );
-    print(_selectedTime);
-    if (picked != null && picked != _selectedTime) {
-      setState(() {
-        _selectedTime = picked;
-      });
-    }
-  }*/
 
   Future<void> generateOrden() async {
     //print('************* Obtener Sesion *************');

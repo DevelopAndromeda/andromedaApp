@@ -2,6 +2,7 @@ class MyString {
   static const String oopsMsg = "Oops!";
   static const String successMsg = "Exito!👌";
   static const String areYouSure = "¿Estas seguro?";
+  static const String forceStop = "Info ✋";
   /*static const String mainTitle = "My Tasks";
   static const String deletedTask = "This task was deleted";
   static const String doneAllTask = "You Have Done All Tasks!👌";

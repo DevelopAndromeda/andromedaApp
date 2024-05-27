@@ -1,4 +1,4 @@
-#Sat May 25 12:29:38 CST 2024
+#Sat May 25 12:35:51 CST 2024
 base.0=/Users/emmanuelsantizfelipe/Documents/flutter/andromedaapp/build/app/intermediates/dex/debug/mergeExtDexDebug/classes.dex
 base.1=/Users/emmanuelsantizfelipe/Documents/flutter/andromedaapp/build/app/intermediates/dex/debug/mergeLibDexDebug/0/classes.dex
 base.2=/Users/emmanuelsantizfelipe/Documents/flutter/andromedaapp/build/app/intermediates/dex/debug/mergeProjectDexDebug/0/classes.dex

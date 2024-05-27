@@ -19,6 +19,17 @@ responseErrorWarning(context, String msj) {
   );
 }
 
+responseWarning(context, String msj) {
+  return FToast.toast(
+    context,
+    msg: MyString.forceStop,
+    subMsg: msj,
+    corner: 20.0,
+    duration: 2000,
+    padding: const EdgeInsets.all(20),
+  );
+}
+
 responseSuccessWarning(context, String msj) {
   return FToast.toast(
     context,
