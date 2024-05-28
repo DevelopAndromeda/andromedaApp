@@ -41,6 +41,7 @@ class _listReservacionState extends State<listReservacion> {
         centerTitle: true,
         elevation: 1,
         backgroundColor: const Color.fromARGB(255, 0, 0, 0),
+        iconTheme: IconThemeData(color: Colors.white),
       ),
       body: FutureBuilder(
         future: getHistory(),

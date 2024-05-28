@@ -70,15 +70,15 @@ class _MyDetailPageState extends State<MyDetailPage>
           return Theme(
             data: ThemeData.dark().copyWith(
                 colorScheme: const ColorScheme.dark(
-                    onPrimary: Colors.black, // selected text color
-                    onSurface: Colors.amberAccent, // default text color
-                    primary: Colors.amberAccent // circle color
+                    onPrimary: Color.fromARGB(255, 255, 255, 255), // selected text color
+                    onSurface: Color.fromARGB(255, 255, 255, 255), // default text color
+                    primary: Color.fromARGB(99, 255, 255, 255) // circle color
                     ),
                 dialogBackgroundColor: Colors.black54,
                 textButtonTheme: TextButtonThemeData(
                     style: TextButton.styleFrom(
                         textStyle: const TextStyle(
-                            color: Colors.amber,
+                            color: Color.fromARGB(255, 255, 255, 255),
                             fontWeight: FontWeight.normal,
                             fontSize: 12,
                             fontFamily: 'Quicksand'),
@@ -403,21 +403,21 @@ class _MyDetailPageState extends State<MyDetailPage>
                         fontSize: 24, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 8),
-                  const Text(
+                  /*const Text(
                     'Direccion',
                     style: TextStyle(fontSize: 16),
-                  ),
-                  const SizedBox(height: 8),
+                  ),*/
+                  /*const SizedBox(height: 8),
                   const Text(
                     'Tipo de Comida: ',
                     style: TextStyle(fontSize: 16),
-                  ),
-                  const SizedBox(height: 8),
+                  ),*/
+                  /*const SizedBox(height: 8),
                   const Text(
                     'Horarios de Servicio: ',
                     style: TextStyle(fontSize: 16),
-                  ),
-                  const SizedBox(height: 16),
+                  ),*/
+                  const SizedBox(height: 10),
                   const Text(
                     'Descripción:',
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),

@@ -51,15 +51,16 @@ class _MyContactPageState extends State<MyContactPage> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: Text(widget.data['name']),
+        title: Text(widget.data['name'],style: TextStyle(color: Colors.white),),
         centerTitle: true,
         leading: const BackButton(),
-        backgroundColor: Colors.transparent,
+        backgroundColor: const Color.fromARGB(255, 0, 0, 0),
         elevation: 1,
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: SingleChildScrollView(
           child: Padding(
-        padding: const EdgeInsets.only(top: 75),
+        padding: const EdgeInsets.only(top: 120),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           const Padding(
             padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),

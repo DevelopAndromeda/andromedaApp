@@ -202,20 +202,6 @@ class _MyHistoryPageState extends State<MyHistoryPage> {
                     children: [
                       Column(
                         mainAxisSize: MainAxisSize.min,
-                        children: [
-                          IconButton(
-                            icon: const Icon(
-                              Icons.edit,
-                              color: Color.fromARGB(255, 2, 2,
-                                  2), // Cambia el color del icono aquí
-                            ),
-                            iconSize: 16,
-                            onPressed: () {
-                              // Acción cuando se presiona "Modificar"
-                              // Puedes agregar tu lógica aquí
-                            },
-                          ),
-                        ],
                       ),
                       // Espacio entre los botones
                       Column(
@@ -230,9 +216,43 @@ class _MyHistoryPageState extends State<MyHistoryPage> {
                             ),
                             iconSize: 16,
                             onPressed: () {
-                              // Acción cuando se presiona "Eliminar"
-                              // Puedes agregar tu lógica aquí
-                            },
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: const Text('Eliminar Reservación'),
+        content: const Text('¿Estás seguro de que quieres cancelar esta reservación?'),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false), // No eliminar, cerrar diálogo
+            child: const Text('No', style: TextStyle(color: Colors.black),),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop(true); // Eliminar, cerrar diálogo
+            },
+            child: const Text('Sí', style: TextStyle(color: Colors.black),),
+          ),
+        ],
+      );
+    },
+  ).then((value) {
+    if (value == true) { 
+      
+      setState(() {
+        
+      });
+
+  
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Reservación eliminada con éxito'),
+        ),
+      );
+    }
+  });
+},
+
                           ),
                         ],
                       ),

@@ -268,6 +268,7 @@ class _AltaRestState extends State<AltaRest> {
         ),
         centerTitle: true,
         backgroundColor: Colors.black,
+        iconTheme: IconThemeData(color: Colors.white),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -278,83 +279,138 @@ class _AltaRestState extends State<AltaRest> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
                 TextFormField(
-                    controller: _nombreController,
-                    decoration: const InputDecoration(
-                        labelText: 'Nombre del Restaurante'),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Por favor ingrese el nombre del restaurante';
-                      }
-                      return null;
-                    }),
+  controller: _nombreController,
+  decoration: InputDecoration(
+    labelText: 'Nombre del Restaurante',
+    labelStyle: TextStyle(color: Colors.black), // Etiqueta negra
+    enabledBorder: OutlineInputBorder(
+      borderSide: BorderSide(color: Colors.black, width: 2.0), // Borde negro de 2px
+      borderRadius: BorderRadius.zero, // Sin redondeles
+    ),
+    focusedBorder: OutlineInputBorder(
+      borderSide: BorderSide(color: Colors.black, width: 2.0), // Borde negro de 2px
+      borderRadius: BorderRadius.zero, // Sin redondeles
+    ),
+  ),
+  style: TextStyle(color: Colors.black), // Texto negro
+  validator: (value) {
+    if (value == null || value.isEmpty) {
+      return 'Por favor ingrese el nombre del restaurante';
+    }
+    return null;
+  },
+),
+
                 const SizedBox(height: 10.0),
                 TextFormField(
-                  controller: _descripcionController,
-                  decoration: const InputDecoration(
-                      labelText: 'Descripción del Restaurante'),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Por favor ingrese la descripción del restaurante';
-                    }
-                    return null;
-                  },
-                ),
+  controller: _descripcionController,
+  decoration: InputDecoration(
+    labelText: 'Descripción del Restaurante',
+    labelStyle: TextStyle(color: Colors.black), // Etiqueta negra
+    enabledBorder: OutlineInputBorder(
+      borderSide: BorderSide(color: Colors.black, width: 2.0), // Borde negro de 2px
+      borderRadius: BorderRadius.zero, // Sin redondeles
+    ),
+    focusedBorder: OutlineInputBorder(
+      borderSide: BorderSide(color: Colors.black, width: 2.0), // Borde negro de 2px
+      borderRadius: BorderRadius.zero, // Sin redondeles
+    ),
+  ),
+  style: TextStyle(color: Colors.black), // Texto negro
+  validator: (value) {
+    if (value == null || value.isEmpty) {
+      return 'Por favor ingrese la descripción del restaurante';
+    }
+    return null;
+  },
+),
                 const SizedBox(height: 10.0),
                 Padding(
                   padding:
-                      const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-                  child: DropdownButton<Categoria>(
-                    value: _selectedTipoRest,
-                    icon: const Icon(Icons.arrow_downward),
-                    elevation: 16,
-                    style: const TextStyle(color: Colors.deepPurple),
-                    underline: Container(
-                      height: 2,
-                      color: Colors.deepPurpleAccent,
-                    ),
-                    onChanged: (Categoria? value) {
-                      // This is called when the user selects an item.
-                      setState(() {
-                        _selectedTipoRest = value!;
-                        _finalCategories.add(value.id.toString());
-                      });
-                    },
-                    items: _tiposRest
-                        .map<DropdownMenuItem<Categoria>>((Categoria value) {
-                      return DropdownMenuItem<Categoria>(
-                        value: value,
-                        child: Text(value.name),
-                      );
-                    }).toList(),
-                  ),
+                      const EdgeInsets.symmetric(vertical: 5, horizontal:1),
+                  child: DropdownButtonFormField<Categoria>(  // Cambiado a DropdownButtonFormField
+  value: _selectedTipoRest,
+  icon: const Icon(Icons.arrow_downward, color: Colors.black),  // Icono negro
+  elevation: 0,                                                // Sin elevación (sombra)
+  style: const TextStyle(color: Colors.black),                 // Texto negro
+  decoration: InputDecoration(                                 // Decoración personalizada
+    labelText: 'Selecciona una categoría',                    // Etiqueta (opcional)
+    labelStyle: TextStyle(color: Colors.black),
+    enabledBorder: OutlineInputBorder(
+      borderSide: BorderSide(color: Colors.black, width: 2.0), // Borde negro 2px
+    ),
+    focusedBorder: OutlineInputBorder(
+      borderSide: BorderSide(color: Colors.black, width: 2.0), // Borde negro 2px
+    ),
+    border: OutlineInputBorder(                                // Borde cuando está abierto
+      borderSide: BorderSide(color: Colors.black, width: 2.0), // Borde negro 2px
+    ),
+  ),
+  onChanged: (Categoria? value) {
+    setState(() {
+      _selectedTipoRest = value!;
+      _finalCategories.add(value.id.toString());
+    });
+  },
+  items: _tiposRest
+      .map<DropdownMenuItem<Categoria>>((Categoria value) {
+    return DropdownMenuItem<Categoria>(
+      value: value,
+      child: Text(value.name, style: TextStyle(color: Colors.black)), // Texto negro
+    );
+  }).toList(),
+),
+
                 ),
-                const SizedBox(height: 20.0),
+                const SizedBox(height: 10.0),
                 MultiSelectBottomSheetField(
-                  initialChildSize: 0.4,
-                  listType: MultiSelectListType.CHIP,
-                  searchable: true,
-                  buttonText: const Text("Tipo de Comida"),
-                  title: const Text("Categorias"),
-                  items: _categoria
-                      .map((cat) => MultiSelectItem<Categoria>(cat, cat.name))
-                      .toList(),
-                  onConfirm: (values) {
-                    //_selectedCategorias = values!;
-                    //print('onConfirm');
-                    //print(values);
-                    _finalCategories = [];
-                    for (dynamic element in values) {
-                      //print(element.id);
-                      _finalCategories.add(element.id.toString());
-                    }
-                  },
-                  chipDisplay: MultiSelectChipDisplay(
-                    onTap: (value) {
-                      //print('onTap');
-                      //print(value);
-                    },
-                  ),
-                ),
+  initialChildSize: 0.4,
+  listType: MultiSelectListType.CHIP,
+  searchable: true,
+  buttonText: Text(
+    "Tipo de Comida",
+    style: TextStyle(color: Colors.black),
+  ),
+  buttonIcon: Icon(Icons.arrow_drop_down, color: Colors.black), // Ícono opcional
+  decoration: BoxDecoration(
+    border: Border.all(color: Colors.black, width: 2.0),
+    borderRadius: BorderRadius.zero, // Opcional
+  ),
+  title: Text(
+    "Categorias",
+    style: TextStyle(color: Colors.black),
+  ),
+  items: _categoria
+      .map((cat) => MultiSelectItem<Categoria>(cat, cat.name))
+      .toList(),
+  onConfirm: (values) {
+    _finalCategories = [];
+    for (dynamic element in values) {
+      _finalCategories.add(element.id.toString());
+      
+      // Crea tus propios chips personalizados
+      Chip(
+        label: Text(element.name, style: TextStyle(color: Colors.white)), // Texto blanco
+        backgroundColor: Colors.black,   // Fondo negro
+        deleteIconColor: Colors.white, // Color del icono de eliminar (opcional)
+      );
+
+    }
+  },
+  chipDisplay: MultiSelectChipDisplay.none(),
+  selectedItemsTextStyle: TextStyle(color: Colors.black),
+  itemsTextStyle: TextStyle(color: Colors.black),
+),
+_selectedCategorias.isEmpty
+      ? Container(
+          padding: const EdgeInsets.all(10),
+          alignment: Alignment.centerLeft,
+          child: const Text(
+            "None selected",
+            style: TextStyle(color: Colors.black), // Texto negro en "None selected"
+          ),
+        )
+      : Container(), 
                 _selectedCategorias.isEmpty
                     ? Container(
                         padding: const EdgeInsets.all(10),
@@ -372,147 +428,210 @@ class _AltaRestState extends State<AltaRest> {
                   style: TextStyle(fontSize: 25),
                 ),
                 const SizedBox(height: 10.0),
-                TextFormField(
-                    controller: _numberPhone,
-                    keyboardType: TextInputType.number,
-                    decoration: const InputDecoration(labelText: 'Telefono'),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Por favor ingrese el Telefono de contacto';
-                      }
-                      return null;
-                    }),
+                
+TextFormField(
+  controller: _numberPhone,
+  keyboardType: TextInputType.number,
+  decoration: InputDecoration(
+    labelText: 'Teléfono',
+    labelStyle: TextStyle(color: Colors.black), // Etiqueta negra (opcional)
+    enabledBorder: OutlineInputBorder(
+      borderSide: BorderSide(color: Colors.black, width: 2.0), // Borde negro de 2px
+      borderRadius: BorderRadius.zero,                        // Sin redondeles
+    ),
+    focusedBorder: OutlineInputBorder(
+      borderSide: BorderSide(color: Colors.black, width: 2.0), // Borde negro de 2px
+      borderRadius: BorderRadius.zero,                        // Sin redondeles
+    ),
+  ),
+  validator: (value) {
+    if (value == null || value.isEmpty) {
+      return 'Por favor ingrese el Teléfono de contacto';
+    }
+    return null;
+  },
+),
                 const SizedBox(height: 10.0),
                 Padding(
                   padding:
-                      const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-                  child: FutureBuilder<List<Pais>>(
-                    future: futurePais,
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        //return Text('aa');
-                        return DropdownButton(
-                          value: _selectedPais,
-                          icon: const Icon(Icons.arrow_drop_down),
-                          iconSize: 30,
-                          elevation: 16,
-                          style: const TextStyle(color: Colors.black),
-                          onChanged: (Pais? newValue) {
-                            //print(newValue);
-                            setState(() {
-                              _selectedPais = newValue as Pais;
-                              futureEstado = fetchEstados();
-                            });
-                          },
-                          items: snapshot.data
-                              ?.map<DropdownMenuItem<Pais>>((Pais value) {
-                            return DropdownMenuItem<Pais>(
-                              value: value,
-                              child: Text(value.name),
-                            );
-                          }).toList(),
-                        );
-                      } else if (snapshot.hasError) {
-                        return Text("${snapshot.error}");
-                      }
-                      return const CircularProgressIndicator();
-                    },
-                  ),
+                      const EdgeInsets.symmetric(vertical: 5, horizontal: 1),
+                 child: FutureBuilder<List<Pais>>(
+  future: futurePais,
+  builder: (context, snapshot) {
+    if (snapshot.hasData) {
+      return DropdownButtonFormField<Pais>(
+        value: _selectedPais,
+        icon: const Icon(Icons.arrow_drop_down, color: Colors.black),
+        iconSize: 30,
+        elevation: 0,
+        style: const TextStyle(color: Colors.black),
+        decoration: InputDecoration(
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.black, width: 2.0),
+            borderRadius: BorderRadius.zero, // Sin redondeles
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.black, width: 2.0),
+            borderRadius: BorderRadius.zero, // Sin redondeles
+          ),
+          border: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.black, width: 2.0),
+            borderRadius: BorderRadius.zero, // Sin redondeles
+          ),
+        ),
+        onChanged: (Pais? newValue) {
+          setState(() {
+            _selectedPais = newValue as Pais;
+            futureEstado = fetchEstados();
+          });
+        },
+        items: snapshot.data?.map<DropdownMenuItem<Pais>>((Pais value) {
+          return DropdownMenuItem<Pais>(
+            value: value,
+            child: Text(value.name, style: TextStyle(color: Colors.black)),
+          );
+        }).toList(),
+      );
+    } else if (snapshot.hasError) {
+      return Text("${snapshot.error}");
+    }
+    return const CircularProgressIndicator();
+  },
+),
+
+
                 ),
                 const SizedBox(height: 10.0),
                 Padding(
                   padding:
-                      const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                      const EdgeInsets.symmetric(vertical: 5, horizontal: 1),
                   child: FutureBuilder<List<Estado>>(
-                    future: futureEstado,
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        return DropdownButton(
-                          value: _selectedEstado,
-                          icon: const Icon(Icons.arrow_drop_down),
-                          iconSize: 30,
-                          elevation: 16,
-                          style: const TextStyle(color: Colors.black),
-                          onChanged: (Estado? newValue) {
-                            //print(newValue);
-                            setState(() {
-                              _selectedEstado = newValue as Estado;
-                              futureCiudad = fetchCiudades();
-                            });
-                          },
-                          items: snapshot.data
-                              ?.map<DropdownMenuItem<Estado>>((Estado value) {
-                            return DropdownMenuItem<Estado>(
-                              value: value,
-                              child: Text(value.label),
-                            );
-                          }).toList(),
-                        );
-                      } else if (snapshot.hasError) {
-                        return Text("${snapshot.error}");
-                      }
-                      return const Text('Seleccione Pais');
-                    },
-                  ),
+  future: futureEstado,
+  builder: (context, snapshot) {
+    if (snapshot.hasData) {
+      return DropdownButtonFormField<Estado>( // Cambiado a DropdownButtonFormField
+        value: _selectedEstado,
+        icon: const Icon(Icons.arrow_drop_down, color: Colors.black), 
+        iconSize: 30,
+        elevation: 0, // Eliminar elevación (sombra)
+        style: const TextStyle(color: Colors.black),
+        decoration: InputDecoration(
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.black, width: 2.0),
+            borderRadius: BorderRadius.zero, // Redondeles en 0
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.black, width: 2.0),
+            borderRadius: BorderRadius.zero, // Redondeles en 0
+          ),
+          border: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.black, width: 2.0),
+            borderRadius: BorderRadius.zero, // Redondeles en 0
+          ),
+        ),
+        onChanged: (Estado? newValue) {
+          setState(() {
+            _selectedEstado = newValue as Estado;
+            futureCiudad = fetchCiudades();
+          });
+        },
+        items: snapshot.data
+            ?.map<DropdownMenuItem<Estado>>((Estado value) {
+          return DropdownMenuItem<Estado>(
+            value: value,
+            child: Text(value.label, style: TextStyle(color: Colors.black)),
+          );
+        }).toList(),
+      );
+    } else if (snapshot.hasError) {
+      return Text("${snapshot.error}");
+    }
+    return const Text('Seleccione Pais', style: TextStyle(color: Colors.black)); // Texto negro
+  },
+),
+
                 ),
                 const SizedBox(height: 10.0),
                 Padding(
                   padding:
-                      const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                      const EdgeInsets.symmetric(vertical: 10, horizontal: 1),
                   child: FutureBuilder<List<Ciudad>>(
-                    future: futureCiudad,
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        return DropdownButton(
-                          value: _selectedCiudad,
-                          icon: const Icon(Icons.arrow_drop_down),
-                          iconSize: 30,
-                          elevation: 16,
-                          style: const TextStyle(color: Colors.black),
-                          onChanged: (Ciudad? newValue) {
-                            //print(newValue);
-                            setState(() {
-                              _selectedCiudad = newValue as Ciudad;
-                            });
-                          },
-                          items: snapshot.data
-                              ?.map<DropdownMenuItem<Ciudad>>((Ciudad value) {
-                            return DropdownMenuItem<Ciudad>(
-                              value: value,
-                              child: Text(value.statecity),
-                            );
-                          }).toList(),
-                        );
-                      } else if (snapshot.hasError) {
-                        return Text("${snapshot.error}");
-                      }
-                      return const Text('Seleccion Estado');
-                    },
-                  ),
+  future: futureCiudad,
+  builder: (context, snapshot) {
+    if (snapshot.hasData) {
+      return DropdownButtonFormField<Ciudad>(
+  value: _selectedCiudad,
+   icon: Padding(
+    padding: const EdgeInsets.only(left: -0.0), // Mueve el icono 10px a la izquierda
+    child: const Icon(Icons.arrow_drop_down, color: Colors.black),
+  ),
+  iconSize: 30,
+  elevation: 0,
+  style: const TextStyle(color: Colors.black),
+  decoration: InputDecoration(
+    enabledBorder: OutlineInputBorder(
+      borderSide: BorderSide(color: Colors.black, width: 2.0),
+      borderRadius: BorderRadius.zero,
+    ),
+    focusedBorder: OutlineInputBorder(
+      borderSide: BorderSide(color: Colors.black, width: 2.0),
+      borderRadius: BorderRadius.zero,
+    ),
+    border: OutlineInputBorder(
+      borderSide: BorderSide(color: Colors.black, width: 2.0),
+      borderRadius: BorderRadius.zero,
+    ),
+    contentPadding: EdgeInsets.symmetric(vertical: 12, horizontal: 16), // Ajusta estos valores
+  ),
+        onChanged: (Ciudad? newValue) {
+          setState(() {
+            _selectedCiudad = newValue as Ciudad;
+          });
+        },
+        items: snapshot.data?.map<DropdownMenuItem<Ciudad>>((Ciudad value) {
+          return DropdownMenuItem<Ciudad>(
+            value: value,
+            child: Text(value.statecity, style: TextStyle(color: Colors.black)), // Texto negro
+          );
+        }).toList(),
+      );
+    } else if (snapshot.hasError) {
+      return Text("${snapshot.error}");
+    }
+    return const Text('Seleccione Estado', style: TextStyle(color: Colors.black)); // Texto negro
+  },
+),
+
                 ),
                 const SizedBox(height: 10.0),
                 TextFormField(
-                  controller: _direccionController,
-                  decoration: const InputDecoration(
-                      labelText: 'Dirección del Restaurante'),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Por favor ingrese la dirección del restaurante';
-                    }
-                    return null;
-                  },
-                  onChanged: (value) async {
-                    //print('este valor ira al api de mapas: $value');
-                    if (value.length > 4) {
-                      //print('ir geo');
-                      final data = await getDirByGeocoding(value);
-                      //print(data);
-                      //GeocodingResponse response =
-                      //    await geocoding.searchByAddress(value);
-                      //print(response);
-                    }
-                  },
-                ),
+  controller: _direccionController,
+  decoration: InputDecoration(
+    labelText: 'Dirección del Restaurante',
+    labelStyle: TextStyle(color: Colors.black), // Etiqueta negra (opcional)
+    enabledBorder: OutlineInputBorder(        
+      borderSide: BorderSide(color: Colors.black, width: 2.0), // Borde negro de 2px
+      borderRadius: BorderRadius.zero,                        // Sin redondeles
+    ),
+    focusedBorder: OutlineInputBorder(       
+      borderSide: BorderSide(color: Colors.black, width: 2.0), // Borde negro de 2px
+      borderRadius: BorderRadius.zero,                        // Sin redondeles
+    ),
+  ),
+  style: TextStyle(color: Colors.black), // Texto negro (opcional)
+  validator: (value) {
+    if (value == null || value.isEmpty) {
+      return 'Por favor ingrese la dirección del restaurante';
+    }
+    return null;
+  },
+  onChanged: (value) async {
+    if (value.length > 4) {
+      final data = await getDirByGeocoding(value);
+    }
+  },
+),
+SizedBox(height: 30,),
                 SizedBox(
                   height: 300,
                   child: GoogleMap(
@@ -537,8 +656,8 @@ class _AltaRestState extends State<AltaRest> {
                         keyboardType: TextInputType.number,
                         decoration: const InputDecoration(
                             border: OutlineInputBorder(),
-                            labelText: 'Capacidad Maxima',
-                            hintText: 'Capacidad Maxima'),
+                            labelText: 'Aforo Maximo',
+                            hintText: 'Aforo Maximo'),
                         validator: (String? value) {
                           if (value == null || value.isEmpty) {
                             return 'Ingrese Capacidad Maxima';
@@ -555,7 +674,7 @@ class _AltaRestState extends State<AltaRest> {
                         keyboardType: TextInputType.number,
                         decoration: const InputDecoration(
                             border: OutlineInputBorder(),
-                            labelText: 'Duracion',
+                            labelText: 'Duracion por reserva',
                             hintText: 'Ingrese Tiempo'),
                         validator: (String? value) {
                           if (value == null || value.isEmpty) {
@@ -566,7 +685,7 @@ class _AltaRestState extends State<AltaRest> {
                   )),
                 ]),
                 Row(children: <Widget>[
-                  Flexible(
+                  /*Flexible(
                       child: Padding(
                     padding:
                         const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
@@ -583,7 +702,7 @@ class _AltaRestState extends State<AltaRest> {
                           }
                           return null;
                         }),
-                  )),
+                  )),*/
                   Flexible(
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
@@ -593,8 +712,8 @@ class _AltaRestState extends State<AltaRest> {
                         keyboardType: TextInputType.number,
                         decoration: const InputDecoration(
                             border: OutlineInputBorder(),
-                            labelText: 'Prgramacion',
-                            hintText: 'Evitar Prgramacion'),
+                            labelText: 'Reservar antes de...',
+                            hintText: 'Min'),
                         validator: (String? value) {
                           if (value == null || value.isEmpty) {
                             return 'Ingrese Tiempo';
@@ -607,21 +726,21 @@ class _AltaRestState extends State<AltaRest> {
                 ]),
                 const SizedBox(height: 10.0),
                 const Text(
-                  'Informacion de Mesas',
+                  'Informacion de Zona',
                   style: TextStyle(fontSize: 25),
                 ),
                 const SizedBox(height: 10.0),
                 TextFormField(
                     controller: _nombreMesa,
                     decoration:
-                        const InputDecoration(labelText: 'Nombre de la mesa')),
+                        const InputDecoration(labelText: 'Nombre de la zona')),
                 const SizedBox(height: 10.0),
                 ElevatedButton(
                     onPressed: () {
                       agregarMesa();
                     },
                     child: Text(
-                      'Agregar Mesa',
+                      'Agregar Zona',
                       style: TextStyle(color: Colors.white),
                     ),
                     style: ElevatedButton.styleFrom(
@@ -630,7 +749,7 @@ class _AltaRestState extends State<AltaRest> {
                             borderRadius: BorderRadius.circular(2)))),
                 const SizedBox(height: 10.0),
                 mesas.length == 1
-                    ? const Center(child: Text('Sin mesas registradas'))
+                    ? const Center(child: Text('Sin zonas registradas'))
                     : _table(),
                 const SizedBox(height: 20.0),
                 const Text(
@@ -672,53 +791,88 @@ class _AltaRestState extends State<AltaRest> {
                                   children: [
                                     Flexible(
                                       child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 2, horizontal: 2),
-                                        child: DropdownButtonFormField<String>(
-                                          //value: _daysOfWeek[index]['hora'][0]['from'],
-                                          items:
-                                              _timeOptions.map((String time) {
-                                            return DropdownMenuItem<String>(
-                                              value: time,
-                                              child: Text(time),
-                                            );
-                                          }).toList(),
-                                          decoration: const InputDecoration(
-                                              labelText: 'Inicio'),
-                                          onChanged: (String? newValue) {
-                                            setState(() {
-                                              // _restaurant.horaFin = newValue!;
-                                              _daysOfWeek[index]['hora'][0]
-                                                  ['from'] = newValue!;
-                                            });
-                                          },
-                                        ),
-                                      ),
+  padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 2),
+  child: SizedBox(
+    width: 150, // Ajusta el ancho deseado
+    child: DropdownButtonFormField<String>(
+      //value: _daysOfWeek[index]['hora'][0]['from'], 
+      items: _timeOptions.map((String time) {
+        return DropdownMenuItem<String>(
+          value: time,
+          child: Text(time),
+        );
+      }).toList(),
+      decoration: const InputDecoration(
+        labelText: 'Inicio',
+        labelStyle: TextStyle(color: Colors.black), // Etiqueta negra
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.black, width: 2.0), // Borde negro
+          borderRadius: BorderRadius.zero,                        // Sin redondeles
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.black, width: 2.0), // Borde negro
+          borderRadius: BorderRadius.zero,                        // Sin redondeles
+        ),
+        border: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.black, width: 2.0), // Borde negro
+          borderRadius: BorderRadius.zero,                        // Sin redondeles
+        ),
+      ),
+      onChanged: (String? newValue) {
+        setState(() {
+          // _restaurant.horaFin = newValue!;
+          _daysOfWeek[index]['hora'][0]['from'] = newValue!;
+        });
+      },
+      style: const TextStyle(color: Colors.black),
+    ),
+  ),
+),
+
                                     ),
-                                    Flexible(
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 2, horizontal: 2),
-                                        child: DropdownButtonFormField<String>(
-                                          //value: _restaurant.horaInicio,
-                                          items:
-                                              _timeOptions.map((String time) {
-                                            return DropdownMenuItem<String>(
-                                              value: time,
-                                              child: Text(time),
-                                            );
-                                          }).toList(),
-                                          decoration: const InputDecoration(
-                                              labelText: 'Final'),
-                                          onChanged: (String? newValue) {
-                                            setState(() {
-                                              _daysOfWeek[index]['hora'][0]
-                                                  ['to'] = newValue!;
-                                            });
-                                          },
-                                        ),
-                                      ),
-                                    ),
+                                   Flexible(
+  child: Padding(
+    padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 2),
+    child: SizedBox( // Limitamos el ancho del DropdownButtonFormField
+      width: 150, // Ajusta este valor según tus necesidades
+      child: DropdownButtonFormField<String>(
+        //value: _restaurant.horaInicio,
+        items: _timeOptions.map((String time) {
+          return DropdownMenuItem<String>(
+            value: time,
+            child: Text(time),
+          );
+        }).toList(),
+        decoration: InputDecoration(
+          labelText: 'Final',
+          labelStyle: TextStyle(color: Colors.black), // Etiqueta negra
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.black, width: 2.0), // Borde negro
+            borderRadius: BorderRadius.zero,                        // Sin redondeles
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.black, width: 2.0), // Borde negro
+            borderRadius: BorderRadius.zero,                        // Sin redondeles
+          ),
+          border: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.black, width: 2.0), // Borde negro
+            borderRadius: BorderRadius.zero,                        // Sin redondeles
+          ),
+        ),
+        onChanged: (String? newValue) {
+          setState(() {
+            _daysOfWeek[index]['hora'][0]['to'] = newValue!;
+          });
+        },
+        style: const TextStyle(color: Colors.black),
+      ),
+    ),
+  ),
+),
+
+
+
+
                                   ],
                                 ),
                               ),
