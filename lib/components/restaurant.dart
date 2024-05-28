@@ -78,8 +78,8 @@ class _RestuarentScreenState extends State<RestuarentScreen> {
                           {},
                           '');
                       if (favorite['success']) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text('Se agrego a favoritos')));
+                        responseSuccessWarning(
+                            context, "Se agrego a favoritos");
                       }
 
                       //print(favorite);

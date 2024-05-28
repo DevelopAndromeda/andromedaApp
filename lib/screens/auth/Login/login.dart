@@ -217,7 +217,7 @@ class _MyLoginPageState extends State<MyLoginPage> {
           ),
           Container(
             width: double.infinity,
-            margin: const EdgeInsets.symmetric(horizontal: 50, vertical: 30),
+            margin: const EdgeInsets.symmetric(horizontal: 58, vertical: 30),
             child: baseButtom(
                 onPressed: _isButtonDisabled
                     ? () {}
@@ -399,7 +399,9 @@ class _MyLoginPageState extends State<MyLoginPage> {
                     child: Text(
                       'Comensal',
                       style: TextStyle(
-                          color: type == 0 ? Colors.red : Colors.black),
+                          color: type == 0
+                              ? Color.fromARGB(255, 0, 0, 0)
+                              : Color.fromARGB(78, 61, 61, 61)),
                     ),
                   ),
                 ),
@@ -434,7 +436,9 @@ class _MyLoginPageState extends State<MyLoginPage> {
                     child: Text(
                       'Restaurante',
                       style: TextStyle(
-                          color: type == 1 ? Colors.red : Colors.black),
+                          color: type == 1
+                              ? Color.fromARGB(255, 0, 0, 0)
+                              : Color.fromARGB(78, 61, 61, 61)),
                     ),
                   ),
                 ),

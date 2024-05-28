@@ -1,21 +1,28 @@
+import 'dart:io';
 import 'dart:async';
 import 'dart:convert';
+
+import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
+
+import 'package:andromeda/utilities/constanst.dart';
 
 import 'package:andromeda/models/estados.dart';
 import 'package:andromeda/models/paises.dart';
 import 'package:andromeda/models/ciudades.dart';
-import 'package:flutter/material.dart';
+import 'package:andromeda/models/categorias.dart';
 
 import 'package:andromeda/services/api.dart';
 import 'package:andromeda/services/gps.dart';
 import 'package:andromeda/services/db.dart';
 
-import 'package:andromeda/models/categorias.dart';
-import 'package:multi_select_flutter/multi_select_flutter.dart';
-
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-//import "package:google_maps_webservice/geocoding.dart";
 import 'package:andromeda/screens/andromeda-rest/menu.dart';
+
+import 'package:multi_select_flutter/multi_select_flutter.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:image_picker/image_picker.dart';
+
+//import "package:google_maps_webservice/geocoding.dart";
 
 class AltaRest extends StatefulWidget {
   const AltaRest({super.key});
@@ -135,6 +142,8 @@ class _AltaRestState extends State<AltaRest> {
   List<Categoria> _tiposRest = [];
   List<int> tiposRest = [4, 16, 42, 71, 72, 73, 75, 76, 77, 78, 79, 80];
   Categoria? _selectedTipoRest;
+  Uint8List? _image;
+  File? selectedIMage;
   final List<Map<String, dynamic>> mesas = [
     {
       'nombre': 'NOMBRE',
@@ -247,6 +256,17 @@ class _AltaRestState extends State<AltaRest> {
     _controller.complete(controller);
   }
 
+  Future _pickImageFromGallery() async {
+    final returnImage =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (returnImage == null) return;
+    setState(() {
+      selectedIMage = File(returnImage.path);
+      _image = File(returnImage.path).readAsBytesSync();
+    });
+    Navigator.of(context).pop(); //close the model sheet
+  }
+
   @override
   void initState() {
     super.initState();
@@ -260,313 +280,477 @@ class _AltaRestState extends State<AltaRest> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: NavDrawer(changeSalida: () {}),
-      appBar: AppBar(
-        title: const Text(
-          'Alta',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        drawer: NavDrawer(changeSalida: () {}),
+        appBar: AppBar(
+          title: const Text(
+            'Alta',
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          ),
+          centerTitle: true,
+          backgroundColor: Colors.black,
+          iconTheme: IconThemeData(color: Colors.white),
         ),
-        centerTitle: true,
-        backgroundColor: Colors.black,
-      ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                TextFormField(
-                    controller: _nombreController,
-                    decoration: const InputDecoration(
-                        labelText: 'Nombre del Restaurante'),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Por favor ingrese el nombre del restaurante';
-                      }
-                      return null;
-                    }),
-                const SizedBox(height: 10.0),
-                TextFormField(
-                  controller: _descripcionController,
-                  decoration: const InputDecoration(
-                      labelText: 'Descripción del Restaurante'),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Por favor ingrese la descripción del restaurante';
-                    }
-                    return null;
-                  },
+        body: _body());
+  }
+
+  SingleChildScrollView _body() {
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              TextFormField(
+                controller: _nombreController,
+                decoration: const InputDecoration(
+                  labelText: 'Nombre del Restaurante',
+                  labelStyle: TextStyle(color: Colors.black), // Etiqueta negra
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                        color: Colors.black, width: 2.0), // Borde negro de 2px
+                    borderRadius: BorderRadius.zero, // Sin redondeles
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                        color: Colors.black, width: 2.0), // Borde negro de 2px
+                    borderRadius: BorderRadius.zero, // Sin redondeles
+                  ),
                 ),
-                const SizedBox(height: 10.0),
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-                  child: DropdownButton<Categoria>(
-                    value: _selectedTipoRest,
-                    icon: const Icon(Icons.arrow_downward),
-                    elevation: 16,
-                    style: const TextStyle(color: Colors.deepPurple),
-                    underline: Container(
-                      height: 2,
-                      color: Colors.deepPurpleAccent,
+                style: const TextStyle(color: Colors.black), // Texto negro
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Por favor ingrese el nombre del restaurante';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 10.0),
+              TextFormField(
+                controller: _descripcionController,
+                decoration: const InputDecoration(
+                  labelText: 'Descripción del Restaurante',
+                  labelStyle: TextStyle(color: Colors.black), // Etiqueta negra
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                        color: Colors.black, width: 2.0), // Borde negro de 2px
+                    borderRadius: BorderRadius.zero, // Sin redondeles
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                        color: Colors.black, width: 2.0), // Borde negro de 2px
+                    borderRadius: BorderRadius.zero, // Sin redondeles
+                  ),
+                ),
+                style: const TextStyle(color: Colors.black), // Texto negro
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Por favor ingrese la descripción del restaurante';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 10.0),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 1),
+                child: DropdownButtonFormField<Categoria>(
+                  // Cambiado a DropdownButtonFormField
+                  value: _selectedTipoRest,
+                  icon: const Icon(Icons.arrow_downward,
+                      color: Colors.black), // Icono negro
+                  elevation: 0, // Sin elevación (sombra)
+                  style: const TextStyle(color: Colors.black), // Texto negro
+                  decoration: const InputDecoration(
+                    // Decoración personalizada
+                    labelText:
+                        'Selecciona una categoría', // Etiqueta (opcional)
+                    labelStyle: TextStyle(color: Colors.black),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          color: Colors.black, width: 2.0), // Borde negro 2px
                     ),
-                    onChanged: (Categoria? value) {
-                      // This is called when the user selects an item.
-                      setState(() {
-                        _selectedTipoRest = value!;
-                        _finalCategories.add(value.id.toString());
-                      });
-                    },
-                    items: _tiposRest
-                        .map<DropdownMenuItem<Categoria>>((Categoria value) {
-                      return DropdownMenuItem<Categoria>(
-                        value: value,
-                        child: Text(value.name),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          color: Colors.black, width: 2.0), // Borde negro 2px
+                    ),
+                    border: OutlineInputBorder(
+                      // Borde cuando está abierto
+                      borderSide: BorderSide(
+                          color: Colors.black, width: 2.0), // Borde negro 2px
+                    ),
+                  ),
+                  onChanged: (Categoria? value) {
+                    setState(() {
+                      _selectedTipoRest = value!;
+                      _finalCategories.add(value.id.toString());
+                    });
+                  },
+                  items: _tiposRest
+                      .map<DropdownMenuItem<Categoria>>((Categoria value) {
+                    return DropdownMenuItem<Categoria>(
+                      value: value,
+                      child: Text(value.name,
+                          style: TextStyle(color: Colors.black)), // Texto negro
+                    );
+                  }).toList(),
+                ),
+              ),
+              const SizedBox(height: 10.0),
+              MultiSelectBottomSheetField(
+                initialChildSize: 0.4,
+                listType: MultiSelectListType.CHIP,
+                searchable: true,
+                buttonText: const Text(
+                  "Tipo de Comida",
+                  style: TextStyle(color: Colors.black),
+                ),
+                buttonIcon: const Icon(Icons.arrow_drop_down,
+                    color: Colors.black), // Ícono opcional
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.black, width: 2.0),
+                  borderRadius: BorderRadius.zero, // Opcional
+                ),
+                title: const Text(
+                  "Categorias",
+                  style: TextStyle(color: Colors.black),
+                ),
+                items: _categoria
+                    .map((cat) => MultiSelectItem<Categoria>(cat, cat.name))
+                    .toList(),
+                onConfirm: (values) {
+                  _finalCategories = [];
+                  for (dynamic element in values) {
+                    _finalCategories.add(element.id.toString());
+
+                    // Crea tus propios chips personalizados
+                    Chip(
+                      label: Text(element.name,
+                          style: const TextStyle(
+                              color: Colors.white)), // Texto blanco
+                      backgroundColor: Colors.black, // Fondo negro
+                      deleteIconColor: Colors
+                          .white, // Color del icono de eliminar (opcional)
+                    );
+                  }
+                },
+                chipDisplay: MultiSelectChipDisplay.none(),
+                selectedItemsTextStyle: const TextStyle(color: Colors.black),
+                itemsTextStyle: const TextStyle(color: Colors.black),
+              ),
+              _selectedCategorias.isEmpty
+                  ? Container(
+                      padding: const EdgeInsets.all(10),
+                      alignment: Alignment.centerLeft,
+                      child: const Text(
+                        "None selected",
+                        style: TextStyle(
+                            color:
+                                Colors.black), // Texto negro en "None selected"
+                      ),
+                    )
+                  : Container(),
+              _selectedCategorias.isEmpty
+                  ? Container(
+                      padding: const EdgeInsets.all(10),
+                      alignment: Alignment.centerLeft,
+                      child: const Text(
+                        "None selected",
+                        style: TextStyle(color: Colors.black54),
+                      ))
+                  : Container(),
+              const SizedBox(
+                height: 20.0,
+              ),
+              const Text(
+                'Informacion de Contacto',
+                style: TextStyle(fontSize: 25),
+              ),
+              const SizedBox(height: 10.0),
+              TextFormField(
+                controller: _numberPhone,
+                keyboardType: TextInputType.number,
+                decoration: const InputDecoration(
+                  labelText: 'Teléfono',
+                  labelStyle: TextStyle(
+                      color: Colors.black), // Etiqueta negra (opcional)
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                        color: Colors.black, width: 2.0), // Borde negro de 2px
+                    borderRadius: BorderRadius.zero, // Sin redondeles
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                        color: Colors.black, width: 2.0), // Borde negro de 2px
+                    borderRadius: BorderRadius.zero, // Sin redondeles
+                  ),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Por favor ingrese el Teléfono de contacto';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 10.0),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 1),
+                child: FutureBuilder<List<Pais>>(
+                  future: futurePais,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return DropdownButtonFormField<Pais>(
+                        value: _selectedPais,
+                        icon: const Icon(Icons.arrow_drop_down,
+                            color: Colors.black),
+                        iconSize: 30,
+                        elevation: 0,
+                        style: const TextStyle(color: Colors.black),
+                        decoration: const InputDecoration(
+                          enabledBorder: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: Colors.black, width: 2.0),
+                            borderRadius: BorderRadius.zero, // Sin redondeles
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: Colors.black, width: 2.0),
+                            borderRadius: BorderRadius.zero, // Sin redondeles
+                          ),
+                          border: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: Colors.black, width: 2.0),
+                            borderRadius: BorderRadius.zero, // Sin redondeles
+                          ),
+                        ),
+                        onChanged: (Pais? newValue) {
+                          setState(() {
+                            _selectedPais = newValue as Pais;
+                            futureEstado = fetchEstados();
+                          });
+                        },
+                        items: snapshot.data
+                            ?.map<DropdownMenuItem<Pais>>((Pais value) {
+                          return DropdownMenuItem<Pais>(
+                            value: value,
+                            child: Text(value.name,
+                                style: const TextStyle(color: Colors.black)),
+                          );
+                        }).toList(),
                       );
-                    }).toList(),
-                  ),
-                ),
-                const SizedBox(height: 20.0),
-                MultiSelectBottomSheetField(
-                  initialChildSize: 0.4,
-                  listType: MultiSelectListType.CHIP,
-                  searchable: true,
-                  buttonText: const Text("Tipo de Comida"),
-                  title: const Text("Categorias"),
-                  items: _categoria
-                      .map((cat) => MultiSelectItem<Categoria>(cat, cat.name))
-                      .toList(),
-                  onConfirm: (values) {
-                    //_selectedCategorias = values!;
-                    //print('onConfirm');
-                    //print(values);
-                    _finalCategories = [];
-                    for (dynamic element in values) {
-                      //print(element.id);
-                      _finalCategories.add(element.id.toString());
+                    } else if (snapshot.hasError) {
+                      return Text("${snapshot.error}");
                     }
-                  },
-                  chipDisplay: MultiSelectChipDisplay(
-                    onTap: (value) {
-                      //print('onTap');
-                      //print(value);
-                    },
-                  ),
-                ),
-                _selectedCategorias.isEmpty
-                    ? Container(
-                        padding: const EdgeInsets.all(10),
-                        alignment: Alignment.centerLeft,
-                        child: const Text(
-                          "None selected",
-                          style: TextStyle(color: Colors.black54),
-                        ))
-                    : Container(),
-                const SizedBox(
-                  height: 20.0,
-                ),
-                const Text(
-                  'Informacion de Contacto',
-                  style: TextStyle(fontSize: 25),
-                ),
-                const SizedBox(height: 10.0),
-                TextFormField(
-                    controller: _numberPhone,
-                    keyboardType: TextInputType.number,
-                    decoration: const InputDecoration(labelText: 'Telefono'),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Por favor ingrese el Telefono de contacto';
-                      }
-                      return null;
-                    }),
-                const SizedBox(height: 10.0),
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-                  child: FutureBuilder<List<Pais>>(
-                    future: futurePais,
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        //return Text('aa');
-                        return DropdownButton(
-                          value: _selectedPais,
-                          icon: const Icon(Icons.arrow_drop_down),
-                          iconSize: 30,
-                          elevation: 16,
-                          style: const TextStyle(color: Colors.black),
-                          onChanged: (Pais? newValue) {
-                            //print(newValue);
-                            setState(() {
-                              _selectedPais = newValue as Pais;
-                              futureEstado = fetchEstados();
-                            });
-                          },
-                          items: snapshot.data
-                              ?.map<DropdownMenuItem<Pais>>((Pais value) {
-                            return DropdownMenuItem<Pais>(
-                              value: value,
-                              child: Text(value.name),
-                            );
-                          }).toList(),
-                        );
-                      } else if (snapshot.hasError) {
-                        return Text("${snapshot.error}");
-                      }
-                      return const CircularProgressIndicator();
-                    },
-                  ),
-                ),
-                const SizedBox(height: 10.0),
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-                  child: FutureBuilder<List<Estado>>(
-                    future: futureEstado,
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        return DropdownButton(
-                          value: _selectedEstado,
-                          icon: const Icon(Icons.arrow_drop_down),
-                          iconSize: 30,
-                          elevation: 16,
-                          style: const TextStyle(color: Colors.black),
-                          onChanged: (Estado? newValue) {
-                            //print(newValue);
-                            setState(() {
-                              _selectedEstado = newValue as Estado;
-                              futureCiudad = fetchCiudades();
-                            });
-                          },
-                          items: snapshot.data
-                              ?.map<DropdownMenuItem<Estado>>((Estado value) {
-                            return DropdownMenuItem<Estado>(
-                              value: value,
-                              child: Text(value.label),
-                            );
-                          }).toList(),
-                        );
-                      } else if (snapshot.hasError) {
-                        return Text("${snapshot.error}");
-                      }
-                      return const Text('Seleccione Pais');
-                    },
-                  ),
-                ),
-                const SizedBox(height: 10.0),
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-                  child: FutureBuilder<List<Ciudad>>(
-                    future: futureCiudad,
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        return DropdownButton(
-                          value: _selectedCiudad,
-                          icon: const Icon(Icons.arrow_drop_down),
-                          iconSize: 30,
-                          elevation: 16,
-                          style: const TextStyle(color: Colors.black),
-                          onChanged: (Ciudad? newValue) {
-                            //print(newValue);
-                            setState(() {
-                              _selectedCiudad = newValue as Ciudad;
-                            });
-                          },
-                          items: snapshot.data
-                              ?.map<DropdownMenuItem<Ciudad>>((Ciudad value) {
-                            return DropdownMenuItem<Ciudad>(
-                              value: value,
-                              child: Text(value.statecity),
-                            );
-                          }).toList(),
-                        );
-                      } else if (snapshot.hasError) {
-                        return Text("${snapshot.error}");
-                      }
-                      return const Text('Seleccion Estado');
-                    },
-                  ),
-                ),
-                const SizedBox(height: 10.0),
-                TextFormField(
-                  controller: _direccionController,
-                  decoration: const InputDecoration(
-                      labelText: 'Dirección del Restaurante'),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Por favor ingrese la dirección del restaurante';
-                    }
-                    return null;
-                  },
-                  onChanged: (value) async {
-                    //print('este valor ira al api de mapas: $value');
-                    if (value.length > 4) {
-                      //print('ir geo');
-                      final data = await getDirByGeocoding(value);
-                      //print(data);
-                      //GeocodingResponse response =
-                      //    await geocoding.searchByAddress(value);
-                      //print(response);
-                    }
+                    return const CircularProgressIndicator();
                   },
                 ),
-                SizedBox(
-                  height: 300,
-                  child: GoogleMap(
-                    myLocationEnabled: true,
-                    onMapCreated: _onMapCreated,
-                    initialCameraPosition: _initialPosition,
-                  ),
-                ),
-                const SizedBox(height: 20.0),
-                const Text(
-                  'Informacion de Reserva',
-                  style: TextStyle(fontSize: 25),
-                ),
-                const SizedBox(height: 10.0),
-                Row(children: <Widget>[
-                  Flexible(
-                      child: Padding(
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-                    child: TextFormField(
-                        controller: _max_capacity,
-                        keyboardType: TextInputType.number,
+              ),
+              const SizedBox(height: 10.0),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 1),
+                child: FutureBuilder<List<Estado>>(
+                  future: futureEstado,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return DropdownButtonFormField<Estado>(
+                        // Cambiado a DropdownButtonFormField
+                        value: _selectedEstado,
+                        icon: const Icon(Icons.arrow_drop_down,
+                            color: Colors.black),
+                        iconSize: 30,
+                        elevation: 0, // Eliminar elevación (sombra)
+                        style: const TextStyle(color: Colors.black),
                         decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: 'Capacidad Maxima',
-                            hintText: 'Capacidad Maxima'),
-                        validator: (String? value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Ingrese Capacidad Maxima';
-                          }
-                          return null;
-                        }),
-                  )),
-                  Flexible(
-                      child: Padding(
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-                    child: TextFormField(
-                        controller: _slot_duration,
-                        keyboardType: TextInputType.number,
+                          enabledBorder: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: Colors.black, width: 2.0),
+                            borderRadius: BorderRadius.zero, // Redondeles en 0
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: Colors.black, width: 2.0),
+                            borderRadius: BorderRadius.zero, // Redondeles en 0
+                          ),
+                          border: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: Colors.black, width: 2.0),
+                            borderRadius: BorderRadius.zero, // Redondeles en 0
+                          ),
+                        ),
+                        onChanged: (Estado? newValue) {
+                          setState(() {
+                            _selectedEstado = newValue as Estado;
+                            futureCiudad = fetchCiudades();
+                          });
+                        },
+                        items: snapshot.data
+                            ?.map<DropdownMenuItem<Estado>>((Estado value) {
+                          return DropdownMenuItem<Estado>(
+                            value: value,
+                            child: Text(value.label,
+                                style: const TextStyle(color: Colors.black)),
+                          );
+                        }).toList(),
+                      );
+                    } else if (snapshot.hasError) {
+                      return Text("${snapshot.error}");
+                    }
+                    return const Text('Seleccione Pais',
+                        style: TextStyle(color: Colors.black)); // Texto negro
+                  },
+                ),
+              ),
+              const SizedBox(height: 10.0),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 1),
+                child: FutureBuilder<List<Ciudad>>(
+                  future: futureCiudad,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return DropdownButtonFormField<Ciudad>(
+                        value: _selectedCiudad,
+                        icon: const Padding(
+                          padding: EdgeInsets.only(
+                              left: -0.0), // Mueve el icono 10px a la izquierda
+                          child:
+                              Icon(Icons.arrow_drop_down, color: Colors.black),
+                        ),
+                        iconSize: 30,
+                        elevation: 0,
+                        style: const TextStyle(color: Colors.black),
                         decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: 'Duracion',
-                            hintText: 'Ingrese Tiempo'),
-                        validator: (String? value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Ingrese Tiempo';
-                          }
-                          return null;
-                        }),
-                  )),
-                ]),
-                Row(children: <Widget>[
-                  Flexible(
+                          enabledBorder: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: Colors.black, width: 2.0),
+                            borderRadius: BorderRadius.zero,
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: Colors.black, width: 2.0),
+                            borderRadius: BorderRadius.zero,
+                          ),
+                          border: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: Colors.black, width: 2.0),
+                            borderRadius: BorderRadius.zero,
+                          ),
+                          contentPadding: EdgeInsets.symmetric(
+                              vertical: 12,
+                              horizontal: 16), // Ajusta estos valores
+                        ),
+                        onChanged: (Ciudad? newValue) {
+                          setState(() {
+                            _selectedCiudad = newValue as Ciudad;
+                          });
+                        },
+                        items: snapshot.data
+                            ?.map<DropdownMenuItem<Ciudad>>((Ciudad value) {
+                          return DropdownMenuItem<Ciudad>(
+                            value: value,
+                            child: Text(value.statecity,
+                                style: const TextStyle(
+                                    color: Colors.black)), // Texto negro
+                          );
+                        }).toList(),
+                      );
+                    } else if (snapshot.hasError) {
+                      return Text("${snapshot.error}");
+                    }
+                    return const Text('Seleccione Estado',
+                        style: TextStyle(color: Colors.black)); // Texto negro
+                  },
+                ),
+              ),
+              const SizedBox(height: 10.0),
+              TextFormField(
+                controller: _direccionController,
+                decoration: const InputDecoration(
+                  labelText: 'Dirección del Restaurante',
+                  labelStyle: TextStyle(
+                      color: Colors.black), // Etiqueta negra (opcional)
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                        color: Colors.black, width: 2.0), // Borde negro de 2px
+                    borderRadius: BorderRadius.zero, // Sin redondeles
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                        color: Colors.black, width: 2.0), // Borde negro de 2px
+                    borderRadius: BorderRadius.zero, // Sin redondeles
+                  ),
+                ),
+                style: const TextStyle(
+                    color: Colors.black), // Texto negro (opcional)
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Por favor ingrese la dirección del restaurante';
+                  }
+                  return null;
+                },
+                onChanged: (value) async {
+                  if (value.length > 4) {
+                    final data = await getDirByGeocoding(value);
+                  }
+                },
+              ),
+              const SizedBox(
+                height: 30,
+              ),
+              SizedBox(
+                height: 300,
+                child: GoogleMap(
+                  myLocationEnabled: true,
+                  onMapCreated: _onMapCreated,
+                  initialCameraPosition: _initialPosition,
+                ),
+              ),
+              const SizedBox(height: 20.0),
+              const Text(
+                'Informacion de Reserva',
+                style: TextStyle(fontSize: 25),
+              ),
+              const SizedBox(height: 10.0),
+              Row(children: <Widget>[
+                Flexible(
+                    child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                  child: TextFormField(
+                      controller: _max_capacity,
+                      keyboardType: TextInputType.number,
+                      decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'Aforo Maximo',
+                          hintText: 'Aforo Maximo'),
+                      validator: (String? value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Ingrese Capacidad Maxima';
+                        }
+                        return null;
+                      }),
+                )),
+                Flexible(
+                    child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                  child: TextFormField(
+                      controller: _slot_duration,
+                      keyboardType: TextInputType.number,
+                      decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'Duracion por reserva',
+                          hintText: 'Ingrese Tiempo'),
+                      validator: (String? value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Ingrese Tiempo';
+                        }
+                        return null;
+                      }),
+                )),
+              ]),
+              Row(children: <Widget>[
+                /*Flexible(
                       child: Padding(
                     padding:
                         const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
@@ -583,97 +767,99 @@ class _AltaRestState extends State<AltaRest> {
                           }
                           return null;
                         }),
-                  )),
-                  Flexible(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 5, horizontal: 5),
-                      child: TextFormField(
-                        controller: _break_time_bw_slot,
-                        keyboardType: TextInputType.number,
-                        decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: 'Prgramacion',
-                            hintText: 'Evitar Prgramacion'),
-                        validator: (String? value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Ingrese Tiempo';
-                          }
-                          return null;
-                        },
-                      ),
+                  )),*/
+                Flexible(
+                  child: Padding(
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                    child: TextFormField(
+                      controller: _break_time_bw_slot,
+                      keyboardType: TextInputType.number,
+                      decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'Reservar antes de...',
+                          hintText: 'Min'),
+                      validator: (String? value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Ingrese Tiempo';
+                        }
+                        return null;
+                      },
                     ),
                   ),
-                ]),
-                const SizedBox(height: 10.0),
-                const Text(
-                  'Informacion de Mesas',
-                  style: TextStyle(fontSize: 25),
                 ),
-                const SizedBox(height: 10.0),
-                TextFormField(
-                    controller: _nombreMesa,
-                    decoration:
-                        const InputDecoration(labelText: 'Nombre de la mesa')),
-                const SizedBox(height: 10.0),
-                ElevatedButton(
-                    onPressed: () {
-                      agregarMesa();
-                    },
-                    child: Text(
-                      'Agregar Mesa',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.black,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(2)))),
-                const SizedBox(height: 10.0),
-                mesas.length == 1
-                    ? const Center(child: Text('Sin mesas registradas'))
-                    : _table(),
-                const SizedBox(height: 20.0),
-                const Text(
-                  'Informacion de Servicio',
-                  style: TextStyle(fontSize: 25),
-                ),
-                SingleChildScrollView(
-                  child: SizedBox(
-                    height: 380,
-                    width: double.infinity,
-                    child: ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: _daysOfWeek.length,
-                        itemBuilder: (context, index) {
-                          //var data = _daysOfWeek.toList();
-                          //print(data[index]);
-                          //print(index);
-                          //print(_daysOfWeek[index]['name']);
-                          return Column(
-                            children: [
-                              SizedBox(
-                                //color: Colors.blue,
-                                child: Row(children: [
-                                  Checkbox(
-                                    value: _daysOfWeek[index]['checked'],
-                                    onChanged: (bool? value) {
-                                      //print(value);
-                                      setState(() {
-                                        _daysOfWeek[index]['checked'] = value;
-                                      });
-                                    },
-                                  ),
-                                  Text(_daysOfWeek[index]['name']),
-                                ]),
-                              ),
-                              SizedBox(
-                                //color: Colors.red,
-                                child: Row(
-                                  children: [
-                                    Flexible(
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 2, horizontal: 2),
+              ]),
+              const SizedBox(height: 10.0),
+              const Text(
+                'Informacion de Zona',
+                style: TextStyle(fontSize: 25),
+              ),
+              const SizedBox(height: 10.0),
+              TextFormField(
+                  controller: _nombreMesa,
+                  decoration:
+                      const InputDecoration(labelText: 'Nombre de la zona')),
+              const SizedBox(height: 10.0),
+              ElevatedButton(
+                  onPressed: () {
+                    agregarMesa();
+                  },
+                  child: Text(
+                    'Agregar Zona',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.black,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(2)))),
+              const SizedBox(height: 10.0),
+              mesas.length == 1
+                  ? const Center(child: Text('Sin zonas registradas'))
+                  : _table(),
+              const SizedBox(height: 20.0),
+              const Text(
+                'Informacion de Servicio',
+                style: TextStyle(fontSize: 25),
+              ),
+              SingleChildScrollView(
+                child: SizedBox(
+                  height: 380,
+                  width: double.infinity,
+                  child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: _daysOfWeek.length,
+                      itemBuilder: (context, index) {
+                        //var data = _daysOfWeek.toList();
+                        //print(data[index]);
+                        //print(index);
+                        //print(_daysOfWeek[index]['name']);
+                        return Column(
+                          children: [
+                            SizedBox(
+                              //color: Colors.blue,
+                              child: Row(children: [
+                                Checkbox(
+                                  value: _daysOfWeek[index]['checked'],
+                                  onChanged: (bool? value) {
+                                    //print(value);
+                                    setState(() {
+                                      _daysOfWeek[index]['checked'] = value;
+                                    });
+                                  },
+                                ),
+                                Text(_daysOfWeek[index]['name']),
+                              ]),
+                            ),
+                            SizedBox(
+                              //color: Colors.red,
+                              child: Row(
+                                children: [
+                                  Flexible(
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 2, horizontal: 2),
+                                      child: SizedBox(
+                                        width: 150, // Ajusta el ancho deseado
                                         child: DropdownButtonFormField<String>(
                                           //value: _daysOfWeek[index]['hora'][0]['from'],
                                           items:
@@ -684,7 +870,32 @@ class _AltaRestState extends State<AltaRest> {
                                             );
                                           }).toList(),
                                           decoration: const InputDecoration(
-                                              labelText: 'Inicio'),
+                                            labelText: 'Inicio',
+                                            labelStyle: TextStyle(
+                                                color: Colors
+                                                    .black), // Etiqueta negra
+                                            enabledBorder: OutlineInputBorder(
+                                              borderSide: BorderSide(
+                                                  color: Colors.black,
+                                                  width: 2.0), // Borde negro
+                                              borderRadius: BorderRadius
+                                                  .zero, // Sin redondeles
+                                            ),
+                                            focusedBorder: OutlineInputBorder(
+                                              borderSide: BorderSide(
+                                                  color: Colors.black,
+                                                  width: 2.0), // Borde negro
+                                              borderRadius: BorderRadius
+                                                  .zero, // Sin redondeles
+                                            ),
+                                            border: OutlineInputBorder(
+                                              borderSide: BorderSide(
+                                                  color: Colors.black,
+                                                  width: 2.0), // Borde negro
+                                              borderRadius: BorderRadius
+                                                  .zero, // Sin redondeles
+                                            ),
+                                          ),
                                           onChanged: (String? newValue) {
                                             setState(() {
                                               // _restaurant.horaFin = newValue!;
@@ -692,13 +903,20 @@ class _AltaRestState extends State<AltaRest> {
                                                   ['from'] = newValue!;
                                             });
                                           },
+                                          style: const TextStyle(
+                                              color: Colors.black),
                                         ),
                                       ),
                                     ),
-                                    Flexible(
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 2, horizontal: 2),
+                                  ),
+                                  Flexible(
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 2, horizontal: 2),
+                                      child: SizedBox(
+                                        // Limitamos el ancho del DropdownButtonFormField
+                                        width:
+                                            150, // Ajusta este valor según tus necesidades
                                         child: DropdownButtonFormField<String>(
                                           //value: _restaurant.horaInicio,
                                           items:
@@ -709,208 +927,228 @@ class _AltaRestState extends State<AltaRest> {
                                             );
                                           }).toList(),
                                           decoration: const InputDecoration(
-                                              labelText: 'Final'),
+                                            labelText: 'Final',
+                                            labelStyle: TextStyle(
+                                                color: Colors
+                                                    .black), // Etiqueta negra
+                                            enabledBorder: OutlineInputBorder(
+                                              borderSide: BorderSide(
+                                                  color: Colors.black,
+                                                  width: 2.0), // Borde negro
+                                              borderRadius: BorderRadius
+                                                  .zero, // Sin redondeles
+                                            ),
+                                            focusedBorder: OutlineInputBorder(
+                                              borderSide: BorderSide(
+                                                  color: Colors.black,
+                                                  width: 2.0), // Borde negro
+                                              borderRadius: BorderRadius
+                                                  .zero, // Sin redondeles
+                                            ),
+                                            border: OutlineInputBorder(
+                                              borderSide: BorderSide(
+                                                  color: Colors.black,
+                                                  width: 2.0), // Borde negro
+                                              borderRadius: BorderRadius
+                                                  .zero, // Sin redondeles
+                                            ),
+                                          ),
                                           onChanged: (String? newValue) {
                                             setState(() {
                                               _daysOfWeek[index]['hora'][0]
                                                   ['to'] = newValue!;
                                             });
                                           },
+                                          style: const TextStyle(
+                                              color: Colors.black),
                                         ),
                                       ),
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
-                              const SizedBox(height: 10.0),
-                            ],
-                          );
-                        }),
-                  ),
-                ),
-                const SizedBox(height: 20.0),
-                ElevatedButton(
-                  onPressed: () async {
-                    if (_formKey.currentState!.validate()) {
-                      try {
-                        final user = await serviceDB.instance
-                            .getById('users', 'id_user', 1);
-                        if (user.isEmpty) {
-                          //print('error user empty');
-                          return;
-                        }
-
-                        Map<String, dynamic> arraSlot = {};
-                        _daysOfWeek.forEach((element) {
-                          if (element['checked'] == true) {
-                            //print(element);
-                            //arraSlot[element['index'].toString()] =
-                            arraSlot[element['index'].toString()] =
-                                element['hora'];
-                          }
-                        });
-
-                        Map<String, dynamic> extensionAttributes = {
-                          'stock_item': {'qty': 99999999, 'is_in_stock': true},
-                          'slot_data': arraSlot
-                        };
-
-                        List<Map<String, dynamic>> customAttributes = [];
-                        customAttributes.addAll([
-                          {
-                            "attribute_code": "short_description",
-                            "value": _descripcionController.text
-                          },
-                          {
-                            "attribute_code": "cancellation_available",
-                            "value": "1"
-                          },
-                          {
-                            "attribute_code": "no_of_guests",
-                            "value": _no_of_guests.text
-                          },
-                          {
-                            "attribute_code": "max_capacity",
-                            "value": _max_capacity.text
-                          },
-                          {
-                            "attribute_code": "slot_duration",
-                            "value": _slot_duration.text
-                          },
-                          {
-                            "attribute_code": "prevent_scheduling_before",
-                            "value": _prevent_scheduling_before.text
-                          },
-                          {
-                            "attribute_code": "break_time_bw_slot",
-                            "value": _break_time_bw_slot.text
-                          },
-                          {"attribute_code": "show_map_loction", "value": "1"},
-                          {
-                            'attribute_code': 'hotel_address',
-                            'value': _direccionController.text
-                          },
-                          {
-                            "attribute_code": "hotel_country",
-                            "value": _selectedPais?.code
-                          },
-                          {
-                            "attribute_code": "hotel_state",
-                            "value": _selectedEstado?.label
-                          },
-                          {
-                            "attribute_code": "location",
-                            "value":
-                                "${_direccionController.text}, ${_selectedEstado?.label}., ${_selectedPais?.name}"
-                          },
-                          {
-                            "attribute_code": "city",
-                            "value": _selectedCiudad?.statecity
-                          },
-                          {
-                            "attribute_code": "category_ids",
-                            "value": _finalCategories
-                          },
-                          {
-                            "attribute_code": "description",
-                            "value": _descripcionController.text
-                          },
-                          {"attribute_code": "slot_for_all_days", "value": 0},
-                          {
-                            "attribute_code": "created_by",
-                            "value": user[0]['id']
-                          },
-                          {
-                            "attribute_code": "updated_by",
-                            "value": user[0]['id']
-                          },
-                          {
-                            "attribute_code": "product_city",
-                            "value": _selectedCiudad?.statecity
-                          },
-                          {
-                            "attribute_code": "restaurant_number",
-                            "value": _numberPhone.text
-                          },
-                        ]);
-
-                        List<Map<String, dynamic>> options = [];
-                        Map<String, dynamic> table = {
-                          "title": "mesa ${_nombreController.text}",
-                          "type": "drop_down",
-                          "sort_order": 1,
-                          "is_require": true,
-                          "product_sku": "mesa ${_nombreController.text}",
-                          "values": []
-                        };
-                        options.add(table);
-
-                        int indice = 0;
-                        for (dynamic data in mesas) {
-                          //print('data');
-                          //print(data);
-
-                          if (data['nombre'] != 'NOMBRE') {
-                            table['values'].add({
-                              "title": data['nombre'],
-                              "price": 0,
-                              "price_type": "fixed",
-                              "sku": data['nombre'],
-                              "sort_order": indice
-                            });
-                          }
-                          indice++;
-                        }
-
-                        //print(table);
-                        //print(options);
-
-                        Map<String, dynamic> producto = {
-                          'product': {
-                            'name': _nombreController.text,
-                            'attribute_set_id': 13,
-                            'sku': _nombreController.text,
-                            'price': 100,
-                            'status': 1,
-                            'visibility': 4,
-                            'type_id': 'booking',
-                            'extension_attributes': extensionAttributes,
-                            'custom_attributes': customAttributes,
-                            'options': options
-                          },
-                          'saveOptions': true
-                        };
-
-                        final restaurante = await post(
-                            '', 'integration', 'products', producto, 'v2');
-                        //print('rest --->');
-                        //print(restaurante);
-
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content:
-                                Text('Restaurante registrado correctamente'),
-                            duration: Duration(seconds: 2),
-                          ),
+                            ),
+                            const SizedBox(height: 10.0),
+                          ],
                         );
-                      } catch (e) {
-                        //print(e);
-                        ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text(e.toString())));
+                      }),
+                ),
+              ),
+              const SizedBox(height: 20.0),
+              ElevatedButton(
+                onPressed: () async {
+                  if (_formKey.currentState!.validate()) {
+                    try {
+                      final user = await serviceDB.instance
+                          .getById('users', 'id_user', 1);
+                      if (user.isEmpty) {
+                        //print('error user empty');
+                        return;
                       }
+
+                      Map<String, dynamic> arraSlot = {};
+                      _daysOfWeek.forEach((element) {
+                        if (element['checked'] == true) {
+                          //print(element);
+                          //arraSlot[element['index'].toString()] =
+                          arraSlot[element['index'].toString()] =
+                              element['hora'];
+                        }
+                      });
+
+                      Map<String, dynamic> extensionAttributes = {
+                        'stock_item': {'qty': 99999999, 'is_in_stock': true},
+                        'slot_data': arraSlot
+                      };
+
+                      List<Map<String, dynamic>> customAttributes = [];
+                      customAttributes.addAll([
+                        {
+                          "attribute_code": "short_description",
+                          "value": _descripcionController.text
+                        },
+                        {
+                          "attribute_code": "cancellation_available",
+                          "value": "1"
+                        },
+                        {
+                          "attribute_code": "no_of_guests",
+                          "value": _no_of_guests.text
+                        },
+                        {
+                          "attribute_code": "max_capacity",
+                          "value": _max_capacity.text
+                        },
+                        {
+                          "attribute_code": "slot_duration",
+                          "value": _slot_duration.text
+                        },
+                        {
+                          "attribute_code": "prevent_scheduling_before",
+                          "value": _prevent_scheduling_before.text
+                        },
+                        {
+                          "attribute_code": "break_time_bw_slot",
+                          "value": _break_time_bw_slot.text
+                        },
+                        {"attribute_code": "show_map_loction", "value": "1"},
+                        {
+                          'attribute_code': 'hotel_address',
+                          'value': _direccionController.text
+                        },
+                        {
+                          "attribute_code": "hotel_country",
+                          "value": _selectedPais?.code
+                        },
+                        {
+                          "attribute_code": "hotel_state",
+                          "value": _selectedEstado?.label
+                        },
+                        {
+                          "attribute_code": "location",
+                          "value":
+                              "${_direccionController.text}, ${_selectedEstado?.label}., ${_selectedPais?.name}"
+                        },
+                        {
+                          "attribute_code": "city",
+                          "value": _selectedCiudad?.statecity
+                        },
+                        {
+                          "attribute_code": "category_ids",
+                          "value": _finalCategories
+                        },
+                        {
+                          "attribute_code": "description",
+                          "value": _descripcionController.text
+                        },
+                        {"attribute_code": "slot_for_all_days", "value": 0},
+                        {
+                          "attribute_code": "created_by",
+                          "value": user[0]['id']
+                        },
+                        {
+                          "attribute_code": "updated_by",
+                          "value": user[0]['id']
+                        },
+                        {
+                          "attribute_code": "product_city",
+                          "value": _selectedCiudad?.statecity
+                        },
+                        {
+                          "attribute_code": "restaurant_number",
+                          "value": _numberPhone.text
+                        },
+                      ]);
+
+                      List<Map<String, dynamic>> options = [];
+                      Map<String, dynamic> table = {
+                        "title": "mesa ${_nombreController.text}",
+                        "type": "drop_down",
+                        "sort_order": 1,
+                        "is_require": true,
+                        "product_sku": "mesa ${_nombreController.text}",
+                        "values": []
+                      };
+                      options.add(table);
+
+                      int indice = 0;
+                      for (dynamic data in mesas) {
+                        //print('data');
+                        //print(data);
+
+                        if (data['nombre'] != 'NOMBRE') {
+                          table['values'].add({
+                            "title": data['nombre'],
+                            "price": 0,
+                            "price_type": "fixed",
+                            "sku": data['nombre'],
+                            "sort_order": indice
+                          });
+                        }
+                        indice++;
+                      }
+
+                      //print(table);
+                      //print(options);
+
+                      Map<String, dynamic> producto = {
+                        'product': {
+                          'name': _nombreController.text,
+                          'attribute_set_id': 13,
+                          'sku': _nombreController.text,
+                          'price': 100,
+                          'status': 0,
+                          'visibility': 4,
+                          'type_id': 'booking',
+                          'extension_attributes': extensionAttributes,
+                          'custom_attributes': customAttributes,
+                          'options': options
+                        },
+                        'saveOptions': true
+                      };
+
+                      final restaurante = await post(
+                          '', 'integration', 'products', producto, 'v2');
+                      //print('rest --->');
+                      //print(restaurante);
+                      responseSuccessWarning(
+                          context, 'Restaurante registrado correctamente');
+                    } catch (e) {
+                      responseErrorWarning(context, e.toString());
+                      //print(e);
                     }
-                  },
-                  child: Text(
-                    'Registrar Restaurante',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.black,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(2))),
-                )
-              ],
-            ),
+                  }
+                },
+                child: Text(
+                  'Registrar Restaurante',
+                  style: TextStyle(color: Colors.white),
+                ),
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.black,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(2))),
+              )
+            ],
           ),
         ),
       ),

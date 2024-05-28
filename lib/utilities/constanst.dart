@@ -5,6 +5,7 @@ import 'package:panara_dialogs/panara_dialogs.dart';
 import 'package:andromeda/utilities/strings.dart';
 
 import 'package:andromeda/services/db.dart';
+import 'package:andromeda/services/api.dart';
 
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
@@ -93,4 +94,27 @@ getCustomAttribute(data, type) {
 
 String pathMedia(String media) {
   return "${dotenv.env['PROTOCOL']}://${dotenv.env['URL']}/media/catalog/product$media";
+}
+
+dynamic deleteFavoritos(BuildContext context, id) {
+  return PanaraConfirmDialog.show(
+    context,
+    title: MyString.areYouSure,
+    message: "¿Deseas borrar de tu lista de favoritos",
+    confirmButtonText: "Si",
+    cancelButtonText: "No",
+    onTapCancel: () {
+      Navigator.pop(context);
+    },
+    onTapConfirm: () async {
+      final user = await serviceDB.instance.getById('users', 'id_user', 1);
+      if (user.isEmpty) {
+        return;
+      }
+      String token = user[0]['token'];
+      await delete(token, 'custom', 'wishlist/customer/item/$id');
+    },
+    panaraDialogType: PanaraDialogType.error,
+    barrierDismissible: false,
+  );
 }

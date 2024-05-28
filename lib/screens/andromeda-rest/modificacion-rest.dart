@@ -268,8 +268,10 @@ class _ModificacionRestaurante extends State<ModificacionRestaurante> {
     return Scaffold(
       drawer: NavDrawer(changeSalida: () {}),
       appBar: AppBar(
-        title: const Text('Modificacion'),
+        title: const Text('Modificacion', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
         backgroundColor: Colors.black,
+        centerTitle: true,
+        iconTheme: IconThemeData(color: Colors.white),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -279,71 +281,106 @@ class _ModificacionRestaurante extends State<ModificacionRestaurante> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                TextFormField(
-                    controller: _nombreController,
-                    decoration: const InputDecoration(
-                        labelText: 'Nombre del Restaurante'),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Por favor ingrese el nombre del restaurante';
-                      }
-                      return null;
-                    }),
+               TextFormField(
+  controller: _nombreController,
+  decoration: InputDecoration(
+    labelText: 'Nombre del Restaurante',
+    labelStyle: TextStyle(color: Colors.black), // Etiqueta negra
+    enabledBorder: OutlineInputBorder(
+      borderSide: BorderSide(color: Colors.black, width: 2.0), // Borde negro
+    ),
+    focusedBorder: OutlineInputBorder(
+      borderSide: BorderSide(color: Colors.black, width: 2.0), // Borde negro
+    ),
+  ),
+  style: TextStyle(color: Colors.black), // Texto negro
+  validator: (value) {
+    if (value == null || value.isEmpty) {
+      return 'Por favor ingrese el nombre del restaurante';
+    }
+    return null;
+  },
+),
                 const SizedBox(height: 10.0),
                 TextFormField(
-                  controller: _descripcionController,
-                  decoration: const InputDecoration(
-                      labelText: 'Descripción del Restaurante'),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Por favor ingrese la descripción del restaurante';
-                    }
-                    return null;
-                  },
-                ),
+  controller: _descripcionController,
+  decoration: InputDecoration(
+    labelText: 'Descripción del Restaurante',
+    labelStyle: TextStyle(color: Colors.black), // Etiqueta negra
+    enabledBorder: OutlineInputBorder(
+      borderSide: BorderSide(color: Colors.black, width: 2.0), // Borde negro
+    ),
+    focusedBorder: OutlineInputBorder(
+      borderSide: BorderSide(color: Colors.black, width: 2.0), // Borde negro
+    ),
+  ),
+  style: TextStyle(color: Colors.black), // Texto negro
+  validator: (value) {
+    if (value == null || value.isEmpty) {
+      return 'Por favor ingrese la descripción del restaurante';
+    }
+    return null;
+  },
+),
+
                 const SizedBox(height: 10.0),
                 TextFormField(
-                    controller: _tipoController,
-                    decoration:
-                        const InputDecoration(labelText: 'Tipo de Restaurante'),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Por favor ingrese el tipo de restaurante';
-                      }
-                      return null;
-                    }),
+  controller: _tipoController,
+  decoration: InputDecoration(
+    labelText: 'Tipo de Restaurante',
+    labelStyle: TextStyle(color: Colors.black), // Etiqueta negra
+    enabledBorder: OutlineInputBorder(
+      borderSide: BorderSide(color: Colors.black, width: 2.0), // Borde negro
+    ),
+    focusedBorder: OutlineInputBorder(
+      borderSide: BorderSide(color: Colors.black, width: 2.0), // Borde negro
+    ),
+  ),
+  style: TextStyle(color: Colors.black), // Texto negro
+  validator: (value) {
+    if (value == null || value.isEmpty) {
+      return 'Por favor ingrese el tipo de restaurante';
+    }
+    return null;
+  },
+),
+
                 const SizedBox(height: 20.0),
                 MultiSelectBottomSheetField(
-                  initialChildSize: 0.4,
-                  listType: MultiSelectListType.CHIP,
-                  searchable: true,
-                  buttonText: const Text("Tipo de Restaurantes"),
-                  title: const Text("Categorias"),
-                  items: _categoria
-                      .map((cat) => MultiSelectItem<Categoria>(cat, cat.name))
-                      .toList(),
-                  onConfirm: (values) {
-                    //_selectedCategorias = values!;
-                    //print('onConfirm');
-                    //print(values);
-                    for (dynamic element in values) {
-                      //print(element.id);
-                      _finalCategories.add(element.id.toString());
-                    }
-                    /*values.forEach((element) {
-                      print(element?.id);
-                    });*/
-                  },
-                  chipDisplay: MultiSelectChipDisplay(
-                    onTap: (value) {
-                      //print('onTap');
-                      //print(value);
-                      /*setState(() {
-                            _selectedCategorias.remove(value);
-                          });*/
-                    },
-                  ),
-                ),
+  initialChildSize: 0.4,
+  listType: MultiSelectListType.CHIP,
+  searchable: true,
+  buttonText: Text(
+    "Tipo de Restaurantes",
+    style: TextStyle(color: Colors.black), // Texto del botón en negro
+  ),
+  buttonIcon: Icon(Icons.arrow_drop_down, color: Colors.black), // Icono de flecha negro
+  decoration: BoxDecoration(
+    border: Border.all(color: Colors.black, width: 2.0),  // Borde negro
+    borderRadius: BorderRadius.zero,                      // Sin redondeles
+  ),
+  title: Text(
+    "Categorias",
+    style: TextStyle(color: Colors.black), // Título en negro
+  ),
+  itemsTextStyle: TextStyle(color: Colors.black),          // Texto de items en negro
+  selectedItemsTextStyle: TextStyle(color: Colors.black), // Texto seleccionado en negro
+  items: _categoria
+      .map((cat) => MultiSelectItem<Categoria>(cat, cat.name))
+      .toList(),
+  onConfirm: (values) {
+    _finalCategories = [];
+    for (dynamic element in values) {
+      _finalCategories.add(element.id.toString());
+    }
+  },
+  chipDisplay: MultiSelectChipDisplay(
+    onTap: (value) {},
+    chipColor: Colors.black,  // Fondo de chip en negro
+    textStyle: TextStyle(color: Colors.white), // Texto de chip en blanco
+  ),
+),
+
                 _selectedCategorias.isEmpty
                     ? Container(
                         padding: const EdgeInsets.all(10),
@@ -362,15 +399,26 @@ class _ModificacionRestaurante extends State<ModificacionRestaurante> {
                 ),
                 const SizedBox(height: 10.0),
                 TextFormField(
-                    controller: _numberPhone,
-                    keyboardType: TextInputType.number,
-                    decoration: const InputDecoration(labelText: 'Telefono'),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Por favor ingrese el Telefono de contacto';
-                      }
-                      return null;
-                    }),
+  controller: _numberPhone,
+  keyboardType: TextInputType.number,
+  decoration: InputDecoration(
+    labelText: 'Telefono',
+    labelStyle: TextStyle(color: Colors.black), // (opcional) Etiqueta negra
+    enabledBorder: OutlineInputBorder(        
+      borderSide: BorderSide(color: Colors.black, width: 2.0), // Borde negro
+    ),
+    focusedBorder: OutlineInputBorder(       
+      borderSide: BorderSide(color: Colors.black, width: 2.0), // Borde negro
+    ),
+  ),
+  validator: (value) {
+    if (value == null || value.isEmpty) {
+      return 'Por favor ingrese el Telefono de contacto';
+    }
+    return null;
+  },
+),
+
                 const SizedBox(height: 10.0),
                 isPaisUpdate
                     ? Padding(
@@ -416,14 +464,22 @@ class _ModificacionRestaurante extends State<ModificacionRestaurante> {
                               Text(getCustomAttribute(
                                   widget.data['custom_attributes'],
                                   'hotel_country')),
-                              ElevatedButton(
-                                onPressed: () async {
-                                  setState(() {
-                                    isPaisUpdate = true;
-                                  });
-                                },
-                                child: Text('Modificar'),
-                              )
+                             ElevatedButton(
+  onPressed: () async {
+    setState(() {
+      isPaisUpdate = true;
+    });
+  },
+  style: ElevatedButton.styleFrom(
+    backgroundColor: Colors.black, // Fondo negro
+    foregroundColor: Colors.white, // Texto blanco
+    shape: RoundedRectangleBorder(  // Quita el redondeo
+      borderRadius: BorderRadius.zero,
+    ),
+  ),
+  child: Text('Modificar'),
+),
+
                             ]),
                       ),
                 const SizedBox(height: 10.0),
@@ -471,14 +527,22 @@ class _ModificacionRestaurante extends State<ModificacionRestaurante> {
                               Text(getCustomAttribute(
                                   widget.data['custom_attributes'],
                                   'product_city')),
-                              ElevatedButton(
-                                onPressed: () async {
-                                  setState(() {
-                                    isEstadoUpdate = true;
-                                  });
-                                },
-                                child: Text('Modificar'),
-                              )
+                             ElevatedButton(
+  onPressed: () async {
+    setState(() {
+      isEstadoUpdate = true;
+    });
+  },
+  style: ElevatedButton.styleFrom(
+    backgroundColor: Colors.black, // Fondo negro
+    foregroundColor: Colors.white, // Texto blanco
+    shape: RoundedRectangleBorder( // Quita el redondeo
+      borderRadius: BorderRadius.zero,
+    ),
+  ),
+  child: const Text('Modificar'),
+),
+
                             ]),
                       ),
                 const SizedBox(height: 10.0),
@@ -525,14 +589,22 @@ class _ModificacionRestaurante extends State<ModificacionRestaurante> {
                               Text(getCustomAttribute(
                                   widget.data['custom_attributes'],
                                   'product_city')),
-                              ElevatedButton(
-                                onPressed: () async {
-                                  setState(() {
-                                    isCiudadUpdate = true;
-                                  });
-                                },
-                                child: Text('Modificar'),
-                              )
+                             ElevatedButton(
+  onPressed: () async {
+    setState(() {
+      isCiudadUpdate = true;
+    });
+  },
+  style: ElevatedButton.styleFrom(
+    backgroundColor: Colors.black, // Fondo negro
+    foregroundColor: Colors.white, // Texto blanco
+    shape: RoundedRectangleBorder( // Quita el redondeo
+      borderRadius: BorderRadius.zero,
+    ),
+  ),
+  child: const Text('Modificar'),
+),
+
                             ]),
                       ),
                 const SizedBox(height: 10.0),
@@ -578,77 +650,112 @@ class _ModificacionRestaurante extends State<ModificacionRestaurante> {
                     padding:
                         const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
                     child: TextFormField(
-                        controller: _max_capacity,
-                        keyboardType: TextInputType.number,
-                        decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: 'Capacidad Maxima',
-                            hintText: 'Capacidad Maxima'),
-                        validator: (String? value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Ingrese Capacidad Maxima';
-                          }
-                          return null;
-                        }),
+  controller: _max_capacity,
+  keyboardType: TextInputType.number,
+  decoration: InputDecoration(
+    labelText: 'Aforo Maximo',
+    labelStyle: TextStyle(color: Colors.black), // Etiqueta negra (opcional)
+    hintText: 'Aforo Maximo',
+    enabledBorder: OutlineInputBorder(        
+      borderSide: BorderSide(color: Colors.black, width: 2.0), // Borde negro
+    ),
+    focusedBorder: OutlineInputBorder(       
+      borderSide: BorderSide(color: Colors.black, width: 2.0), // Borde negro
+    ),
+  ),
+  validator: (String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Ingrese Capacidad Maxima';
+    }
+    return null;
+  },
+),
+
                   )),
                   Flexible(
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
                           vertical: 5, horizontal: 5),
                       child: TextFormField(
-                          controller: _slot_duration,
-                          keyboardType: TextInputType.number,
-                          decoration: const InputDecoration(
-                              border: OutlineInputBorder(),
-                              labelText: 'Duracion',
-                              hintText: 'Ingrese Tiempo'),
-                          validator: (String? value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Ingrese Tiempo';
-                            }
-                            return null;
-                          }),
+  controller: _slot_duration,
+  keyboardType: TextInputType.number,
+  decoration: InputDecoration(
+    labelText: 'Duración por reservación',
+    labelStyle: TextStyle(color: Colors.black), // Etiqueta negra (opcional)
+    hintText: 'Ingrese Tiempo',
+    enabledBorder: OutlineInputBorder(
+      borderSide: BorderSide(color: Colors.black, width: 2.0), // Borde negro
+    ),
+    focusedBorder: OutlineInputBorder(
+      borderSide: BorderSide(color: Colors.black, width: 2.0), // Borde negro
+    ),
+  ),
+  validator: (String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Ingrese Tiempo';
+    }
+    return null;
+  },
+),
+
                     ),
                   ),
                 ]),
                 Row(children: <Widget>[
-                  Flexible(
+                 /* Flexible(
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
                           vertical: 5, horizontal: 5),
-                      child: TextFormField(
-                          controller: _prevent_scheduling_before,
-                          keyboardType: TextInputType.number,
-                          decoration: const InputDecoration(
-                              border: OutlineInputBorder(),
-                              labelText: 'Tiempo de Descanso',
-                              hintText: 'Tiempo de Descanso'),
-                          validator: (String? value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Ingrese Tiempo de Descanso';
-                            }
-                            return null;
-                          }),
+                     child: TextFormField(
+  controller: _prevent_scheduling_before,
+  keyboardType: TextInputType.number,
+  decoration: InputDecoration(
+    labelText: 'Tiempo de Descanso',
+    labelStyle: TextStyle(color: Colors.black), // Etiqueta negra (opcional)
+    hintText: 'Tiempo de Descanso',
+    enabledBorder: OutlineInputBorder(
+      borderSide: BorderSide(color: Colors.black, width: 2.0), // Borde negro
+    ),
+    focusedBorder: OutlineInputBorder(
+      borderSide: BorderSide(color: Colors.black, width: 2.0), // Borde negro
+    ),
+  ),
+  validator: (String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Ingrese Tiempo de Descanso';
+    }
+    return null;
+  },
+),
+
                     ),
-                  ),
+                  ),*/
                   Flexible(
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
                           vertical: 5, horizontal: 5),
                       child: TextFormField(
-                        controller: _break_time_bw_slot,
-                        keyboardType: TextInputType.number,
-                        decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: 'Prgramacion',
-                            hintText: 'Evitar Prgramacion'),
-                        validator: (String? value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Ingrese Tiempo';
-                          }
-                          return null;
-                        },
-                      ),
+  controller: _break_time_bw_slot,
+  keyboardType: TextInputType.number,
+  decoration: InputDecoration(
+    labelText: 'Reservar antes de ',
+    labelStyle: TextStyle(color: Colors.black), // Etiqueta negra (opcional)
+    hintText: 'Reservar antes de ',
+    enabledBorder: OutlineInputBorder(
+      borderSide: BorderSide(color: Colors.black, width: 2.0), // Borde negro
+    ),
+    focusedBorder: OutlineInputBorder(
+      borderSide: BorderSide(color: Colors.black, width: 2.0), // Borde negro
+    ),
+  ),
+  validator: (String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Ingrese Tiempo';
+    }
+    return null;
+  },
+),
+
                     ),
                   ),
                 ]),
@@ -692,6 +799,9 @@ class _ModificacionRestaurante extends State<ModificacionRestaurante> {
                                             vertical: 2, horizontal: 2),
                                         child: DropdownButtonFormField<String>(
                                           //value: _daysOfWeek[index]['hora'][0]['from'],
+
+                                        
+
                                           items:
                                               _timeOptions.map((String time) {
                                             return DropdownMenuItem<String>(
@@ -699,8 +809,16 @@ class _ModificacionRestaurante extends State<ModificacionRestaurante> {
                                               child: Text(time),
                                             );
                                           }).toList(),
-                                          decoration: const InputDecoration(
-                                              labelText: 'Inicio'),
+                                          decoration: InputDecoration(
+    labelText: 'Inicio',
+    labelStyle: TextStyle(color: Colors.black), // Etiqueta negra (opcional)
+    enabledBorder: OutlineInputBorder(        
+      borderSide: BorderSide(color: Colors.black, width: 2.0), // Borde negro
+    ),
+    focusedBorder: OutlineInputBorder(       
+      borderSide: BorderSide(color: Colors.black, width: 2.0), // Borde negro
+    ),
+  ),
                                           onChanged: (String? newValue) {
                                             setState(() {
                                               // _restaurant.horaFin = newValue!;
@@ -724,8 +842,18 @@ class _ModificacionRestaurante extends State<ModificacionRestaurante> {
                                               child: Text(time),
                                             );
                                           }).toList(),
-                                          decoration: const InputDecoration(
-                                              labelText: 'Final'),
+                                          decoration: InputDecoration( // Quitamos el 'const' para poder modificarlo
+      labelText: 'Final',
+      labelStyle: TextStyle(color: Colors.black), // Etiqueta negra (opcional)
+      enabledBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: Colors.black, width: 2.0), // Borde negro
+        borderRadius: BorderRadius.zero,                        // Sin redondeles
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: Colors.black, width: 2.0), // Borde negro
+        borderRadius: BorderRadius.zero,                        // Sin redondeles
+      ),
+    ),
                                           onChanged: (String? newValue) {
                                             setState(() {
                                               _daysOfWeek[index]['hora'][0]
@@ -746,6 +874,12 @@ class _ModificacionRestaurante extends State<ModificacionRestaurante> {
                 ),
                 const SizedBox(height: 10.0),
                 ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.black,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.zero
+                    )
+                  ),
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
                       try {
@@ -884,7 +1018,9 @@ class _ModificacionRestaurante extends State<ModificacionRestaurante> {
                       }
                     }
                   },
-                  child: const Text('Registrar Restaurante'),
+                  child: const Text('Registrar Restaurante',
+                  style: TextStyle(color: Colors.white
+                  ),),
                 )
               ],
             ),

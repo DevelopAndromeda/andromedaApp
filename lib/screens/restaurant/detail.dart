@@ -70,15 +70,17 @@ class _MyDetailPageState extends State<MyDetailPage>
           return Theme(
             data: ThemeData.dark().copyWith(
                 colorScheme: const ColorScheme.dark(
-                    onPrimary: Colors.black, // selected text color
-                    onSurface: Colors.amberAccent, // default text color
-                    primary: Colors.amberAccent // circle color
+                    onPrimary: Color.fromARGB(
+                        255, 255, 255, 255), // selected text color
+                    onSurface: Color.fromARGB(
+                        255, 255, 255, 255), // default text color
+                    primary: Color.fromARGB(99, 255, 255, 255) // circle color
                     ),
                 dialogBackgroundColor: Colors.black54,
                 textButtonTheme: TextButtonThemeData(
                     style: TextButton.styleFrom(
                         textStyle: const TextStyle(
-                            color: Colors.amber,
+                            color: Color.fromARGB(255, 255, 255, 255),
                             fontWeight: FontWeight.normal,
                             fontSize: 12,
                             fontFamily: 'Quicksand'),
@@ -121,8 +123,7 @@ class _MyDetailPageState extends State<MyDetailPage>
     final sesion = await serviceDB.instance.getById('users', 'id_user', 1);
     // Generar carrito vacio
     if (sesion.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Nesecitas iniciar una sesion')));
+      responseErrorWarning(context, "Nesecitas iniciar una sesion");
       return;
     }
     //print('************* Sesion: ${sesion} *************');
@@ -134,8 +135,7 @@ class _MyDetailPageState extends State<MyDetailPage>
     }
     //print('************* options: ${_options} *************');
     if (_options.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('No Existen Labels para este producto')));
+      responseErrorWarning(context, "No Existen Labels para este producto");
       return;
     }
 
@@ -210,7 +210,7 @@ class _MyDetailPageState extends State<MyDetailPage>
     //Revisar productos
     //print('************* Obtener Items en Carrito *************');
     final items = await get(sesion[0]['token'], 'custom', 'carts/mine/items');
-    //print('************* items: ${items} *************');
+    print('************* items: ${items} *************');
 
     if (items.isEmpty) {
       //Agregar item al carrito
@@ -218,6 +218,10 @@ class _MyDetailPageState extends State<MyDetailPage>
           sesion[0]['token'], 'custom', 'carts/mine/items', cartItem, 'v2');
       //print('************* Agregar Item: ${addItem} *************');
     } else {
+      if (items.runtimeType != List) {
+        responseErrorWarning(context, 'Vuelve a iniciar sesion');
+        return;
+      }
       bool bandera = true;
       for (dynamic data in items) {
         //print('************* SKU: ${data['sku']} *************');
@@ -286,8 +290,7 @@ class _MyDetailPageState extends State<MyDetailPage>
     //print('************* ORDEN: ${orden} *************');
     //print('************* ORDEN-TYPE: ${orden.runtimeType} *************');
     if (orden.runtimeType != int) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(orden['message'])));
+      responseErrorWarning(context, orden['message']);
     } else {
       showDialog(
         context: context,
@@ -354,7 +357,7 @@ class _MyDetailPageState extends State<MyDetailPage>
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            CarouselSlider(
+            /*CarouselSlider(
               options: CarouselOptions(
                 height: 200.0,
                 enlargeCenterPage: true,
@@ -391,7 +394,8 @@ class _MyDetailPageState extends State<MyDetailPage>
                   },
                 );
               }).toList(),
-            ),
+            ),*/
+            crearSlider(),
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
@@ -403,21 +407,7 @@ class _MyDetailPageState extends State<MyDetailPage>
                         fontSize: 24, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 8),
-                  const Text(
-                    'Direccion',
-                    style: TextStyle(fontSize: 16),
-                  ),
-                  const SizedBox(height: 8),
-                  const Text(
-                    'Tipo de Comida: ',
-                    style: TextStyle(fontSize: 16),
-                  ),
-                  const SizedBox(height: 8),
-                  const Text(
-                    'Horarios de Servicio: ',
-                    style: TextStyle(fontSize: 16),
-                  ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 10),
                   const Text(
                     'Descripción:',
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -429,7 +419,6 @@ class _MyDetailPageState extends State<MyDetailPage>
                     style: const TextStyle(fontSize: 16),
                   ),
                   TabBar(
-                    controller: _tabController,
                     labelColor: const Color.fromARGB(255, 0, 0, 0),
                     indicatorColor: Colors.black,
                     onTap: (index) {
@@ -456,11 +445,11 @@ class _MyDetailPageState extends State<MyDetailPage>
                         text: 'Detalles',
                       ),
                     ],
+                    controller: _tabController,
                   ),
                   SizedBox(
                     height: 700,
                     child: TabBarView(
-                      controller: _tabController,
                       children: <Widget>[
                         Column(
                           children: [
@@ -498,43 +487,45 @@ class _MyDetailPageState extends State<MyDetailPage>
                                             mainAxisSpacing: 4.0),
                                     itemBuilder:
                                         (BuildContext context, int index) {
-                                      return ClipRRect(
-                                        borderRadius: BorderRadius.circular(13),
-                                        child: Container(
-                                          padding: const EdgeInsets.symmetric(
-                                              vertical: 10, horizontal: 10),
-                                          decoration: BoxDecoration(
-                                            color: const Color.fromARGB(
-                                                255, 232, 239, 243),
-                                            borderRadius:
-                                                BorderRadius.circular(20),
-                                            boxShadow: const [
-                                              BoxShadow(
-                                                offset: Offset(0, 17),
-                                                blurRadius: 17,
-                                                spreadRadius: -23,
-                                                color: Colors.black,
-                                              ),
-                                            ],
-                                          ),
-                                          child: InkWell(
-                                            onTap: () {
-                                              //print(index);
-                                              //print(_allSlotDay[index]);
+                                      return Container(
+                                        padding: const EdgeInsets.all(15),
+                                        decoration: BoxDecoration(
+                                          color: index == slot_id
+                                              ? Colors.black
+                                              : Colors.black54,
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              offset: Offset(0, 17),
+                                              blurRadius: 17,
+                                              spreadRadius: -23,
+                                              color: Colors.black,
+                                            ),
+                                          ],
+                                        ),
+                                        child: InkWell(
+                                          onTap: () {
+                                            //print(index);
+                                            //print(_allSlotDay[index]);
+                                            setState(() {
                                               Hora = _allSlotDay[index]['time'];
                                               slot_id = index;
-                                            },
-                                            child: Column(
-                                              children: <Widget>[
-                                                const Icon(
-                                                  Icons.timer_sharp,
-                                                  size: 15,
-                                                ),
-                                                Text(
-                                                  "${_allSlotDay[index]['time']}",
-                                                )
-                                              ],
-                                            ),
+                                            });
+                                          },
+                                          child: Column(
+                                            children: <Widget>[
+                                              const Icon(
+                                                Icons.timer_sharp,
+                                                size: 15,
+                                                color: Colors.white,
+                                              ),
+                                              Text(
+                                                "${_allSlotDay[index]['time']}",
+                                                style: TextStyle(
+                                                    color: Colors.white),
+                                              )
+                                            ],
                                           ),
                                         ),
                                       );
@@ -557,42 +548,6 @@ class _MyDetailPageState extends State<MyDetailPage>
                                 ),
                               ),
                             ),
-                            /*Row(children: <Widget>[
-                              Flexible(
-                                child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 5, horizontal: 5),
-                                    child: SingleChildScrollView(
-                                        child: SizedBox(
-                                      width: double.infinity,
-                                      child: ListView.builder(
-                                          shrinkWrap: true,
-                                          itemCount: _slotDay.length,
-                                          itemBuilder: (cotext, index) {
-                                            return Column(
-                                              children: [
-                                                Text(
-                                                    "${_slotDay[index]['from']} - ${_slotDay[index]['to']}"),
-                                                DropdownButtonFormField<String>(
-                                                    items: timepostSlot(
-                                                        _slotDay[index]
-                                                            ['slots_info']),
-                                                    decoration: InputDecoration(
-                                                        labelText: 'Hora'),
-                                                    onChanged:
-                                                        (String? newValue) {
-                                                      print(
-                                                          'value select $newValue');
-                                                      //setState(() {
-                                                      Hora = newValue!;
-                                                      //});
-                                                    }),
-                                              ],
-                                            );
-                                          }),
-                                    ))),
-                              ),
-                            ]),*/
                             const SizedBox(height: 30.0),
                             Padding(
                               padding:
@@ -617,6 +572,7 @@ class _MyDetailPageState extends State<MyDetailPage>
                           ],
                         ),
                       ],
+                      controller: _tabController,
                     ),
                   ),
                 ],
@@ -626,8 +582,49 @@ class _MyDetailPageState extends State<MyDetailPage>
         ),
       ),
       bottomNavigationBar: const MyBottomBar(
-        index: 2,
+        index: 0,
       ),
+    );
+  }
+
+  CarouselSlider crearSlider() {
+    return CarouselSlider(
+      options: CarouselOptions(
+        height: 200.0,
+        enlargeCenterPage: true,
+        autoPlay: true,
+        aspectRatio: 16 / 9,
+        autoPlayInterval: const Duration(seconds: 3),
+        autoPlayAnimationDuration: const Duration(milliseconds: 800),
+        autoPlayCurve: Curves.fastOutSlowIn,
+        pauseAutoPlayOnTouch: true,
+        enableInfiniteScroll: true,
+        viewportFraction: 0.8,
+      ),
+      items: imagenes.map((imagen) {
+        return Builder(
+          builder: (BuildContext context) {
+            return Container(
+              width: MediaQuery.of(context).size.width,
+              margin: const EdgeInsets.symmetric(horizontal: 5.0),
+              decoration: const BoxDecoration(
+                color: Colors.grey,
+              ),
+              child: widget.data['media_gallery_entries'] != null
+                  ? Image.network(
+                      pathMedia(imagen),
+                      fit: BoxFit.cover,
+                    )
+                  : Image.asset(
+                      imagen,
+                      width: double.infinity,
+                      height: 150,
+                      fit: BoxFit.cover,
+                    ),
+            );
+          },
+        );
+      }).toList(),
     );
   }
 
