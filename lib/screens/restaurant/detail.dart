@@ -45,6 +45,8 @@ class _MyDetailPageState extends State<MyDetailPage>
   Map _slot = {};
   List<dynamic> _slotDay = [];
   List<dynamic> _allSlotDay = [];
+  List<String> personasList = ["1", "2", "3", "4", "5"];
+  String _selectPersona = "";
   //List<Map<String, dynamic>> _timeSlot = [];
   Future<void> getSlot(String? id) async {
     //print('getSlot -> $id');
@@ -157,8 +159,8 @@ class _MyDetailPageState extends State<MyDetailPage>
         value = "Table (4 Guests)";
       }
 
-      if (item['title'] == 'ejemplo de mesa') {
-        value = "1";
+      if (item['title'] == 'Zona') {
+        value = "13";
       }
 
       custom_options
@@ -180,13 +182,20 @@ class _MyDetailPageState extends State<MyDetailPage>
       {"option_id": "item", "option_value": widget.data['id']},
       {"option_id": "selected_configurable_option", "option_value": "0"},
       {"option_id": "related_product", "option_value": "0"},
-      //{"option_id": "parent_slot_id", "option_value": 0},
+      {"option_id": "parent_slot_id", "option_value": 0},
       {"option_id": "slot_id", "option_value": slot_id},
       {"option_id": "slot_day_index", "option_value": _selectedDate.weekday},
       {"option_id": "charged_per_count", "option_value": 4},
     ]);
     //print(
     //    '************* configurable_item_options: ${configurable_item_options} *************');
+
+    /*if (myCart != null) {
+      myCart['items'].map((element) async {
+        await delete(sesion[0]['token'], 'customer',
+            'carts/mine/items/${element['item_id']}');
+      });
+    }*/
 
     Map<String, dynamic> cartItem = {
       "cartItem": {
@@ -214,8 +223,12 @@ class _MyDetailPageState extends State<MyDetailPage>
 
     if (items.isEmpty) {
       //Agregar item al carrito
-      await post(
+      print('enviar post');
+      print(cartItem);
+      final cart = await post(
           sesion[0]['token'], 'custom', 'carts/mine/items', cartItem, 'v2');
+      print('response post');
+      print(cart);
       //print('************* Agregar Item: ${addItem} *************');
     } else {
       if (items.runtimeType != List) {
@@ -226,17 +239,19 @@ class _MyDetailPageState extends State<MyDetailPage>
       for (dynamic data in items) {
         //print('************* SKU: ${data['sku']} *************');
         //print('************* SKU-Actual: ${widget.data['sku']} *************');
-        if (data['sku'] == widget.data['sku']) {
-          bandera = false;
-        }
+        //if (data['sku'] == widget.data['sku']) {
+        //  bandera = false;
+        //}
+        await delete(sesion[0]['token'], 'customer',
+            'carts/mine/items/${data['item_id']}');
       }
 
-      if (bandera) {
-        //Agregar item al carrito
-        await post(
-            sesion[0]['token'], 'custom', 'carts/mine/items', cartItem, 'v2');
-        //print('************* Agregar Item: ${addItem} *************');
-      }
+      //if (bandera) {
+      //Agregar item al carrito
+      await post(
+          sesion[0]['token'], 'custom', 'carts/mine/items', cartItem, 'v2');
+      //print('************* Agregar Item: ${addItem} *************');
+      //}
     }
 
     //Agregamos Bulling y
@@ -541,10 +556,26 @@ class _MyDetailPageState extends State<MyDetailPage>
                             Flexible(
                               child: SizedBox(
                                 child: DropdownButtonFormField<String>(
-                                  items: const [],
+                                  items: [],
+                                  /*personasList.map((e) {
+                                    return DropdownMenuItem(
+                                      child: SizedBox(
+                                        width: double.infinity,
+                                        child: Text(
+                                          e,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                      value: e,
+                                    );
+                                  }).toList(),*/
                                   decoration: const InputDecoration(
                                       labelText: 'Personas'),
-                                  onChanged: (String? newValue) {},
+                                  onChanged: (String? newValue) {
+                                    setState(() {
+                                      _selectPersona = newValue!;
+                                    });
+                                  },
                                 ),
                               ),
                             ),
@@ -654,51 +685,6 @@ class _MyDetailPageState extends State<MyDetailPage>
       });
     }
     return lista;
-  }
-
-  Widget createDia(data, Function? onChanged) {
-    List<DropdownMenuItem<String>> menuItems = [];
-    data.forEach((i, value) {
-      menuItems.add(DropdownMenuItem(
-          value: i.toString(), child: Text(_diasSemana[int.parse(i)])));
-    });
-    return DropdownButtonFormField<String>(
-        decoration: const InputDecoration(
-          border: OutlineInputBorder(),
-          filled: true,
-          hintText: 'Seleccione',
-          labelText: 'Dia',
-        ),
-        validator: (String? value) {
-          if (value == null || value.isEmpty) {
-            return 'Seleccione...';
-          }
-          return null;
-        },
-        onChanged: (String? newValue) {
-          onChanged!(newValue);
-        },
-        items: menuItems);
-  }
-
-  Widget createSelect(dropdownItems, Function? onChanged, String? titulo) {
-    return DropdownButtonFormField(
-        decoration: InputDecoration(
-          border: const OutlineInputBorder(),
-          filled: true,
-          hintText: 'Seleccione $titulo',
-          labelText: titulo,
-        ),
-        validator: (String? value) {
-          if (value == null || value.isEmpty) {
-            return 'Ingrese Tipo';
-          }
-          return null;
-        },
-        onChanged: (String? newValue) {
-          onChanged!(newValue);
-        },
-        items: dropdownItems);
   }
 
   Route _createRoute() {

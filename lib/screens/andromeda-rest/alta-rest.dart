@@ -143,7 +143,7 @@ class _AltaRestState extends State<AltaRest> {
   List<int> tiposRest = [4, 16, 42, 71, 72, 73, 75, 76, 77, 78, 79, 80];
   Categoria? _selectedTipoRest;
   Uint8List? _image;
-  File? selectedIMage;
+  List<File> arrayFiles = <File>[];
   final List<Map<String, dynamic>> mesas = [
     {
       'nombre': 'NOMBRE',
@@ -261,10 +261,23 @@ class _AltaRestState extends State<AltaRest> {
         await ImagePicker().pickImage(source: ImageSource.gallery);
     if (returnImage == null) return;
     setState(() {
-      selectedIMage = File(returnImage.path);
-      _image = File(returnImage.path).readAsBytesSync();
+      arrayFiles.add(File(returnImage.path));
+      //selectedIMage = File(returnImage.path);
+      //_image = File(returnImage.path).readAsBytesSync();
     });
     Navigator.of(context).pop(); //close the model sheet
+  }
+
+  Future _pickImageFromCamera() async {
+    final returnImage =
+        await ImagePicker().pickImage(source: ImageSource.camera);
+    if (returnImage == null) return;
+    setState(() {
+      arrayFiles.add(File(returnImage.path));
+      //selectedIMage = File(returnImage.path);
+      //_image = File(returnImage.path).readAsBytesSync();
+    });
+    Navigator.of(context).pop();
   }
 
   @override
@@ -291,6 +304,67 @@ class _AltaRestState extends State<AltaRest> {
           iconTheme: IconThemeData(color: Colors.white),
         ),
         body: _body());
+  }
+
+  void showImagePickerOption(BuildContext context) {
+    showModalBottomSheet(
+        backgroundColor: Colors.blue[100],
+        context: context,
+        builder: (builder) {
+          return Padding(
+            padding: const EdgeInsets.all(18.0),
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height / 4.5,
+              child: Row(
+                children: [
+                  Expanded(
+                    child: InkWell(
+                      onTap: () {
+                        _pickImageFromGallery();
+                      },
+                      child: SizedBox(
+                        child: Column(
+                          children: [
+                            Icon(
+                              Icons.image,
+                              size: 70,
+                            ),
+                            Text("Gallery")
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: InkWell(
+                      onTap: () {
+                        _pickImageFromCamera();
+                      },
+                      child: SizedBox(
+                        child: Column(
+                          children: [
+                            Icon(
+                              Icons.camera_alt,
+                              size: 70,
+                            ),
+                            Text("Camera")
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
+  }
+
+  void deleteImage(index) async {
+    setState(() {
+      arrayFiles.removeAt(index);
+    });
   }
 
   SingleChildScrollView _body() {
@@ -419,38 +493,23 @@ class _AltaRestState extends State<AltaRest> {
                     .map((cat) => MultiSelectItem<Categoria>(cat, cat.name))
                     .toList(),
                 onConfirm: (values) {
+                  //_selectedCategorias.add(value);
                   _finalCategories = [];
                   for (dynamic element in values) {
                     _finalCategories.add(element.id.toString());
-
-                    // Crea tus propios chips personalizados
-                    Chip(
-                      label: Text(element.name,
-                          style: const TextStyle(
-                              color: Colors.white)), // Texto blanco
-                      backgroundColor: Colors.black, // Fondo negro
-                      deleteIconColor: Colors
-                          .white, // Color del icono de eliminar (opcional)
-                    );
                   }
+                  setState(() {});
                 },
-                chipDisplay: MultiSelectChipDisplay.none(),
+                chipDisplay: MultiSelectChipDisplay(
+                  onTap: (value) {},
+                  chipColor: Colors.black, // Fondo de chip en negro
+                  textStyle:
+                      TextStyle(color: Colors.white), // Texto de chip en blanco
+                ),
                 selectedItemsTextStyle: const TextStyle(color: Colors.black),
                 itemsTextStyle: const TextStyle(color: Colors.black),
               ),
-              _selectedCategorias.isEmpty
-                  ? Container(
-                      padding: const EdgeInsets.all(10),
-                      alignment: Alignment.centerLeft,
-                      child: const Text(
-                        "None selected",
-                        style: TextStyle(
-                            color:
-                                Colors.black), // Texto negro en "None selected"
-                      ),
-                    )
-                  : Container(),
-              _selectedCategorias.isEmpty
+              _finalCategories.length < 1
                   ? Container(
                       padding: const EdgeInsets.all(10),
                       alignment: Alignment.centerLeft,
@@ -975,6 +1034,51 @@ class _AltaRestState extends State<AltaRest> {
                 ),
               ),
               const SizedBox(height: 20.0),
+              const Text(
+                'Foto Galeria',
+                style: TextStyle(fontSize: 25),
+              ),
+              const SizedBox(height: 10.0),
+              ElevatedButton.icon(
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.black,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.zero)),
+                onPressed: () async {
+                  showImagePickerOption(context);
+                },
+                icon: const Icon(Icons.camera),
+                label: const Text('Seleccionar Foto'),
+              ),
+              SizedBox(
+                height: 300,
+                width: 250,
+                child: ListView.builder(
+                  itemCount: arrayFiles.length,
+                  itemBuilder: (context, index) {
+                    if (arrayFiles.length < 1) {
+                      return Center(
+                        child: Text('sin imagenes para mostrar'),
+                      );
+                    } else {
+                      return Column(
+                        children: <Widget>[
+                          Image.file(arrayFiles[index],
+                              height: 200, width: 250, fit: BoxFit.fitWidth),
+                          GestureDetector(
+                            onTap: () => deleteImage(index),
+                            child: const Icon(
+                              Icons.delete,
+                              color: Colors.red,
+                            ),
+                          )
+                        ],
+                      );
+                    }
+                  },
+                ),
+              ),
+              const SizedBox(height: 20.0),
               ElevatedButton(
                 onPressed: () async {
                   if (_formKey.currentState!.validate()) {
@@ -1082,11 +1186,11 @@ class _AltaRestState extends State<AltaRest> {
 
                       List<Map<String, dynamic>> options = [];
                       Map<String, dynamic> table = {
-                        "title": "mesa ${_nombreController.text}",
+                        "title": "Zona",
                         "type": "drop_down",
                         "sort_order": 1,
                         "is_require": true,
-                        "product_sku": "mesa ${_nombreController.text}",
+                        "product_sku": _nombreController.text,
                         "values": []
                       };
                       options.add(table);
@@ -1133,6 +1237,40 @@ class _AltaRestState extends State<AltaRest> {
                       //print(restaurante);
                       responseSuccessWarning(
                           context, 'Restaurante registrado correctamente');
+
+                      int position = 1;
+                      arrayFiles.forEach((element) async {
+                        final bytes = File(element.path).readAsBytesSync();
+                        String img64 = base64Encode(bytes);
+
+                        var img = {
+                          "entry": [
+                            {
+                              "media_type": "image",
+                              "label":
+                                  "img_${_nombreController.text}_$position",
+                              "position": position,
+                              "disabled": false,
+                              "types": ["image", "small_image", "thumbnail"],
+                              "content": {
+                                "base64_encoded_data": img64,
+                                "type": "image/jpeg",
+                                "name":
+                                    "img_${_nombreController.text}_$position.jpg"
+                              }
+                            }
+                          ]
+                        };
+
+                        await post(
+                            '',
+                            'integration',
+                            'products/${_nombreController.text}/media',
+                            img,
+                            'V2');
+
+                        position++;
+                      });
                     } catch (e) {
                       responseErrorWarning(context, e.toString());
                       //print(e);
@@ -1147,7 +1285,7 @@ class _AltaRestState extends State<AltaRest> {
                     backgroundColor: Colors.black,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(2))),
-              )
+              ),
             ],
           ),
         ),
