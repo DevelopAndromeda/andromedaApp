@@ -197,7 +197,6 @@ class _MyHomePageState extends State<MyHomePage> {
                       }
 
                       if (snapshot.hasData) {
-                        //print(snapshot.data['items']);
                         return ListView(
                           scrollDirection: Axis.horizontal,
                           children: _createList(snapshot.data['items']),

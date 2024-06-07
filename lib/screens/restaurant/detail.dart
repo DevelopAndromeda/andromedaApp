@@ -439,9 +439,6 @@ class _MyDetailPageState extends State<MyDetailPage>
                     onTap: (index) {
                       //print(index);
                       if (index == 1) {
-                        setState(() {
-                          index = 0;
-                        });
                         Navigator.of(context).push(_createRoute());
                       }
 
@@ -465,6 +462,7 @@ class _MyDetailPageState extends State<MyDetailPage>
                   SizedBox(
                     height: 700,
                     child: TabBarView(
+                      controller: _tabController,
                       children: <Widget>[
                         Column(
                           children: [
@@ -532,7 +530,7 @@ class _MyDetailPageState extends State<MyDetailPage>
                                             children: <Widget>[
                                               const Icon(
                                                 Icons.timer_sharp,
-                                                size: 15,
+                                                size: 13,
                                                 color: Colors.white,
                                               ),
                                               Text(
@@ -549,9 +547,6 @@ class _MyDetailPageState extends State<MyDetailPage>
                                       );*/
                                     }),
                               ),
-                            ),
-                            const SizedBox(
-                              height: 20.0,
                             ),
                             Flexible(
                               child: SizedBox(
@@ -579,7 +574,7 @@ class _MyDetailPageState extends State<MyDetailPage>
                                 ),
                               ),
                             ),
-                            const SizedBox(height: 30.0),
+                            const SizedBox(height: 10.0),
                             Padding(
                               padding:
                                   const EdgeInsets.symmetric(vertical: 20.0),
@@ -602,8 +597,9 @@ class _MyDetailPageState extends State<MyDetailPage>
                             ),
                           ],
                         ),
+                        Column(),
+                        Column()
                       ],
-                      controller: _tabController,
                     ),
                   ),
                 ],

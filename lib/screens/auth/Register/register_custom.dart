@@ -728,12 +728,13 @@ class _MyRegisterContet extends State<MyRegisterPage> {
           controller: _firstController,
           decoration: InputDecoration(
             contentPadding: const EdgeInsets.all(5),
-            border: OutlineInputBorder( // Esto es opcional, pero recomendado
-        borderRadius: BorderRadius.circular(4.0),
-        borderSide: const BorderSide(
-          color: Colors.black, // Borde predeterminado en negro
-        ),
-      ),
+            border: OutlineInputBorder(
+              // Esto es opcional, pero recomendado
+              borderRadius: BorderRadius.circular(4.0),
+              borderSide: const BorderSide(
+                color: Colors.black, // Borde predeterminado en negro
+              ),
+            ),
             filled: true,
             fillColor: const Color.fromARGB(255, 255, 255, 255),
             label: const Text(
@@ -743,13 +744,17 @@ class _MyRegisterContet extends State<MyRegisterPage> {
             suffixIcon: const Icon(Icons.person_2_outlined),
             ///////
             enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(4.0),
-            borderSide: const BorderSide(color: Colors.black, width: 1.0), // Borde negro cuando está habilitado
+              borderRadius: BorderRadius.circular(4.0),
+              borderSide: const BorderSide(
+                  color: Colors.black,
+                  width: 1.0), // Borde negro cuando está habilitado
             ),
-           focusedBorder: OutlineInputBorder(
-           borderRadius: BorderRadius.circular(4.0),
-            borderSide: const BorderSide(color: Colors.black, width: 2.0), // Borde negro más grueso cuando está enfocado
-           ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(4.0),
+              borderSide: const BorderSide(
+                  color: Colors.black,
+                  width: 2.0), // Borde negro más grueso cuando está enfocado
+            ),
           ),
           ////
           validator: (value) {
@@ -779,14 +784,18 @@ class _MyRegisterContet extends State<MyRegisterPage> {
             ),
             suffixIcon: const Icon(Icons.person_2_outlined),
             //
-             enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(4.0),
-            borderSide: const BorderSide(color: Colors.black, width: 1.0), // Borde negro cuando está habilitado
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(4.0),
+              borderSide: const BorderSide(
+                  color: Colors.black,
+                  width: 1.0), // Borde negro cuando está habilitado
             ),
-           focusedBorder: OutlineInputBorder(
-           borderRadius: BorderRadius.circular(4.0),
-            borderSide: const BorderSide(color: Colors.black, width: 2.0), // Borde negro más grueso cuando está enfocado
-           ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(4.0),
+              borderSide: const BorderSide(
+                  color: Colors.black,
+                  width: 2.0), // Borde negro más grueso cuando está enfocado
+            ),
           ),
           //
           validator: (value) {
@@ -816,15 +825,18 @@ class _MyRegisterContet extends State<MyRegisterPage> {
               style: TextStyle(color: Colors.grey),
             ),
             suffixIcon: const Icon(Icons.email_outlined),
-
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(4.0),
-            borderSide: const BorderSide(color: Colors.black, width: 1.0), // Borde negro cuando está habilitado
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(4.0),
+              borderSide: const BorderSide(
+                  color: Colors.black,
+                  width: 1.0), // Borde negro cuando está habilitado
             ),
-           focusedBorder: OutlineInputBorder(
-           borderRadius: BorderRadius.circular(4.0),
-            borderSide: const BorderSide(color: Colors.black, width: 2.0), // Borde negro más grueso cuando está enfocado
-           ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(4.0),
+              borderSide: const BorderSide(
+                  color: Colors.black,
+                  width: 2.0), // Borde negro más grueso cuando está enfocado
+            ),
           ),
           validator: (value) {
             if (value == null || value.isEmpty) {
@@ -866,15 +878,19 @@ class _MyRegisterContet extends State<MyRegisterPage> {
                 ? Icons.lock_clock_outlined
                 : Icons.lock_open_sharp),
           ),
-        enabledBorder: OutlineInputBorder(
+          enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(4.0),
-            borderSide: const BorderSide(color: Colors.black, width: 1.0), // Borde negro cuando está habilitado
-            ),
-           focusedBorder: OutlineInputBorder(
-           borderRadius: BorderRadius.circular(4.0),
-            borderSide: const BorderSide(color: Colors.black, width: 2.0), // Borde negro más grueso cuando está enfocado
-           ),
+            borderSide: const BorderSide(
+                color: Colors.black,
+                width: 1.0), // Borde negro cuando está habilitado
           ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(4.0),
+            borderSide: const BorderSide(
+                color: Colors.black,
+                width: 2.0), // Borde negro más grueso cuando está enfocado
+          ),
+        ),
         validator: (value) {
           if (value == null || value.isEmpty) {
             return 'Ingresa tu contraseña';
@@ -916,15 +932,19 @@ class _MyRegisterContet extends State<MyRegisterPage> {
                 ? Icons.lock_outline
                 : Icons.lock_open),
           ),
-        enabledBorder: OutlineInputBorder(
+          enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(4.0),
-            borderSide: const BorderSide(color: Colors.black, width: 1.0), // Borde negro cuando está habilitado
-            ),
-           focusedBorder: OutlineInputBorder(
-           borderRadius: BorderRadius.circular(4.0),
-            borderSide: const BorderSide(color: Colors.black, width: 2.0), // Borde negro más grueso cuando está enfocado
-           ),
+            borderSide: const BorderSide(
+                color: Colors.black,
+                width: 1.0), // Borde negro cuando está habilitado
           ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(4.0),
+            borderSide: const BorderSide(
+                color: Colors.black,
+                width: 2.0), // Borde negro más grueso cuando está enfocado
+          ),
+        ),
         validator: (value) {
           if (value == null || value.isEmpty) {
             return 'Ingresa tu contraseña';
@@ -956,14 +976,18 @@ class _MyRegisterContet extends State<MyRegisterPage> {
               style: TextStyle(color: Colors.grey),
             ),
             suffixIcon: const Icon(Icons.edit_document),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(4.0),
-            borderSide: const BorderSide(color: Colors.black, width: 1.0), // Borde negro cuando está habilitado
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(4.0),
+              borderSide: const BorderSide(
+                  color: Colors.black,
+                  width: 1.0), // Borde negro cuando está habilitado
             ),
-           focusedBorder: OutlineInputBorder(
-           borderRadius: BorderRadius.circular(4.0),
-            borderSide: const BorderSide(color: Colors.black, width: 2.0), // Borde negro más grueso cuando está enfocado
-           ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(4.0),
+              borderSide: const BorderSide(
+                  color: Colors.black,
+                  width: 2.0), // Borde negro más grueso cuando está enfocado
+            ),
           ),
           validator: (value) {
             if (value == null || value.isEmpty) {
@@ -991,14 +1015,18 @@ class _MyRegisterContet extends State<MyRegisterPage> {
               style: TextStyle(color: Colors.grey),
             ),
             suffixIcon: const Icon(Icons.factory),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(4.0),
-            borderSide: const BorderSide(color: Colors.black, width: 1.0), // Borde negro cuando está habilitado
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(4.0),
+              borderSide: const BorderSide(
+                  color: Colors.black,
+                  width: 1.0), // Borde negro cuando está habilitado
             ),
-           focusedBorder: OutlineInputBorder(
-           borderRadius: BorderRadius.circular(4.0),
-            borderSide: const BorderSide(color: Colors.black, width: 2.0), // Borde negro más grueso cuando está enfocado
-           ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(4.0),
+              borderSide: const BorderSide(
+                  color: Colors.black,
+                  width: 2.0), // Borde negro más grueso cuando está enfocado
+            ),
           ),
           validator: (value) {
             if (value == null || value.isEmpty) {
@@ -1027,14 +1055,18 @@ class _MyRegisterContet extends State<MyRegisterPage> {
               style: TextStyle(color: Colors.grey),
             ),
             suffixIcon: const Icon(Icons.phone_android_rounded),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(4.0),
-            borderSide: const BorderSide(color: Colors.black, width: 1.0), // Borde negro cuando está habilitado
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(4.0),
+              borderSide: const BorderSide(
+                  color: Colors.black,
+                  width: 1.0), // Borde negro cuando está habilitado
             ),
-           focusedBorder: OutlineInputBorder(
-           borderRadius: BorderRadius.circular(4.0),
-            borderSide: const BorderSide(color: Colors.black, width: 2.0), // Borde negro más grueso cuando está enfocado
-           ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(4.0),
+              borderSide: const BorderSide(
+                  color: Colors.black,
+                  width: 2.0), // Borde negro más grueso cuando está enfocado
+            ),
           ),
           validator: (value) {
             if (value == null || value.isEmpty) {

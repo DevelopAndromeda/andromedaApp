@@ -118,6 +118,11 @@ class _AltaRestState extends State<AltaRest> {
   Ciudad? _selectedCiudad;
 
   final List<String> _timeOptions = [
+    '1:00 am',
+    '2:00 am',
+    '3:00 am',
+    '4:00 am',
+    '5:00 am',
     '6:00 am',
     '7:00 am',
     '8:00 am',
@@ -135,7 +140,8 @@ class _AltaRestState extends State<AltaRest> {
     '8:00 pm',
     '9:00 pm',
     '10:00 pm',
-    '11:00 pm'
+    '11:00 pm',
+    '12:00 am'
   ];
   List<Categoria> _categoria = [];
   List<String> _finalCategories = [];
