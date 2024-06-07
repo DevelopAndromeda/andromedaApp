@@ -17,7 +17,7 @@ class _MyBottomPageBar extends State<MyBottomBar> {
     1: 'history',
     2: 'home',
     3: 'saved',
-    4: 'notifications',
+    //4: 'notifications',
   };
 
   @override
@@ -62,10 +62,10 @@ class _MyBottomPageBar extends State<MyBottomBar> {
           icon: Icon(Icons.description_outlined),
           label: 'GUARDADO',
         ),
-        BottomNavigationBarItem(
+        /*BottomNavigationBarItem(
           icon: Icon(Icons.notifications_none),
           label: 'NOTIFICACIONES',
-        ),
+        ),*/
       ],
     );
   }

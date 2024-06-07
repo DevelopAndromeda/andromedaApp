@@ -32,10 +32,11 @@ class _ListReviewState extends State<ListReview> {
       drawer: NavDrawer(changeSalida: () {}),
       backgroundColor: Background_Color,
       appBar: AppBar(
-        title: const Text('Comentarios'),
+        title: const Text('Comentarios', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
         centerTitle: true,
         elevation: 1,
         backgroundColor: Colors.black,
+        iconTheme: IconThemeData(color: Colors.white),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -165,10 +166,16 @@ class _ListReviewState extends State<ListReview> {
           ),
           const SizedBox(height: 10),
           ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.black,
+              shape: RoundedRectangleBorder( // Quita el redondeo
+      borderRadius: BorderRadius.zero,
+    ),
+            ),
             onPressed: () {
               Navigator.pushNamed(context, 'reviews', arguments: data);
             },
-            child: const Text('Ver Comentarios'),
+            child: const Text('Ver Comentarios', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
           ),
         ],
       ),

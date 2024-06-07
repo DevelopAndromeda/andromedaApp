@@ -202,20 +202,6 @@ class _MyHistoryPageState extends State<MyHistoryPage> {
                     children: [
                       Column(
                         mainAxisSize: MainAxisSize.min,
-                        children: [
-                          IconButton(
-                            icon: const Icon(
-                              Icons.edit,
-                              color: Color.fromARGB(255, 2, 2,
-                                  2), // Cambia el color del icono aquí
-                            ),
-                            iconSize: 16,
-                            onPressed: () {
-                              // Acción cuando se presiona "Modificar"
-                              // Puedes agregar tu lógica aquí
-                            },
-                          ),
-                        ],
                       ),
                       // Espacio entre los botones
                       Column(
@@ -230,8 +216,49 @@ class _MyHistoryPageState extends State<MyHistoryPage> {
                             ),
                             iconSize: 16,
                             onPressed: () {
-                              // Acción cuando se presiona "Eliminar"
-                              // Puedes agregar tu lógica aquí
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: const Text('Eliminar Reservación'),
+                                    content: const Text(
+                                        '¿Estás seguro de que quieres cancelar esta reservación?'),
+                                    actions: <Widget>[
+                                      TextButton(
+                                        onPressed: () => Navigator.of(context).pop(
+                                            false), // No eliminar, cerrar diálogo
+                                        child: const Text(
+                                          'No',
+                                          style: TextStyle(color: Colors.black),
+                                        ),
+                                      ),
+                                      TextButton(
+                                        onPressed: () async {
+                                          await post(
+                                              '',
+                                              'integration',
+                                              'orders/${data['id']}/cancel',
+                                              {},
+                                              '');
+
+                                          Navigator.of(context).pop(
+                                              true); // Eliminar, cerrar diálogo
+                                        },
+                                        child: const Text(
+                                          'Sí',
+                                          style: TextStyle(color: Colors.black),
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              ).then((value) {
+                                if (value == true) {
+                                  setState(() {});
+                                  responseSuccessWarning(
+                                      context, 'Se Cancelo tu reservacion');
+                                }
+                              });
                             },
                           ),
                         ],
@@ -257,6 +284,7 @@ class _MyHistoryPageState extends State<MyHistoryPage> {
   }
 
   List<Widget> _createList(datas) {
+    print(datas);
     List<Widget> lists = <Widget>[];
     if (datas.length == 0) {
       lists.add(const Center(
@@ -268,6 +296,7 @@ class _MyHistoryPageState extends State<MyHistoryPage> {
       //print('data');
       //print(data['items'][0]['extension_attributes']);
       lists.add(_buildCard({
+        "id": data['items'][0]['order_id'],
         "title": data['items'][0]['name'],
         "ruta": "",
         "status": data['status'],

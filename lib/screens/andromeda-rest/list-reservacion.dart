@@ -41,6 +41,7 @@ class _listReservacionState extends State<listReservacion> {
         centerTitle: true,
         elevation: 1,
         backgroundColor: const Color.fromARGB(255, 0, 0, 0),
+        iconTheme: IconThemeData(color: Colors.white),
       ),
       body: FutureBuilder(
         future: getHistory(),
@@ -201,16 +202,20 @@ class _listReservacionState extends State<listReservacion> {
     }
     for (dynamic data in datas['data']) {
       //print('data');
-      //print(data);
+      //print(data['entity_id']);
+      //print(data['product_options']['info_buyRequest'] ?? 'noexiste');
       lists.add(_buildCard({
         "title": data['billing_firstname'] ?? '',
         "ruta": "",
         "status": data['status'] ?? '',
-        "date": data['product_options']['info_buyRequest']['booking_date']
-                .split('/')
-                .reversed
-                .join('-') ??
-            '',
+        "date": "",
+        "date":
+            data['product_options']['info_buyRequest']['booking_date'] != null
+                ? data['product_options']['info_buyRequest']['booking_date']
+                    .split('/')
+                    .reversed
+                    .join('-')
+                : '2024-01-01',
         "hora": data['product_options']['info_buyRequest']['booking_time'] ?? ''
       }));
     }

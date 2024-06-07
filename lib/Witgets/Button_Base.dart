@@ -18,11 +18,17 @@ class baseButtom extends StatelessWidget {
     return ElevatedButton(
                   onPressed: onPressed, 
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Base_ColorDorado,
+                    backgroundColor: Color.fromARGB(255, 0, 0, 0),
+                    minimumSize: const Size(130, 44),
+                    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(4.0), // Redondeo de 10.0
+    ),
                   ),
                   child: Text(text,
                   style: const TextStyle(
-                    fontSize: 18),),
+                    fontSize: 18,
+                    color: Colors.white
+                    ),),
                   );
   }
 }

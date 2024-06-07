@@ -39,6 +39,7 @@ class _ListRestState extends State<ListRest> {
         centerTitle: true,
         elevation: 1,
         backgroundColor: Colors.black,
+        iconTheme: IconThemeData(color: Colors.white),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -157,7 +158,7 @@ class _ListRestState extends State<ListRest> {
     return Card(
       margin: const EdgeInsets.all(20),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           data['media_gallery_entries'] != null &&
                   data['media_gallery_entries'].isNotEmpty
@@ -175,12 +176,21 @@ class _ListRestState extends State<ListRest> {
             ),
           ),
           const SizedBox(height: 10),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pushNamed(context, 'modification', arguments: data);
-            },
-            child: const Text('Modificación'),
-          ),
+       SizedBox(
+  width: double.infinity, // Ajusta el ancho deseado
+  child: ElevatedButton(
+    style: ElevatedButton.styleFrom(
+      backgroundColor: Colors.black,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.zero,
+      ),
+    ),
+    onPressed: () {
+      Navigator.pushNamed(context, 'modification', arguments: data);
+    },
+    child: const Text('Modificación', style: TextStyle(color: Colors.white)),
+  ),
+),
         ],
       ),
     );

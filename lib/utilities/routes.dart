@@ -24,7 +24,6 @@ import 'package:andromeda/screens/user/profile.dart';
 import 'package:andromeda/screens/user/configurations.dart';
 //Store
 import 'package:andromeda/screens/restaurant/detail.dart';
-import 'package:andromeda/screens/restaurant/store.dart';
 import 'package:andromeda/screens/restaurant/review.dart';
 
 class Router {
@@ -71,13 +70,6 @@ class Router {
         return MaterialPageRoute(builder: (_) => const MySavedPage());
       case 'start':
         return MaterialPageRoute(builder: (_) => const MyStartPage());
-      case 'store':
-        final id = settings.arguments as int;
-        return MaterialPageRoute(
-          builder: (_) => MyStorePage(
-            id: id,
-          ),
-        );
       case 'profile':
         return MaterialPageRoute(builder: (_) => const MyProfilePage());
       case 'RecoverPassword':

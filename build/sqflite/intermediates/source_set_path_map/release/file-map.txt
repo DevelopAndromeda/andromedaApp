@@ -1,0 +1,12 @@
+com.tekartik.sqflite-jetified-window-1.0.0-beta04-0 /Users/emmanuelsantizfelipe/.gradle/caches/transforms-3/543f92f8826f5df1de2b78bee7853a18/transformed/jetified-window-1.0.0-beta04/res
+com.tekartik.sqflite-core-1.6.0-1 /Users/emmanuelsantizfelipe/.gradle/caches/transforms-3/6597e26937a6b7ac7c14feab5c473f85/transformed/core-1.6.0/res
+com.tekartik.sqflite-jetified-annotation-experimental-1.1.0-2 /Users/emmanuelsantizfelipe/.gradle/caches/transforms-3/7bfd9cdfd5d221e29dce1401644606da/transformed/jetified-annotation-experimental-1.1.0/res
+com.tekartik.sqflite-jetified-window-java-1.0.0-beta04-3 /Users/emmanuelsantizfelipe/.gradle/caches/transforms-3/dc6f5b890a4d89afea675a9dfd8329c3/transformed/jetified-window-java-1.0.0-beta04/res
+com.tekartik.sqflite-main-4 /Users/emmanuelsantizfelipe/.pub-cache/hosted/pub.dev/sqflite-2.2.8+4/android/src/main/res
+com.tekartik.sqflite-release-5 /Users/emmanuelsantizfelipe/.pub-cache/hosted/pub.dev/sqflite-2.2.8+4/android/src/release/res
+com.tekartik.sqflite-pngs-6 /Users/emmanuelsantizfelipe/Documents/flutter/andromedaapp/build/sqflite/generated/res/pngs/release
+com.tekartik.sqflite-resValues-7 /Users/emmanuelsantizfelipe/Documents/flutter/andromedaapp/build/sqflite/generated/res/resValues/release
+com.tekartik.sqflite-rs-8 /Users/emmanuelsantizfelipe/Documents/flutter/andromedaapp/build/sqflite/generated/res/rs/release
+com.tekartik.sqflite-mergeReleaseResources-9 /Users/emmanuelsantizfelipe/Documents/flutter/andromedaapp/build/sqflite/intermediates/incremental/release/mergeReleaseResources/merged.dir
+com.tekartik.sqflite-mergeReleaseResources-10 /Users/emmanuelsantizfelipe/Documents/flutter/andromedaapp/build/sqflite/intermediates/incremental/release/mergeReleaseResources/stripped.dir
+com.tekartik.sqflite-merged_res-11 /Users/emmanuelsantizfelipe/Documents/flutter/andromedaapp/build/sqflite/intermediates/merged_res/release
