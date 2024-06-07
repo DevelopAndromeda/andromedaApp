@@ -98,54 +98,57 @@ class _MySavedPageState extends State<MySavedPage> {
   }
 
   Widget _buildCard(data) {
-    return Card(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            width: double.infinity,
-            height: 150,
-            decoration: getImg(
-                data['images'] != null ? data['images'][0]['file'] : null),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Align(
-                  alignment: Alignment.topRight,
-                  child: IconButton(
-                    icon: const Icon(
-                      Icons.delete,
-                      color: Colors.red, // Cambia el color del icono aquí
+    return Container(
+      padding: const EdgeInsets.all(10),
+      child: Card(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              width: double.infinity,
+              height: 150,
+              decoration: getImg(
+                  data['images'] != null ? data['images'][0]['file'] : null),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Align(
+                    alignment: Alignment.topRight,
+                    child: IconButton(
+                      icon: const Icon(
+                        Icons.delete,
+                        color: Colors.red, // Cambia el color del icono aquí
+                      ),
+                      onPressed: () async {
+                        final user = await serviceDB.instance
+                            .getById('users', 'id_user', 1);
+                        if (user.isEmpty) {
+                          return;
+                        }
+                        String token = user[0]['token'];
+                        await delete(token, 'custom',
+                            'wishlist/customer/item/${data['product_id']}');
+                        setState(() {});
+                        responseSuccessWarning(context, 'Se borro favorito');
+                      },
                     ),
-                    onPressed: () async {
-                      final user = await serviceDB.instance
-                          .getById('users', 'id_user', 1);
-                      if (user.isEmpty) {
-                        return;
-                      }
-                      String token = user[0]['token'];
-                      await delete(token, 'custom',
-                          'wishlist/customer/item/${data['product_id']}');
-                      setState(() {});
-                      ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('Se borro favorito')));
-                    },
-                  ),
-                )
-              ],
+                  )
+                ],
+              ),
             ),
-          ),
-          Text(
-            data['name'],
-            style: const TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 8.0),
-          Text(
-            'SKU: ${data['sku']}',
-            style: const TextStyle(fontSize: 16.0),
-          ),
-        ],
+            Text(
+              data['name'],
+              style:
+                  const TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 8.0),
+            Text(
+              'SKU: ${data['sku']}',
+              style: const TextStyle(fontSize: 16.0),
+            ),
+          ],
+        ),
       ),
     );
   }

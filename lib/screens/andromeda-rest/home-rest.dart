@@ -2,6 +2,8 @@ import 'package:andromeda/screens/andromeda-rest/menu.dart';
 import 'package:flutter/material.dart';
 import 'package:andromeda/services/db.dart';
 
+import 'package:andromeda/Witgets/Colores_Base.dart';
+
 class MyHomeRestPage extends StatefulWidget {
   const MyHomeRestPage({super.key});
 
@@ -36,8 +38,16 @@ class _MyHomeRestPageState extends State<MyHomeRestPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: NavDrawer(changeSalida: () {}),
+      backgroundColor: Background_Color,
       appBar: AppBar(
-        title: const Text('Panel de Administración'),
+        title: const Text(
+          'Panel de Administracion',
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        ),
+        centerTitle: true,
+        elevation: 1,
+        backgroundColor: const Color.fromARGB(255, 0, 0, 0),
+        iconTheme: IconThemeData(color: Colors.white),
       ),
       body: Padding(
         padding: const EdgeInsets.all(5.0),

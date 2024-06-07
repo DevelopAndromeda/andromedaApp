@@ -42,32 +42,29 @@ class _MyProfilePageState extends State<MyProfilePage> {
     return Scaffold(
       //Inicio de AppBar
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        flexibleSpace: Row(
-          children: [
-            const Spacer(),
-            // Spacer se utiliza para empujar el título al centro
-            const Center(
-              child: Text(
-                'Andromeda',
-                style: TextStyle(
-                  fontSize: 24, // Tamaño del texto
-                ),
-              ),
-            ),
-            const Spacer(),
-            IconButton(
-              icon: const Icon(
-                Icons.exit_to_app_rounded,
-                size: 30, // Tamaño del icono
-              ),
-              onPressed: () async {
-                closeSession(context);
-              },
-            ),
-          ],
-        ),
+  backgroundColor: Colors.black,   // Fondo negro
+  centerTitle: true,               // Centrar el título
+  title: const Text(
+    'Andromeda',
+    style: TextStyle(
+      fontSize: 24,                 // Tamaño de fuente (puedes ajustarlo)
+      color: Colors.white,          // Texto blanco
+      fontWeight: FontWeight.bold,  // Negrita
+    ),
+  ),
+  actions: [                       // Ícono de salida en la esquina derecha
+    IconButton(
+      icon: const Icon(
+        Icons.exit_to_app_rounded, 
+        size: 30,                   // Tamaño del ícono (ajustable)
+        color: Colors.white,        // Ícono blanco
       ),
+      onPressed: () async {
+        closeSession(context);     // Función para cerrar sesión
+      },
+    ),
+  ],
+),
 
       //Inicio de Body
       body: Padding(
@@ -87,7 +84,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
                 ),
 
                 const Positioned(
-                  top: 150,
+                  top: 100,
                   child: CircleAvatar(
                     radius: 50,
                     backgroundImage: AssetImage("assets/Profile.png"),

@@ -17,6 +17,9 @@ class RestuarentScreen extends StatefulWidget {
 class _RestuarentScreenState extends State<RestuarentScreen> {
   @override
   Widget build(BuildContext context) {
+    print(widget.data['sku']);
+    print(widget.data['media_gallery_entries']);
+    print(widget.data['images']);
     //print(widget.data['media_gallery_entries']);
     final height = MediaQuery.of(context).size.height * 1;
     final width = MediaQuery.of(context).size.width * 1;
@@ -38,20 +41,15 @@ class _RestuarentScreenState extends State<RestuarentScreen> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Stack(
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: widget.data['media_gallery_entries'] != null
-                        ? Image.network(
-                            pathMedia(widget.data['media_gallery_entries'][0]
-                                ['file']),
-                            width: 300,
-                            height: 180)
-                        : Image.asset('assets/notFoundImg.png',
-                            width: 350, height: 180),
-                  ),
-                ],
+              Expanded(
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: widget.data['media_gallery_entries'] != null &&
+                          widget.data['media_gallery_entries'].length > 0
+                      ? Image.network(pathMedia(
+                          widget.data['media_gallery_entries'][0]['file']))
+                      : Image.asset('assets/notFoundImg.png'),
+                ),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -78,8 +76,8 @@ class _RestuarentScreenState extends State<RestuarentScreen> {
                           {},
                           '');
                       if (favorite['success']) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text('Se agrego a favoritos')));
+                        responseSuccessWarning(
+                            context, "Se agrego a favoritos");
                       }
 
                       //print(favorite);

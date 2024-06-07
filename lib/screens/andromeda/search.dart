@@ -90,8 +90,21 @@ class _MySearchPageState extends State<MySearchPage> {
                   },
                   initialData: const []),
             )
-          : const Center(
-              child: Text('Ingresa datos para realizar una busqueda')),
+          : Center(
+              child: Column(
+                mainAxisAlignment:
+                    MainAxisAlignment.center, // Centra verticalmente
+                children: const [
+                  Text('Ingresa datos para realizar una busqueda'),
+                  SizedBox(height: 10), // Espacio entre los textos
+                  Text('Nombre de restaurante'),
+                  SizedBox(height: 10),
+                  Text('Ciudad'),
+                  SizedBox(height: 10),
+                  Text('Tipo de restaurante'),
+                ],
+              ),
+            ),
       bottomNavigationBar: const MyBottomBar(
         index: 0,
       ),
