@@ -118,3 +118,23 @@ dynamic deleteFavoritos(BuildContext context, id) {
     barrierDismissible: false,
   );
 }
+
+String translateStatus(String status) {
+  switch (status) {
+    case 'for_serve':
+      return 'Por Atender';
+    case 'serving':
+      return 'Atendiendo';
+    case 'canceled':
+      return 'Cancelada';
+    case 'table_free':
+      return 'Libre';
+    case 'pending':
+      return 'Pendiente';
+    case 'reserved':
+      return 'Reservada';
+
+    default:
+      return status; // Devuelve el título original si no coincide con ninguna opción
+  }
+}

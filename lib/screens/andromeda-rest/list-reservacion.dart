@@ -1,3 +1,4 @@
+import 'package:andromeda/utilities/constanst.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -5,7 +6,7 @@ import 'package:andromeda/services/db.dart';
 import 'package:andromeda/services/api.dart';
 
 import 'package:andromeda/Witgets/Colores_Base.dart';
-import 'package:andromeda/Witgets/LabelCard.dart';
+import 'package:andromeda/Witgets/label_card.dart';
 import 'package:andromeda/screens/andromeda-rest/menu.dart';
 import 'package:intl/intl.dart';
 
@@ -150,7 +151,7 @@ class _listReservacionState extends State<listReservacion> {
                       ),
                       const SizedBox(height: 20),
                       Text(
-                        'Estado: ${data['status']}',
+                        'Estado: ${translateStatus(data['status'])}',
                         style: const TextStyle(fontSize: 14),
                       ),
                       const SizedBox(height: 3),
@@ -176,7 +177,7 @@ class _listReservacionState extends State<listReservacion> {
                       : data['status'] == 'pending'
                           ? Color.fromARGB(255, 241, 206, 10)
                           : Color.fromARGB(255, 235, 154, 148)) as Color,
-                  title: data['status'])
+                  title: translateStatus(data['status']))
             ],
           ),
         ),
