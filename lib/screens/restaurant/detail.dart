@@ -1,3 +1,4 @@
+import 'package:andromeda/components/restaurant.dart';
 import 'package:andromeda/screens/restaurant/contact.dart';
 import 'package:andromeda/services/api.dart';
 import 'package:andromeda/services/db.dart';
@@ -6,7 +7,7 @@ import 'package:andromeda/Witgets/bottomBar.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:andromeda/screens/restaurant/review.dart';
 import 'package:intl/intl.dart';
-
+import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:andromeda/utilities/constanst.dart';
 
 class MyDetailPage extends StatefulWidget {
@@ -428,10 +429,9 @@ class _MyDetailPageState extends State<MyDetailPage>
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 8),
-                  Text(
+                  HtmlWidget(
                     getCustomAttribute(
-                        widget.data['custom_attributes'], 'short_description'),
-                    style: const TextStyle(fontSize: 16),
+                        widget.data['custom_attributes'], 'short_description')
                   ),
                   TabBar(
                     labelColor: const Color.fromARGB(255, 0, 0, 0),
