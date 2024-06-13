@@ -1,4 +1,3 @@
-import 'package:andromeda/components/restaurant.dart';
 import 'package:andromeda/screens/restaurant/contact.dart';
 import 'package:andromeda/services/api.dart';
 import 'package:andromeda/services/db.dart';
@@ -7,8 +6,8 @@ import 'package:andromeda/Witgets/bottomBar.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:andromeda/screens/restaurant/review.dart';
 import 'package:intl/intl.dart';
-import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:andromeda/utilities/constanst.dart';
+import 'package:html_parsed_read_more/html_parsed_read_more.dart';
 
 class MyDetailPage extends StatefulWidget {
   //final int data;
@@ -413,6 +412,46 @@ class _MyDetailPageState extends State<MyDetailPage>
             ),*/
             crearSlider(),
             Padding(
+              padding: const EdgeInsets.only(left: 10, top: 10, bottom: 10, right: 10,),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Divider(
+                    color: Colors.blue,
+                    thickness: 1,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 32, bottom: 32),
+                    child: Text(
+                      widget.data['name'],
+                      style: const TextStyle(
+                          fontSize: 36, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  const Divider(
+                    color: Colors.blue,
+                    thickness: 1,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8, bottom: 8),
+                    child: HtmlParsedReadMore(
+                      readLessText: 'Ver menos',
+                      readMoreText: 'Más información',
+                      maxLinesReadLess: 3,
+                      maxLinesReadMore: 1000,
+                      textOverflow: TextOverflow.ellipsis,
+                      fontFamily: 'poppins',
+                      textButtonFontSize: 14.0,
+                      buttonAlignment: Alignment.bottomLeft,
+                      buttonPadding: const EdgeInsets.only(top: 0),
+                      text: getCustomAttribute(widget.data['custom_attributes'],
+                          'short_description'),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -429,10 +468,6 @@ class _MyDetailPageState extends State<MyDetailPage>
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 8),
-                  HtmlWidget(
-                    getCustomAttribute(
-                        widget.data['custom_attributes'], 'short_description')
-                  ),
                   TabBar(
                     labelColor: const Color.fromARGB(255, 0, 0, 0),
                     indicatorColor: Colors.black,
