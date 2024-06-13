@@ -5,7 +5,7 @@ import 'package:shimmer/shimmer.dart';
 import 'package:andromeda/services/db.dart';
 import 'package:andromeda/services/api.dart';
 import 'package:intl/intl.dart';
-import 'package:andromeda/Witgets/LabelCard.dart';
+import 'package:andromeda/Witgets/label_card.dart';
 
 import 'package:andromeda/utilities/constanst.dart';
 
@@ -173,9 +173,9 @@ class _MyHistoryPageState extends State<MyHistoryPage> {
                         style: const TextStyle(
                             fontSize: 18, fontWeight: FontWeight.bold),
                       ),
-                      const SizedBox(height: 20),
+                      const Spacer(),
                       Text(
-                        'Estado: ${data['status']}',
+                        'Estado: ${translateStatus(data['status'])}',
                         style: const TextStyle(fontSize: 14),
                       ),
                       Text(
@@ -275,7 +275,7 @@ class _MyHistoryPageState extends State<MyHistoryPage> {
                       : data['status'] == 'pending'
                           ? Color.fromARGB(255, 241, 206, 10)
                           : Color.fromARGB(255, 235, 154, 148)) as Color,
-                  title: data['status'])
+                  title: translateStatus(data['status']))
             ],
           ),
         ),
