@@ -1,3 +1,4 @@
+import 'package:andromeda/Witgets/make_a_reservation.dart';
 import 'package:andromeda/screens/restaurant/contact.dart';
 import 'package:andromeda/services/api.dart';
 import 'package:andromeda/services/db.dart';
@@ -120,7 +121,8 @@ class _MyDetailPageState extends State<MyDetailPage>
     }
   }
 
-  Future<void> generateOrden() async {
+  Future<void> generateOrden(DateTime _selectedDate, int personas) async {
+    
     //print('************* Obtener Sesion *************');
     final sesion = await serviceDB.instance.getById('users', 'id_user', 1);
     // Generar carrito vacio
@@ -448,6 +450,7 @@ class _MyDetailPageState extends State<MyDetailPage>
                           'short_description'),
                     ),
                   ),
+                  MakeAReservationForm(createReservation: generateOrden),
                 ],
               ),
             ),
@@ -614,7 +617,7 @@ class _MyDetailPageState extends State<MyDetailPage>
                               padding:
                                   const EdgeInsets.symmetric(vertical: 20.0),
                               child: ElevatedButton(
-                                onPressed: generateOrden,
+                                onPressed: ()=>{},
                                 style: ElevatedButton.styleFrom(
                                     backgroundColor: Colors.black,
                                     textStyle: const TextStyle(
