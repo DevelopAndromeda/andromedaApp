@@ -147,7 +147,7 @@ class MakeAReservationFormState extends State<MakeAReservationForm> {
                 ),
               ),
               const Divider(
-                color: Colors.blue,
+                color: Colors.black,
                 thickness: 1,
               ),
               Padding(
@@ -156,7 +156,7 @@ class MakeAReservationFormState extends State<MakeAReservationForm> {
                   value: people,
                   icon: const Icon(Icons.arrow_downward),
                   elevation: 16,
-                  style: const TextStyle(color: Colors.deepPurple),
+                  style: const TextStyle(color: Colors.black),
                   onChanged: (int? value) {
                     // This is called when the user selects an item.
                     setState(() {

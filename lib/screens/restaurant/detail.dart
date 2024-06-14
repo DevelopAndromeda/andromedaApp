@@ -348,7 +348,7 @@ class _MyDetailPageState extends State<MyDetailPage>
     //print(widget.data);
     super.initState();
     //_daySlot = getSlot(widget.data['id']);
-    _tabController = TabController(length: 3, vsync: this);
+    _tabController = TabController(length: 2, vsync: this);
     getOptions(widget.data['sku']);
     getSlot(widget.data['id'].toString());
     //_options = getOptions(widget.data['sku']);
@@ -419,7 +419,7 @@ class _MyDetailPageState extends State<MyDetailPage>
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Divider(
-                    color: Colors.blue,
+                    color: Colors.black,
                     thickness: 1,
                   ),
                   Padding(
@@ -431,7 +431,7 @@ class _MyDetailPageState extends State<MyDetailPage>
                     ),
                   ),
                   const Divider(
-                    color: Colors.blue,
+                    color: Colors.black,
                     thickness: 1,
                   ),
                   Padding(
@@ -459,35 +459,21 @@ class _MyDetailPageState extends State<MyDetailPage>
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    widget.data['name'],
-                    style: const TextStyle(
-                        fontSize: 24, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 8),
-                  const SizedBox(height: 10),
-                  const Text(
-                    'Descripción:',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
                   const SizedBox(height: 8),
                   TabBar(
                     labelColor: const Color.fromARGB(255, 0, 0, 0),
                     indicatorColor: Colors.black,
                     onTap: (index) {
                       //print(index);
-                      if (index == 1) {
+                      if (index == 0) {
                         Navigator.of(context).push(_createRoute());
                       }
 
-                      if (index == 2) {
+                      if (index == 1) {
                         Navigator.of(context).push(_createRouteContac());
                       }
                     },
                     tabs: const <Widget>[
-                      Tab(
-                        text: 'Reservacion',
-                      ),
                       Tab(
                         text: 'Reseñas',
                       ),
@@ -496,149 +482,6 @@ class _MyDetailPageState extends State<MyDetailPage>
                       ),
                     ],
                     controller: _tabController,
-                  ),
-                  SizedBox(
-                    height: 700,
-                    child: TabBarView(
-                      controller: _tabController,
-                      children: <Widget>[
-                        Column(
-                          children: [
-                            const SizedBox(height: 20.0),
-                            const Text(
-                              'Día y Hora de Reserva',
-                              style: TextStyle(fontSize: 25),
-                            ),
-                            const SizedBox(height: 10.0),
-                            Flexible(
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 5, horizontal: 5),
-                                child: ListTile(
-                                  title: Text(
-                                      "Fecha: ${DateFormat('yyyy-MM-dd').format(_selectedDate)}"),
-                                  trailing: const Icon(Icons.calendar_today),
-                                  onTap: () => _selectDate(context),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: 10.0),
-                            Expanded(
-                              child: Container(
-                                padding: const EdgeInsets.only(top: 3),
-                                height: size.height * 1.5,
-                                width: double.infinity,
-                                child: GridView.builder(
-                                    itemCount: _allSlotDay.length,
-                                    gridDelegate:
-                                        const SliverGridDelegateWithFixedCrossAxisCount(
-                                            childAspectRatio: 1.5,
-                                            crossAxisCount: 4,
-                                            crossAxisSpacing: 4.0,
-                                            mainAxisSpacing: 4.0),
-                                    itemBuilder:
-                                        (BuildContext context, int index) {
-                                      return Container(
-                                        padding: const EdgeInsets.all(15),
-                                        decoration: BoxDecoration(
-                                          color: index == slot_id
-                                              ? Colors.black
-                                              : Colors.black54,
-                                          borderRadius:
-                                              BorderRadius.circular(20),
-                                          boxShadow: [
-                                            BoxShadow(
-                                              offset: Offset(0, 17),
-                                              blurRadius: 17,
-                                              spreadRadius: -23,
-                                              color: Colors.black,
-                                            ),
-                                          ],
-                                        ),
-                                        child: InkWell(
-                                          onTap: () {
-                                            //print(index);
-                                            //print(_allSlotDay[index]);
-                                            setState(() {
-                                              Hora = _allSlotDay[index]['time'];
-                                              slot_id = index;
-                                            });
-                                          },
-                                          child: Column(
-                                            children: <Widget>[
-                                              const Icon(
-                                                Icons.timer_sharp,
-                                                size: 13,
-                                                color: Colors.white,
-                                              ),
-                                              Text(
-                                                "${_allSlotDay[index]['time']}",
-                                                style: TextStyle(
-                                                    color: Colors.white),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                      );
-                                      /*return Text(
-                                        "${_allSlotDay[index]['qty']} - ${_allSlotDay[index]['time']}",
-                                      );*/
-                                    }),
-                              ),
-                            ),
-                            Flexible(
-                              child: SizedBox(
-                                child: DropdownButtonFormField<String>(
-                                  items: [],
-                                  /*personasList.map((e) {
-                                    return DropdownMenuItem(
-                                      child: SizedBox(
-                                        width: double.infinity,
-                                        child: Text(
-                                          e,
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                      ),
-                                      value: e,
-                                    );
-                                  }).toList(),*/
-                                  decoration: const InputDecoration(
-                                      labelText: 'Personas'),
-                                  onChanged: (String? newValue) {
-                                    setState(() {
-                                      _selectPersona = newValue!;
-                                    });
-                                  },
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: 10.0),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(vertical: 20.0),
-                              child: ElevatedButton(
-                                onPressed: ()=>{},
-                                style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.black,
-                                    textStyle: const TextStyle(
-                                      fontSize: 20,
-                                      color: Color.fromARGB(255, 255, 255, 255),
-                                    ),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(2),
-                                    )),
-                                child: const Text(
-                                  'Generar Reserva',
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        Column(),
-                        Column()
-                      ],
-                    ),
                   ),
                 ],
               ),
