@@ -28,7 +28,6 @@ class _AndromedaState extends State<Andromeda> {
 
   @override
   Widget build(BuildContext context) {
-<<<<<<< HEAD
     AuthService authService = AuthService();
 
     return MultiBlocProvider(
@@ -52,33 +51,14 @@ class _AndromedaState extends State<Andromeda> {
           ),
           onGenerateRoute: rt.Router.generateRoute,
           initialRoute: 'splash',
+          localizationsDelegates: const [
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: const [
+            Locale('es'),
+          ],
         ));
-=======
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Andromeda',
-      themeMode: ThemeMode.light,
-      theme: ThemeData(
-        fontFamily: "Cairo",
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-        brightness: Brightness.light,
-        primaryColor: Colors.black,
-      ),
-      darkTheme: ThemeData(
-        brightness: Brightness.dark,
-        primaryColor: Colors.black,
-      ),
-      onGenerateRoute: rt.Router.generateRoute,
-      initialRoute: 'login',
-      localizationsDelegates: const [
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: const [
-        Locale('es'),
-      ],
-    );
->>>>>>> cb6425be3e5d6b6d14fe55667a3deee68ea94c89
   }
 }
