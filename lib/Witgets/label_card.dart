@@ -25,8 +25,8 @@ class LabelCard extends StatelessWidget {
       ),
       child: Text(
         title,
-        style:
-            const TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
+        style: const TextStyle(
+            color: Colors.white, fontWeight: FontWeight.w500, fontSize: 12),
       ),
     );
   }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:andromeda/utilities/routes.dart' as rt;
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'package:andromeda/services/auth.dart';
 import 'package:andromeda/blocs/login/login_bloc.dart';
@@ -27,6 +28,7 @@ class _AndromedaState extends State<Andromeda> {
 
   @override
   Widget build(BuildContext context) {
+<<<<<<< HEAD
     AuthService authService = AuthService();
 
     return MultiBlocProvider(
@@ -51,5 +53,32 @@ class _AndromedaState extends State<Andromeda> {
           onGenerateRoute: rt.Router.generateRoute,
           initialRoute: 'splash',
         ));
+=======
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Andromeda',
+      themeMode: ThemeMode.light,
+      theme: ThemeData(
+        fontFamily: "Cairo",
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+        brightness: Brightness.light,
+        primaryColor: Colors.black,
+      ),
+      darkTheme: ThemeData(
+        brightness: Brightness.dark,
+        primaryColor: Colors.black,
+      ),
+      onGenerateRoute: rt.Router.generateRoute,
+      initialRoute: 'login',
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('es'),
+      ],
+    );
+>>>>>>> cb6425be3e5d6b6d14fe55667a3deee68ea94c89
   }
 }

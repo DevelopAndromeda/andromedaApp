@@ -116,4 +116,28 @@ String pathMedia(String media) {
     panaraDialogType: PanaraDialogType.error,
     barrierDismissible: false,
   );
+<<<<<<< HEAD
 }*/
+=======
+}
+
+String translateStatus(String status) {
+  switch (status) {
+    case 'for_serve':
+      return 'Por Atender';
+    case 'serving':
+      return 'Atendiendo';
+    case 'canceled':
+      return 'Cancelada';
+    case 'table_free':
+      return 'Libre';
+    case 'pending':
+      return 'Pendiente';
+    case 'reserved':
+      return 'Reservada';
+
+    default:
+      return status; // Devuelve el título original si no coincide con ninguna opción
+  }
+}
+>>>>>>> cb6425be3e5d6b6d14fe55667a3deee68ea94c89

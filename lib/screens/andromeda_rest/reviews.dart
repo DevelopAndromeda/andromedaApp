@@ -133,55 +133,6 @@ class _Reviews extends State<Reviews> {
                 ),
               ),
             ),
-            // Botones de Modificar y Eliminar en la parte inferior derecha
-            Align(
-              alignment: Alignment.bottomRight,
-              child: Padding(
-                padding: const EdgeInsets.all(0.0),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        IconButton(
-                          icon: const Icon(
-                            Icons.add_task,
-                            color:
-                                Colors.blue, // Cambia el color del icono aquí
-                          ),
-                          iconSize: 30,
-                          onPressed: () {
-                            setNewState(data, 1);
-                            // Acción cuando se presiona "Modificar"
-                            // Puedes agregar tu lógica aquí
-                          },
-                        ),
-                      ],
-                    ),
-                    // Espacio entre los botones
-                    Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        IconButton(
-                          padding: EdgeInsets.zero,
-                          icon: const Icon(
-                            Icons.auto_delete_outlined,
-                            color: Colors.red, // Cambia el color del icono aquí
-                          ),
-                          iconSize: 30,
-                          onPressed: () {
-                            setNewState(data, 3);
-                            // Acción cuando se presiona "Eliminar"
-                            // Puedes agregar tu lógica aquí
-                          },
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
           ],
         ),
       ),

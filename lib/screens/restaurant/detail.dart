@@ -1,5 +1,9 @@
+<<<<<<< HEAD
 // ignore_for_file: use_build_context_synchronously
 
+=======
+import 'package:andromeda/Witgets/make_a_reservation.dart';
+>>>>>>> cb6425be3e5d6b6d14fe55667a3deee68ea94c89
 import 'package:andromeda/screens/restaurant/contact.dart';
 import 'package:andromeda/services/api.dart';
 import 'package:andromeda/services/db.dart';
@@ -7,8 +11,8 @@ import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:andromeda/screens/restaurant/review.dart';
 import 'package:intl/intl.dart';
-
 import 'package:andromeda/utilities/constanst.dart';
+import 'package:html_parsed_read_more/html_parsed_read_more.dart';
 
 class MyDetailPage extends StatefulWidget {
   //final int data;
@@ -121,7 +125,8 @@ class _MyDetailPageState extends State<MyDetailPage>
     }
   }
 
-  Future<void> generateOrden() async {
+  Future<void> generateOrden(DateTime _selectedDate, int personas) async {
+    
     //print('************* Obtener Sesion *************');
     final sesion = await serviceDB.instance.getById('users', 'id_user', 1);
     // Generar carrito vacio
@@ -348,7 +353,7 @@ class _MyDetailPageState extends State<MyDetailPage>
     //print(widget.data);
     super.initState();
     //_daySlot = getSlot(widget.data['id']);
-    _tabController = TabController(length: 3, vsync: this);
+    _tabController = TabController(length: 2, vsync: this);
     getOptions(widget.data['sku']);
     getSlot(widget.data['id'].toString());
     //_options = getOptions(widget.data['sku']);
@@ -418,45 +423,67 @@ class _MyDetailPageState extends State<MyDetailPage>
             ),*/
             crearSlider(),
             Padding(
+              padding: const EdgeInsets.only(left: 10, top: 10, bottom: 10, right: 10,),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Divider(
+                    color: Colors.black,
+                    thickness: 1,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 32, bottom: 32),
+                    child: Text(
+                      widget.data['name'],
+                      style: const TextStyle(
+                          fontSize: 36, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  const Divider(
+                    color: Colors.black,
+                    thickness: 1,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8, bottom: 8),
+                    child: HtmlParsedReadMore(
+                      readLessText: 'Ver menos',
+                      readMoreText: 'Más información',
+                      maxLinesReadLess: 3,
+                      maxLinesReadMore: 1000,
+                      textOverflow: TextOverflow.ellipsis,
+                      fontFamily: 'poppins',
+                      textButtonFontSize: 14.0,
+                      buttonAlignment: Alignment.bottomLeft,
+                      buttonPadding: const EdgeInsets.only(top: 0),
+                      text: getCustomAttribute(widget.data['custom_attributes'],
+                          'short_description'),
+                    ),
+                  ),
+                  MakeAReservationForm(createReservation: generateOrden),
+                ],
+              ),
+            ),
+            Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    widget.data['name'],
-                    style: const TextStyle(
-                        fontSize: 24, fontWeight: FontWeight.bold),
-                  ),
                   const SizedBox(height: 8),
-                  const SizedBox(height: 10),
-                  const Text(
-                    'Descripción:',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    getCustomAttribute(
-                        widget.data['custom_attributes'], 'short_description'),
-                    style: const TextStyle(fontSize: 16),
-                  ),
                   TabBar(
                     labelColor: const Color.fromARGB(255, 0, 0, 0),
                     indicatorColor: Colors.black,
                     isScrollable: false,
                     onTap: (index) {
                       //print(index);
-                      if (index == 1) {
+                      if (index == 0) {
                         Navigator.of(context).push(_createRoute());
                       }
 
-                      if (index == 2) {
+                      if (index == 1) {
                         Navigator.of(context).push(_createRouteContac());
                       }
                     },
                     tabs: const <Widget>[
-                      Tab(
-                        text: 'Reservacion',
-                      ),
                       Tab(
                         text: 'Reseñas',
                       ),
@@ -466,6 +493,7 @@ class _MyDetailPageState extends State<MyDetailPage>
                     ],
                     controller: _tabController,
                   ),
+<<<<<<< HEAD
                   SizedBox(
                     height: 700,
                     child: TabBarView(
@@ -609,6 +637,8 @@ class _MyDetailPageState extends State<MyDetailPage>
                       ],
                     ),
                   ),
+=======
+>>>>>>> cb6425be3e5d6b6d14fe55667a3deee68ea94c89
                 ],
               ),
             ),
