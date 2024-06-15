@@ -12,22 +12,39 @@ class serviceDB {
 
   //Create Tables
   Future _onCreate(Database db, int version) async {
-    Batch batch = db.batch();
+    await db.execute("DROP TABLE IF EXISTS users;");
+    await db.execute("DROP TABLE IF EXISTS stores;");
+    await db.execute("DROP TABLE IF EXISTS states;");
+    await db.execute("DROP TABLE IF EXISTS favorites;");
+    await db.execute(
+        'CREATE TABLE IF NOT EXISTS users(id_user INTEGER PRIMARY KEY, nombre TEXT NULL, apellido_paterno TEXT NULL, apellido_materno TEXT NULL, telefono TEXT NULL, codigo_postal TEXT NULL, estado TEXT NULL, password TEXT, username TEXT NULL, lat TEXT NULL, long TEXT NULL, token TEXT NULL, id INTEGER NULL, group_id INTEGER NULL, zip_code TEXT NULL, name_city TEXT NULL, name_business TEXT NULL, rfc_id TEXT NULL)');
+    await db.execute(
+        'CREATE TABLE IF NOT EXISTS stores(id_store INTEGER PRIMARY KEY, nombre TEXT, direccion TEXT, id_tipo_comida INTEGER, id_tipo_restaurante INTEGER, cantidad_mesas NUMERIC)');
+    await db.execute(
+        'CREATE TABLE IF NOT EXISTS states(id INTEGER PRIMARY KEY, label TEXT, code TEXT)');
+    await db.execute(
+        'CREATE TABLE IF NOT EXISTS favorites(id INTEGER PRIMARY KEY)');
+    /*Batch batch = db.batch();
     batch.execute("DROP TABLE IF EXISTS users;");
     batch.execute("DROP TABLE IF EXISTS stores;");
     batch.execute("DROP TABLE IF EXISTS states;");
-
+    batch.execute("DROP TABLE IF EXISTS favorites;");
+    print('users');
     batch.execute(
-        'CREATE TABLE users(id_user INTEGER PRIMARY KEY, nombre TEXT NULL, apellido_paterno TEXT NULL, apellido_materno TEXT NULL, telefono TEXT NULL, codigo_postal TEXT NULL, estado TEXT NULL, password TEXT, username TEXT NULL, lat TEXT NULL, long TEXT NULL, token TEXT NULL, id INTEGER NULL, group_id INTEGER NULL, token_integration TEXT NULL)');
-
+        'CREATE TABLE IF NOT EXISTS users(id_user INTEGER PRIMARY KEY, nombre TEXT NULL, apellido_paterno TEXT NULL, apellido_materno TEXT NULL, telefono TEXT NULL, codigo_postal TEXT NULL, estado TEXT NULL, password TEXT, username TEXT NULL, lat TEXT NULL, long TEXT NULL, token TEXT NULL, id INTEGER NULL, group_id INTEGER NULL, token_integration TEXT NULL)');
+    print('stores');
     batch.execute(
-        'CREATE TABLE stores(id_store INTEGER PRIMARY KEY, nombre TEXT, direccion TEXT, id_tipo_comida INTEGER, id_tipo_restaurante INTEGER, cantidad_mesas NUMERIC)');
+        'CREATE TABLE IF NOT EXISTS stores(id_store INTEGER PRIMARY KEY, nombre TEXT, direccion TEXT, id_tipo_comida INTEGER, id_tipo_restaurante INTEGER, cantidad_mesas NUMERIC)');
 
     //Catalogos
+    print('states');
     batch.execute(
-        'CREATE TABLE states(id INTEGER PRIMARY KEY, label TEXT, code TEXT)');
+        'CREATE TABLE IF NOT EXISTS states(id INTEGER PRIMARY KEY, label TEXT, code TEXT)');
+    print('favorites');
+    batch.execute(
+        'CREATE TABLE IF NOT EXISTS favorites(id INTEGER PRIMARY KEY)');
 
-    await batch.commit();
+    await batch.commit();*/
   }
 
   //Create Database
@@ -51,7 +68,8 @@ class serviceDB {
 
     batch.execute('DELETE FROM users;');
     batch.execute('DELETE FROM stores;');
-    //batch.execute('DELETE FROM states;');
+    batch.execute('DELETE FROM states;');
+    //batch.execute('DELETE FROM favorites;');
 
     await batch.commit();
   }

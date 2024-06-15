@@ -7,7 +7,8 @@ class ReservationNotification extends StatelessWidget {
   final String imagePath;
   final VoidCallback onClose;
 
-  ReservationNotification({
+  const ReservationNotification({
+    super.key,
     required this.title,
     required this.subtitle,
     required this.description,

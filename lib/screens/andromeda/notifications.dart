@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:andromeda/Witgets/Notifications/Reservation_Notificacion.dart';
-import 'package:andromeda/Witgets/bottomBar.dart';
+import 'package:andromeda/witgets/notifications/reservation_notificacion.dart';
 
 class MyNotificationsPage extends StatefulWidget {
   const MyNotificationsPage({super.key});
@@ -35,9 +34,9 @@ class _MyNotificationsPageState extends State<MyNotificationsPage> {
           ),
         ),
       ),
-      bottomNavigationBar: const MyBottomBar(
+      /*bottomNavigationBar: const MyBottomBar(
         index: 4,
-      ),
+      ),*/
     );
   }
 /*

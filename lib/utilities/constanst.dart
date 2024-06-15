@@ -5,7 +5,6 @@ import 'package:panara_dialogs/panara_dialogs.dart';
 import 'package:andromeda/utilities/strings.dart';
 
 import 'package:andromeda/services/db.dart';
-import 'package:andromeda/services/api.dart';
 
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
@@ -43,23 +42,23 @@ responseSuccessWarning(context, String msj) {
 }
 
 dynamic closeSession(BuildContext context) {
-  return PanaraConfirmDialog.show(
-    context,
-    title: MyString.areYouSure,
-    message: "Cerraremos tu sesion",
-    confirmButtonText: "Si",
-    cancelButtonText: "No",
-    onTapCancel: () {
-      Navigator.pop(context);
-    },
-    onTapConfirm: () async {
-      await serviceDB.instance.cleanAllTable();
-      Navigator.of(context)
-          .pushNamedAndRemoveUntil('login', (Route<dynamic> route) => false);
-    },
-    panaraDialogType: PanaraDialogType.error,
-    barrierDismissible: false,
-  );
+  return PanaraConfirmDialog.showAnimatedFromBottom(context,
+      title: MyString.areYouSure,
+      message: "Cerraremos tu sesion",
+      confirmButtonText: "Si",
+      cancelButtonText: "No", onTapCancel: () {
+    Navigator.pop(context);
+  }, onTapConfirm: () async {
+    await serviceDB.instance.cleanAllTable();
+    //await serviceDB.instance.deleteDatabase();
+    Navigator.of(context)
+        .pushNamedAndRemoveUntil('login', (Route<dynamic> route) => false);
+  },
+      panaraDialogType: PanaraDialogType.custom,
+      barrierDismissible: false,
+      color: Colors.black,
+      textColor: Colors.black,
+      buttonTextColor: Colors.white);
 }
 
 String? validateEmail(String? value) {
@@ -96,7 +95,7 @@ String pathMedia(String media) {
   return "${dotenv.env['PROTOCOL']}://${dotenv.env['URL']}/media/catalog/product$media";
 }
 
-dynamic deleteFavoritos(BuildContext context, id) {
+/*dynamic deleteFavoritos(BuildContext context, id) {
   return PanaraConfirmDialog.show(
     context,
     title: MyString.areYouSure,
@@ -117,4 +116,4 @@ dynamic deleteFavoritos(BuildContext context, id) {
     panaraDialogType: PanaraDialogType.error,
     barrierDismissible: false,
   );
-}
+}*/

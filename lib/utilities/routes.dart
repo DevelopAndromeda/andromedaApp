@@ -2,23 +2,23 @@ import 'package:flutter/material.dart' hide Router;
 
 //Componentes
 import 'package:andromeda/screens/andromeda/home.dart';
-import 'package:andromeda/screens/andromeda-rest/home-rest.dart';
-import 'package:andromeda/screens/andromeda-rest/alta-rest.dart';
-import 'package:andromeda/screens/andromeda-rest/list-rest.dart';
-import 'package:andromeda/screens/andromeda-rest/list-reservacion.dart';
-import 'package:andromeda/screens/andromeda-rest/list-reviews.dart';
+import 'package:andromeda/screens/andromeda_rest/home_rest.dart';
+import 'package:andromeda/screens/andromeda_rest/alta_rest.dart';
+import 'package:andromeda/screens/andromeda_rest/list_rest.dart';
+import 'package:andromeda/screens/andromeda_rest/list_reservacion.dart';
+import 'package:andromeda/screens/andromeda_rest/list_reviews.dart';
 import 'package:andromeda/screens/andromeda/history.dart';
 import 'package:andromeda/screens/andromeda/notifications.dart';
 import 'package:andromeda/screens/andromeda/saved.dart';
 import 'package:andromeda/screens/andromeda/search.dart';
-import 'package:andromeda/screens/andromeda-rest/modificacion-rest.dart';
-import 'package:andromeda/screens/andromeda-rest/reviews.dart';
+import 'package:andromeda/screens/andromeda_rest/modificacion_rest.dart';
+import 'package:andromeda/screens/andromeda_rest/reviews.dart';
 //Auth
-import 'package:andromeda/screens/auth/Login/login.dart';
-import 'package:andromeda/screens/auth/Register/register_custom.dart';
-import 'package:andromeda/screens/auth/Recover_Password/Recover_password.dart';
+import 'package:andromeda/screens/auth/login.dart';
+import 'package:andromeda/screens/auth/register.dart';
+import 'package:andromeda/screens/auth/recover_password.dart';
 //Inicio
-import 'package:andromeda/screens/start.dart';
+import 'package:andromeda/screens/splash.dart';
 //Users
 import 'package:andromeda/screens/user/profile.dart';
 import 'package:andromeda/screens/user/configurations.dart';
@@ -58,7 +58,7 @@ class Router {
                   data: data,
                 ));
       case 'list-reservation':
-        return MaterialPageRoute(builder: (_) => const listReservacion());
+        return MaterialPageRoute(builder: (_) => const ListReservacion());
       case 'login':
         //final type = settings.arguments as int;
         return MaterialPageRoute(builder: (_) => const MyLoginPage());
@@ -68,8 +68,8 @@ class Router {
         return MaterialPageRoute(builder: (_) => const MySearchPage());
       case 'saved':
         return MaterialPageRoute(builder: (_) => const MySavedPage());
-      case 'start':
-        return MaterialPageRoute(builder: (_) => const MyStartPage());
+      case 'splash':
+        return MaterialPageRoute(builder: (_) => const MySplashPage());
       case 'profile':
         return MaterialPageRoute(builder: (_) => const MyProfilePage());
       case 'RecoverPassword':

@@ -7,7 +7,8 @@ class ModificationNotification extends StatelessWidget {
   final String imagePath;
   final VoidCallback onClose;
 
-  ModificationNotification({
+  const ModificationNotification({
+    super.key,
     required this.title,
     required this.subtitle,
     required this.description,

@@ -7,7 +7,8 @@ class CancellationNotification extends StatelessWidget {
   final String imagePath;
   final VoidCallback onClose;
 
-  CancellationNotification({
+  const CancellationNotification({
+    super.key,
     required this.title,
     required this.subtitle,
     required this.description,

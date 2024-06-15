@@ -11,15 +11,32 @@ class RestuarentScreen extends StatefulWidget {
   const RestuarentScreen({Key? key, required this.data}) : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
   _RestuarentScreenState createState() => _RestuarentScreenState();
 }
 
 class _RestuarentScreenState extends State<RestuarentScreen> {
+  bool isFavorite = false;
+  Future getDataLocalBd(int id) async {
+    var favorite = await serviceDB.instance.getById('favorites', 'id', id);
+    if (favorite.isNotEmpty) {
+      setState(() {
+        isFavorite = true;
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    //getDataLocalBd(widget.data['id']);
+  }
+
   @override
   Widget build(BuildContext context) {
-    print(widget.data['sku']);
-    print(widget.data['media_gallery_entries']);
-    print(widget.data['images']);
+    //print(widget.data['sku']);
+    //print(widget.data['media_gallery_entries']);
+    //print(widget.data['images']);
     //print(widget.data['media_gallery_entries']);
     final height = MediaQuery.of(context).size.height * 1;
     final width = MediaQuery.of(context).size.width * 1;
@@ -76,6 +93,8 @@ class _RestuarentScreenState extends State<RestuarentScreen> {
                           {},
                           '');
                       if (favorite['success']) {
+                        await serviceDB.instance.insertRecord(
+                            'favorites', {'id': widget.data["id"]});
                         responseSuccessWarning(
                             context, "Se agrego a favoritos");
                       }
@@ -83,8 +102,10 @@ class _RestuarentScreenState extends State<RestuarentScreen> {
                       //print(favorite);
                     },
                     iconSize: 20,
-                    icon: const Icon(
-                      Icons.bookmark_border,
+                    icon: Icon(
+                      isFavorite
+                          ? Icons.bookmark
+                          : Icons.bookmark_outline_rounded,
                     ),
                   ),
                 ],

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:andromeda/services/api.dart';
 
-import 'package:andromeda/Witgets/bottomBar.dart';
 import 'package:andromeda/utilities/constanst.dart';
 
 class MySearchPage extends StatefulWidget {
@@ -105,9 +104,6 @@ class _MySearchPageState extends State<MySearchPage> {
                 ],
               ),
             ),
-      bottomNavigationBar: const MyBottomBar(
-        index: 0,
-      ),
     );
   }
 

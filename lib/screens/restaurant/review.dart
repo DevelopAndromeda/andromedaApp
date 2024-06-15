@@ -24,7 +24,10 @@ class _MyReviewPageState extends State<MyReviewPage> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: Text(widget.data['name'],style: TextStyle(color: Colors.white),),
+        title: Text(
+          widget.data['name'],
+          style: const TextStyle(color: Colors.white),
+        ),
         centerTitle: true,
         leading: const BackButton(),
         backgroundColor: const Color.fromARGB(255, 0, 0, 0),
@@ -33,8 +36,8 @@ class _MyReviewPageState extends State<MyReviewPage> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          
-          padding: const EdgeInsets.only(top: 60, left: 20, right: 20, bottom: 20),
+          padding:
+              const EdgeInsets.only(top: 60, left: 20, right: 20, bottom: 20),
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             const SizedBox(height: 60),

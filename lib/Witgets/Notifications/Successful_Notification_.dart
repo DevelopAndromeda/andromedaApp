@@ -7,7 +7,8 @@ class SuccessfullNotification extends StatelessWidget {
   final String imagePath;
   final VoidCallback onClose;
 
-  SuccessfullNotification({
+  const SuccessfullNotification({
+    super.key,
     required this.title,
     required this.subtitle,
     required this.description,

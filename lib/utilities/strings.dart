@@ -3,8 +3,11 @@ class MyString {
   static const String successMsg = "Exito!👌";
   static const String areYouSure = "¿Estas seguro?";
   static const String forceStop = "Info ✋";
-  /*static const String mainTitle = "My Tasks";
-  static const String deletedTask = "This task was deleted";
+  static const String notSession =
+      "Parece que tu sesion a caducado,\nVuelve a intentarlo por favor.";
+  static const String required = "Algunos campos son necesarios";
+  static const String notResult = "Lo sentimos, no encontramos registros";
+  /*static const String deletedTask = "This task was deleted";
   static const String doneAllTask = "You Have Done All Tasks!👌";
   static const String addNewTask = "Add New ";
   static const String updateCurrentTask = "Update ";

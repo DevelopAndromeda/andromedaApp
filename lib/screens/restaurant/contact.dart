@@ -13,10 +13,10 @@ class MyContactPage extends StatefulWidget {
 }
 
 class _MyContactPageState extends State<MyContactPage> {
-  LatLng _marker = LatLng(23.3231416, -103.8384764);
-  CameraPosition _initialPosition =
-      CameraPosition(target: LatLng(23.3231416, -103.8384764));
-  Completer<GoogleMapController> _controller = Completer();
+  LatLng _marker = const LatLng(23.3231416, -103.8384764);
+  final CameraPosition _initialPosition =
+      const CameraPosition(target: LatLng(23.3231416, -103.8384764));
+  final Completer<GoogleMapController> _controller = Completer();
 
   _getCoords(String cadena) {
     return cadena.split(',');
@@ -51,7 +51,10 @@ class _MyContactPageState extends State<MyContactPage> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: Text(widget.data['name'],style: TextStyle(color: Colors.white),),
+        title: Text(
+          widget.data['name'],
+          style: const TextStyle(color: Colors.white),
+        ),
         centerTitle: true,
         leading: const BackButton(),
         backgroundColor: const Color.fromARGB(255, 0, 0, 0),
@@ -108,7 +111,7 @@ class _MyContactPageState extends State<MyContactPage> {
           const SizedBox(
             height: 10,
           ),
-          Padding(
+          /*Padding(
             padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
             child: Row(
               children: const [
@@ -136,7 +139,7 @@ class _MyContactPageState extends State<MyContactPage> {
                 ),
               ],
             ),
-          ),
+          ),*/
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
             child: Row(

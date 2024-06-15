@@ -1,8 +1,9 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:andromeda/screens/restaurant/contact.dart';
 import 'package:andromeda/services/api.dart';
 import 'package:andromeda/services/db.dart';
 import 'package:flutter/material.dart';
-import 'package:andromeda/Witgets/bottomBar.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:andromeda/screens/restaurant/review.dart';
 import 'package:intl/intl.dart';
@@ -104,13 +105,13 @@ class _MyDetailPageState extends State<MyDetailPage>
     });
     //print(_slotDay);
     _allSlotDay = [];
-    _slotDay.forEach((e) {
+    for (var e in _slotDay) {
       if (e['slots_info'].runtimeType == List) {
         _allSlotDay.addAll(e['slots_info']);
       } else {
         _allSlotDay.addAll(e['slots_info'].values);
       }
-    });
+    }
     //print('_allSlotDay');
     //print(_allSlotDay);
     if (picked != null && picked != _selectedDate) {
@@ -311,12 +312,13 @@ class _MyDetailPageState extends State<MyDetailPage>
         context: context,
         builder: (context) => AlertDialog(
           title: const Text('Reserva Realizada'),
-          content: Text('Tu reserva ha sido realizada con éxito.'),
+          content: const Text('Tu reserva ha sido realizada con éxito.'),
           actions: <Widget>[
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
+              // ignore: prefer_const_constructors
               child: Text('OK'),
             ),
           ],
@@ -367,6 +369,10 @@ class _MyDetailPageState extends State<MyDetailPage>
         title: const Text('Información del restaurante',
             style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
         backgroundColor: Colors.black,
+        leading: BackButton(
+          onPressed: () => Navigator.of(context)
+              .pushNamedAndRemoveUntil('home', (Route<dynamic> route) => false),
+        ),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -436,6 +442,7 @@ class _MyDetailPageState extends State<MyDetailPage>
                   TabBar(
                     labelColor: const Color.fromARGB(255, 0, 0, 0),
                     indicatorColor: Colors.black,
+                    isScrollable: false,
                     onTap: (index) {
                       //print(index);
                       if (index == 1) {
@@ -508,7 +515,7 @@ class _MyDetailPageState extends State<MyDetailPage>
                                               : Colors.black54,
                                           borderRadius:
                                               BorderRadius.circular(20),
-                                          boxShadow: [
+                                          boxShadow: const [
                                             BoxShadow(
                                               offset: Offset(0, 17),
                                               blurRadius: 17,
@@ -535,7 +542,7 @@ class _MyDetailPageState extends State<MyDetailPage>
                                               ),
                                               Text(
                                                 "${_allSlotDay[index]['time']}",
-                                                style: TextStyle(
+                                                style: const TextStyle(
                                                     color: Colors.white),
                                               )
                                             ],
@@ -551,7 +558,7 @@ class _MyDetailPageState extends State<MyDetailPage>
                             Flexible(
                               child: SizedBox(
                                 child: DropdownButtonFormField<String>(
-                                  items: [],
+                                  items: const [],
                                   /*personasList.map((e) {
                                     return DropdownMenuItem(
                                       child: SizedBox(
@@ -607,9 +614,6 @@ class _MyDetailPageState extends State<MyDetailPage>
             ),
           ],
         ),
-      ),
-      bottomNavigationBar: const MyBottomBar(
-        index: 0,
       ),
     );
   }
