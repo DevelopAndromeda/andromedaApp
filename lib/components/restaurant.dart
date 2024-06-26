@@ -29,38 +29,33 @@ class _RestuarentScreenState extends State<RestuarentScreen> {
   @override
   void initState() {
     super.initState();
-    //getDataLocalBd(widget.data['id']);
   }
 
   @override
   Widget build(BuildContext context) {
-    //print(widget.data['sku']);
-    //print(widget.data['media_gallery_entries']);
-    //print(widget.data['images']);
-    //print(widget.data['media_gallery_entries']);
-    final height = MediaQuery.of(context).size.height * 1;
+    final height = MediaQuery.of(context).size.height * 2;
     final width = MediaQuery.of(context).size.width * 1;
     return InkWell(
       onTap: () {
-        Navigator.of(context).pushNamedAndRemoveUntil(
-            'detail', arguments: widget.data, (Route<dynamic> route) => false);
+        Navigator.pushNamed(context, 'detail', arguments: widget.data);
+        /*Navigator.of(context).pushNamedAndRemoveUntil(
+            'detail', arguments: widget.data, (Route<dynamic> route) => false);*/
       },
       child: Padding(
         padding: const EdgeInsets.only(right: 10),
-        child: SizedBox(
-          /*decoration: BoxDecoration(
+        child: Container(
+          decoration: BoxDecoration(
             border: Border.all(color: Colors.blueAccent),
           ),
-          margin: const EdgeInsets.all(1.0),*/
-          height: height * .5,
-          width: width * .5,
+          margin: const EdgeInsets.all(1.0),
+          height: height * .6,
+          width: width * .6,
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
+            //mainAxisAlignment: MainAxisAlignment.start,
+            //crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Expanded(
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
                   child: widget.data['media_gallery_entries'] != null &&
                           widget.data['media_gallery_entries'].length > 0
                       ? Image.network(pathMedia(
@@ -75,8 +70,9 @@ class _RestuarentScreenState extends State<RestuarentScreen> {
                     widget.data['name'],
                     style: const TextStyle(
                         color: Color(0xff323232),
-                        fontSize: 14,
-                        fontFamily: 'Exo Bold'),
+                        fontSize: 18,
+                        fontFamily: 'Exo Bold',
+                        fontWeight: FontWeight.bold),
                   ),
                   IconButton(
                     onPressed: () async {
@@ -92,6 +88,7 @@ class _RestuarentScreenState extends State<RestuarentScreen> {
                           'wishlist/customer/product/${widget.data["id"]}',
                           {},
                           '');
+                      print(favorite);
                       if (favorite['success']) {
                         await serviceDB.instance.insertRecord(
                             'favorites', {'id': widget.data["id"]});
@@ -101,7 +98,7 @@ class _RestuarentScreenState extends State<RestuarentScreen> {
 
                       //print(favorite);
                     },
-                    iconSize: 20,
+                    iconSize: 22,
                     icon: Icon(
                       isFavorite
                           ? Icons.bookmark
@@ -111,50 +108,80 @@ class _RestuarentScreenState extends State<RestuarentScreen> {
                 ],
               ),
               Row(
-                children: <Widget>[
+                children: [
+                  RatingBarIndicator(
+                    rating: double.parse(getCustomAttribute(
+                            widget.data['custom_attributes'], 'product_score')
+                        .toString()),
+                    itemBuilder: (context, index) => const Icon(
+                      Icons.star,
+                      color: Color.fromARGB(200, 149, 4, 4),
+                    ),
+                    itemCount: 5,
+                    itemSize: 22.0,
+                    direction: Axis.horizontal,
+                  ),
+                  SizedBox(
+                    width: 20,
+                  ),
+                  Text(
+                    "${getCustomAttribute(widget.data['custom_attributes'], 'product_score')} reseñas",
+                    style: TextStyle(
+                        color: Color(0xff323232),
+                        fontSize: 12,
+                        fontFamily: 'Exo Bold'),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
                   const Text(
-                    'Tipo de Comida',
+                    'Comida',
                     style: TextStyle(
                         color: Color(0xff707070),
                         fontSize: 12,
                         fontFamily: 'Exo Regular'),
                   ),
-                  Row(
-                    children: [
-                      RatingBarIndicator(
-                        rating: double.parse(getCustomAttribute(
-                                widget.data['custom_attributes'],
-                                'product_score')
-                            .toString()),
-                        itemBuilder: (context, index) => const Icon(
-                          Icons.star,
-                          color: Color.fromARGB(255, 20, 20, 20),
-                        ),
-                        itemCount: 5,
-                        itemSize: 12.0,
-                        direction: Axis.horizontal,
-                      ),
-                      Text(
-                        "${getCustomAttribute(widget.data['custom_attributes'], 'product_score')}",
-                        style: const TextStyle(
-                            color: Color(0xff323232),
-                            fontSize: 12,
-                            fontFamily: 'Exo Light'),
-                      ),
-                      /*Text(
-                        "  (" + widget.totalRating + ")",
-                        style: TextStyle(
-                            color: Color(0xffa9a9a9),
-                            fontSize: 12,
-                            fontFamily: 'Exo Bold'),
-                      ),*/
-                    ],
-                  )
+                  const Text(
+                    r'$$$$',
+                    style: TextStyle(
+                        color: Color(0xff707070),
+                        fontSize: 12,
+                        fontFamily: 'Exo Regular'),
+                  ),
+                  Text(
+                    "${getCustomAttribute(widget.data['custom_attributes'], 'product_city')}",
+                    style: const TextStyle(
+                        color: Color(0xff707070),
+                        fontSize: 12,
+                        fontFamily: 'Exo Regular'),
+                  ),
                 ],
               ),
-              /*SizedBox(
-                height: 3,
-              ),*/
+              SizedBox(
+                height: 10,
+              ),
+              Row(
+                children: const [
+                  Icon(Icons.auto_graph_sharp),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    'Reservado 20 veces hoy',
+                    style: TextStyle(
+                        color: Color(0xff707070),
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Exo Regular'),
+                  ),
+                ],
+              )
               /*Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -165,7 +192,7 @@ class _RestuarentScreenState extends State<RestuarentScreen> {
                     color: Color(0xffd60265),
                   ),
                   Text(
-                    r"  Rs  " + widget.deliveryPrice,
+                    r"  Rs  9000",
                     style: TextStyle(
                         color: Color(0xff707070),
                         fontSize: 12,

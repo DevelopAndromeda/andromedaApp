@@ -1,6 +1,12 @@
+import 'package:andromeda/models/response.dart';
 import 'package:flutter/material.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
+
 import 'package:andromeda/services/api.dart';
+
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:andromeda/blocs/inicio/one/one_bloc.dart';
 
 import 'package:andromeda/utilities/constanst.dart';
 
@@ -12,7 +18,9 @@ class MySearchPage extends StatefulWidget {
 }
 
 class _MySearchPageState extends State<MySearchPage> {
+  final OneBloc _firstBloc = OneBloc();
   final search = TextEditingController();
+  List<String> imagenes = [];
 
   Future getRestaurantsSearch(input) async {
     //return await get('', 'integration',
@@ -22,89 +30,95 @@ class _MySearchPageState extends State<MySearchPage> {
 
   @override
   void initState() {
+    _firstBloc.add(GetOneList());
+    imagenes.add('assets/notFoundImg.png');
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        //backgroundColor: Color.fromARGB(255, 154, 126, 43),
-        backgroundColor: Colors.white,
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(15),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-            child: Row(
-              children: [
-                Expanded(
-                  child: CupertinoTextField(
-                      //controller: search,
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 12, horizontal: 10),
-                      placeholder: "Buscar",
-                      prefix: const Padding(
-                        padding: EdgeInsets.only(left: 10),
-                        child: Icon(
-                          Icons.search,
-                          color: Color(0xff7b7b7b),
+        appBar: AppBar(
+          //backgroundColor: Color.fromARGB(255, 154, 126, 43),
+          backgroundColor: Colors.white,
+          bottom: PreferredSize(
+            preferredSize: const Size.fromHeight(15),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: CupertinoTextField(
+                        //controller: search,
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 12, horizontal: 10),
+                        placeholder: "Buscar",
+                        prefix: const Padding(
+                          padding: EdgeInsets.only(left: 10),
+                          child: Icon(
+                            Icons.search,
+                            color: Color(0xff7b7b7b),
+                          ),
                         ),
-                      ),
-                      decoration: BoxDecoration(
-                          color: const Color(0xfff7f7f7),
-                          borderRadius: BorderRadius.circular(10)),
-                      style: const TextStyle(
-                          color: Color(0xff707070),
-                          fontSize: 16,
-                          fontFamily: 'Exo Regular'),
-                      onChanged: (value) async {
-                        setState(() {
-                          search.text = value;
-                        });
-                      }),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-      body: (search.text.length >= 3)
-          ? SingleChildScrollView(
-              child: FutureBuilder(
-                  future: getRestaurantsSearch(search.text),
-                  builder: (BuildContext context, AsyncSnapshot snapshot) {
-                    if (snapshot.hasError) {
-                      return const Text('Something went wrong');
-                    }
-
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    }
-
-                    return Column(
-                      children: _createList(snapshot.data!['items']),
-                    );
-                  },
-                  initialData: const []),
-            )
-          : Center(
-              child: Column(
-                mainAxisAlignment:
-                    MainAxisAlignment.center, // Centra verticalmente
-                children: const [
-                  Text('Ingresa datos para realizar una busqueda'),
-                  SizedBox(height: 10), // Espacio entre los textos
-                  Text('Nombre de restaurante'),
-                  SizedBox(height: 10),
-                  Text('Ciudad'),
-                  SizedBox(height: 10),
-                  Text('Tipo de restaurante'),
+                        decoration: BoxDecoration(
+                            color: const Color(0xfff7f7f7),
+                            borderRadius: BorderRadius.circular(10)),
+                        style: const TextStyle(
+                            color: Color(0xff707070),
+                            fontSize: 16,
+                            fontFamily: 'Exo Regular'),
+                        onChanged: (value) async {
+                          setState(() {
+                            search.text = value;
+                          });
+                        }),
+                  ),
                 ],
               ),
             ),
-    );
+          ),
+        ),
+        body: (search.text.length >= 3)
+            ? SingleChildScrollView(
+                child: FutureBuilder(
+                    future: getRestaurantsSearch(search.text),
+                    builder: (BuildContext context, AsyncSnapshot snapshot) {
+                      if (snapshot.hasError) {
+                        return const Text('Something went wrong');
+                      }
+
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+
+                      return Column(
+                        children: _createList(snapshot.data!['items']),
+                      );
+                    },
+                    initialData: const []),
+              )
+            : Column(
+                children: [
+                  preSlider(),
+                  Center(
+                    child: Column(
+                      mainAxisAlignment:
+                          MainAxisAlignment.center, // Centra verticalmente
+                      children: const [
+                        Text('Ingresa datos para realizar una busqueda'),
+                        SizedBox(height: 10), // Espacio entre los textos
+                        Text('Nombre de restaurante'),
+                        SizedBox(height: 10),
+                        Text('Ciudad'),
+                        SizedBox(height: 10),
+                        Text('Tipo de restaurante'),
+                      ],
+                    ),
+                  ),
+                ],
+              ));
   }
 
   List<Widget> _createList(items) {
@@ -119,10 +133,7 @@ class _MySearchPageState extends State<MySearchPage> {
 
   Widget _buildCard(data) {
     return InkWell(
-      onTap: () {
-        Navigator.of(context).pushNamedAndRemoveUntil(
-            'detail', arguments: data, (Route<dynamic> route) => false);
-      },
+      onTap: () => Navigator.pushNamed(context, 'detail', arguments: data),
       child: Card(
         color: Colors.black,
         elevation: 5.0,
@@ -177,4 +188,117 @@ class _MySearchPageState extends State<MySearchPage> {
       ),
     );
   }
+
+  Widget crearSlider(Respuesta model) {
+    if (model.result == 'fail') {
+      return const Center(
+        child: Text('Ocurrio un error al obtener los datos'),
+      );
+    }
+
+    if (model.data == null) {
+      return const Center(
+        child: Text('No Cuentas con una sesion'),
+      );
+    }
+
+    print(model.data!['data']);
+
+    for (dynamic item in model.data!['data']['items']) {
+      if (item['images'] != null) {
+        item['media_gallery_entries'] = item['images'];
+      }
+
+      if (item['media_gallery_entries'] != null) {
+        //imagenes.add(widget.data['media_gallery_entries'][0]['file']);
+        item['media_gallery_entries'].forEach((element) {
+          imagenes.add(element['file']);
+        });
+      } else {
+        imagenes.add('assets/notFoundImg.png');
+      }
+    }
+
+    print('imagenes');
+    print(imagenes);
+
+    return CarouselSlider(
+      options: CarouselOptions(
+        height: 200.0,
+        enlargeCenterPage: true,
+        autoPlay: true,
+        aspectRatio: 16 / 9,
+        autoPlayInterval: const Duration(seconds: 3),
+        autoPlayAnimationDuration: const Duration(milliseconds: 800),
+        autoPlayCurve: Curves.fastOutSlowIn,
+        pauseAutoPlayOnTouch: true,
+        enableInfiniteScroll: true,
+        viewportFraction: 0.8,
+      ),
+      items: imagenes.map((imagen) {
+        return Builder(
+          builder: (BuildContext context) {
+            return Container(
+              width: MediaQuery.of(context).size.width,
+              margin: const EdgeInsets.symmetric(horizontal: 5.0),
+              decoration: const BoxDecoration(
+                color: Colors.grey,
+              ),
+              child: imagen != "assets/notFoundImg.png"
+                  ? Image.network(
+                      pathMedia(imagen),
+                      fit: BoxFit.cover,
+                    )
+                  : Image.asset(
+                      imagen,
+                      width: double.infinity,
+                      height: 150,
+                      fit: BoxFit.cover,
+                    ),
+            );
+          },
+        );
+      }).toList(),
+    );
+  }
+
+  Padding preSlider() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10),
+      child: SizedBox(
+        height: MediaQuery.of(context).size.height * .3,
+        child: BlocProvider(
+          create: (_) => _firstBloc,
+          child: BlocListener<OneBloc, OneState>(
+            listener: (context, state) {
+              if (state is OneError) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(state.message!),
+                  ),
+                );
+              }
+            },
+            child: BlocBuilder<OneBloc, OneState>(
+              builder: (context, state) {
+                if (state is OneInitial) {
+                  return _buildLoading();
+                } else if (state is OneLoading) {
+                  return _buildLoading();
+                } else if (state is OneLoaded) {
+                  return crearSlider(state.data);
+                } else if (state is OneError) {
+                  return Container();
+                } else {
+                  return Container();
+                }
+              },
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildLoading() => const Center(child: CircularProgressIndicator());
 }

@@ -10,6 +10,7 @@ import 'package:andromeda/witgets/no_search_result.dart';
 import 'package:andromeda/witgets/not_session.dart';
 
 import 'package:andromeda/models/response.dart';
+import 'package:andromeda/utilities/constanst.dart';
 
 class ListReservacion extends StatefulWidget {
   const ListReservacion({super.key});
@@ -20,6 +21,13 @@ class ListReservacion extends StatefulWidget {
 
 class _ListReservacionState extends State<ListReservacion> {
   final ReservationBloc _newsBloc = ReservationBloc();
+  final List<String> list = <String>[
+    'Pendiente',
+    'Reservada',
+    'Por atender',
+    'Atendido',
+    'Cancelado'
+  ];
   @override
   void initState() {
     _newsBloc.add(GetAllReservations());
@@ -41,8 +49,7 @@ class _ListReservacionState extends State<ListReservacion> {
             style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
           ),
           leading: BackButton(
-            onPressed: () => Navigator.of(context).pushNamedAndRemoveUntil(
-                'profile', (Route<dynamic> route) => false),
+            onPressed: () => Navigator.pushNamed(context, 'profile'),
           ),
           centerTitle: true,
           elevation: 1,
@@ -88,7 +95,12 @@ class _ListReservacionState extends State<ListReservacion> {
   }
 
   Widget _buildCard(BuildContext context, Respuesta model) {
+    print(model.data);
     if (model.result == 'ok') {
+      if (model.data == null) {
+        return const WrongConnection();
+      }
+
       if (model.data!['data'] == null) {
         return const WrongConnection();
       }
@@ -100,14 +112,51 @@ class _ListReservacionState extends State<ListReservacion> {
         itemCount: model.data!['data'].length,
         itemBuilder: (context, index) {
           var data = model.data!['data'][index];
-          return Container(
-            margin: const EdgeInsets.all(8.0),
-            child: Card(
-              margin: const EdgeInsets.all(5),
-              elevation: 10,
+          return Card(
+            margin: const EdgeInsets.all(5),
+            elevation: 10,
+            child: InkWell(
+              onTap: () {
+                showModalBottomSheet<void>(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return SizedBox(
+                      height: 200,
+                      child: Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            const SizedBox(height: 20),
+                            const Text('Seleccione Estado'),
+                            const SizedBox(height: 20),
+                            Expanded(
+                              child: DropdownMenu<String>(
+                                initialSelection: list.first,
+                                onSelected: (String? value) {
+                                  print(value);
+                                  print(
+                                      'Enviar este valor: $value, a evento update orden');
+                                  Navigator.pop(context);
+                                },
+                                dropdownMenuEntries: list
+                                    .map<DropdownMenuEntry<String>>(
+                                        (String value) {
+                                  return DropdownMenuEntry<String>(
+                                      value: value, label: value);
+                                }).toList(),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                );
+              },
               child: SizedBox(
                 width: 350,
-                height: 150,
+                height: 120,
                 child: Stack(
                   children: <Widget>[
                     Positioned(
@@ -146,7 +195,8 @@ class _ListReservacionState extends State<ListReservacion> {
                             : model.data!['data'][index]['status'] == 'pending'
                                 ? const Color.fromARGB(255, 241, 206, 10)
                                 : const Color.fromARGB(255, 235, 154, 148)),
-                        title: model.data!['data'][index]['status'])
+                        title: translateStatus(
+                            model.data!['data'][index]['status']))
                   ],
                 ),
               ),

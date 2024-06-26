@@ -115,7 +115,7 @@ class _MyRecoverPasswordState extends State<MyRecoverPassword> {
           return;
         }
       }, text: BlocBuilder<AuthLogic, AuthState>(builder: (context, state) {
-        if (state is LoginLoadingState) {
+        if (state is RecoveryLoadingState) {
           return state.isLoading
               ? const CircularProgressIndicator(
                   color: Colors.white,

@@ -26,5 +26,24 @@ class HistoryBloc extends Bloc<HistoryEvent, HistoryState> {
             const HistoryError("Failed to fetch data. is your device online?"));
       }
     });
+
+    on<ChangeStatusHistory>((event, emit) async {
+      try {
+        await customerService
+            .changeStatusOrder(event.id, event.status)
+            .then((value) async {
+          emit(HistoryLoading());
+          final mList = await customerService.getMyOrders();
+
+          emit(HistoryLoaded(mList));
+          if (mList.error != null) {
+            emit(HistoryError(mList.error));
+          }
+        });
+      } on NetworkError {
+        emit(
+            const HistoryError("Failed to fetch data. is your device online?"));
+      }
+    });
   }
 }

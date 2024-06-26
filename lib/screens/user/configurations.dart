@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:andromeda/blocs/inicio/user/user_bloc.dart';
+import 'package:andromeda/blocs/user/user_sesion_bloc.dart';
 
 import 'package:andromeda/witgets/button_base.dart';
 import 'package:andromeda/witgets/Colores_Base.dart';
 
 import 'package:andromeda/utilities/constanst.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MyConfigProfilePage extends StatefulWidget {
   const MyConfigProfilePage({super.key});
@@ -20,12 +21,13 @@ class _MyConfigProfilePageState extends State<MyConfigProfilePage> {
   final TextEditingController _firstController = TextEditingController();
   final TextEditingController _lastController = TextEditingController();
   final TextEditingController _mailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _telephoneController = TextEditingController();
   final TextEditingController _rfcController = TextEditingController();
   final TextEditingController _razonSocialController = TextEditingController();
   final TextEditingController _ciudadController = TextEditingController();
   final TextEditingController _codigoPostalController = TextEditingController();
-  String token = '';
+  String type = '';
 
   /*Future<void> getSesion() async {
     //print('getSession');
@@ -71,9 +73,7 @@ class _MyConfigProfilePageState extends State<MyConfigProfilePage> {
           ),
         ),
         leading: BackButton(
-          onPressed: () => Navigator.of(context).pushNamedAndRemoveUntil(
-              'profile', (Route<dynamic> route) => false),
-        ),
+            onPressed: () => Navigator.pushNamed(context, 'profile')),
         elevation: 1,
       ),
       body: SingleChildScrollView(
@@ -336,7 +336,7 @@ class _MyConfigProfilePageState extends State<MyConfigProfilePage> {
           telefonoInfo(data['telefono']),
           ciudadInfo(data['name_city']),
           codigoPostalInfo(data['zip_code']),
-          createButton()
+          createButton(data['group_id'])
         ]));
   }
 
@@ -352,7 +352,7 @@ class _MyConfigProfilePageState extends State<MyConfigProfilePage> {
           razonSocialInfo(data['name_business']),
           ciudadInfo(data['name_city']),
           codigoPostalInfo(data['zip_code']),
-          createButton()
+          createButton(data['group_id'])
         ]));
   }
 
@@ -531,7 +531,7 @@ class _MyConfigProfilePageState extends State<MyConfigProfilePage> {
           margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
           child: TextFormField(
             controller: _telephoneController,
-            keyboardType: TextInputType.number,
+            keyboardType: TextInputType.phone,
             decoration: InputDecoration(
               contentPadding: const EdgeInsets.all(10),
               border: OutlineInputBorder(
@@ -712,7 +712,7 @@ class _MyConfigProfilePageState extends State<MyConfigProfilePage> {
               labelText: 'Ciudad', // Cambiar label por labelText
               labelStyle:
                   const TextStyle(color: Color.fromARGB(255, 107, 106, 106)),
-              suffixIcon: const Icon(Icons.business_sharp),
+              suffixIcon: const Icon(Icons.place),
               enabledBorder: OutlineInputBorder(
                 // Estilo de contorno cuando está habilitado
                 borderRadius: BorderRadius.circular(4.0),
@@ -768,7 +768,7 @@ class _MyConfigProfilePageState extends State<MyConfigProfilePage> {
               labelText: 'Codigo Postal', // Cambiar label por labelText
               labelStyle:
                   const TextStyle(color: Color.fromARGB(255, 107, 106, 106)),
-              suffixIcon: const Icon(Icons.business_sharp),
+              suffixIcon: const Icon(Icons.post_add_outlined),
               enabledBorder: OutlineInputBorder(
                 // Estilo de contorno cuando está habilitado
                 borderRadius: BorderRadius.circular(4.0),
@@ -800,21 +800,57 @@ class _MyConfigProfilePageState extends State<MyConfigProfilePage> {
     ]);
   }
 
-  Container createButton() {
+  Container createButton(int groupId) {
     return Container(
         width: double.infinity,
         margin: const EdgeInsets.symmetric(horizontal: 50, vertical: 30),
-        child: baseButtom(
-            onPressed: () async {
-              //print('aca');
-              if (_formKey.currentState!.validate()) {
-                try {
-                  print('enviar data');
-                } catch (E) {
-                  print(E);
-                }
+        child: baseButtom(onPressed: () async {
+          //print('aca');
+          if (_formKey.currentState!.validate()) {
+            try {
+              Map<String, dynamic> data = {
+                'email': _mailController.text,
+                'firstname': _firstController.text,
+                'lastname': _lastController.text,
+              };
+
+              data['zip_code'] = _codigoPostalController.text;
+              data['name_city'] = _ciudadController.text;
+              data['telefono'] = _telephoneController.text;
+              if (groupId == 4) {
+                data['rfc_id'] = _rfcController.text;
+                data['name_business'] = _razonSocialController.text;
               }
-            },
-            text: Text('Actualizar')));
+
+              /*if (groupId == 5) {
+                //data['gender'] = _generoController.text;
+                data['zip_code'] = _codigoPostalController.text;
+                data['name_city'] = _ciudadController.text;
+                data['telefono'] = _telephoneController.text;
+              } else {
+                data['rfc_id'] = _rfcController.text;
+                data['name_business'] = _razonSocialController.text;
+              }*/
+              context.read<UserSesionLogic>().updateUserLogic(data, context);
+            } catch (E) {
+              print(E);
+            }
+          }
+        }, text: BlocBuilder<UserSesionLogic, UserSsionState>(
+            builder: (context, state) {
+          if (state is UserLoadingState) {
+            return state.isLoading
+                ? const CircularProgressIndicator(
+                    color: Colors.white,
+                  )
+                : const Text("Actualizar",
+                    style: TextStyle(fontSize: 18, color: Colors.white));
+          } else {
+            return const Text(
+              "Actualizar",
+              style: TextStyle(fontSize: 18, color: Colors.white),
+            );
+          }
+        })));
   }
 }

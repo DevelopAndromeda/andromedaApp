@@ -44,8 +44,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
             ),
           ),
           leading: BackButton(
-            onPressed: () => Navigator.of(context).pushNamedAndRemoveUntil(
-                'home', (Route<dynamic> route) => false),
+            onPressed: () => Navigator.pushNamed(context, 'home'),
           ),
         ),
         body: BlocProvider(
@@ -81,7 +80,12 @@ class _MyProfilePageState extends State<MyProfilePage> {
         'name': 'Informacion de la cuenta',
         'url': 'configurations',
         'icon': Icons.person
-      }
+      },
+      {
+        'name': 'Cambiar contraseña',
+        'url': 'chage_password',
+        'icon': Icons.password
+      },
     ];
     List<Widget> lista = <Widget>[];
     lista.add(clip);
@@ -119,6 +123,11 @@ class _MyProfilePageState extends State<MyProfilePage> {
         'name': 'Informacion de la cuenta',
         'url': 'configurations',
         'icon': Icons.person
+      },
+      {
+        'name': 'Cambiar contraseña',
+        'url': 'chage_password',
+        'icon': Icons.password
       },
       {
         'name': 'Agregar restaurante',

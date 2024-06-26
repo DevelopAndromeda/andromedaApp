@@ -8,3 +8,12 @@ abstract class HistoryEvent extends Equatable {
 }
 
 class GetHistoryList extends HistoryEvent {}
+
+class ChangeStatusHistory extends HistoryEvent {
+  final String id;
+  final String status;
+  const ChangeStatusHistory(this.id, this.status);
+
+  @override
+  List<Object> get props => [id, status];
+}

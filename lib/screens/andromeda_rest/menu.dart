@@ -66,7 +66,8 @@ class NavDrawer extends StatelessWidget {
               InkWell(
                 onTap: () {
                   Navigator.pop(context);
-                  Navigator.of(context).pushNamed('home-rest');
+                  //Navigator.of(context).pushNamed('home-rest');
+                  Navigator.pushNamed(context, 'home-rest');
                 },
                 child: Container(
                   height: 30,

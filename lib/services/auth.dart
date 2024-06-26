@@ -7,10 +7,12 @@ import 'package:andromeda/utilities/constanst.dart';
 class AuthService {
   Future<Respuesta> logIn(dynamic data) async {
     //serviceDB.instance.cleanAllTable();
-    //serviceDB.instance.deleteDatabase();
+    //serviceDB.instance.delete();
     try {
       final login =
           await post('', 'admin', 'integration/customer/token', data, '');
+      print(data);
+      print(login);
       if (login.runtimeType != String) {
         return Respuesta(
             result: 'fail',
@@ -101,22 +103,52 @@ class AuthService {
 
   Future<Respuesta> register(dynamic data) async {
     try {
+      List<Map<String, dynamic>> customAttributes = [];
+      Map<String, dynamic> newCustomer = {
+        'customer': {
+          'email': data['email'],
+          'firstname': data['firstname'],
+          'lastname': data['lastname'],
+          'group_id': data['group_id'],
+        },
+        'password': data['password'],
+      };
+      if (data['group_id'] == 4) {
+        if (data['rfc_id'] != null) {
+          customAttributes
+              .add({"attribute_code": "rfc_id", "value": data['rfc_id']});
+        }
+
+        if (data['name_business'] != null) {
+          customAttributes.add({
+            "attribute_code": "name_business",
+            "value": data['name_business']
+          });
+        }
+      } else {
+        newCustomer['customer']['gender'] = data['gender'];
+
+        if (data['telefono'] != null) {
+          customAttributes.add(
+              {"attribute_code": "number_phone", "value": data['telefono']});
+        }
+
+        if (data['zip_code'] != null) {
+          customAttributes
+              .add({"attribute_code": "zip_code", "value": data['zip_code']});
+        }
+
+        if (data['name_city'] != null) {
+          customAttributes
+              .add({"attribute_code": "name_city", "value": data['name_city']});
+        }
+      }
+
+      newCustomer['customer']['customAttributes'] = customAttributes;
+
       //Llamada a endpoint
-      final registro = await post(
-          '',
-          'admin',
-          'customers',
-          {
-            'customer': {
-              'email': data['email'],
-              'firstname': data['firstname'],
-              'lastname': data['lastname'],
-              'group_id': data['group_id'],
-              'gender': data['gender'],
-            },
-            'password': data['password'],
-          },
-          '');
+      final registro = await post('', 'admin', 'customers', newCustomer, '');
+      print(registro);
 
       if (registro == null) {
         return Respuesta(

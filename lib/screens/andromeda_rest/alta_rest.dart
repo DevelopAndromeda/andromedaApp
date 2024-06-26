@@ -260,8 +260,7 @@ class _AltaRestState extends State<AltaRest> {
             style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
           ),
           leading: BackButton(
-            onPressed: () => Navigator.of(context).pushNamedAndRemoveUntil(
-                'profile', (Route<dynamic> route) => false),
+            onPressed: () => Navigator.pushNamed(context, 'profile'),
           ),
           centerTitle: true,
           backgroundColor: Colors.black,
@@ -492,7 +491,7 @@ class _AltaRestState extends State<AltaRest> {
               const SizedBox(height: 10.0),
               TextFormField(
                 controller: _numberPhone,
-                keyboardType: TextInputType.number,
+                keyboardType: TextInputType.phone,
                 decoration: const InputDecoration(
                   labelText: 'Teléfono',
                   labelStyle: TextStyle(

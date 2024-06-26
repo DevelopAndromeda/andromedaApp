@@ -16,14 +16,6 @@ class MyBottomBar extends StatefulWidget {
 class _MyBottomPageBar extends State<MyBottomBar> {
   //int _currentIndex = 2;
 
-  Map<int, String?> rutas = {
-    0: 'search',
-    1: 'history',
-    2: 'home',
-    3: 'saved',
-    4: 'notifications',
-  };
-
   @override
   void initState() {
     super.initState();
@@ -66,7 +58,7 @@ class _MyBottomPageBar extends State<MyBottomBar> {
               label: 'INICIO',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.description_outlined),
+              icon: Icon(Icons.bookmark_outline_rounded),
               label: 'GUARDADO',
             ),
             BottomNavigationBarItem(

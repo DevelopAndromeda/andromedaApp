@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:andromeda/utilities/routes.dart' as rt;
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'package:andromeda/services/auth.dart';
+import 'package:andromeda/services/customer.dart';
+
 import 'package:andromeda/blocs/login/login_bloc.dart';
+import 'package:andromeda/blocs/user/user_sesion_bloc.dart';
 import 'package:andromeda/blocs/bottom/bottom_navigation_bloc.dart';
 
 class Andromeda extends StatefulWidget {
@@ -29,10 +31,12 @@ class _AndromedaState extends State<Andromeda> {
   @override
   Widget build(BuildContext context) {
     AuthService authService = AuthService();
+    CustomerService customerService = CustomerService();
 
     return MultiBlocProvider(
         providers: [
           BlocProvider(create: (_) => AuthLogic(authService)),
+          BlocProvider(create: (_) => UserSesionLogic(customerService)),
           BlocProvider(create: (_) => BottomNavigationBloc()),
         ],
         child: MaterialApp(

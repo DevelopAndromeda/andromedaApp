@@ -1,10 +1,10 @@
-import 'package:andromeda/blocs/inicio/user/user_bloc.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:andromeda/blocs/inicio/one/one_bloc.dart';
 import 'package:andromeda/blocs/inicio/second/second_bloc.dart';
 import 'package:andromeda/blocs/inicio/all/all_bloc.dart';
+import 'package:andromeda/blocs/inicio/user/user_bloc.dart';
 
 import 'package:andromeda/models/response.dart';
 
@@ -50,12 +50,32 @@ class _MyStorePageState extends State<MyStorePage> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                  _header(),
+                  BlocProvider(
+                    create: (_) => _userBloc,
+                    child: BlocListener<UserBloc, UserState>(
+                      listener: (context, state) {
+                        /*if (state is UserError) {
+                          responseErrorWarning(context, state.message!);
+                        }*/
+                      },
+                      child: BlocBuilder<UserBloc, UserState>(
+                        builder: (context, state) {
+                          if (state is UserLoaded) {
+                            return _headerSesion(state);
+                          } else {
+                            return _header();
+                          }
+                        },
+                      ),
+                    ),
+                  ),
+                  //_header(),
                   const Text(
                     'Destacados',
                     style: TextStyle(
                         color: Color(0xff323232),
-                        fontSize: 18,
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
                         fontFamily: 'Exo Bold'),
                   ),
                   _firstSection(),
@@ -63,7 +83,8 @@ class _MyStorePageState extends State<MyStorePage> {
                     'Mas Vistos',
                     style: TextStyle(
                         color: Color(0xff323232),
-                        fontSize: 18,
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
                         fontFamily: 'Exo Bold'),
                   ),
                   _secondSection(),
@@ -71,67 +92,49 @@ class _MyStorePageState extends State<MyStorePage> {
                     'Todos los Restaurantes',
                     style: TextStyle(
                         color: Color(0xff323232),
-                        fontSize: 18,
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
                         fontFamily: 'Exo Bold'),
                   ),
                   _allRestaurants()
                 ]))));
   }
 
+  SizedBox _headerSesion(state) {
+    return SizedBox(
+        child: Column(children: [
+      const SizedBox(height: 40),
+      ListTile(
+        contentPadding: const EdgeInsets.symmetric(horizontal: 2),
+        title: Text("Buenas Tardes, ${state.data['nombre']}",
+            style: const TextStyle(fontSize: 18, color: Colors.black)),
+        trailing: const CircleAvatar(
+          radius: 30,
+          /*minRadius: 20,
+                        maxRadius: 50,*/
+          backgroundImage: AssetImage('assets/Masculino.jpg'),
+          //  backgroundColor: Color.fromARGB(255, 8, 8, 8),
+        ),
+        onTap: () => Navigator.pushNamed(context, 'profile'),
+      ),
+      const SizedBox(height: 20)
+    ]));
+  }
+
   SizedBox _header() {
     return SizedBox(
       child: Column(
         children: [
-          const SizedBox(height: 40),
-          ListTile(
-            contentPadding: const EdgeInsets.symmetric(horizontal: 2),
-            title: BlocProvider(
-              create: (_) => _userBloc,
-              child: BlocListener<UserBloc, UserState>(
-                listener: (context, state) {
-                  if (state is UserError) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(state.message!),
-                      ),
-                    );
-                  }
-                },
-                child: BlocBuilder<UserBloc, UserState>(
-                  builder: (context, state) {
-                    if (state is UserLoaded) {
-                      return Text("Buenas Tardes, ${state.data['nombre']}",
-                          style: const TextStyle(
-                              fontSize: 18, color: Colors.black));
-                    } else {
-                      return const Text('Buenas Tardes, ',
-                          style: TextStyle(fontSize: 18, color: Colors.black));
-                    }
-                  },
-                ),
-              ),
-            ),
-            trailing: const CircleAvatar(
-              radius: 30,
-              /*minRadius: 20,
-                        maxRadius: 50,*/
-              backgroundImage: AssetImage('assets/Masculino.jpg'),
-              //  backgroundColor: Color.fromARGB(255, 8, 8, 8),
-            ),
-            onTap: () {
-              Navigator.of(context).pushNamedAndRemoveUntil(
-                  'profile', (Route<dynamic> route) => false);
-            },
-          ),
-          const SizedBox(height: 20)
+          const SizedBox(height: 60),
         ],
       ),
     );
   }
 
   Padding _firstSection() {
+    print(MediaQuery.of(context).size.height * .3);
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10),
+      padding: const EdgeInsets.symmetric(vertical: 20),
       child: SizedBox(
         height: MediaQuery.of(context).size.height * .3,
         child: BlocProvider(
@@ -169,7 +172,7 @@ class _MyStorePageState extends State<MyStorePage> {
 
   Padding _secondSection() {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10),
+      padding: const EdgeInsets.symmetric(vertical: 20),
       child: SizedBox(
         height: MediaQuery.of(context).size.height * .3,
         child: BlocProvider(
@@ -207,7 +210,7 @@ class _MyStorePageState extends State<MyStorePage> {
 
   Padding _allRestaurants() {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10),
+      padding: const EdgeInsets.symmetric(vertical: 20),
       child: SizedBox(
         height: MediaQuery.of(context).size.height * .3,
         child: BlocProvider(

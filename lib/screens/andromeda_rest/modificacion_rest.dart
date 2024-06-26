@@ -600,7 +600,7 @@ class _ModificacionRestaurante extends State<ModificacionRestaurante> {
                 const SizedBox(height: 10.0),
                 TextFormField(
                   controller: _numberPhone,
-                  keyboardType: TextInputType.number,
+                  keyboardType: TextInputType.phone,
                   decoration: const InputDecoration(
                     labelText: 'Telefono',
                     labelStyle: TextStyle(

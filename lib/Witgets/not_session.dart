@@ -1,3 +1,4 @@
+import 'package:andromeda/Witgets/Button_Base.dart';
 import 'package:flutter/material.dart';
 
 import 'package:andromeda/utilities/strings.dart';
@@ -38,6 +39,18 @@ class WrongConnection extends StatelessWidget {
               textAlign: TextAlign.start,
             ),
           ),
+          Positioned(
+            bottom: 80,
+            left: 50,
+            right: 50,
+            child: baseButtom(
+              onPressed: () => Navigator.pushNamed(context, 'login'),
+              text: const Text(
+                "Iniciar Sesion",
+                style: TextStyle(fontSize: 18, color: Colors.white),
+              ),
+            ),
+          )
         ],
       ),
     );

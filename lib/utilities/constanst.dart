@@ -51,8 +51,9 @@ dynamic closeSession(BuildContext context) {
   }, onTapConfirm: () async {
     await serviceDB.instance.cleanAllTable();
     //await serviceDB.instance.deleteDatabase();
-    Navigator.of(context)
-        .pushNamedAndRemoveUntil('login', (Route<dynamic> route) => false);
+    Navigator.pushNamed(context, 'home');
+    //Navigator.of(context)
+    //    .pushNamedAndRemoveUntil('home', (Route<dynamic> route) => false);
   },
       panaraDialogType: PanaraDialogType.custom,
       barrierDismissible: false,
@@ -119,21 +120,24 @@ String pathMedia(String media) {
 }*/
 
 String translateStatus(String status) {
-  switch (status) {
-    case 'for_serve':
-      return 'Por Atender';
-    case 'serving':
-      return 'Atendiendo';
-    case 'canceled':
-      return 'Cancelada';
-    case 'table_free':
-      return 'Libre';
-    case 'pending':
-      return 'Pendiente';
-    case 'reserved':
-      return 'Reservada';
+  const map = {
+    'for_serve': 'Por Atender',
+    'serving': 'Atendiendo',
+    'canceled': 'Cancelada',
+    'pending': 'Pendiente',
+    'reserved': 'Reservada',
+  };
+  return map[status] ?? status;
+}
 
-    default:
-      return status; // Devuelve el título original si no coincide con ninguna opción
-  }
+dynamic infoAlertModal(BuildContext context, String msj) {
+  return PanaraInfoDialog.showAnimatedGrow(context,
+      title: "Info", message: msj, buttonText: "Okay", onTapDismiss: () {
+    Navigator.pop(context);
+  },
+      panaraDialogType: PanaraDialogType.custom,
+      barrierDismissible: false,
+      color: Colors.black,
+      textColor: Colors.black,
+      buttonTextColor: Colors.white);
 }

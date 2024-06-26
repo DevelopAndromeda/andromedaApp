@@ -1,18 +1,24 @@
-<<<<<<< HEAD
-// ignore_for_file: use_build_context_synchronously
+import 'package:flutter/material.dart';
 
-=======
-import 'package:andromeda/Witgets/make_a_reservation.dart';
->>>>>>> cb6425be3e5d6b6d14fe55667a3deee68ea94c89
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:html/parser.dart';
+import 'package:intl/intl.dart';
+
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:andromeda/blocs/inicio/user/user_bloc.dart';
+
+import 'package:andromeda/witgets/make_a_reservation.dart';
+import 'package:andromeda/witgets/Button_Base.dart';
 import 'package:andromeda/screens/restaurant/contact.dart';
+import 'package:andromeda/screens/restaurant/review.dart';
 import 'package:andromeda/services/api.dart';
 import 'package:andromeda/services/db.dart';
-import 'package:flutter/material.dart';
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:andromeda/screens/restaurant/review.dart';
-import 'package:intl/intl.dart';
+
 import 'package:andromeda/utilities/constanst.dart';
-import 'package:html_parsed_read_more/html_parsed_read_more.dart';
+import 'package:readmore/readmore.dart';
+
+//import 'package:html_parsed_read_more/html_parsed_read_more.dart';
 
 class MyDetailPage extends StatefulWidget {
   //final int data;
@@ -25,6 +31,7 @@ class MyDetailPage extends StatefulWidget {
 
 class _MyDetailPageState extends State<MyDetailPage>
     with TickerProviderStateMixin {
+  final UserBloc _userBloc = UserBloc();
   late final TabController _tabController;
   DateTime _selectedDate = DateTime.now();
   String Hora = '';
@@ -126,7 +133,6 @@ class _MyDetailPageState extends State<MyDetailPage>
   }
 
   Future<void> generateOrden(DateTime _selectedDate, int personas) async {
-    
     //print('************* Obtener Sesion *************');
     final sesion = await serviceDB.instance.getById('users', 'id_user', 1);
     // Generar carrito vacio
@@ -336,7 +342,7 @@ class _MyDetailPageState extends State<MyDetailPage>
     //print('media_gallery_entries');
     //print(widget.data['media_gallery_entries']);
     if (widget.data['media_gallery_entries'] != null) {
-      imagenes.add(widget.data['media_gallery_entries'][0]['file']);
+      //imagenes.add(widget.data['media_gallery_entries'][0]['file']);
       widget.data['media_gallery_entries'].forEach((element) {
         imagenes.add(element['file']);
       });
@@ -351,6 +357,7 @@ class _MyDetailPageState extends State<MyDetailPage>
   @override
   void initState() {
     //print(widget.data);
+    _userBloc.add(GetUser());
     super.initState();
     //_daySlot = getSlot(widget.data['id']);
     _tabController = TabController(length: 2, vsync: this);
@@ -375,55 +382,21 @@ class _MyDetailPageState extends State<MyDetailPage>
             style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
         backgroundColor: Colors.black,
         leading: BackButton(
-          onPressed: () => Navigator.of(context)
-              .pushNamedAndRemoveUntil('home', (Route<dynamic> route) => false),
+          onPressed: () => Navigator.pushNamed(context, 'home'),
         ),
       ),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            /*CarouselSlider(
-              options: CarouselOptions(
-                height: 200.0,
-                enlargeCenterPage: true,
-                autoPlay: true,
-                aspectRatio: 16 / 9,
-                autoPlayInterval: const Duration(seconds: 3),
-                autoPlayAnimationDuration: const Duration(milliseconds: 800),
-                autoPlayCurve: Curves.fastOutSlowIn,
-                pauseAutoPlayOnTouch: true,
-                enableInfiniteScroll: true,
-                viewportFraction: 0.8,
-              ),
-              items: imagenes.map((imagen) {
-                return Builder(
-                  builder: (BuildContext context) {
-                    return Container(
-                      width: MediaQuery.of(context).size.width,
-                      margin: const EdgeInsets.symmetric(horizontal: 5.0),
-                      decoration: const BoxDecoration(
-                        color: Colors.grey,
-                      ),
-                      child: widget.data['media_gallery_entries'] != null
-                          ? Image.network(
-                              pathMedia(imagen),
-                              fit: BoxFit.cover,
-                            )
-                          : Image.asset(
-                              imagen,
-                              width: double.infinity,
-                              height: 150,
-                              fit: BoxFit.cover,
-                            ),
-                    );
-                  },
-                );
-              }).toList(),
-            ),*/
             crearSlider(),
             Padding(
-              padding: const EdgeInsets.only(left: 10, top: 10, bottom: 10, right: 10,),
+              padding: const EdgeInsets.only(
+                left: 10,
+                top: 10,
+                bottom: 10,
+                right: 10,
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -443,7 +416,97 @@ class _MyDetailPageState extends State<MyDetailPage>
                     color: Colors.black,
                     thickness: 1,
                   ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    children: [
+                      RatingBarIndicator(
+                        rating: double.parse(getCustomAttribute(
+                                widget.data['custom_attributes'],
+                                'product_score')
+                            .toString()),
+                        itemBuilder: (context, index) => const Icon(
+                          Icons.star,
+                          color: Color.fromARGB(200, 149, 4, 4),
+                        ),
+                        itemCount: 5,
+                        itemSize: 26.0,
+                        direction: Axis.horizontal,
+                      ),
+                      Text(
+                        "${getCustomAttribute(widget.data['custom_attributes'], 'product_score')}",
+                        style: const TextStyle(
+                            color: Color(0xff323232),
+                            fontSize: 16,
+                            fontFamily: 'Exo Bold'),
+                      ),
+                      const SizedBox(
+                        width: 40,
+                      ),
+                      const Icon(Icons.comment_bank_outlined),
+                      const Text(
+                        "111 reseñas",
+                        style: TextStyle(
+                            color: Color(0xff323232),
+                            fontSize: 16,
+                            fontFamily: 'Exo Bold'),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    children: const [
+                      Icon(Icons.money_outlined),
+                      Text(
+                        "De MXN300 a MXN400",
+                        style: TextStyle(
+                            color: Color(0xff323232),
+                            fontSize: 16,
+                            fontFamily: 'Exo Bold'),
+                      ),
+                      SizedBox(
+                        width: 20,
+                      ),
+                      Icon(Icons.restaurant),
+                      Text(
+                        "Tipo de comida",
+                        style: TextStyle(
+                            color: Color(0xff323232),
+                            fontSize: 16,
+                            fontFamily: 'Exo Bold'),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
                   Padding(
+                    padding: const EdgeInsets.only(top: 8, bottom: 8),
+                    /*child: ReadMoreText(
+                      parse(getCustomAttribute(widget.data['custom_attributes'],
+                              'short_description'))
+                          .outerHtml,*/
+                    child: ReadMoreText(
+                      getCustomAttribute(widget.data['custom_attributes'],
+                          'short_description'),
+                      trimLines: 1,
+                      trimMode: TrimMode.Line,
+                      trimExpandedText: ' Ver menos',
+                      trimCollapsedText: ' Mas informacion',
+                      moreStyle: const TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.blue),
+                      lessStyle: const TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.blue),
+                    ),
+                  ),
+                  /*Padding(
                     padding: const EdgeInsets.only(top: 8, bottom: 8),
                     child: HtmlParsedReadMore(
                       readLessText: 'Ver menos',
@@ -458,8 +521,37 @@ class _MyDetailPageState extends State<MyDetailPage>
                       text: getCustomAttribute(widget.data['custom_attributes'],
                           'short_description'),
                     ),
+                  ),*/
+                  BlocProvider(
+                    create: (_) => _userBloc,
+                    child: BlocListener<UserBloc, UserState>(
+                      listener: (context, state) {
+                        /*if (state is UserError) {
+                          responseErrorWarning(context, state.message!);
+                        }*/
+                      },
+                      child: BlocBuilder<UserBloc, UserState>(
+                        builder: (context, state) {
+                          if (state is UserLoaded) {
+                            return MakeAReservationForm(
+                                createReservation: generateOrden);
+                          } else {
+                            return Center(
+                              child: baseButtom(
+                                onPressed: () =>
+                                    Navigator.pushNamed(context, 'login'),
+                                text: const Text(
+                                  "Iniciar Sesion",
+                                  style: TextStyle(
+                                      fontSize: 18, color: Colors.white),
+                                ),
+                              ),
+                            );
+                          }
+                        },
+                      ),
+                    ),
                   ),
-                  MakeAReservationForm(createReservation: generateOrden),
                 ],
               ),
             ),
@@ -493,13 +585,12 @@ class _MyDetailPageState extends State<MyDetailPage>
                     ],
                     controller: _tabController,
                   ),
-<<<<<<< HEAD
                   SizedBox(
-                    height: 700,
+                    height: 10,
                     child: TabBarView(
                       controller: _tabController,
                       children: <Widget>[
-                        Column(
+                        /*Column(
                           children: [
                             const SizedBox(height: 20.0),
                             const Text(
@@ -609,36 +700,13 @@ class _MyDetailPageState extends State<MyDetailPage>
                                 ),
                               ),
                             ),
-                            const SizedBox(height: 10.0),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(vertical: 20.0),
-                              child: ElevatedButton(
-                                onPressed: generateOrden,
-                                style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.black,
-                                    textStyle: const TextStyle(
-                                      fontSize: 20,
-                                      color: Color.fromARGB(255, 255, 255, 255),
-                                    ),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(2),
-                                    )),
-                                child: const Text(
-                                  'Generar Reserva',
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                              ),
-                            ),
                           ],
-                        ),
+                        ),*/
                         Column(),
                         Column()
                       ],
                     ),
                   ),
-=======
->>>>>>> cb6425be3e5d6b6d14fe55667a3deee68ea94c89
                 ],
               ),
             ),
@@ -671,7 +739,7 @@ class _MyDetailPageState extends State<MyDetailPage>
               decoration: const BoxDecoration(
                 color: Colors.grey,
               ),
-              child: widget.data['media_gallery_entries'] != null
+              child: imagen != "assets/notFoundImg.png"
                   ? Image.network(
                       pathMedia(imagen),
                       fit: BoxFit.cover,
@@ -679,7 +747,6 @@ class _MyDetailPageState extends State<MyDetailPage>
                   : Image.asset(
                       imagen,
                       width: double.infinity,
-                      height: 150,
                       fit: BoxFit.cover,
                     ),
             );

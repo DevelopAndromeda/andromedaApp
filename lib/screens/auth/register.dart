@@ -38,7 +38,8 @@ class _MyRegisterContet extends State<MyRegisterPage> {
   final TextEditingController _razonSocialController = TextEditingController();
   final TextEditingController _telefonoController = TextEditingController();
   final TextEditingController _generoController = TextEditingController();
-
+  final TextEditingController _ciudadController = TextEditingController();
+  final TextEditingController _codigoPostalController = TextEditingController();
   final CatalogService _catalogService = CatalogService();
 
   bool typePassword = true;
@@ -112,7 +113,7 @@ class _MyRegisterContet extends State<MyRegisterPage> {
         elevation: 1,
       ),
       body: SingleChildScrollView(
-          child: widget.type == 0 ? clietForm() : restForm()),
+          child: widget.type == 0 ? clientForm() : restForm()),
     );
   }
 
@@ -131,6 +132,10 @@ class _MyRegisterContet extends State<MyRegisterPage> {
           const SizedBox(height: 10),
           lastInput(),
           const SizedBox(height: 10),
+          rfcInput(),
+          const SizedBox(height: 10),
+          razonSocial(),
+          const SizedBox(height: 10),
           /*generoSelect(),
           const SizedBox(height: 10),*/
           emailInput(),
@@ -139,17 +144,13 @@ class _MyRegisterContet extends State<MyRegisterPage> {
           const SizedBox(height: 10),
           confirPassworInput(),
           const SizedBox(height: 10),
-          rfcInput(),
-          const SizedBox(height: 10),
-          razonSocial(),
-          const SizedBox(height: 10),
           buttonSendInfo()
         ],
       ),
     );
   }
 
-  Form clietForm() {
+  Form clientForm() {
     return Form(
       key: _formKey,
       child: Column(
@@ -167,14 +168,19 @@ class _MyRegisterContet extends State<MyRegisterPage> {
           const SizedBox(height: 10),
           generoSelect(),
           const SizedBox(height: 10),
+          ciudadInput(),
+          const SizedBox(height: 10),
+          codigoPostalInput(),
+          const SizedBox(height: 10),
+          telefonoInput(),
+          const SizedBox(height: 10),
           emailInput(),
           const SizedBox(height: 10),
           passwordInput(),
           const SizedBox(height: 10),
           confirPassworInput(),
           const SizedBox(height: 10),
-          telefonoInput(),
-          const SizedBox(height: 10),
+          /*
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -184,7 +190,7 @@ class _MyRegisterContet extends State<MyRegisterPage> {
           ),
           const SizedBox(height: 10),
           ciudadSelect(),
-          const SizedBox(height: 10),
+          const SizedBox(height: 10),*/
           /*codigoPostalSelect(),
           const SizedBox(height: 10),*/
           buttonSendInfo()
@@ -569,7 +575,7 @@ class _MyRegisterContet extends State<MyRegisterPage> {
       margin: const EdgeInsets.symmetric(horizontal: 20),
       child: TextFormField(
           controller: _telefonoController,
-          keyboardType: TextInputType.number,
+          keyboardType: TextInputType.phone,
           decoration: InputDecoration(
             contentPadding: const EdgeInsets.all(5),
             border:
@@ -826,6 +832,85 @@ class _MyRegisterContet extends State<MyRegisterPage> {
         ));
   }
 
+  Container ciudadInput() {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 20),
+      child: TextFormField(
+          controller: _ciudadController,
+          decoration: InputDecoration(
+            contentPadding: const EdgeInsets.all(5),
+            border:
+                OutlineInputBorder(borderRadius: BorderRadius.circular(4.0)),
+            filled: true,
+            fillColor: const Color.fromARGB(255, 255, 255, 255),
+            label: const Text(
+              'Ciudad',
+              style: TextStyle(color: Colors.grey),
+            ),
+            suffixIcon: const Icon(Icons.place),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(4.0),
+              borderSide: const BorderSide(
+                  color: Colors.black,
+                  width: 1.0), // Borde negro cuando está habilitado
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(4.0),
+              borderSide: const BorderSide(
+                  color: Colors.black,
+                  width: 2.0), // Borde negro más grueso cuando está enfocado
+            ),
+          ),
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Ingresa tu ciudad';
+            }
+
+            return null;
+          }),
+    );
+  }
+
+  Container codigoPostalInput() {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 20),
+      child: TextFormField(
+          controller: _codigoPostalController,
+          keyboardType: TextInputType.number,
+          decoration: InputDecoration(
+            contentPadding: const EdgeInsets.all(5),
+            border:
+                OutlineInputBorder(borderRadius: BorderRadius.circular(4.0)),
+            filled: true,
+            fillColor: const Color.fromARGB(255, 255, 255, 255),
+            label: const Text(
+              'Codigo Postal',
+              style: TextStyle(color: Colors.grey),
+            ),
+            suffixIcon: const Icon(Icons.post_add_outlined),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(4.0),
+              borderSide: const BorderSide(
+                  color: Colors.black,
+                  width: 1.0), // Borde negro cuando está habilitado
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(4.0),
+              borderSide: const BorderSide(
+                  color: Colors.black,
+                  width: 2.0), // Borde negro más grueso cuando está enfocado
+            ),
+          ),
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Ingresa tu Codigo Postal';
+            }
+
+            return null;
+          }),
+    );
+  }
+
   Container buttonSendInfo() {
     return Container(
       // width: double.maxFinite,
@@ -838,9 +923,19 @@ class _MyRegisterContet extends State<MyRegisterPage> {
               'firstname': _firstController.text,
               'lastname': _lastController.text,
               'group_id': widget.type == 0 ? 5 : 4,
-              'gender': _generoController.text,
-              'password': _passwordController.text
+              'password': _passwordController.text,
             };
+
+            if (widget.type == 0) {
+              data['gender'] = _generoController.text;
+              data['zip_code'] = _codigoPostalController.text;
+              data['name_city'] = _ciudadController.text;
+              data['telefono'] = _telefonoController.text;
+            } else {
+              data['rfc_id'] = _rfcController.text;
+              data['name_business'] = _razonSocialController.text;
+            }
+
             context.read<AuthLogic>().createAccountLogic(data, context);
           } else {
             responseErrorWarning(context, MyString.required);
@@ -848,7 +943,7 @@ class _MyRegisterContet extends State<MyRegisterPage> {
           }
         },
         text: BlocBuilder<AuthLogic, AuthState>(builder: (context, state) {
-          if (state is LoginLoadingState) {
+          if (state is SignUpLoadingState) {
             return state.isLoading
                 ? const CircularProgressIndicator(
                     color: Colors.white,

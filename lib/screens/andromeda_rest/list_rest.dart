@@ -43,8 +43,7 @@ class _ListRestState extends State<ListRest> {
             style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
           ),
           leading: BackButton(
-            onPressed: () => Navigator.of(context).pushNamedAndRemoveUntil(
-                'profile', (Route<dynamic> route) => false),
+            onPressed: () => Navigator.pushNamed(context, 'profile'),
           ),
           centerTitle: true,
           elevation: 1,
