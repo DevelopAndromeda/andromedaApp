@@ -46,7 +46,7 @@ class MakeAReservationFormState extends State<MakeAReservationForm> {
   int people = 2;
 
   DateTime _selectedDate = DateTime.now();
-  Map _slot = {};
+  final Map _slot = {};
   List<dynamic> _slotDay = [];
   List<dynamic> _allSlotDay = [];
   TimeOfDay? selectedTime = TimeOfDay.now();
@@ -85,6 +85,8 @@ class MakeAReservationFormState extends State<MakeAReservationForm> {
             child: child!,
           );
         });
+    print('_slot');
+    print(_slot);
     _slot.forEach((key, value) {
       if (int.parse(key) == picked?.weekday) {
         _slotDay = value;
@@ -92,13 +94,14 @@ class MakeAReservationFormState extends State<MakeAReservationForm> {
       }
     });
     _allSlotDay = [];
-    _slotDay.forEach((e) {
+    for (var e in _slotDay) {
       if (e['slots_info'].runtimeType == List) {
         _allSlotDay.addAll(e['slots_info']);
       } else {
         _allSlotDay.addAll(e['slots_info'].values);
       }
-    });
+    }
+    print(_allSlotDay);
     if (picked != null && picked != _selectedDate) {
       setState(() {
         _selectedDate = picked;
@@ -200,18 +203,25 @@ class MakeAReservationFormState extends State<MakeAReservationForm> {
                     Flexible(
                       child: Padding(
                         padding: const EdgeInsets.only(left: 8.0),
-                        child: Container(
-                          decoration: const BoxDecoration(
-                            border:
-                                Border(bottom: BorderSide(color: Colors.grey)),
-                          ),
-                          child: ListTile(
-                            title: const Text('Hora'),
-                            subtitle: Text(selectedTime!.format(context)),
-                            trailing: const Icon(Icons.schedule),
-                            onTap: () => _selectTime(context),
-                          ),
-                        ),
+                        child: DropdownButtonFormField<String>(
+                            onChanged: (val) {},
+                            items: _allSlotDay
+                                .map((e) => DropdownMenuItem<String>(
+                                      value: e,
+                                      child: Row(
+                                        children: [
+                                          Icon(
+                                            Icons.exit_to_app,
+                                            color: Colors.black,
+                                          ),
+                                          SizedBox(
+                                            height: 8,
+                                          ),
+                                          Text(e)
+                                        ],
+                                      ),
+                                    ))
+                                .toList()),
                       ),
                     ),
                   ],
@@ -238,7 +248,7 @@ class MakeAReservationFormState extends State<MakeAReservationForm> {
                           borderRadius: BorderRadius.circular(2),
                         )),
                     child: const Text(
-                      'Generar Reserva',
+                      'Reservar ahora',
                       style: TextStyle(color: Colors.white),
                     ),
                   ),

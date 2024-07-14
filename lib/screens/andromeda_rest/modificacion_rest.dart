@@ -3,7 +3,6 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart';
 
 import 'package:andromeda/models/estados.dart';
 import 'package:andromeda/models/paises.dart';
@@ -13,8 +12,6 @@ import 'package:andromeda/models/categorias.dart';
 import 'package:andromeda/services/api.dart';
 import 'package:andromeda/services/gps.dart';
 import 'package:andromeda/services/db.dart';
-
-import 'package:andromeda/screens/andromeda_rest/menu.dart';
 
 import 'package:andromeda/utilities/constanst.dart';
 
@@ -35,23 +32,20 @@ class _ModificacionRestaurante extends State<ModificacionRestaurante> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _nombreController = TextEditingController();
   final TextEditingController _descripcionController = TextEditingController();
-  final TextEditingController _tipoController = TextEditingController();
   final TextEditingController _numberPhone = TextEditingController();
   final TextEditingController _direccionController = TextEditingController();
-  final TextEditingController _no_of_guests = TextEditingController();
-  final TextEditingController _max_capacity = TextEditingController();
-  final TextEditingController _slot_duration = TextEditingController();
-  final TextEditingController _prevent_scheduling_before =
+  final TextEditingController _noOfGuests = TextEditingController();
+  final TextEditingController _maxCapacity = TextEditingController();
+  final TextEditingController _slotDuration = TextEditingController();
+  final TextEditingController _preventSchedulingBefore =
       TextEditingController();
   final TextEditingController _nombreMesa = TextEditingController();
-  List<Categoria> _selectedCategorias = [];
-  final TextEditingController _break_time_bw_slot = TextEditingController();
-  CameraPosition _initialPosition =
-      CameraPosition(target: LatLng(23.3231416, -103.8384764));
-  Completer<GoogleMapController> _controller = Completer();
-  Uint8List? _image;
+  final TextEditingController _breakTimeBwSlot = TextEditingController();
+  final CameraPosition _initialPosition =
+      const CameraPosition(target: LatLng(23.3231416, -103.8384764));
+  final Completer<GoogleMapController> _controller = Completer();
   int indice = 0;
-  List<Categoria> _tiposRest = [];
+  final List<Categoria> _tiposRest = [];
   List<int> tiposRest = [4, 16, 42, 71, 72, 73, 75, 76, 77, 78, 79, 80];
   Categoria? _selectedTipoRest;
   final List<Map<String, dynamic>> mesas = [
@@ -157,7 +151,7 @@ class _ModificacionRestaurante extends State<ModificacionRestaurante> {
     '11:00 pm',
     '12:00 am'
   ];
-  List<Categoria> _categoria = [];
+  final List<Categoria> _categoria = [];
   List<String> _finalCategories = [];
 
   Future<void> getUserData() async {
@@ -313,7 +307,7 @@ class _ModificacionRestaurante extends State<ModificacionRestaurante> {
                       onTap: () {
                         _pickImageFromGallery();
                       },
-                      child: SizedBox(
+                      child: const SizedBox(
                         child: Column(
                           children: [
                             Icon(
@@ -331,7 +325,7 @@ class _ModificacionRestaurante extends State<ModificacionRestaurante> {
                       onTap: () {
                         _pickImageFromCamera();
                       },
-                      child: SizedBox(
+                      child: const SizedBox(
                         child: Column(
                           children: [
                             Icon(
@@ -392,13 +386,13 @@ class _ModificacionRestaurante extends State<ModificacionRestaurante> {
     _nombreController.text = widget.data['name'];
     _descripcionController.text = getCustomAttribute(
         widget.data['custom_attributes'], 'short_description');
-    _no_of_guests.text =
+    _noOfGuests.text =
         getCustomAttribute(widget.data['custom_attributes'], '_no_of_guests');
-    _max_capacity.text =
+    _slotDuration.text =
         getCustomAttribute(widget.data['custom_attributes'], 'max_capacity');
-    _slot_duration.text =
+    _slotDuration.text =
         getCustomAttribute(widget.data['custom_attributes'], 'slot_duration');
-    _prevent_scheduling_before.text = getCustomAttribute(
+    _preventSchedulingBefore.text = getCustomAttribute(
         widget.data['custom_attributes'], 'prevent_scheduling_before');
     _numberPhone.text = getCustomAttribute(
         widget.data['custom_attributes'], 'restaurant_number');
@@ -428,14 +422,16 @@ class _ModificacionRestaurante extends State<ModificacionRestaurante> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: NavDrawer(changeSalida: () {}),
       appBar: AppBar(
         title: const Text(
           'Modificacion',
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
-        backgroundColor: Colors.black,
+        leading: BackButton(
+          onPressed: () => Navigator.pushNamed(context, 'list-rest'),
+        ),
         centerTitle: true,
+        backgroundColor: Colors.black,
         iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: SingleChildScrollView(
@@ -818,7 +814,8 @@ class _ModificacionRestaurante extends State<ModificacionRestaurante> {
                     //print('este valor ira al api de mapas: $value');
                     if (value.length > 4) {
                       //print('ir geo');
-                      final data = await getDirByGeocoding(value);
+                      //final data =
+                      await getDirByGeocoding(value);
                       //print(data);
                       //GeocodingResponse response =
                       //    await geocoding.searchByAddress(value);
@@ -846,7 +843,7 @@ class _ModificacionRestaurante extends State<ModificacionRestaurante> {
                     padding:
                         const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
                     child: TextFormField(
-                      controller: _max_capacity,
+                      controller: _maxCapacity,
                       keyboardType: TextInputType.number,
                       decoration: const InputDecoration(
                         labelText: 'Aforo Maximo',
@@ -875,7 +872,7 @@ class _ModificacionRestaurante extends State<ModificacionRestaurante> {
                       padding: const EdgeInsets.symmetric(
                           vertical: 5, horizontal: 5),
                       child: TextFormField(
-                        controller: _slot_duration,
+                        controller: _slotDuration,
                         keyboardType: TextInputType.number,
                         decoration: const InputDecoration(
                           labelText: 'Duración por reservación',
@@ -935,7 +932,7 @@ class _ModificacionRestaurante extends State<ModificacionRestaurante> {
                       padding: const EdgeInsets.symmetric(
                           vertical: 5, horizontal: 5),
                       child: TextFormField(
-                        controller: _break_time_bw_slot,
+                        controller: _breakTimeBwSlot,
                         keyboardType: TextInputType.number,
                         decoration: const InputDecoration(
                           labelText: 'Reservar antes de ',
@@ -1156,9 +1153,8 @@ class _ModificacionRestaurante extends State<ModificacionRestaurante> {
                                         fit: BoxFit.fitWidth),
                                     GestureDetector(
                                       onTap: () async {
-                                        final borrar = await delete(
-                                            '',
-                                            'integration',
+                                        //final borrar =
+                                        await delete('', 'integration',
                                             'products/${widget.data['sku']}/media/${snapshot.data[index]['id']}');
                                         setState(() {
                                           fetchImages();
@@ -1221,23 +1217,23 @@ class _ModificacionRestaurante extends State<ModificacionRestaurante> {
                           },
                           {
                             "attribute_code": "no_of_guests",
-                            "value": _no_of_guests.text
+                            "value": _noOfGuests.text
                           },
                           {
                             "attribute_code": "max_capacity",
-                            "value": _max_capacity.text
+                            "value": _maxCapacity.text
                           },
                           {
                             "attribute_code": "slot_duration",
-                            "value": _slot_duration.text
+                            "value": _slotDuration.text
                           },
                           {
                             "attribute_code": "prevent_scheduling_before",
-                            "value": _prevent_scheduling_before.text
+                            "value": _preventSchedulingBefore.text
                           },
                           {
                             "attribute_code": "break_time_bw_slot",
-                            "value": _break_time_bw_slot.text
+                            "value": _breakTimeBwSlot.text
                           },
                           {"attribute_code": "show_map_loction", "value": "1"},
                           {

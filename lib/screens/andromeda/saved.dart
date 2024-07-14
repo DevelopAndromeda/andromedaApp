@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:shimmer/shimmer.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:andromeda/blocs/favorites/favorites_bloc.dart';
@@ -12,6 +11,8 @@ import 'package:andromeda/utilities/constanst.dart';
 
 import 'package:andromeda/witgets/not_session.dart';
 import 'package:andromeda/witgets/no_search_result.dart';
+import 'package:andromeda/witgets/time_slot_buttons.dart';
+import 'package:andromeda/witgets/skeleton.dart';
 
 class MySavedPage extends StatefulWidget {
   const MySavedPage({super.key});
@@ -63,9 +64,9 @@ class _MySavedPageState extends State<MySavedPage> {
           child: BlocBuilder<FavoriteBloc, FavoriteState>(
             builder: (context, state) {
               if (state is FavoriteInitial) {
-                return _buildLoading();
+                return const Skeleton(cantData: 4);
               } else if (state is FavoriteLoading) {
-                return _buildLoading();
+                return const Skeleton(cantData: 4);
               } else if (state is FavoriteLoaded) {
                 return _buildCard(context, state.data);
               } else if (state is FavoriteError) {
@@ -81,7 +82,6 @@ class _MySavedPageState extends State<MySavedPage> {
   }
 
   Widget _buildCard(BuildContext context, Respuesta model) {
-    print(model);
     if (model.result == 'ok') {
       if (model.data!['data'] == null) {
         return const WrongConnection();
@@ -91,15 +91,21 @@ class _MySavedPageState extends State<MySavedPage> {
         return const NoSearchResultFound();
       }
 
+      if (model.data!['data'].runtimeType != List) {
+        return const WrongConnection();
+      }
+
       return ListView.builder(
         itemCount: model.data!['data'].length,
         itemBuilder: (context, index) {
+          print('- ' + model.data!['data'][index]['name']);
+          print(model.data!['data'][index]['product']);
           return Card(
             margin: const EdgeInsets.all(5),
             elevation: 10,
             child: SizedBox(
               width: 350,
-              height: 170,
+              height: 200,
               child: Stack(
                 children: <Widget>[
                   Align(
@@ -123,6 +129,8 @@ class _MySavedPageState extends State<MySavedPage> {
                     bottom: 15,
                     child: InkWell(
                       onTap: () => goToRest(model.data!['data'][index]),
+                      /*onTap: () => Navigator.pushNamed(context, 'detail',
+                          arguments: model.data!['data'][index]['product']),*/
                       child: Container(
                         width: 120,
                         height: 90,
@@ -135,122 +143,85 @@ class _MySavedPageState extends State<MySavedPage> {
                     ),
                   ),
                   Positioned(
-                      left: 140,
-                      top: 10,
-                      right: 65,
-                      bottom: 5,
-                      child: InkWell(
-                        onTap: () => goToRest(model.data!['data'][index]),
-                        child: Padding(
-                          padding: const EdgeInsets.all(5.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                model.data!['data'][index]['name'],
-                                style: const TextStyle(
-                                    fontSize: 18, fontWeight: FontWeight.bold),
-                              ),
-                              const SizedBox(height: 20),
-                              Row(
-                                mainAxisSize: MainAxisSize.max,
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: [
-                                  Text(
-                                    r"$$$$",
-                                    style: const TextStyle(fontSize: 14),
-                                  ),
-                                  RatingBarIndicator(
-                                    /*rating: double.parse(getCustomAttribute(
-                                        widget.data['custom_attributes'],
-                                        'product_score')
-                                    .toString()),*/
-                                    rating: double.parse("0.0"),
-                                    itemBuilder: (context, index) => const Icon(
-                                      Icons.star,
-                                      color: Color.fromARGB(255, 20, 20, 20),
-                                    ),
-                                    itemCount: 5,
-                                    itemSize: 12.0,
-                                    direction: Axis.horizontal,
-                                  ),
-                                  Text(
-                                    //"${getCustomAttribute(widget.data['custom_attributes'], 'product_score')}",
-                                    "0",
-                                    style: const TextStyle(
-                                        color: Color(0xff323232),
-                                        fontSize: 12,
-                                        fontFamily: 'Exo Light'),
-                                  ),
-                                  Text(
-                                    //"${getCustomAttribute(widget.data['custom_attributes'], 'product_score')}",
-                                    " reseñas",
-                                    style: const TextStyle(
-                                        color: Color(0xff323232),
-                                        fontSize: 12,
-                                        fontFamily: 'Exo Light'),
-                                  ),
-                                  /*Text(
-                        "( 0 )",
-                        style: TextStyle(
-                            color: Color(0xffa9a9a9),
-                            fontSize: 12,
-                            fontFamily: 'Exo Bold'),
-                      ),*/
-                                ],
-                              ),
-                              /*const SizedBox(height: 10),
-                          const Text(
-                            'Cantidad de Personas: 0',
-                            style: TextStyle(fontSize: 14, color: Colors.grey),
-                          ),*/
-                              const SizedBox(height: 10),
-                              Text(
-                                //"${getCustomAttribute(widget.data['custom_attributes'], 'product_score')}",
-                                "Tipo de comida",
-                                style: const TextStyle(
-                                    color: Color(0xff323232),
-                                    fontSize: 12,
-                                    fontFamily: 'Exo Light'),
-                              ),
-                              /*const SizedBox(height: 10),
-                          SizedBox(
-                            width: double.infinity, // Ajusta el ancho deseado
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.black,
-                                shape: const RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.zero,
-                                ),
-                              ),
-                              onPressed: () async {
-                                StoreService service = StoreService();
-                                await service
-                                    .getById(model.data!['data'][index]
-                                        ['product_id'])
-                                    .then((value) {
-                                  if (value.result == 'ok') {
-                                    if (value.data!['data']['items'] != null) {
-                                      Navigator.of(context)
-                                          .pushNamedAndRemoveUntil(
-                                              'detail',
-                                              arguments: value.data!['data']
-                                                  ['items'][0],
-                                              (Route<dynamic> route) => false);
-                                    }
-                                  }
-                                });
-                              },
-                              child: const Text('Ir al detalle',
-                                  style: TextStyle(color: Colors.white)),
+                    left: 140,
+                    top: 10,
+                    right: 65,
+                    bottom: 5,
+                    child: InkWell(
+                      onTap: () => goToRest(model.data!['data'][index]),
+                      /*onTap: () => Navigator.pushNamed(context, 'detail',
+                          arguments: model.data!['data'][index]['product']),*/
+                      child: Padding(
+                        padding: const EdgeInsets.all(5.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              model.data!['data'][index]['name'],
+                              style: const TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.bold),
                             ),
-                          ),*/
-                            ],
-                          ),
+                            const SizedBox(height: 20),
+                            Row(
+                              mainAxisSize: MainAxisSize.max,
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                Text(
+                                  transformPrice(model.data!['data'][index]
+                                          ['price']
+                                      .toString()),
+                                  style: const TextStyle(fontSize: 14),
+                                ),
+                                RatingBarIndicator(
+                                  rating: double.parse(model.data!['data']
+                                          [index]['product']['product_score'] ??
+                                      "0.0"),
+                                  //rating: 0.0,
+                                  itemBuilder: (context, index) => const Icon(
+                                    Icons.star,
+                                    color: Color.fromARGB(255, 20, 20, 20),
+                                  ),
+                                  itemCount: 5,
+                                  itemSize: 12.0,
+                                  direction: Axis.horizontal,
+                                ),
+                                const Text(
+                                  //"${getCustomAttribute(widget.data['custom_attributes'], 'product_score')}",
+                                  "0",
+                                  style: TextStyle(
+                                      color: Color(0xff323232),
+                                      fontSize: 12,
+                                      fontFamily: 'Exo Light'),
+                                ),
+                                const Text(
+                                  //"${getCustomAttribute(widget.data['custom_attributes'], 'product_score')}",
+                                  " reseñas",
+                                  style: TextStyle(
+                                      color: Color(0xff323232),
+                                      fontSize: 12,
+                                      fontFamily: 'Exo Light'),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 10),
+                            Text(
+                              "${model.data!['data'][index]['product']['category_string'] ?? ''}",
+                              style: const TextStyle(
+                                  color: Color(0xff323232),
+                                  fontSize: 12,
+                                  fontFamily: 'Exo Light'),
+                            ),
+                          ],
                         ),
-                      )),
+                      ),
+                    ),
+                  ),
+                  /*const Positioned(
+                      left: 133,
+                      bottom: 33,
+                      child: TimeSlotButton(
+                          anchoButton: 10, altoButton: 35, sizeText: 13)),*/
                 ],
               ),
             ),
@@ -270,10 +241,6 @@ class _MySavedPageState extends State<MySavedPage> {
         if (value.data!['data']['items'] != null) {
           Navigator.pushNamed(context, 'detail',
               arguments: value.data!['data']['items'][0]);
-          /*Navigator.of(context).pushNamedAndRemoveUntil(
-              'detail',
-              arguments: value.data!['data']['items'][0],
-              (Route<dynamic> route) => false);*/
         }
       }
     });
@@ -295,32 +262,25 @@ class _MySavedPageState extends State<MySavedPage> {
     }
   }
 
-  Widget _buildLoading() {
-    return SizedBox(
-      width: double.infinity,
-      height: 100.0,
-      child: Shimmer.fromColors(
-          baseColor: Colors.grey.shade300,
-          highlightColor: Colors.grey.shade100,
-          enabled: true,
-          child: SingleChildScrollView(
-            physics: const NeverScrollableScrollPhysics(),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.max,
-              children: const [
-                Card(
-                  margin: EdgeInsets.all(5),
-                  elevation: 10,
-                  child: SizedBox(
-                    width: double.infinity,
-                    height: 150,
-                    child: SizedBox(width: 100, height: 90),
-                  ),
-                ),
-              ],
+  /*Widget _buildLoading() {
+    return Shimmer.fromColors(
+      baseColor: Colors.grey[300]!,
+      highlightColor: Colors.grey[100]!,
+      child: ListView.builder(
+        itemCount: 4, // Adjust the count based on your needs
+        itemBuilder: (context, index) {
+          return const ListTile(
+              title: Card(
+            margin: EdgeInsets.all(5),
+            elevation: 10,
+            child: SizedBox(
+              width: double.infinity,
+              height: 150,
+              child: SizedBox(width: 100, height: 90),
             ),
-          )),
+          ));
+        },
+      ),
     );
-  }
+  }*/
 }

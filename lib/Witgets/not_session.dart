@@ -5,7 +5,7 @@ import 'package:andromeda/utilities/strings.dart';
 import 'package:andromeda/utilities/text_style.dart';
 
 class WrongConnection extends StatelessWidget {
-  const WrongConnection({Key? key}) : super(key: key);
+  const WrongConnection({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -10,7 +10,7 @@ import 'package:andromeda/utilities/constanst.dart';
 import 'package:andromeda/utilities/strings.dart';
 
 class MyRecoverPassword extends StatefulWidget {
-  const MyRecoverPassword({Key? key}) : super(key: key);
+  const MyRecoverPassword({super.key});
 
   @override
   State<MyRecoverPassword> createState() => _MyRecoverPasswordState();

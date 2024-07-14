@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'dart:convert';
+import 'package:flutter/foundation.dart';
+
 import 'package:ftoast/ftoast.dart';
 import 'package:panara_dialogs/panara_dialogs.dart';
 
@@ -52,8 +55,6 @@ dynamic closeSession(BuildContext context) {
     await serviceDB.instance.cleanAllTable();
     //await serviceDB.instance.deleteDatabase();
     Navigator.pushNamed(context, 'home');
-    //Navigator.of(context)
-    //    .pushNamedAndRemoveUntil('home', (Route<dynamic> route) => false);
   },
       panaraDialogType: PanaraDialogType.custom,
       barrierDismissible: false,
@@ -96,28 +97,17 @@ String pathMedia(String media) {
   return "${dotenv.env['PROTOCOL']}://${dotenv.env['URL']}/media/catalog/product$media";
 }
 
-/*dynamic deleteFavoritos(BuildContext context, id) {
-  return PanaraConfirmDialog.show(
-    context,
-    title: MyString.areYouSure,
-    message: "¿Deseas borrar de tu lista de favoritos",
-    confirmButtonText: "Si",
-    cancelButtonText: "No",
-    onTapCancel: () {
-      Navigator.pop(context);
-    },
-    onTapConfirm: () async {
-      final user = await serviceDB.instance.getById('users', 'id_user', 1);
-      if (user.isEmpty) {
-        return;
-      }
-      String token = user[0]['token'];
-      await delete(token, 'custom', 'wishlist/customer/item/$id');
-    },
-    panaraDialogType: PanaraDialogType.error,
-    barrierDismissible: false,
-  );
-}*/
+whitAvatar(String img) {
+  if (img.length % 4 > 0) {
+    img += '=' * (4 - img.length % 4); // as suggested by Albert221
+  }
+  //print('img');
+  //print(img.replaceAll(RegExp(r'\s+'), ''));
+  Uint8List bytesImage =
+      const Base64Decoder().convert(img.replaceAll(RegExp(r'\s+'), ''));
+  //Uint8List bytesImage = const Base64Decoder().convert(img);
+  return Image.memory(bytesImage, width: 50, height: 50).image;
+}
 
 String translateStatus(String status) {
   const map = {
@@ -140,4 +130,23 @@ dynamic infoAlertModal(BuildContext context, String msj) {
       color: Colors.black,
       textColor: Colors.black,
       buttonTextColor: Colors.white);
+}
+
+String transformPrice(price) {
+  String cadena = r'$';
+  double valorFinal = double.parse(price);
+
+  if (price == '') {
+    return cadena;
+  }
+
+  if (valorFinal >= 251 && valorFinal <= 500) {
+    cadena = r'$$';
+  } else if (valorFinal >= 501 && valorFinal <= 750) {
+    cadena = r'$$$';
+  } else if (valorFinal > 750) {
+    cadena = r'$$$$';
+  }
+
+  return cadena;
 }

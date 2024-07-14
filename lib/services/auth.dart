@@ -7,12 +7,12 @@ import 'package:andromeda/utilities/constanst.dart';
 class AuthService {
   Future<Respuesta> logIn(dynamic data) async {
     //serviceDB.instance.cleanAllTable();
-    //serviceDB.instance.delete();
+    //serviceDB.instance.deleteDatabase();
     try {
       final login =
           await post('', 'admin', 'integration/customer/token', data, '');
-      print(data);
-      print(login);
+      //print(data);
+      //print(login);
       if (login.runtimeType != String) {
         return Respuesta(
             result: 'fail',
@@ -27,7 +27,10 @@ class AuthService {
       };*/
       data['token'] = login;
 
+      //final customer = await get(login, 'integration', 'customers/me');
       final customer = await get(login, 'custom', 'customers/me');
+      //print('customer');
+      //print(customer);
       if (customer != null) {
         data['id'] = customer['id'];
         data['nombre'] = customer['firstname'];
@@ -36,17 +39,36 @@ class AuthService {
 
         if (customer['custom_attributes'].isNotEmpty) {
           data['zip_code'] =
-              getCustomAttribute(customer['custom_attributes'], 'zip_code');
+              getCustomAttribute(customer['custom_attributes'], 'zip_code') ??
+                  '';
           data['name_city'] =
-              getCustomAttribute(customer['custom_attributes'], 'name_city');
+              getCustomAttribute(customer['custom_attributes'], 'name_city') ??
+                  '';
           data['name_business'] = getCustomAttribute(
-              customer['custom_attributes'], 'name_business');
+                  customer['custom_attributes'], 'name_business') ??
+              '';
           data['rfc_id'] =
-              getCustomAttribute(customer['custom_attributes'], 'rfc_id');
-          data['telefono'] =
-              getCustomAttribute(customer['custom_attributes'], 'number_phone');
+              getCustomAttribute(customer['custom_attributes'], 'rfc_id') ?? '';
+          data['telefono'] = getCustomAttribute(
+                  customer['custom_attributes'], 'number_phone') ??
+              '';
+          data['genero'] =
+              getCustomAttribute(customer['custom_attributes'], 'gender') ?? '';
+          data['img_profile'] = getCustomAttribute(
+                  customer['custom_attributes'], 'profile_icon') ??
+              '';
         }
       }
+
+      /*final customerExtra =
+          await get('', 'integration', 'customers/${customer['id']}');
+      if (customerExtra != null) {
+        print('customerExtra');
+        print(customerExtra);
+        data['img_profile'] =
+            getCustomAttribute(customer['custom_attributes'], 'profile_icon') ??
+                '';
+      }*/
 
       final user = await serviceDB.instance.getById('users', 'id_user', 1);
       //Si existen datos en base de datos local actualizamos datos en mapa
@@ -148,7 +170,7 @@ class AuthService {
 
       //Llamada a endpoint
       final registro = await post('', 'admin', 'customers', newCustomer, '');
-      print(registro);
+      //print(registro);
 
       if (registro == null) {
         return Respuesta(

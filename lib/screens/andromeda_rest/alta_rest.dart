@@ -3,8 +3,6 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart';
-
 import 'package:andromeda/utilities/constanst.dart';
 
 import 'package:andromeda/models/estados.dart';
@@ -37,17 +35,16 @@ class _AltaRestState extends State<AltaRest> {
   final TextEditingController _descripcionController = TextEditingController();
   final TextEditingController _numberPhone = TextEditingController();
   final TextEditingController _direccionController = TextEditingController();
-  final TextEditingController _no_of_guests = TextEditingController();
-  final TextEditingController _max_capacity = TextEditingController();
-  final TextEditingController _slot_duration = TextEditingController();
-  final TextEditingController _prevent_scheduling_before =
+  final TextEditingController _noOfGuests = TextEditingController();
+  final TextEditingController _maxCapacity = TextEditingController();
+  final TextEditingController _slotDuration = TextEditingController();
+  final TextEditingController _preventSchedulingBefore =
       TextEditingController();
   final TextEditingController _nombreMesa = TextEditingController();
-  List<Categoria> _selectedCategorias = [];
-  final TextEditingController _break_time_bw_slot = TextEditingController();
-  CameraPosition _initialPosition =
-      CameraPosition(target: LatLng(23.3231416, -103.8384764));
-  Completer<GoogleMapController> _controller = Completer();
+  final TextEditingController _breakTimeBwSlot = TextEditingController();
+  final CameraPosition _initialPosition =
+      const CameraPosition(target: LatLng(23.3231416, -103.8384764));
+  final Completer<GoogleMapController> _controller = Completer();
 
   final CatalogService _catalogService = CatalogService();
 
@@ -145,12 +142,11 @@ class _AltaRestState extends State<AltaRest> {
     '11:00 pm',
     '12:00 am'
   ];
-  List<Categoria> _categoria = [];
+  final List<Categoria> _categoria = [];
   List<String> _finalCategories = [];
-  List<Categoria> _tiposRest = [];
+  final List<Categoria> _tiposRest = [];
   List<int> tiposRest = [4, 16, 42, 71, 72, 73, 75, 76, 77, 78, 79, 80];
   Categoria? _selectedTipoRest;
-  Uint8List? _image;
   List<File> arrayFiles = <File>[];
   final List<Map<String, dynamic>> mesas = [
     {
@@ -194,18 +190,10 @@ class _AltaRestState extends State<AltaRest> {
         'categories/list?searchCriteria[filterGroups][0][filters][1][field]=is_visible_app&searchCriteria[filterGroups][0][filters][1][value]=1&searchCriteria[filterGroups][0][filters][1][conditionType]=eq&searchCriteria[sortOrders][0][field]=name&searchCriteria[sortOrders][0][direction]=ASC');
     if (categories.isNotEmpty) {
       categories['items'].forEach((element) {
-        /*for (int value in tiposRest) {
+        print('categoria');
+        print(element['parent_id']);
+        if (element['parent_id'] == 2) {
           print('aca toy');
-          print(value);
-          print(element['id']);
-          if (value == element['id']) {
-            _tiposRest.add(Categoria(id: element['id'], name: element['name']));
-            break;
-          }
-        }
-        _categoria.add(Categoria(id: element['id'], name: element['name']));*/
-        //print(tiposRest.contains(element['id']));
-        if (tiposRest.contains(element['id'])) {
           _tiposRest.add(Categoria(id: element['id'], name: element['name']));
         } else {
           _categoria.add(Categoria(id: element['id'], name: element['name']));
@@ -286,7 +274,7 @@ class _AltaRestState extends State<AltaRest> {
                       onTap: () {
                         _pickImageFromGallery();
                       },
-                      child: SizedBox(
+                      child: const SizedBox(
                         child: Column(
                           children: [
                             Icon(
@@ -304,7 +292,7 @@ class _AltaRestState extends State<AltaRest> {
                       onTap: () {
                         _pickImageFromCamera();
                       },
-                      child: SizedBox(
+                      child: const SizedBox(
                         child: Column(
                           children: [
                             Icon(
@@ -363,7 +351,7 @@ class _AltaRestState extends State<AltaRest> {
                   return null;
                 },
               ),
-              const SizedBox(height: 10.0),
+              /*const SizedBox(height: 10.0),
               TextFormField(
                 controller: _descripcionController,
                 decoration: const InputDecoration(
@@ -398,7 +386,7 @@ class _AltaRestState extends State<AltaRest> {
                       color: Colors.black), // Icono negro
                   elevation: 0, // Sin elevación (sombra)
                   style: const TextStyle(color: Colors.black), // Texto negro
-                  decoration: const InputDecoration(
+                  /*decoration: const InputDecoration(
                     // Decoración personalizada
                     labelText:
                         'Selecciona una categoría', // Etiqueta (opcional)
@@ -416,7 +404,7 @@ class _AltaRestState extends State<AltaRest> {
                       borderSide: BorderSide(
                           color: Colors.black, width: 2.0), // Borde negro 2px
                     ),
-                  ),
+                  ),*/
                   onChanged: (Categoria? value) {
                     setState(() {
                       _selectedTipoRest = value!;
@@ -428,7 +416,8 @@ class _AltaRestState extends State<AltaRest> {
                     return DropdownMenuItem<Categoria>(
                       value: value,
                       child: Text(value.name,
-                          style: TextStyle(color: Colors.black)), // Texto negro
+                          style: const TextStyle(
+                              color: Colors.black)), // Texto negro
                     );
                   }).toList(),
                 ),
@@ -456,7 +445,6 @@ class _AltaRestState extends State<AltaRest> {
                     .map((cat) => MultiSelectItem<Categoria>(cat, cat.name))
                     .toList(),
                 onConfirm: (values) {
-                  //_selectedCategorias.add(value);
                   _finalCategories = [];
                   for (dynamic element in values) {
                     _finalCategories.add(element.id.toString());
@@ -714,7 +702,8 @@ class _AltaRestState extends State<AltaRest> {
                 },
                 onChanged: (value) async {
                   if (value.length > 4) {
-                    final data = await getDirByGeocoding(value);
+                    //final data =
+                    await getDirByGeocoding(value);
                   }
                 },
               ),
@@ -741,7 +730,7 @@ class _AltaRestState extends State<AltaRest> {
                   padding:
                       const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
                   child: TextFormField(
-                      controller: _max_capacity,
+                      controller: _maxCapacity,
                       keyboardType: TextInputType.number,
                       decoration: const InputDecoration(
                           border: OutlineInputBorder(),
@@ -759,7 +748,7 @@ class _AltaRestState extends State<AltaRest> {
                   padding:
                       const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
                   child: TextFormField(
-                      controller: _slot_duration,
+                      controller: _slotDuration,
                       keyboardType: TextInputType.number,
                       decoration: const InputDecoration(
                           border: OutlineInputBorder(),
@@ -774,30 +763,12 @@ class _AltaRestState extends State<AltaRest> {
                 )),
               ]),
               Row(children: <Widget>[
-                /*Flexible(
-                      child: Padding(
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-                    child: TextFormField(
-                        controller: _prevent_scheduling_before,
-                        keyboardType: TextInputType.number,
-                        decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: 'Tiempo de Descanso',
-                            hintText: 'Tiempo de Descanso'),
-                        validator: (String? value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Ingrese Tiempo de Descanso';
-                          }
-                          return null;
-                        }),
-                  )),*/
                 Flexible(
                   child: Padding(
                     padding:
                         const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
                     child: TextFormField(
-                      controller: _break_time_bw_slot,
+                      controller: _breakTimeBwSlot,
                       keyboardType: TextInputType.number,
                       decoration: const InputDecoration(
                           border: OutlineInputBorder(),
@@ -1043,7 +1014,7 @@ class _AltaRestState extends State<AltaRest> {
                   },
                 ),
               ),
-              const SizedBox(height: 20.0),
+              const SizedBox(height: 20.0),*/
               ElevatedButton(
                 onPressed: () async {
                   if (_formKey.currentState!.validate()) {
@@ -1056,14 +1027,14 @@ class _AltaRestState extends State<AltaRest> {
                       }
 
                       Map<String, dynamic> arraSlot = {};
-                      _daysOfWeek.forEach((element) {
+                      for (var element in _daysOfWeek) {
                         if (element['checked'] == true) {
                           //print(element);
                           //arraSlot[element['index'].toString()] =
                           arraSlot[element['index'].toString()] =
                               element['hora'];
                         }
-                      });
+                      }
 
                       Map<String, dynamic> extensionAttributes = {
                         'stock_item': {'qty': 99999999, 'is_in_stock': true},
@@ -1082,23 +1053,23 @@ class _AltaRestState extends State<AltaRest> {
                         },
                         {
                           "attribute_code": "no_of_guests",
-                          "value": _no_of_guests.text
+                          "value": _noOfGuests.text
                         },
                         {
                           "attribute_code": "max_capacity",
-                          "value": _max_capacity.text
+                          "value": _maxCapacity.text
                         },
                         {
                           "attribute_code": "slot_duration",
-                          "value": _slot_duration.text
+                          "value": _slotDuration.text
                         },
                         {
                           "attribute_code": "prevent_scheduling_before",
-                          "value": _prevent_scheduling_before.text
+                          "value": _preventSchedulingBefore.text
                         },
                         {
                           "attribute_code": "break_time_bw_slot",
-                          "value": _break_time_bw_slot.text
+                          "value": _breakTimeBwSlot.text
                         },
                         {"attribute_code": "show_map_loction", "value": "1"},
                         {
@@ -1204,7 +1175,8 @@ class _AltaRestState extends State<AltaRest> {
                           context, 'Restaurante registrado correctamente');
 
                       int position = 1;
-                      arrayFiles.forEach((element) async {
+                      //arrayFiles.forEach((element) async
+                      for (File element in arrayFiles) {
                         final bytes = File(element.path).readAsBytesSync();
                         String img64 = base64Encode(bytes);
 
@@ -1235,7 +1207,8 @@ class _AltaRestState extends State<AltaRest> {
                             'V2');
 
                         position++;
-                      });
+                      }
+                      ;
                     } catch (e) {
                       responseErrorWarning(context, e.toString());
                       //print(e);

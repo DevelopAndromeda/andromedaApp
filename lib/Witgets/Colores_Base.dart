@@ -1,5 +1,3 @@
-// ignore_for_file: constant_identifier_names
-
 import 'package:flutter/material.dart';
 
 const Background_Color = Color.fromARGB(255, 255, 255, 255);

@@ -1,4 +1,4 @@
-import 'package:andromeda/components/car_rest.dart';
+import 'package:andromeda/witgets/car_rest.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -152,12 +152,12 @@ class _ListReviewState extends State<ListReview> {
           baseColor: Colors.grey.shade300,
           highlightColor: Colors.grey.shade100,
           enabled: true,
-          child: SingleChildScrollView(
-            physics: const NeverScrollableScrollPhysics(),
+          child: const SingleChildScrollView(
+            physics: NeverScrollableScrollPhysics(),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.max,
-              children: const <Widget>[
+              children: <Widget>[
                 Card(
                   margin: EdgeInsets.all(5),
                   elevation: 10,

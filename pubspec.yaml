@@ -3,10 +3,11 @@ description: A new Flutter project.
 publish_to: 'none' 
 
 
-version: 1.0.0+1
+version: 1.0.1+1
 
 environment:
-  sdk: '>=2.19.6 <3.0.0'
+  #sdk: '>=2.19.6 <3.0.0'
+  sdk: '>=3.4.0 <4.0.0'
 
 dependencies:
   flutter:
@@ -15,29 +16,33 @@ dependencies:
     sdk: flutter
   cupertino_icons: ^1.0.2
   flutter_rating_bar: ^4.0.1
-  #html_parsed_read_more: ^0.0.1
+  html_parsed_read_more: ^0.0.1
   #flutter_custom_clippers: ^2.1.0
-  http: ^0.13.5
-  geolocator: ^10.1.0
-  path_provider: ^2.0.11
-  sqflite: ^2.2.2
+  http: ^1.2.1
+  geolocator: ^12.0.0
+  path_provider: ^2.1.3
+  sqflite: ^2.3.3+1
   flutter_dotenv: ^5.1.0
-  intl: ^0.17.0
-  carousel_slider: ^4.0.0
-  readmore: ^2.2.0
-  google_maps_flutter: ^2.2.3
+  intl: ^0.19.0
+  carousel_slider: ^4.2.1
+  readmore: ^3.0.0
+  google_maps_flutter: ^2.7.0
   multi_select_flutter: ^4.1.3
   ftoast: ^2.0.0
-  panara_dialogs: ^0.1.4
-  shimmer: ^2.0.0
-  camera: 0.10.5+2
-  path: 1.8.2
-  image_picker: ^0.8.6
-  photo_view: ^0.14.0
-  bloc: ^8.1.1
-  flutter_bloc: ^8.1.2
-  equatable: ^2.0.0
-  html: ^0.15.4
+  panara_dialogs: ^0.1.5
+  shimmer: ^3.0.0
+  camera: ^0.11.0+1
+  path: ^1.9.0
+  image_picker: ^1.1.2
+  photo_view: ^0.15.0
+  bloc: ^8.1.4
+  flutter_bloc: ^8.1.6
+  equatable: ^2.0.5
+  flutter_background_service: ^5.0.6
+  flutter_local_notifications: ^17.1.2
+  socket_io_client: ^2.0.3+1
+  device_info_plus: ^10.1.0
+  #html: ^0.15.4
 
 
 dev_dependencies:
@@ -49,7 +54,7 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^2.0.0
+  flutter_lints: ^4.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -63,7 +68,6 @@ flutter:
     - assets/IniciarSesionCliente.png
     - assets/IniciarSesionRest.png
     - assets/Login.png
-    - assets/LogoWhite.png
     - assets/notFoundImg.png
     - assets/Profile.png
     - assets/Masculino.jpg

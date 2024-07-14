@@ -54,7 +54,7 @@ class _AndromedaState extends State<Andromeda> {
             primaryColor: Colors.black,
           ),
           onGenerateRoute: rt.Router.generateRoute,
-          initialRoute: 'splash',
+          initialRoute: 'home',
           localizationsDelegates: const [
             GlobalMaterialLocalizations.delegate,
             GlobalWidgetsLocalizations.delegate,

@@ -1,3 +1,4 @@
+import 'package:andromeda/witgets/button_base.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,8 +8,8 @@ import 'package:andromeda/blocs/inicio/all/all_bloc.dart';
 import 'package:andromeda/blocs/inicio/user/user_bloc.dart';
 
 import 'package:andromeda/models/response.dart';
-
-import 'package:andromeda/components/restaurant.dart';
+import 'package:andromeda/utilities/constanst.dart';
+import 'package:andromeda/witgets/restaurant.dart';
 
 class MyStorePage extends StatefulWidget {
   const MyStorePage({super.key});
@@ -103,16 +104,20 @@ class _MyStorePageState extends State<MyStorePage> {
   SizedBox _headerSesion(state) {
     return SizedBox(
         child: Column(children: [
-      const SizedBox(height: 40),
+      const SizedBox(height: 30),
       ListTile(
         contentPadding: const EdgeInsets.symmetric(horizontal: 2),
         title: Text("Buenas Tardes, ${state.data['nombre']}",
             style: const TextStyle(fontSize: 18, color: Colors.black)),
-        trailing: const CircleAvatar(
-          radius: 30,
+        trailing: CircleAvatar(
+          radius: 50,
           /*minRadius: 20,
                         maxRadius: 50,*/
-          backgroundImage: AssetImage('assets/Masculino.jpg'),
+          backgroundImage: state.data['img_profile'] != null &&
+                  state.data['img_profile'] != ""
+              //? whitAvatar(state.data['img_profile'])
+              ? const AssetImage('assets/Masculino.jpg')
+              : const AssetImage('assets/Masculino.jpg'),
           //  backgroundColor: Color.fromARGB(255, 8, 8, 8),
         ),
         onTap: () => Navigator.pushNamed(context, 'profile'),
@@ -125,28 +130,31 @@ class _MyStorePageState extends State<MyStorePage> {
     return SizedBox(
       child: Column(
         children: [
-          const SizedBox(height: 60),
+          const SizedBox(height: 10),
+          baseButtom(
+            onPressed: () => Navigator.pushNamed(context, 'login'),
+            text: const Text(
+              "Iniciar Sesion",
+              style: TextStyle(fontSize: 18, color: Colors.white),
+            ),
+          ),
+          const SizedBox(height: 20)
         ],
       ),
     );
   }
 
   Padding _firstSection() {
-    print(MediaQuery.of(context).size.height * .3);
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 20),
+      padding: const EdgeInsets.all(10.0),
       child: SizedBox(
-        height: MediaQuery.of(context).size.height * .3,
+        height: MediaQuery.of(context).size.height * .37,
         child: BlocProvider(
           create: (_) => _firstBloc,
           child: BlocListener<OneBloc, OneState>(
             listener: (context, state) {
               if (state is OneError) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(state.message!),
-                  ),
-                );
+                responseSuccessWarning(context, state.message!);
               }
             },
             child: BlocBuilder<OneBloc, OneState>(
@@ -172,19 +180,15 @@ class _MyStorePageState extends State<MyStorePage> {
 
   Padding _secondSection() {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 20),
+      padding: const EdgeInsets.all(10.0),
       child: SizedBox(
-        height: MediaQuery.of(context).size.height * .3,
+        height: MediaQuery.of(context).size.height * .37,
         child: BlocProvider(
           create: (_) => _secondBloc,
           child: BlocListener<SecondBloc, SecondState>(
             listener: (context, state) {
               if (state is SecondError) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(state.message!),
-                  ),
-                );
+                responseSuccessWarning(context, state.message!);
               }
             },
             child: BlocBuilder<SecondBloc, SecondState>(
@@ -210,19 +214,15 @@ class _MyStorePageState extends State<MyStorePage> {
 
   Padding _allRestaurants() {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 20),
+      padding: const EdgeInsets.all(10.0),
       child: SizedBox(
-        height: MediaQuery.of(context).size.height * .3,
+        height: MediaQuery.of(context).size.height * .37,
         child: BlocProvider(
           create: (_) => _allBloc,
           child: BlocListener<AllBloc, AllState>(
             listener: (context, state) {
               if (state is AllError) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(state.message!),
-                  ),
-                );
+                responseSuccessWarning(context, state.message!);
               }
             },
             child: BlocBuilder<AllBloc, AllState>(
@@ -253,6 +253,7 @@ class _MyStorePageState extends State<MyStorePage> {
           child: Text('No Cuentas con una sesion'),
         );
       }
+
       return ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: model.data!['data']['items'].length,
@@ -261,6 +262,7 @@ class _MyStorePageState extends State<MyStorePage> {
             model.data!['data']['items'][index]['media_gallery_entries'] =
                 model.data!['data']['items'][index]['images'];
           }
+
           return RestuarentScreen(data: model.data!['data']['items'][index]);
         },
       );

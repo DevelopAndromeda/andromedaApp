@@ -9,6 +9,9 @@ import 'package:andromeda/witgets/label_card.dart';
 import 'package:andromeda/witgets/no_search_result.dart';
 import 'package:andromeda/witgets/not_session.dart';
 
+import 'package:andromeda/services/catalog.dart';
+
+import 'package:andromeda/models/status.dart';
 import 'package:andromeda/models/response.dart';
 import 'package:andromeda/utilities/constanst.dart';
 
@@ -21,6 +24,7 @@ class ListReservacion extends StatefulWidget {
 
 class _ListReservacionState extends State<ListReservacion> {
   final ReservationBloc _newsBloc = ReservationBloc();
+  final CatalogService _catalogService = CatalogService();
   final List<String> list = <String>[
     'Pendiente',
     'Reservada',
@@ -28,9 +32,14 @@ class _ListReservacionState extends State<ListReservacion> {
     'Atendido',
     'Cancelado'
   ];
+  late Future<List<Status>>? futureStatus;
+
+  get label => null;
+
   @override
   void initState() {
     _newsBloc.add(GetAllReservations());
+    futureStatus = _catalogService.fetchStatus();
     super.initState();
   }
 
@@ -67,11 +76,7 @@ class _ListReservacionState extends State<ListReservacion> {
         child: BlocListener<ReservationBloc, ReservationState>(
           listener: (context, state) {
             if (state is ReservationError) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(state.message!),
-                ),
-              );
+              responseErrorWarning(context, state.message!);
             }
           },
           child: BlocBuilder<ReservationBloc, ReservationState>(
@@ -95,7 +100,6 @@ class _ListReservacionState extends State<ListReservacion> {
   }
 
   Widget _buildCard(BuildContext context, Respuesta model) {
-    print(model.data);
     if (model.result == 'ok') {
       if (model.data == null) {
         return const WrongConnection();
@@ -108,6 +112,7 @@ class _ListReservacionState extends State<ListReservacion> {
       if (model.data == null || model.data!['data'].isEmpty) {
         return const NoSearchResultFound();
       }
+
       return ListView.builder(
         itemCount: model.data!['data'].length,
         itemBuilder: (context, index) {
@@ -131,20 +136,32 @@ class _ListReservacionState extends State<ListReservacion> {
                             const Text('Seleccione Estado'),
                             const SizedBox(height: 20),
                             Expanded(
-                              child: DropdownMenu<String>(
-                                initialSelection: list.first,
-                                onSelected: (String? value) {
-                                  print(value);
-                                  print(
-                                      'Enviar este valor: $value, a evento update orden');
-                                  Navigator.pop(context);
+                              child: FutureBuilder<List<Status>>(
+                                future: futureStatus,
+                                builder: (context, snapshot) {
+                                  if (snapshot.hasData) {
+                                    //return Text('aa');
+                                    return DropdownMenu<Status>(
+                                        //initialSelection: list.first,
+                                        onSelected: (Status? value) {
+                                          //print(
+                                          //    'Enviar este valor: $value, a evento update orden');
+                                          Navigator.pop(context);
+                                        },
+                                        dropdownMenuEntries: snapshot.data!
+                                            .map<DropdownMenuEntry<Status>>(
+                                                (Status value) {
+                                          return DropdownMenuEntry<Status>(
+                                              value: value, label: value.label);
+                                        }).toList());
+                                  } else if (snapshot.hasError) {
+                                    return Text("${snapshot.error}");
+                                  }
+                                  return const SizedBox(
+                                    height: 50,
+                                    child: Text('Seleccione Pais'),
+                                  );
                                 },
-                                dropdownMenuEntries: list
-                                    .map<DropdownMenuEntry<String>>(
-                                        (String value) {
-                                  return DropdownMenuEntry<String>(
-                                      value: value, label: value);
-                                }).toList(),
                               ),
                             )
                           ],
@@ -219,12 +236,12 @@ class _ListReservacionState extends State<ListReservacion> {
           baseColor: Colors.grey.shade300,
           highlightColor: Colors.grey.shade100,
           enabled: true,
-          child: SingleChildScrollView(
-            physics: const NeverScrollableScrollPhysics(),
+          child: const SingleChildScrollView(
+            physics: NeverScrollableScrollPhysics(),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.max,
-              children: const <Widget>[
+              children: <Widget>[
                 Card(
                   margin: EdgeInsets.all(5),
                   elevation: 10,

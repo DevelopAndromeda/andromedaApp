@@ -117,6 +117,47 @@ class StoreService {
           result: 'fail', data: {'data': 'Error en App'}, error: e.toString());
     }
   }
+
+  Future<Respuesta> getReviwes(sku) async {
+    try {
+      final reviews = await get('', 'integration', 'products/$sku/reviews');
+
+      if (reviews.isEmpty) {
+        return Respuesta(result: 'fail', data: {'data': []}, error: null);
+      }
+
+      return Respuesta(
+          result: 'ok',
+          data: {
+            'data': reviews,
+          },
+          error: null);
+    } on Exception catch (e) {
+      return Respuesta(
+          result: 'fail', data: {'data': 'Error en App'}, error: e.toString());
+    }
+  }
+
+  Future<Respuesta> getRestaurantsSearch(String input) async {
+    try {
+      final result = await get('', '', 'restaurant/product/search?q=$input');
+
+      if (result.isEmpty) {
+        return Respuesta(
+            result: 'fail', data: {'data': 'Error en Api'}, error: null);
+      }
+
+      return Respuesta(
+          result: 'ok',
+          data: {
+            'data': result,
+          },
+          error: null);
+    } on Exception catch (e) {
+      return Respuesta(
+          result: 'fail', data: {'data': 'Error en App'}, error: e.toString());
+    }
+  }
 }
 
 class NetworkError extends Error {}

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:andromeda/utilities/text_style.dart';
 
 class NoSearchResultFound extends StatelessWidget {
-  const NoSearchResultFound({Key? key}) : super(key: key);
+  const NoSearchResultFound({super.key});
 
   @override
   Widget build(BuildContext context) {

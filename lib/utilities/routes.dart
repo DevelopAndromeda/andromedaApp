@@ -2,7 +2,6 @@ import 'package:flutter/material.dart' hide Router;
 
 //Componentes
 import 'package:andromeda/screens/andromeda/home.dart';
-import 'package:andromeda/screens/andromeda_rest/home_rest.dart';
 import 'package:andromeda/screens/andromeda_rest/alta_rest.dart';
 import 'package:andromeda/screens/andromeda_rest/list_rest.dart';
 import 'package:andromeda/screens/andromeda_rest/list_reservacion.dart';
@@ -22,9 +21,9 @@ import 'package:andromeda/screens/splash.dart';
 //Users
 import 'package:andromeda/screens/user/profile.dart';
 import 'package:andromeda/screens/user/configurations.dart';
+import 'package:andromeda/screens/user/change_password.dart';
 //Store
 import 'package:andromeda/screens/restaurant/detail.dart';
-import 'package:andromeda/screens/restaurant/review.dart';
 
 class Router {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -33,6 +32,8 @@ class Router {
         return MaterialPageRoute(builder: (_) => const AltaRest());
       case 'configurations':
         return MaterialPageRoute(builder: (_) => const MyConfigProfilePage());
+      case 'change-password':
+        return MaterialPageRoute(builder: (_) => const MyChangePasswordPage());
       case 'detail':
         //final ID = settings.arguments as int;
         final data = settings.arguments as Map<String, dynamic>;
@@ -43,8 +44,6 @@ class Router {
         );
       case 'home':
         return MaterialPageRoute(builder: (_) => const MyHomePage());
-      case 'home-rest':
-        return MaterialPageRoute(builder: (_) => const MyHomeRestPage());
       case 'history':
         return MaterialPageRoute(builder: (_) => const MyHistoryPage());
       case 'list-rest':
@@ -89,13 +88,6 @@ class Router {
       /*case 'register-rest':
         return MaterialPageRoute(
             builder: (_) => const MyRegisterPageRestaurant());*/
-      case 'review':
-        final data = settings.arguments as Map<String, dynamic>;
-        return MaterialPageRoute(
-          builder: (_) => MyReviewPage(
-            data: data,
-          ),
-        );
       case 'reviews':
         final data = settings.arguments as Map<String, dynamic>;
         return MaterialPageRoute(

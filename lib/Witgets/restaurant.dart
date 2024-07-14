@@ -1,3 +1,4 @@
+import 'package:andromeda/witgets/time_slot_buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
@@ -8,7 +9,7 @@ import 'package:andromeda/utilities/constanst.dart';
 
 class RestuarentScreen extends StatefulWidget {
   final Map<dynamic, dynamic> data;
-  const RestuarentScreen({Key? key, required this.data}) : super(key: key);
+  const RestuarentScreen({super.key, required this.data});
 
   @override
   // ignore: library_private_types_in_public_api
@@ -16,6 +17,7 @@ class RestuarentScreen extends StatefulWidget {
 }
 
 class _RestuarentScreenState extends State<RestuarentScreen> {
+  final DateTime _now = DateTime.now();
   bool isFavorite = false;
   Future getDataLocalBd(int id) async {
     var favorite = await serviceDB.instance.getById('favorites', 'id', id);
@@ -33,38 +35,30 @@ class _RestuarentScreenState extends State<RestuarentScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final height = MediaQuery.of(context).size.height * 2;
-    final width = MediaQuery.of(context).size.width * 1;
     return InkWell(
-      onTap: () {
-        Navigator.pushNamed(context, 'detail', arguments: widget.data);
-        /*Navigator.of(context).pushNamedAndRemoveUntil(
-            'detail', arguments: widget.data, (Route<dynamic> route) => false);*/
-      },
+      onTap: () =>
+          Navigator.pushNamed(context, 'detail', arguments: widget.data),
       child: Padding(
-        padding: const EdgeInsets.only(right: 10),
+        padding: const EdgeInsets.all(5),
         child: Container(
           decoration: BoxDecoration(
-            border: Border.all(color: Colors.blueAccent),
+            border: Border.all(color: Colors.black, width: 1),
+            borderRadius: BorderRadius.circular(10),
           ),
-          margin: const EdgeInsets.all(1.0),
-          height: height * .6,
-          width: width * .6,
           child: Column(
-            //mainAxisAlignment: MainAxisAlignment.start,
-            //crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Expanded(
-                child: ClipRRect(
-                  child: widget.data['media_gallery_entries'] != null &&
-                          widget.data['media_gallery_entries'].length > 0
-                      ? Image.network(pathMedia(
-                          widget.data['media_gallery_entries'][0]['file']))
-                      : Image.asset('assets/notFoundImg.png'),
-                ),
+              FadeInImage(
+                image: widget.data['media_gallery_entries'] != null &&
+                        widget.data['media_gallery_entries'].length > 0
+                    ? NetworkImage(pathMedia(
+                        widget.data['media_gallery_entries'][0]['file']))
+                    : const AssetImage('assets/notFoundImg.png'),
+                placeholder: const AssetImage('assets/notFoundImg.png'),
+                fit: BoxFit.cover,
+                height: 125,
+                width: 270,
               ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
                     widget.data['name'],
@@ -73,6 +67,9 @@ class _RestuarentScreenState extends State<RestuarentScreen> {
                         fontSize: 18,
                         fontFamily: 'Exo Bold',
                         fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(
+                    width: 40,
                   ),
                   IconButton(
                     onPressed: () async {
@@ -88,7 +85,7 @@ class _RestuarentScreenState extends State<RestuarentScreen> {
                           'wishlist/customer/product/${widget.data["id"]}',
                           {},
                           '');
-                      print(favorite);
+                      //print(favorite);
                       if (favorite['success']) {
                         await serviceDB.instance.insertRecord(
                             'favorites', {'id': widget.data["id"]});
@@ -121,23 +118,23 @@ class _RestuarentScreenState extends State<RestuarentScreen> {
                     itemSize: 22.0,
                     direction: Axis.horizontal,
                   ),
-                  SizedBox(
-                    width: 20,
+                  const SizedBox(
+                    width: 40,
                   ),
                   Text(
                     "${getCustomAttribute(widget.data['custom_attributes'], 'product_score')} reseñas",
-                    style: TextStyle(
+                    style: const TextStyle(
                         color: Color(0xff323232),
                         fontSize: 12,
                         fontFamily: 'Exo Bold'),
                   ),
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
+              Expanded(
+                  child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const Text(
@@ -148,29 +145,43 @@ class _RestuarentScreenState extends State<RestuarentScreen> {
                         fontFamily: 'Exo Regular'),
                   ),
                   const Text(
-                    r'$$$$',
+                    ' * ',
                     style: TextStyle(
                         color: Color(0xff707070),
                         fontSize: 12,
                         fontFamily: 'Exo Regular'),
                   ),
                   Text(
-                    "${getCustomAttribute(widget.data['custom_attributes'], 'product_city')}",
+                    transformPrice(widget.data['price'].toString()),
+                    style: const TextStyle(
+                        color: Color(0xff707070),
+                        fontSize: 12,
+                        fontFamily: 'Exo Regular'),
+                  ),
+                  const Text(
+                    ' * ',
+                    style: TextStyle(
+                        color: Color(0xff707070),
+                        fontSize: 12,
+                        fontFamily: 'Exo Regular'),
+                  ),
+                  Text(
+                    "${getCustomAttribute(widget.data['custom_attributes'], 'product_city').replaceAll(' - ', '/')}",
                     style: const TextStyle(
                         color: Color(0xff707070),
                         fontSize: 12,
                         fontFamily: 'Exo Regular'),
                   ),
                 ],
+              )),
+              const SizedBox(
+                height: 5,
               ),
-              SizedBox(
-                height: 10,
-              ),
-              Row(
-                children: const [
+              const Row(
+                children: [
                   Icon(Icons.auto_graph_sharp),
                   SizedBox(
-                    width: 10,
+                    width: 5,
                   ),
                   Text(
                     'Reservado 20 veces hoy',
@@ -181,29 +192,70 @@ class _RestuarentScreenState extends State<RestuarentScreen> {
                         fontFamily: 'Exo Regular'),
                   ),
                 ],
-              )
-              /*Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Icon(
-                    Icons.directions_bike,
-                    size: 14,
-                    color: Color(0xffd60265),
-                  ),
-                  Text(
-                    r"  Rs  9000",
-                    style: TextStyle(
-                        color: Color(0xff707070),
-                        fontSize: 12,
-                        fontFamily: 'Exo Regular'),
-                  ),
-                ],
-              )*/
+              ),
+              crearSlot()
+              //const TimeSlotButton(
+              //    anchoButton: 20, altoButton: 35, sizeText: 14)
             ],
           ),
         ),
       ),
     );
+  }
+
+  Widget crearSlot() {
+    List<String> horas = [];
+    if (widget.data['extension_attributes'] == null) {
+      //print(widget.data['name']);
+      //print(widget.data['custom_attributes']);
+      for (dynamic attr in widget.data['custom_attributes']) {
+        if (attr['attribute_code'].runtimeType == int &&
+            attr['attribute_code'] == _now.weekday) {
+          if (!attr['value'].isEmpty) {
+            if (attr['value'][0]['slots_info'] == null) {
+              horas.add(attr['value'][0]['from']);
+            } else {
+              if (!attr['value'][0]['slots_info'].isEmpty) {
+                for (dynamic item in attr['value'][0]['slots_info']) {
+                  horas.add(item['time']);
+                }
+              } else {
+                print('data is empty 2' + widget.data['name']);
+              }
+            }
+          } else {
+            print('data is empty ' + widget.data['name']);
+          }
+        }
+      }
+    } else {
+      if (widget.data['extension_attributes']['slot_schedules'] == null) {
+        print('not data in ' + widget.data['name']);
+      } else {
+        for (dynamic attr in widget.data['extension_attributes']
+            ['slot_schedules']) {
+          if (attr['attribute_code'] == _now.weekday) {
+            if (!attr['value'].isEmpty) {
+              if (attr['value'][0]['slots_info'] == null) {
+                horas.add(attr['value'][0]['from']);
+              } else {
+                if (!attr['value'][0]['slots_info'].isEmpty) {
+                  for (dynamic item in attr['value'][0]['slots_info']) {
+                    horas.add(item['time']);
+                  }
+                } else {
+                  print('data is empty 2' + widget.data['name']);
+                }
+              }
+            } else {
+              print('data is empty ' + widget.data['name']);
+            }
+          }
+        }
+      }
+    }
+
+    return TimeSlotButton(
+        anchoButton: 20, altoButton: 40, sizeText: 10, data: horas);
   }
 }

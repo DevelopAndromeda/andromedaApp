@@ -5,6 +5,7 @@ import 'package:andromeda/services/api.dart';
 import 'package:andromeda/models/paises.dart';
 import 'package:andromeda/models/estados.dart';
 import 'package:andromeda/models/ciudades.dart';
+import 'package:andromeda/models/status.dart';
 
 class CatalogService {
   Future<List<Pais>> fetchPaises() async {
@@ -49,6 +50,25 @@ class CatalogService {
     return (responseJson['items'] as List)
         .map((data) => Ciudad.fromJson(data))
         .toList();
+  }
+
+  Future<List<Status>> fetchStatus() async {
+    final responseJson = await get('', 'integration', 'order/statuses');
+    if (responseJson == null) {
+      //print('no hay datos en endpoint');
+      return [];
+    }
+
+    List<Status> _status = [];
+    for (dynamic data in responseJson) {
+      if (data['value'] != "table_free") {
+        _status.add(Status.fromJson(data));
+      }
+    }
+
+    return _status;
+
+    //return (responseJson as List).map((data) => Status.fromJson(data)).toList();
   }
 }
 

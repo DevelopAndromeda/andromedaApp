@@ -1,4 +1,4 @@
-import 'package:andromeda/components/car_rest.dart';
+import 'package:andromeda/witgets/car_rest.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -6,7 +6,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:andromeda/blocs/stores/store_bloc.dart';
 
 import 'package:andromeda/witgets/Colores_Base.dart';
-import 'package:andromeda/screens/andromeda_rest/menu.dart';
 import 'package:andromeda/models/response.dart';
 import 'package:andromeda/utilities/constanst.dart';
 import 'package:andromeda/witgets/button_base.dart';
@@ -35,7 +34,6 @@ class _ListRestState extends State<ListRest> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        drawer: NavDrawer(changeSalida: () {}),
         backgroundColor: Background_Color,
         appBar: AppBar(
           title: const Text(
@@ -154,12 +152,12 @@ class _ListRestState extends State<ListRest> {
           baseColor: Colors.grey.shade300,
           highlightColor: Colors.grey.shade100,
           enabled: true,
-          child: SingleChildScrollView(
-            physics: const NeverScrollableScrollPhysics(),
+          child: const SingleChildScrollView(
+            physics: NeverScrollableScrollPhysics(),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.max,
-              children: const <Widget>[
+              children: <Widget>[
                 Card(
                   margin: EdgeInsets.all(5),
                   elevation: 10,

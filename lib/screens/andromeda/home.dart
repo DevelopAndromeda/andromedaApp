@@ -4,6 +4,7 @@ import 'package:andromeda/screens/andromeda/saved.dart';
 import 'package:andromeda/screens/andromeda/search.dart';
 import 'package:andromeda/screens/andromeda/stores.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:andromeda/witgets/bottom_bar.dart';
@@ -32,6 +33,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    FlutterBackgroundService().invoke("setAsBackground");
+    FlutterBackgroundService().invoke("setAsBackground");
     return Scaffold(
       body: BlocBuilder<BottomNavigationBloc, int>(
         builder: (context, currentTab) {
@@ -42,6 +45,8 @@ class _MyHomePageState extends State<MyHomePage> {
             return const MyHistoryPage();
           }
           if (currentTab == 2) {
+            //FlutterBackgroundService().invoke("setAsForeground");
+            //FlutterBackgroundService().invoke("setAsBackground");
             return const MyStorePage();
           }
           if (currentTab == 3) {

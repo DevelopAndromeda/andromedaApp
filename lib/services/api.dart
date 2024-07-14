@@ -48,10 +48,16 @@ Future<dynamic> get(String? tokenCustomer, String type, String url) async {
     }
     print('************* headers: $_headers *************');
     final resp = await http.get(Uri.parse(endPoint! + url), headers: _headers);
+
     if (resp.statusCode < 500) {
+      //print(
+      //    '************* API Response: ${json.decode(resp.body)} *************');
       return json.decode(resp.body);
     }
+    //print(
+    //    '************* API Response code - ${resp.statusCode}: ${json.decode(resp.body)} *************');
   } on Exception catch (_) {
+    //print('************* API Exception: $_} *************');
     // make it explicit that this function can throw exceptions
     rethrow;
   }
@@ -78,9 +84,12 @@ Future<dynamic> post(String? tokenCustomer, String type, String url,
         headers: _headers,
         body: jsonEncode(params));
     if (resp.statusCode < 500) {
+      //print(
+      //    '************* API Response: ${json.decode(resp.body)} *************');
       return json.decode(resp.body);
     }
   } on Exception catch (_) {
+    //print('************* API Exception: $_} *************');
     // make it explicit that this function can throw exceptions
     rethrow;
   }
@@ -105,9 +114,12 @@ Future<dynamic> put(String? tokenCustomer, String type, String url,
     final resp = await http.put(Uri.parse(endPoint! + url + id),
         headers: _headers, body: jsonEncode(params));
     if (resp.statusCode < 500) {
+      //print(
+      //    '************* API Response: ${json.decode(resp.body)} *************');
       return json.decode(resp.body);
     }
   } on Exception catch (_) {
+    //print('************* API Exception: $_} *************');
     // make it explicit that this function can throw exceptions
     rethrow;
   }
@@ -130,9 +142,12 @@ Future<dynamic> delete(String? tokenCustomer, String type, String url) async {
     final resp =
         await http.delete(Uri.parse(endPoint! + url), headers: _headers);
     if (resp.statusCode == 200) {
+      //print(
+      //    '************* API Response: ${json.decode(resp.body)} *************');
       return json.decode(resp.body);
     }
   } on Exception catch (_) {
+    //print('************* API Exception: $_} *************');
     // make it explicit that this function can throw exceptions
     rethrow;
   }

@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:andromeda/services/api.dart';
 import 'package:andromeda/services/db.dart';
 
@@ -22,13 +25,8 @@ class CustomerService {
         'wishlist/customer/items',
       );
 
-      /*if (favorites['message'] != null) {
-        return respuesta(
-            result: 'ok', data: {'data': null}, error: 'Error: Api');
-      }*/
-
       if (favorites.isNotEmpty) {
-        return Respuesta(result: 'ok', data: favorites, error: null);
+        return Respuesta(result: 'ok', data: {"data": favorites}, error: null);
       } else {
         return Respuesta(
             result: 'fail',
@@ -98,8 +96,6 @@ class CustomerService {
     try {
       final statusOrder =
           await post('', 'integration', 'orders/$id/$status', {}, '');
-      print('statusOrder');
-      print(statusOrder);
       if (statusOrder != null) {
         return Respuesta(result: 'ok', data: {'data': true}, error: null);
       } else {
@@ -192,6 +188,13 @@ class CustomerService {
             .add({"attribute_code": "name_city", "value": data['name_city']});
       }
 
+      if (data['image_profile'] != null) {
+        customAttributes.add({
+          "attribute_code": "image_profile",
+          "value": data['image_profile']
+        });
+      }
+
       if (seion.data!['group_id'] == 4) {
         if (data['rfc_id'] != null) {
           customAttributes
@@ -210,14 +213,8 @@ class CustomerService {
 
       newCustomer['customer']['customAttributes'] = customAttributes;
 
-      print('newCustomer');
-      print(newCustomer);
-
       final updateUser = await put(
           seion.data!['token'], 'custom', 'customers/me', newCustomer, '');
-
-      print('updateUser');
-      print(updateUser);
 
       if (updateUser.isEmpty) {
         return Respuesta(
@@ -230,33 +227,28 @@ class CustomerService {
         'username': updateUser['email']
       };
 
-      print(updateUser['custom_attributes']);
+      //print(updateUser['custom_attributes']);
 
       if (updateUser['custom_attributes'].isNotEmpty) {
         datas['zip_code'] =
             getCustomAttribute(updateUser['custom_attributes'], 'zip_code') ??
                 '';
-        print(1);
-        print(datas['zip_code']);
         datas['name_city'] =
             getCustomAttribute(updateUser['custom_attributes'], 'name_city') ??
                 '';
-        print(2);
-        print(datas['name_city']);
         datas['name_business'] = getCustomAttribute(
                 updateUser['custom_attributes'], 'name_business') ??
             '';
-        print(3);
-        print(datas['name_business']);
         datas['rfc_id'] =
             getCustomAttribute(updateUser['custom_attributes'], 'rfc_id') ?? '';
-        print(4);
-        print(datas['rfc_id']);
         datas['telefono'] = getCustomAttribute(
                 updateUser['custom_attributes'], 'number_phone') ??
             '';
-        print(5);
-        print(datas['telefono']);
+        data['genero'] =
+            getCustomAttribute(updateUser['custom_attributes'], 'gender') ?? '';
+        data['img_profile'] = getCustomAttribute(
+                updateUser['custom_attributes'], 'image_profile') ??
+            '';
       }
       await serviceDB.instance.updateRecord('users', datas, 'id_user', 1);
       return Respuesta(
@@ -265,6 +257,117 @@ class CustomerService {
             'data': 'Exito',
           },
           error: null);
+    } on Exception catch (e) {
+      return Respuesta(
+          result: 'fail', data: {'data': 'Error en App'}, error: e.toString());
+    }
+  }
+
+  Future<Respuesta> getMyNotifications() async {
+    try {
+      final session = await serviceDB.instance.getById('users', 'id_user', 1);
+
+      if (session.isEmpty) {
+        return Respuesta(
+            result: 'fail',
+            data: {'data': 'Ingresa sesion para continuar'},
+            error: 'Error: Api');
+      }
+
+      final notifications = await get('', 'integration',
+          'customer-notifications/customer/unread/${session[0]['id']}');
+
+      if (notifications == null) {
+        return Respuesta(
+            result: 'fail',
+            data: {'data': 'La info esta corrupta'},
+            error: 'Error: Api');
+      }
+
+      if (notifications.isNotEmpty) {
+        return Respuesta(
+            result: 'ok', data: {'data': notifications}, error: null);
+      } else {
+        return Respuesta(
+            result: 'fail',
+            data: {'data': 'La info esta corrupta'},
+            error: 'Error: Api');
+      }
+    } on Exception catch (e) {
+      return Respuesta(
+          result: 'fail', data: {'data': 'Error en App'}, error: e.toString());
+    }
+  }
+
+  Future<Respuesta> updateImg(File img) async {
+    final bytes = File(img.path).readAsBytesSync();
+    String img64 = base64Encode(bytes);
+
+    try {
+      final session = await serviceDB.instance.getById('users', 'id_user', 1);
+      if (session.isEmpty) {
+        return Respuesta(
+            result: 'fail',
+            data: {'data': 'Ingresa sesion para continuar'},
+            error: 'Error: Api');
+      }
+
+      Map<String, dynamic> updateCustomer = {
+        'customer': {
+          'email': session[0]['username'],
+          'firstname': session[0]['nombre'],
+          'custom_attributes': [
+            {'attribute_code': 'profile_icon', 'value': img64}
+          ]
+        },
+      };
+
+      final updateUser = await put('', 'integration',
+          'customers/${session[0]['id']}', updateCustomer, '');
+
+      await serviceDB.instance.updateRecord(
+          'users', {'img_profile': updateUser['profile_icon']}, 'id_user', 1);
+
+      if (updateUser.isEmpty) {
+        return Respuesta(
+            result: 'fail', data: {'data': 'Error en EndPoint'}, error: null);
+      }
+
+      await serviceDB.instance
+          .updateRecord('users', {'img_profile': img64}, 'id_user', 1);
+      return Respuesta(
+          result: 'ok',
+          data: {
+            'data': 'Exito',
+          },
+          error: null);
+    } on Exception catch (e) {
+      return Respuesta(
+          result: 'fail', data: {'data': 'Error en App'}, error: e.toString());
+    }
+  }
+
+  Future<Respuesta> updatePassword(dynamic data) async {
+    try {
+      Respuesta seion = await getUserSession();
+      if (seion.result == 'fail') {
+        return seion;
+      }
+
+      final updatePassword = await put(
+          seion.data!['token'], 'custom', 'customers/me/password', data, '');
+
+      if (updatePassword.isEmpty) {
+        await serviceDB.instance.updateRecord(
+            'users', {'password': data['newPassword']}, 'id_user', 1);
+        return Respuesta(
+            result: 'fail', data: {'data': 'Error en EndPoint'}, error: null);
+      } else {
+        return Respuesta(
+            result: 'fail',
+            data: {'data': 'La info esta corrupta'},
+            error: 'Error: Api');
+      }
     } on Exception catch (e) {
       return Respuesta(
           result: 'fail', data: {'data': 'Error en App'}, error: e.toString());

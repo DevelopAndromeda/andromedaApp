@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:andromeda/witgets/Colores_Base.dart';
 import 'package:andromeda/services/api.dart';
-import 'package:andromeda/screens/andromeda_rest/menu.dart';
 
 class Reviews extends StatefulWidget {
   const Reviews({super.key, required this.data});
@@ -35,21 +34,22 @@ class _Reviews extends State<Reviews> {
     await put('', 'integration', 'reviews/', review, data['id'].toString());
     setState(() {});
     ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text('Se actualizo la Review')));
+        .showSnackBar(const SnackBar(content: Text('Se actualizo la Review')));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: NavDrawer(changeSalida: () {}),
       backgroundColor: Background_Color,
       appBar: AppBar(
         title: const Text(
           'Review Pendientes',
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
+        leading: BackButton(
+          onPressed: () => Navigator.pushNamed(context, 'list-reviews'),
+        ),
         centerTitle: true,
-        elevation: 1,
         backgroundColor: Colors.black,
         iconTheme: const IconThemeData(color: Colors.white),
       ),

@@ -1,27 +1,26 @@
+import 'dart:async';
+import 'package:andromeda/blocs/reviews/reviews_bloc.dart';
+import 'package:andromeda/services/store.dart';
 import 'package:flutter/material.dart';
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:html/parser.dart';
+import 'package:html_parsed_read_more/html_parsed_read_more.dart';
 import 'package:intl/intl.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:andromeda/blocs/inicio/user/user_bloc.dart';
 
 import 'package:andromeda/witgets/make_a_reservation.dart';
 import 'package:andromeda/witgets/Button_Base.dart';
-import 'package:andromeda/screens/restaurant/contact.dart';
-import 'package:andromeda/screens/restaurant/review.dart';
 import 'package:andromeda/services/api.dart';
 import 'package:andromeda/services/db.dart';
 
 import 'package:andromeda/utilities/constanst.dart';
 import 'package:readmore/readmore.dart';
 
-//import 'package:html_parsed_read_more/html_parsed_read_more.dart';
-
 class MyDetailPage extends StatefulWidget {
-  //final int data;
   final Map<String, dynamic> data;
   const MyDetailPage({super.key, required this.data});
 
@@ -31,47 +30,55 @@ class MyDetailPage extends StatefulWidget {
 
 class _MyDetailPageState extends State<MyDetailPage>
     with TickerProviderStateMixin {
+  LatLng _marker = const LatLng(23.3231416, -103.8384764);
+  final CameraPosition _initialPosition =
+      const CameraPosition(target: LatLng(23.3231416, -103.8384764));
+  final Completer<GoogleMapController> _controller = Completer();
   final UserBloc _userBloc = UserBloc();
-  late final TabController _tabController;
+  final ReviewsBloc _reviewBloc = ReviewsBloc();
+
   DateTime _selectedDate = DateTime.now();
   String Hora = '';
   int slot_id = 0;
   int personas = 0;
-  //TimeOfDay _selectedTime = TimeOfDay.now();
-  //final _personasController = TextEditingController();
-  //final _notasController = TextEditingController();
-  //late List<dynamic> _options = [];
   List<String> imagenes = [];
-  //late Future<Map<String, dynamic>> _daySlot;
-  final List<String> _diasSemana = [
-    '',
-    'Lunes',
-    'Martes',
-    'Miercoles',
-    'Jueves',
-    'Viernes',
-    'Sabado',
-    'Domingo'
-  ];
   List _options = [];
-  Map _slot = {};
+  List<dynamic> _slot = [];
   List<dynamic> _slotDay = [];
   List<dynamic> _allSlotDay = [];
   List<String> personasList = ["1", "2", "3", "4", "5"];
-  String _selectPersona = "";
-  //List<Map<String, dynamic>> _timeSlot = [];
-  Future<void> getSlot(String? id) async {
-    //print('getSlot -> $id');
-    _slot = await get('', '', 'restaurant/product/$id');
-    _slot = _slot['data']['info'];
-    //print(_slot);
+
+  init() async {
+    setImgs();
+    getSlot();
+    await getOptions();
   }
 
-  Future<void> getOptions(String? sku) async {
-    //print('************* getOptions *************');
-    //print('************* SKU: ${sku} *************');
-    _options = await get('', 'integration', 'products/$sku/options');
-    //print('************* options: ${_options} *************');
+  setImgs() {
+    if (widget.data['media_gallery_entries'] != null) {
+      widget.data['media_gallery_entries'].forEach((element) {
+        imagenes.add(element['file']);
+      });
+    } else {
+      imagenes.add('assets/notFoundImg.png');
+    }
+  }
+
+  getSlot() {
+    if (widget.data['extension_attributes'] == null) {
+      for (dynamic attr in widget.data['custom_attributes']) {
+        if (attr['attribute_code'].runtimeType == int) {
+          _slot.add(attr);
+        }
+      }
+    } else {
+      _slot = widget.data['extension_attributes']['slot_schedules'];
+    }
+  }
+
+  Future<void> getOptions() async {
+    _options =
+        await get('', 'integration', 'products/${widget.data['sku']}/options');
   }
 
   _selectDate(BuildContext context) async {
@@ -83,53 +90,86 @@ class _MyDetailPageState extends State<MyDetailPage>
         builder: (context, child) {
           return Theme(
             data: ThemeData.dark().copyWith(
-                colorScheme: const ColorScheme.dark(
-                    onPrimary: Color.fromARGB(
-                        255, 255, 255, 255), // selected text color
-                    onSurface: Color.fromARGB(
-                        255, 255, 255, 255), // default text color
-                    primary: Color.fromARGB(99, 255, 255, 255) // circle color
-                    ),
-                dialogBackgroundColor: Colors.black54,
-                textButtonTheme: TextButtonThemeData(
-                    style: TextButton.styleFrom(
-                        textStyle: const TextStyle(
-                            color: Color.fromARGB(255, 255, 255, 255),
-                            fontWeight: FontWeight.normal,
-                            fontSize: 12,
-                            fontFamily: 'Quicksand'),
-                        backgroundColor: Colors.black54, // Background color
-                        shape: RoundedRectangleBorder(
-                            side: const BorderSide(
-                                color: Colors.transparent,
-                                width: 1,
-                                style: BorderStyle.solid),
-                            borderRadius: BorderRadius.circular(50))))),
+              colorScheme: const ColorScheme.dark(
+                  onPrimary:
+                      Color.fromARGB(255, 255, 255, 255), // selected text color
+                  onSurface:
+                      Color.fromARGB(255, 255, 255, 255), // default text color
+                  primary: Color.fromARGB(99, 255, 255, 255) // circle color
+                  ),
+              dialogBackgroundColor: Colors.black54,
+              textButtonTheme: TextButtonThemeData(
+                style: TextButton.styleFrom(
+                  textStyle: const TextStyle(
+                      color: Color.fromARGB(255, 255, 255, 255),
+                      fontWeight: FontWeight.normal,
+                      fontSize: 12,
+                      fontFamily: 'Quicksand'),
+                  backgroundColor: Colors.black54, // Background color
+                  shape: RoundedRectangleBorder(
+                    side: const BorderSide(
+                        color: Colors.transparent,
+                        width: 1,
+                        style: BorderStyle.solid),
+                    borderRadius: BorderRadius.circular(50),
+                  ),
+                ),
+              ),
+            ),
             child: child!,
           );
         });
-    _slot.forEach((key, value) {
-      if (int.parse(key) == picked?.weekday) {
-        _slotDay = value;
-        return;
+
+    if (widget.data['extension_attributes'] == null) {
+      print(widget.data['custom_attributes']);
+      for (dynamic attr in widget.data['custom_attributes']) {
+        if (attr['attribute_code'].runtimeType == int) {
+          //_slot.add(attr);
+          if (attr['attribute_code'] == picked?.weekday) {
+            _slotDay = attr['value'];
+          }
+        }
       }
-    });
-    //print(_slotDay);
-    _allSlotDay = [];
+    } else {
+      print(widget.data['extension_attributes']);
+      for (dynamic attr in widget.data['extension_attributes']
+          ['slot_schedules']) {
+        if (attr['attribute_code'] == picked?.weekday) {
+          _slotDay = attr['value'];
+        }
+      }
+      //_slot = widget.data['extension_attributes']['slot_schedules'];
+    }
+
+    if (picked != null && picked != _selectedDate) {
+      setState(() {
+        _selectedDate = picked;
+      });
+    }
+    /*print('_slot');
+    print(_slot);
+    for (var item in _slot) {
+      if (item['attribute_code'] == picked?.weekday) {
+        _slotDay = item['value'];
+      }
+    }
+    print('_slotDay');
+    print(_slotDay);*/
+    /*_allSlotDay = [];
     for (var e in _slotDay) {
       if (e['slots_info'].runtimeType == List) {
         _allSlotDay.addAll(e['slots_info']);
       } else {
         _allSlotDay.addAll(e['slots_info'].values);
       }
-    }
+    }*/
     //print('_allSlotDay');
     //print(_allSlotDay);
-    if (picked != null && picked != _selectedDate) {
+    /*if (picked != null && picked != _selectedDate) {
       setState(() {
         _selectedDate = picked;
       });
-    }
+    }*/
   }
 
   Future<void> generateOrden(DateTime _selectedDate, int personas) async {
@@ -145,7 +185,7 @@ class _MyDetailPageState extends State<MyDetailPage>
     //print('************* Generar custom_options: *************');
     List<Map<String, dynamic>> custom_options = [];
     if (_options.isEmpty) {
-      await getOptions(widget.data['sku']);
+      await getOptions();
     }
     //print('************* options: ${_options} *************');
     if (_options.isEmpty) {
@@ -247,7 +287,7 @@ class _MyDetailPageState extends State<MyDetailPage>
         responseErrorWarning(context, 'Vuelve a iniciar sesion');
         return;
       }
-      bool bandera = true;
+      //bool bandera = true;
       for (dynamic data in items) {
         //print('************* SKU: ${data['sku']} *************');
         //print('************* SKU-Actual: ${widget.data['sku']} *************');
@@ -338,44 +378,39 @@ class _MyDetailPageState extends State<MyDetailPage>
     }
   }
 
-  setImgs() {
-    //print('media_gallery_entries');
-    //print(widget.data['media_gallery_entries']);
-    if (widget.data['media_gallery_entries'] != null) {
-      //imagenes.add(widget.data['media_gallery_entries'][0]['file']);
-      widget.data['media_gallery_entries'].forEach((element) {
-        imagenes.add(element['file']);
-      });
-    } else {
-      imagenes.add('assets/notFoundImg.png');
-    }
+  _getCoords(String cadena) {
+    return cadena.split(',');
+  }
 
-    //print('imagenes');
-    //print(imagenes);
+  Future<void> getUserData() async {
+    final splitter = _getCoords(
+        getCustomAttribute(widget.data['custom_attributes'], 'location'));
+    if (splitter.length == 2) {
+      GoogleMapController controller = await _controller.future;
+      _marker = LatLng(double.parse(splitter[0]), double.parse(splitter[1]));
+      controller.animateCamera(CameraUpdate.newLatLngZoom(
+          LatLng(double.parse(splitter[0]), double.parse(splitter[1])), 5));
+    }
+  }
+
+  void _onMapCreated(GoogleMapController controller) {
+    _controller.complete(controller);
   }
 
   @override
   void initState() {
-    //print(widget.data);
     _userBloc.add(GetUser());
+    _reviewBloc.add(GetReviewsList(widget.data['sku']));
+    init();
     super.initState();
-    //_daySlot = getSlot(widget.data['id']);
-    _tabController = TabController(length: 2, vsync: this);
-    getOptions(widget.data['sku']);
-    getSlot(widget.data['id'].toString());
-    //_options = getOptions(widget.data['sku']);
-    setImgs();
-  }
-
-  @override
-  void dispose() {
-    _tabController.dispose();
-    super.dispose();
+    //getOptions(widget.data['sku']);
+    //getSlot(widget.data['id'].toString());
+    //setImgs();
+    //getUserData();
   }
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Información del restaurante',
@@ -383,6 +418,7 @@ class _MyDetailPageState extends State<MyDetailPage>
         backgroundColor: Colors.black,
         leading: BackButton(
           onPressed: () => Navigator.pushNamed(context, 'home'),
+          color: Colors.white,
         ),
       ),
       body: SingleChildScrollView(
@@ -390,326 +426,7 @@ class _MyDetailPageState extends State<MyDetailPage>
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             crearSlider(),
-            Padding(
-              padding: const EdgeInsets.only(
-                left: 10,
-                top: 10,
-                bottom: 10,
-                right: 10,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Divider(
-                    color: Colors.black,
-                    thickness: 1,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 32, bottom: 32),
-                    child: Text(
-                      widget.data['name'],
-                      style: const TextStyle(
-                          fontSize: 36, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  const Divider(
-                    color: Colors.black,
-                    thickness: 1,
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Row(
-                    children: [
-                      RatingBarIndicator(
-                        rating: double.parse(getCustomAttribute(
-                                widget.data['custom_attributes'],
-                                'product_score')
-                            .toString()),
-                        itemBuilder: (context, index) => const Icon(
-                          Icons.star,
-                          color: Color.fromARGB(200, 149, 4, 4),
-                        ),
-                        itemCount: 5,
-                        itemSize: 26.0,
-                        direction: Axis.horizontal,
-                      ),
-                      Text(
-                        "${getCustomAttribute(widget.data['custom_attributes'], 'product_score')}",
-                        style: const TextStyle(
-                            color: Color(0xff323232),
-                            fontSize: 16,
-                            fontFamily: 'Exo Bold'),
-                      ),
-                      const SizedBox(
-                        width: 40,
-                      ),
-                      const Icon(Icons.comment_bank_outlined),
-                      const Text(
-                        "111 reseñas",
-                        style: TextStyle(
-                            color: Color(0xff323232),
-                            fontSize: 16,
-                            fontFamily: 'Exo Bold'),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Row(
-                    children: const [
-                      Icon(Icons.money_outlined),
-                      Text(
-                        "De MXN300 a MXN400",
-                        style: TextStyle(
-                            color: Color(0xff323232),
-                            fontSize: 16,
-                            fontFamily: 'Exo Bold'),
-                      ),
-                      SizedBox(
-                        width: 20,
-                      ),
-                      Icon(Icons.restaurant),
-                      Text(
-                        "Tipo de comida",
-                        style: TextStyle(
-                            color: Color(0xff323232),
-                            fontSize: 16,
-                            fontFamily: 'Exo Bold'),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 8, bottom: 8),
-                    /*child: ReadMoreText(
-                      parse(getCustomAttribute(widget.data['custom_attributes'],
-                              'short_description'))
-                          .outerHtml,*/
-                    child: ReadMoreText(
-                      getCustomAttribute(widget.data['custom_attributes'],
-                          'short_description'),
-                      trimLines: 1,
-                      trimMode: TrimMode.Line,
-                      trimExpandedText: ' Ver menos',
-                      trimCollapsedText: ' Mas informacion',
-                      moreStyle: const TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.blue),
-                      lessStyle: const TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.blue),
-                    ),
-                  ),
-                  /*Padding(
-                    padding: const EdgeInsets.only(top: 8, bottom: 8),
-                    child: HtmlParsedReadMore(
-                      readLessText: 'Ver menos',
-                      readMoreText: 'Más información',
-                      maxLinesReadLess: 3,
-                      maxLinesReadMore: 1000,
-                      textOverflow: TextOverflow.ellipsis,
-                      fontFamily: 'poppins',
-                      textButtonFontSize: 14.0,
-                      buttonAlignment: Alignment.bottomLeft,
-                      buttonPadding: const EdgeInsets.only(top: 0),
-                      text: getCustomAttribute(widget.data['custom_attributes'],
-                          'short_description'),
-                    ),
-                  ),*/
-                  BlocProvider(
-                    create: (_) => _userBloc,
-                    child: BlocListener<UserBloc, UserState>(
-                      listener: (context, state) {
-                        /*if (state is UserError) {
-                          responseErrorWarning(context, state.message!);
-                        }*/
-                      },
-                      child: BlocBuilder<UserBloc, UserState>(
-                        builder: (context, state) {
-                          if (state is UserLoaded) {
-                            return MakeAReservationForm(
-                                createReservation: generateOrden);
-                          } else {
-                            return Center(
-                              child: baseButtom(
-                                onPressed: () =>
-                                    Navigator.pushNamed(context, 'login'),
-                                text: const Text(
-                                  "Iniciar Sesion",
-                                  style: TextStyle(
-                                      fontSize: 18, color: Colors.white),
-                                ),
-                              ),
-                            );
-                          }
-                        },
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 8),
-                  TabBar(
-                    labelColor: const Color.fromARGB(255, 0, 0, 0),
-                    indicatorColor: Colors.black,
-                    isScrollable: false,
-                    onTap: (index) {
-                      //print(index);
-                      if (index == 0) {
-                        Navigator.of(context).push(_createRoute());
-                      }
-
-                      if (index == 1) {
-                        Navigator.of(context).push(_createRouteContac());
-                      }
-                    },
-                    tabs: const <Widget>[
-                      Tab(
-                        text: 'Reseñas',
-                      ),
-                      Tab(
-                        text: 'Detalles',
-                      ),
-                    ],
-                    controller: _tabController,
-                  ),
-                  SizedBox(
-                    height: 10,
-                    child: TabBarView(
-                      controller: _tabController,
-                      children: <Widget>[
-                        /*Column(
-                          children: [
-                            const SizedBox(height: 20.0),
-                            const Text(
-                              'Día y Hora de Reserva',
-                              style: TextStyle(fontSize: 25),
-                            ),
-                            const SizedBox(height: 10.0),
-                            Flexible(
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 5, horizontal: 5),
-                                child: ListTile(
-                                  title: Text(
-                                      "Fecha: ${DateFormat('yyyy-MM-dd').format(_selectedDate)}"),
-                                  trailing: const Icon(Icons.calendar_today),
-                                  onTap: () => _selectDate(context),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: 10.0),
-                            Expanded(
-                              child: Container(
-                                padding: const EdgeInsets.only(top: 3),
-                                height: size.height * 1.5,
-                                width: double.infinity,
-                                child: GridView.builder(
-                                    itemCount: _allSlotDay.length,
-                                    gridDelegate:
-                                        const SliverGridDelegateWithFixedCrossAxisCount(
-                                            childAspectRatio: 1.5,
-                                            crossAxisCount: 4,
-                                            crossAxisSpacing: 4.0,
-                                            mainAxisSpacing: 4.0),
-                                    itemBuilder:
-                                        (BuildContext context, int index) {
-                                      return Container(
-                                        padding: const EdgeInsets.all(15),
-                                        decoration: BoxDecoration(
-                                          color: index == slot_id
-                                              ? Colors.black
-                                              : Colors.black54,
-                                          borderRadius:
-                                              BorderRadius.circular(20),
-                                          boxShadow: const [
-                                            BoxShadow(
-                                              offset: Offset(0, 17),
-                                              blurRadius: 17,
-                                              spreadRadius: -23,
-                                              color: Colors.black,
-                                            ),
-                                          ],
-                                        ),
-                                        child: InkWell(
-                                          onTap: () {
-                                            //print(index);
-                                            //print(_allSlotDay[index]);
-                                            setState(() {
-                                              Hora = _allSlotDay[index]['time'];
-                                              slot_id = index;
-                                            });
-                                          },
-                                          child: Column(
-                                            children: <Widget>[
-                                              const Icon(
-                                                Icons.timer_sharp,
-                                                size: 13,
-                                                color: Colors.white,
-                                              ),
-                                              Text(
-                                                "${_allSlotDay[index]['time']}",
-                                                style: const TextStyle(
-                                                    color: Colors.white),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                      );
-                                      /*return Text(
-                                        "${_allSlotDay[index]['qty']} - ${_allSlotDay[index]['time']}",
-                                      );*/
-                                    }),
-                              ),
-                            ),
-                            Flexible(
-                              child: SizedBox(
-                                child: DropdownButtonFormField<String>(
-                                  items: const [],
-                                  /*personasList.map((e) {
-                                    return DropdownMenuItem(
-                                      child: SizedBox(
-                                        width: double.infinity,
-                                        child: Text(
-                                          e,
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                      ),
-                                      value: e,
-                                    );
-                                  }).toList(),*/
-                                  decoration: const InputDecoration(
-                                      labelText: 'Personas'),
-                                  onChanged: (String? newValue) {
-                                    setState(() {
-                                      _selectPersona = newValue!;
-                                    });
-                                  },
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),*/
-                        Column(),
-                        Column()
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            crearInfo(), /*createInfo()*/
           ],
         ),
       ),
@@ -756,12 +473,280 @@ class _MyDetailPageState extends State<MyDetailPage>
     );
   }
 
+  Padding crearInfo() {
+    return Padding(
+      padding: const EdgeInsets.all(10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _dividerLine,
+          Padding(
+            padding: const EdgeInsets.only(top: 32, bottom: 32),
+            child: Text(
+              widget.data['name'],
+              style: const TextStyle(fontSize: 36, fontWeight: FontWeight.bold),
+            ),
+          ),
+          _dividerLine,
+          Row(
+            children: [
+              RatingBarIndicator(
+                rating: double.parse(getCustomAttribute(
+                        widget.data['custom_attributes'], 'product_score')
+                    .toString()),
+                itemBuilder: (context, index) => const Icon(
+                  Icons.star,
+                  color: Color.fromARGB(200, 149, 4, 4),
+                ),
+                itemCount: 5,
+                itemSize: 26.0,
+                direction: Axis.horizontal,
+              ),
+              Text(
+                "${getCustomAttribute(widget.data['custom_attributes'], 'product_score')}",
+                style: const TextStyle(
+                    color: Color(0xff323232),
+                    fontSize: 16,
+                    fontFamily: 'Exo Bold'),
+              ),
+              const SizedBox(
+                width: 40,
+              ),
+              const Icon(Icons.comment_bank_outlined),
+              const Text(
+                "111 reseñas",
+                style: TextStyle(
+                    color: Color(0xff323232),
+                    fontSize: 16,
+                    fontFamily: 'Exo Bold'),
+              ),
+            ],
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          Row(
+            children: [
+              const Icon(Icons.money_outlined),
+              const Flexible(
+                child: Text(
+                  "De MXN300 a MXN400",
+                  style: TextStyle(
+                      color: Color(0xff323232),
+                      fontSize: 16,
+                      fontFamily: 'Exo Bold'),
+                ),
+              ),
+              const Icon(Icons.restaurant),
+              Flexible(
+                child: Text(
+                  getCustomAttribute(
+                      widget.data['custom_attributes'], 'category_string'),
+                  style: const TextStyle(
+                      color: Color(0xff323232),
+                      fontSize: 16,
+                      fontFamily: 'Exo Bold'),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 8, bottom: 8),
+            child: HtmlParsedReadMore(
+              readLessText: 'Ver menos',
+              readMoreText: 'Más información',
+              maxLinesReadLess: 3,
+              maxLinesReadMore: 1000,
+              textOverflow: TextOverflow.ellipsis,
+              fontFamily: 'poppins',
+              textButtonFontSize: 14.0,
+              buttonAlignment: Alignment.bottomLeft,
+              buttonPadding: const EdgeInsets.only(top: 0),
+              text: getCustomAttribute(
+                  widget.data['custom_attributes'], 'short_description'),
+            ),
+          ),
+          const Padding(
+            padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+            child: Row(
+              children: [
+                Icon(Icons.maps_ugc_rounded),
+                SizedBox(
+                  width: 20,
+                ),
+                Text(
+                  'Ubicacion',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+            child: Row(
+              children: [
+                const SizedBox(
+                  width: 44,
+                ),
+                Flexible(
+                  child: Text(
+                    "${getCustomAttribute(widget.data['custom_attributes'], 'hotel_address')}, ${getCustomAttribute(widget.data['custom_attributes'], 'location')}",
+                    style: const TextStyle(fontSize: 15),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 10),
+          /*Center(
+            child: SizedBox(
+              height: 280,
+              width: 380,
+              child: GoogleMap(
+                  myLocationEnabled: true,
+                  onMapCreated: _onMapCreated,
+                  initialCameraPosition: _initialPosition,
+                  markers: {
+                    Marker(markerId: const MarkerId("Yo"), position: _marker)
+                  }),
+            ),
+          ),*/
+          const SizedBox(height: 10),
+          BlocProvider(
+            create: (_) => _userBloc,
+            child: BlocListener<UserBloc, UserState>(
+              listener: (context, state) {
+                /*if (state is UserError) {
+                          responseErrorWarning(context, state.message!);
+                        }*/
+              },
+              child: BlocBuilder<UserBloc, UserState>(
+                builder: (context, state) {
+                  if (state is UserLoaded) {
+                    return MakeAReservationForm(
+                        createReservation: generateOrden);
+                  } else {
+                    return Center(
+                      child: baseButtom(
+                        onPressed: () => Navigator.pushNamed(context, 'login'),
+                        text: const Text(
+                          "Iniciar Sesion",
+                          style: TextStyle(fontSize: 18, color: Colors.white),
+                        ),
+                      ),
+                    );
+                  }
+                },
+              ),
+            ),
+          ),
+          const Text(
+            "Las evaluaciones y reseñas están verificadas y provienen de personas que usan el mismo tipo de dispositivo que usted.",
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(
+            height: 30,
+          ),
+          Row(
+            children: [
+              Expanded(
+                flex: 3,
+                child: Text(
+                  getCustomAttribute(
+                          widget.data['custom_attributes'], 'product_score')
+                      .toString(),
+                  style: const TextStyle(fontSize: 50),
+                ),
+              ),
+              const Expanded(
+                flex: 7,
+                child: Column(
+                  children: [
+                    RatingProgressIndicador(
+                      text: '5',
+                      value: 1.0,
+                    ),
+                    RatingProgressIndicador(
+                      text: '4',
+                      value: 0.8,
+                    ),
+                    RatingProgressIndicador(
+                      text: '3',
+                      value: 0.6,
+                    ),
+                    RatingProgressIndicador(
+                      text: '2',
+                      value: 0.4,
+                    ),
+                    RatingProgressIndicador(
+                      text: '1',
+                      value: 0.2,
+                    )
+                  ],
+                ),
+              )
+            ],
+          ),
+          RatingBarIndicator(
+            rating: double.parse(getCustomAttribute(
+                    widget.data['custom_attributes'], 'product_score')
+                .toString()),
+            itemSize: 20,
+            unratedColor: Colors.grey,
+            itemBuilder: (_, __) => const Icon(
+              Icons.star,
+              color: Colors.amber,
+            ),
+          ),
+          const Text('12,600'),
+          const SizedBox(
+            height: 20,
+          ),
+          BlocProvider(
+            create: (_) => _reviewBloc,
+            child: BlocListener<ReviewsBloc, ReviewsState>(
+              listener: (context, state) {
+                /*if (state is UserError) {
+                          responseErrorWarning(context, state.message!);
+                        }*/
+              },
+              child: BlocBuilder<ReviewsBloc, ReviewsState>(
+                builder: (context, state) {
+                  if (state is ReviewsLoaded) {
+                    if (state.data.result == 'fail') {
+                      return const Center(
+                          child: Text('No existen comentarios'));
+                    }
+
+                    return Column(
+                      children: _createList(state.data.data!['data']),
+                    );
+                  } else {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                },
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  final _dividerLine = const Divider(
+    color: Colors.black,
+    thickness: 1,
+  );
+
   List<DropdownMenuItem<String>> timepostSlot(data) {
-    //print(data.runtimeType);
     List<DropdownMenuItem<String>> lista = [];
     if (data.runtimeType == List) {
-      //print('is list');
-      //print(data);
       data.forEach((element) => {
             lista.add(DropdownMenuItem<String>(
               value: element['time'],
@@ -769,12 +754,7 @@ class _MyDetailPageState extends State<MyDetailPage>
             ))
           });
     } else {
-      //print('no list');
-      //print(data);
-      //print(data.length);
       data.forEach((ele, value) {
-        //print(ele);
-        //print(value);
         lista.add(DropdownMenuItem<String>(
           value: value['time'],
           child: Text(value['time']),
@@ -784,43 +764,136 @@ class _MyDetailPageState extends State<MyDetailPage>
     return lista;
   }
 
-  Route _createRoute() {
-    return PageRouteBuilder(
-      pageBuilder: (context, animation, secondaryAnimation) =>
-          MyReviewPage(data: widget.data),
-      transitionsBuilder: (context, animation, secondaryAnimation, child) {
-        const begin = Offset(0.0, 1.0);
-        const end = Offset.zero;
-        const curve = Curves.ease;
+  List<Widget> _createList(datas) {
+    List<Widget> lists = <Widget>[];
+    for (dynamic data in datas) {
+      print(data['detail']);
+      lists.add(UsersReviewCard(data: data));
+    }
+    return lists;
+  }
+}
 
-        var tween =
-            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+class RatingProgressIndicador extends StatelessWidget {
+  const RatingProgressIndicador(
+      {super.key, required this.text, required this.value});
 
-        return SlideTransition(
-          position: animation.drive(tween),
-          child: child,
-        );
-      },
+  final String text;
+  final double value;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Expanded(flex: 1, child: Text(text)),
+        Expanded(
+          flex: 11,
+          child: SizedBox(
+            width: 20,
+            child: LinearProgressIndicator(
+              value: value,
+              minHeight: 15,
+              backgroundColor: Colors.grey,
+              valueColor: const AlwaysStoppedAnimation(Colors.blue),
+            ),
+          ),
+        )
+      ],
     );
   }
+}
 
-  Route _createRouteContac() {
-    return PageRouteBuilder(
-        pageBuilder: (context, animation, secondaryAnimation) => MyContactPage(
-              data: widget.data,
+class UsersReviewCard extends StatelessWidget {
+  final Map<String, dynamic> data;
+  const UsersReviewCard({super.key, required this.data});
+  //const UsersReviewCard({Key? key}) : super(key: key, required this.data);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              children: [
+                const CircleAvatar(
+                  backgroundImage: AssetImage('assets/Profile.png'),
+                ),
+                const SizedBox(
+                  width: 20,
+                ),
+                Text(data['nickname'],
+                    style: const TextStyle(
+                      fontSize: 17,
+                      fontWeight: FontWeight.bold,
+                    ))
+              ],
             ),
-        transitionsBuilder: (context, animation, secondaryAnimation, child) {
-          const begin = Offset(0.0, 1.0);
-          const end = Offset.zero;
-          const curve = Curves.ease;
-
-          var tween =
-              Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-
-          return SlideTransition(
-            position: animation.drive(tween),
-            child: child,
-          );
-        });
+            IconButton(onPressed: () {}, icon: const Icon(Icons.more_vert))
+          ],
+        ),
+        const SizedBox(
+          width: 30,
+        ),
+        Row(
+          children: [
+            RatingBarIndicator(
+              rating: 3,
+              itemSize: 15,
+              unratedColor: Colors.grey,
+              itemBuilder: (_, __) => const Icon(
+                Icons.star,
+                color: Colors.amber,
+              ),
+            ),
+            const SizedBox(
+              width: 10,
+            ),
+            Text(data['created_at']),
+          ],
+        ),
+        const SizedBox(
+          height: 10,
+        ),
+        Row(
+          children: [
+            Expanded(
+              child: Text(
+                data['title'],
+                style: const TextStyle(
+                  fontSize: 17,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(
+          height: 10,
+        ),
+        Align(
+            alignment: Alignment.centerLeft,
+            child: ReadMoreText(
+              data['detail'],
+              trimLines: 1,
+              trimMode: TrimMode.Line,
+              textAlign: TextAlign.left,
+              trimExpandedText: ' Ver menos',
+              trimCollapsedText: ' Ver mas',
+              moreStyle: const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.blue),
+              lessStyle: const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.blue),
+            )),
+        const SizedBox(
+          height: 20,
+        ),
+      ],
+    );
   }
 }

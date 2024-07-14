@@ -1,8 +1,9 @@
 import 'package:bloc/bloc.dart';
-import 'package:equatable/equatable.dart';
 
 import 'package:andromeda/models/response.dart';
 import 'package:andromeda/services/customer.dart';
+
+import 'package:equatable/equatable.dart';
 
 part 'reservation_event.dart';
 part 'reservation_state.dart';
