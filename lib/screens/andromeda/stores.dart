@@ -1,3 +1,4 @@
+import 'package:andromeda/services/db.dart';
 import 'package:andromeda/witgets/button_base.dart';
 import 'package:flutter/material.dart';
 
@@ -38,8 +39,28 @@ class _MyStorePageState extends State<MyStorePage> {
 
   @override
   void dispose() {
+    _firstBloc.close();
+    _secondBloc.close();
+    _allBloc.close();
+    _userBloc.close();
     super.dispose();
   }
+
+  /*fillFavorite(data) async {
+    final allFavorites = await serviceDB.instance.queryRecord('favorites');
+
+    for (int i = 0; i < data.length; i++) {
+      data[i]['isFavorite'] = false;
+      for (var toElement in allFavorites) {
+        if (data[i]['id'] == toElement['id']) {
+          data[i]['isFavorite'] = true;
+          break;
+        }
+      }
+    }
+
+    return data;
+  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -127,17 +148,17 @@ class _MyStorePageState extends State<MyStorePage> {
   }
 
   SizedBox _header() {
-    return SizedBox(
+    return const SizedBox(
       child: Column(
         children: [
-          const SizedBox(height: 10),
+          /*SizedBox(height: 10),
           baseButtom(
             onPressed: () => Navigator.pushNamed(context, 'login'),
             text: const Text(
               "Iniciar Sesion",
               style: TextStyle(fontSize: 18, color: Colors.white),
             ),
-          ),
+          ),*/
           const SizedBox(height: 20)
         ],
       ),
@@ -148,7 +169,7 @@ class _MyStorePageState extends State<MyStorePage> {
     return Padding(
       padding: const EdgeInsets.all(10.0),
       child: SizedBox(
-        height: MediaQuery.of(context).size.height * .37,
+        height: MediaQuery.of(context).size.height * .43,
         child: BlocProvider(
           create: (_) => _firstBloc,
           child: BlocListener<OneBloc, OneState>(
@@ -182,7 +203,7 @@ class _MyStorePageState extends State<MyStorePage> {
     return Padding(
       padding: const EdgeInsets.all(10.0),
       child: SizedBox(
-        height: MediaQuery.of(context).size.height * .37,
+        height: MediaQuery.of(context).size.height * .43,
         child: BlocProvider(
           create: (_) => _secondBloc,
           child: BlocListener<SecondBloc, SecondState>(
@@ -216,7 +237,7 @@ class _MyStorePageState extends State<MyStorePage> {
     return Padding(
       padding: const EdgeInsets.all(10.0),
       child: SizedBox(
-        height: MediaQuery.of(context).size.height * .37,
+        height: MediaQuery.of(context).size.height * .43,
         child: BlocProvider(
           create: (_) => _allBloc,
           child: BlocListener<AllBloc, AllState>(

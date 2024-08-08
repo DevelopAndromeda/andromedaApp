@@ -29,6 +29,7 @@ class _MyNotificationsPageState extends State<MyNotificationsPage> {
 
   @override
   void dispose() {
+    _newsBloc.close();
     super.dispose();
   }
 
@@ -109,7 +110,7 @@ class _MyNotificationsPageState extends State<MyNotificationsPage> {
               title: model.data!['data'][index]['message'],
               subtitle: "Nombre del Restaurante",
               description: "Datos de la reservación",
-              imagePath: "assets/LogoBlack.png",
+              imagePath: model.data!['data'][index]['image'] ?? "",
               onClose: () {
                 //print("Notificaciones");
               },

@@ -23,16 +23,20 @@ class MyHistoryPage extends StatefulWidget {
 
 class _MyHistoryPageState extends State<MyHistoryPage> {
   final HistoryBloc _newsBloc = HistoryBloc();
+  bool bandera = true;
 
   @override
   void initState() {
-    _newsBloc.add(GetHistoryList());
-    //_userBloc.add(GetUser());
+    if (bandera) {
+      _newsBloc.add(GetHistoryList());
+      bandera = false;
+    }
     super.initState();
   }
 
   @override
   void dispose() {
+    _newsBloc.close();
     super.dispose();
   }
 
@@ -65,11 +69,13 @@ class _MyHistoryPageState extends State<MyHistoryPage> {
               if (state.data.result == 'ok') {
                 if (state.data.data != null &&
                     state.data.data!['items'].isNotEmpty) {
-                  //print(state.data.data!['items'][0]);
-                  responseSuccessWarning(context,
-                      "Te recordamos que peudes realizar una reseña a tu ultima visita en ${state.data.data!['items'][0]['items'][0]['name']}");
-                  //infoAlertModal(context,
+                  //_showMyDialog(
                   //    "Te recordamos que peudes realizar una reseña a tu ultima visita en ${state.data.data!['items'][0]['items'][0]['name']}");
+                  //print(state.data.data!['items'][0]);
+                  //responseSuccessWarning(context,
+                  //    "Te recordamos que peudes realizar una reseña a tu ultima visita en ${state.data.data!['items'][0]['items'][0]['name']}");
+                  infoAlertModal(context,
+                      "Te recordamos que peudes realizar una reseña a tu ultima visita en ${state.data.data!['items'][0]['items'][0]['name']}");
                   return;
                 }
               }
@@ -124,15 +130,20 @@ class _MyHistoryPageState extends State<MyHistoryPage> {
                       left: 10,
                       top: 15,
                       bottom: 15,
-                      child: Container(
-                          width: 120,
-                          height: 90,
-                          decoration: getImg(model.data!['items'][index]
-                                      ['items'][0]['extension_attributes'] !=
-                                  null
-                              ? model.data!['items'][index]['items'][0]
-                                  ['extension_attributes']['image'][0]
-                              : null)),
+                      child: InkWell(
+                          onTap: () => Navigator.pushNamed(context, 'orden',
+                              arguments: model.data!['items'][index]
+                                  ['entity_id']),
+                          child: Container(
+                              width: 120,
+                              height: 90,
+                              decoration: getImg(model.data!['items'][index]
+                                              ['items'][0]
+                                          ['extension_attributes'] !=
+                                      null
+                                  ? model.data!['items'][index]['items'][0]
+                                      ['extension_attributes']['image'][0]
+                                  : null))),
                     ),
                     Positioned(
                       left: 140,
@@ -140,9 +151,9 @@ class _MyHistoryPageState extends State<MyHistoryPage> {
                       right: 65,
                       bottom: 5,
                       child: InkWell(
-                        onTap: () => Navigator.pushNamed(context, 'detail',
-                            arguments: model.data!['items'][index]['items'][0]
-                                ['product_id']),
+                        onTap: () => Navigator.pushNamed(context, 'orden',
+                            arguments: model.data!['items'][index]
+                                ['entity_id']),
                         child: Padding(
                           padding: const EdgeInsets.all(5.0),
                           child: Column(
@@ -310,4 +321,31 @@ class _MyHistoryPageState extends State<MyHistoryPage> {
           ));
     }
   }
+
+  /*Future<void> _showMyDialog(String msj) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Informacion'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text(msj),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Ok'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }*/
 }

@@ -75,7 +75,9 @@ class AuthLogic extends Cubit<AuthState> {
     await _authService.register(data).then((value) {
       emit(SignUpLoadingState(isLoading: false));
       if (value.result == 'ok') {
-        Navigator.pushNamed(context, 'home');
+        responseSuccessWarning(context, value.data?['data']);
+        //Navigator.pushNamed(context, 'home');
+        Navigator.pushNamed(context, 'login');
         /*Navigator.of(context)
             .pushNamedAndRemoveUntil('home', (Route<dynamic> route) => false);*/
       } else {

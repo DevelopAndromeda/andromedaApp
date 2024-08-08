@@ -28,7 +28,9 @@ class ReservationNotification extends StatelessWidget {
             shape: BoxShape.circle,
             image: DecorationImage(
               fit: BoxFit.cover,
-              image: AssetImage(imagePath),
+              image: imagePath.isEmpty
+                  ? const AssetImage("assets/LogoBlack.png")
+                  : NetworkImage(imagePath),
             ),
           ),
         ),

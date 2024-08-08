@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:carousel_slider/carousel_slider.dart';
+//import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
@@ -31,6 +31,12 @@ class _MySearchPageState extends State<MySearchPage> {
   void initState() {
     _firstBloc.add(GetOneList());
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _firstBloc.close();
+    super.dispose();
   }
 
   @override
@@ -132,6 +138,20 @@ class _MySearchPageState extends State<MySearchPage> {
   }
 
   Widget _buildCard(data) {
+    data['media_gallery_entries'] = [];
+    data['media_gallery_entries'].add({
+      "media_type": "image",
+      'file': getCustomAttribute(data['custom_attributes'], 'image')
+    });
+    data['media_gallery_entries'].add({
+      "media_type": "image",
+      'file': getCustomAttribute(data['custom_attributes'], 'small_image')
+    });
+    data['media_gallery_entries'].add({
+      "media_type": "image",
+      'file': getCustomAttribute(data['custom_attributes'], 'small_image')
+    });
+
     return InkWell(
       onTap: () => Navigator.pushNamed(context, 'detail', arguments: data),
       child: Card(
@@ -256,7 +276,7 @@ class _MySearchPageState extends State<MySearchPage> {
     }
   }
 
-  Widget crearSlider(Respuesta model) {
+  /*Widget crearSlider(Respuesta model) {
     if (model.result == 'fail') {
       return const Center(
         child: Text('Ocurrio un error al obtener los datos'),
@@ -271,6 +291,7 @@ class _MySearchPageState extends State<MySearchPage> {
 
     List<Widget> list = [];
     for (dynamic item in model.data!['data']['items']) {
+      item['media_gallery_entries'] = [];
       if (item['images'] != null) {
         item['media_gallery_entries'] = item['images'];
       }
@@ -291,7 +312,7 @@ class _MySearchPageState extends State<MySearchPage> {
           viewportFraction: 0.8,
         ),
         items: list);
-  }
+  }*/
 
   cardRestaurant(data) {
     return InkWell(
@@ -423,7 +444,8 @@ class _MySearchPageState extends State<MySearchPage> {
                 } else if (state is OneLoading) {
                   return _buildLoading();
                 } else if (state is OneLoaded) {
-                  return crearSlider(state.data);
+                  //return crearSlider(state.data);
+                  return Text('En mantenimiento');
                 } else if (state is OneError) {
                   return Container();
                 } else {
@@ -451,6 +473,15 @@ class _MySearchPageState extends State<MySearchPage> {
               } else {
                 if (!attr['value'][0]['slots_info'].isEmpty) {
                   for (dynamic item in attr['value'][0]['slots_info']) {
+                    final HoraAcutal = item['time']
+                        .replaceAll(" am", "")
+                        .replaceAll(" pm", "")
+                        .split(':');
+                    int hour = int.parse(HoraAcutal[0]);
+                    int minute = int.parse(HoraAcutal[1]);
+                    if (_now.hour == hour && _now.minute <= minute) {
+                      horas.add(item['time']);
+                    }
                     horas.add(item['time']);
                   }
                 } else {
@@ -466,7 +497,11 @@ class _MySearchPageState extends State<MySearchPage> {
     }
 
     return TimeSlotButton(
-        anchoButton: 20, altoButton: 40, sizeText: 12, data: horas);
+        anchoButton: 20,
+        altoButton: 40,
+        sizeText: 12,
+        horas: horas,
+        data: data);
   }
 
   Widget crearSlot(data) {
@@ -483,6 +518,15 @@ class _MySearchPageState extends State<MySearchPage> {
               } else {
                 if (!attr['value'][0]['slots_info'].isEmpty) {
                   for (dynamic item in attr['value'][0]['slots_info']) {
+                    final HoraAcutal = item['time']
+                        .replaceAll(" am", "")
+                        .replaceAll(" pm", "")
+                        .split(':');
+                    int hour = int.parse(HoraAcutal[0]);
+                    int minute = int.parse(HoraAcutal[1]);
+                    if (_now.hour == hour && _now.minute <= minute) {
+                      horas.add(item['time']);
+                    }
                     horas.add(item['time']);
                   }
                 } else {
@@ -498,7 +542,11 @@ class _MySearchPageState extends State<MySearchPage> {
     }
 
     return TimeSlotButton(
-        anchoButton: 15, altoButton: 40, sizeText: 11, data: horas);
+        anchoButton: 15,
+        altoButton: 40,
+        sizeText: 11,
+        horas: horas,
+        data: data);
   }
 
   Widget _buildLoading() => const Center(child: CircularProgressIndicator());

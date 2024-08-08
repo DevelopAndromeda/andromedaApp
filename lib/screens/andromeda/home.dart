@@ -33,8 +33,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    FlutterBackgroundService().invoke("setAsBackground");
-    FlutterBackgroundService().invoke("setAsBackground");
+    //FlutterBackgroundService().invoke("setAsBackground");
+    //FlutterBackgroundService().invoke("setAsBackground");
     return Scaffold(
       body: BlocBuilder<BottomNavigationBloc, int>(
         builder: (context, currentTab) {

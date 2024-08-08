@@ -35,6 +35,7 @@ class _RestuarentScreenState extends State<RestuarentScreen> {
 
   @override
   Widget build(BuildContext context) {
+    //print(widget.data['isFavorite']);
     return InkWell(
       onTap: () =>
           Navigator.pushNamed(context, 'detail', arguments: widget.data),
@@ -85,19 +86,22 @@ class _RestuarentScreenState extends State<RestuarentScreen> {
                           'wishlist/customer/product/${widget.data["id"]}',
                           {},
                           '');
-                      //print(favorite);
-                      if (favorite['success']) {
-                        await serviceDB.instance.insertRecord(
-                            'favorites', {'id': widget.data["id"]});
-                        responseSuccessWarning(
-                            context, "Se agrego a favoritos");
-                      }
+                      /*print('favorite');
+                      print(favorite);
+                      if (favorite['success']) {*/
+                      await serviceDB.instance
+                          .insertRecord('favorites', {'id': widget.data["id"]});
+                      responseSuccessWarning(context, "Se agrego a favoritos");
+                      //}
 
                       //print(favorite);
+                      setState(() {
+                        widget.data['isFavorite'] = true;
+                      });
                     },
                     iconSize: 22,
                     icon: Icon(
-                      isFavorite
+                      widget.data['isFavorite']
                           ? Icons.bookmark
                           : Icons.bookmark_outline_rounded,
                     ),
@@ -217,7 +221,15 @@ class _RestuarentScreenState extends State<RestuarentScreen> {
             } else {
               if (!attr['value'][0]['slots_info'].isEmpty) {
                 for (dynamic item in attr['value'][0]['slots_info']) {
-                  horas.add(item['time']);
+                  final HoraAcutal = item['time']
+                      .replaceAll(" am", "")
+                      .replaceAll(" pm", "")
+                      .split(':');
+                  int hour = int.parse(HoraAcutal[0]);
+                  int minute = int.parse(HoraAcutal[1]);
+                  if (_now.hour == hour && _now.minute <= minute) {
+                    horas.add(item['time']);
+                  }
                 }
               } else {
                 print('data is empty 2' + widget.data['name']);
@@ -256,6 +268,10 @@ class _RestuarentScreenState extends State<RestuarentScreen> {
     }
 
     return TimeSlotButton(
-        anchoButton: 20, altoButton: 40, sizeText: 10, data: horas);
+        anchoButton: 20,
+        altoButton: 40,
+        sizeText: 10,
+        horas: horas,
+        data: widget.data);
   }
 }

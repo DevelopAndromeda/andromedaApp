@@ -3,7 +3,7 @@ import 'package:andromeda/blocs/reviews/reviews_bloc.dart';
 import 'package:andromeda/services/store.dart';
 import 'package:flutter/material.dart';
 
-import 'package:carousel_slider/carousel_slider.dart';
+//import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:html_parsed_read_more/html_parsed_read_more.dart';
 import 'package:intl/intl.dart';
@@ -12,7 +12,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:andromeda/blocs/inicio/user/user_bloc.dart';
 
-import 'package:andromeda/witgets/make_a_reservation.dart';
 import 'package:andromeda/witgets/Button_Base.dart';
 import 'package:andromeda/services/api.dart';
 import 'package:andromeda/services/db.dart';
@@ -32,29 +31,41 @@ class _MyDetailPageState extends State<MyDetailPage>
     with TickerProviderStateMixin {
   LatLng _marker = const LatLng(23.3231416, -103.8384764);
   final CameraPosition _initialPosition =
-      const CameraPosition(target: LatLng(23.3231416, -103.8384764));
+      const CameraPosition(target: LatLng(23.3231416, -103.8384764), zoom: 17);
   final Completer<GoogleMapController> _controller = Completer();
   final UserBloc _userBloc = UserBloc();
   final ReviewsBloc _reviewBloc = ReviewsBloc();
+  final _formKey = GlobalKey<FormState>();
 
   DateTime _selectedDate = DateTime.now();
+  int people = 1;
+  int zona = 0;
+  int tipoMesa = 0;
   String Hora = '';
   int slot_id = 0;
   int personas = 0;
   List<String> imagenes = [];
   List _options = [];
-  List<dynamic> _slot = [];
+  late Map<String, dynamic> _slot;
   List<dynamic> _slotDay = [];
-  List<dynamic> _allSlotDay = [];
-  List<String> personasList = ["1", "2", "3", "4", "5"];
+  List<DropdownItem> _allSlotDay = [];
+  List<String> _allSlotDayString = [];
+  List<DropdownItem> peopleList = [];
+  List<DropdownItem> zonasList = [];
+  List<DropdownItem> tiposMesasList = [];
 
   init() async {
     setImgs();
-    getSlot();
+    setPeople();
+    await getSlot();
     await getOptions();
+    getUserData();
+    setState(() {});
   }
 
   setImgs() {
+    print("************Pintar Imagenes: 1************");
+    print(widget.data['media_gallery_entries']);
     if (widget.data['media_gallery_entries'] != null) {
       widget.data['media_gallery_entries'].forEach((element) {
         imagenes.add(element['file']);
@@ -64,7 +75,24 @@ class _MyDetailPageState extends State<MyDetailPage>
     }
   }
 
-  getSlot() {
+  setPeople() {
+    print("************Pintar Personas: 2************");
+    int limit = int.parse(getCustomAttribute(
+        widget.data['custom_attributes'], 'tables_by_restaurant'));
+    for (int i = 1; i < limit; i++) {
+      peopleList.add(DropdownItem(value: i, label: i.toString()));
+    }
+  }
+
+  Future<void> getSlot() async {
+    //print('getSlot -> $id');
+    print("************getSlot: 3************");
+    final slot = await get('', '', 'restaurant/product/${widget.data['id']}');
+    _slot = slot[0]['info'];
+  }
+
+  /*getSlot() {
+    print("************Pintar Imagenes: Slot************");
     if (widget.data['extension_attributes'] == null) {
       for (dynamic attr in widget.data['custom_attributes']) {
         if (attr['attribute_code'].runtimeType == int) {
@@ -74,11 +102,31 @@ class _MyDetailPageState extends State<MyDetailPage>
     } else {
       _slot = widget.data['extension_attributes']['slot_schedules'];
     }
-  }
+  }*/
 
   Future<void> getOptions() async {
+    print("************getOptions: 4************");
     _options =
         await get('', 'integration', 'products/${widget.data['sku']}/options');
+
+    print("************llenado de zona y tipo: 5************");
+    if (_options.isNotEmpty) {
+      for (dynamic data in _options) {
+        if (data['title'] == 'Zona') {
+          for (dynamic item in data['values']) {
+            zonasList.add(DropdownItem(
+                value: item['option_type_id'], label: item['title']));
+          }
+        }
+
+        if (data['title'] == 'Tipo de Mesa') {
+          for (dynamic item in data['values']) {
+            tiposMesasList.add(DropdownItem(
+                value: item['option_type_id'], label: item['title']));
+          }
+        }
+      }
+    }
   }
 
   _selectDate(BuildContext context) async {
@@ -119,26 +167,19 @@ class _MyDetailPageState extends State<MyDetailPage>
             child: child!,
           );
         });
-
-    if (widget.data['extension_attributes'] == null) {
-      print(widget.data['custom_attributes']);
-      for (dynamic attr in widget.data['custom_attributes']) {
-        if (attr['attribute_code'].runtimeType == int) {
-          //_slot.add(attr);
-          if (attr['attribute_code'] == picked?.weekday) {
-            _slotDay = attr['value'];
-          }
+    _allSlotDay = [];
+    _slotDay = _slot[picked?.weekday.toString()];
+    for (var e in _slotDay) {
+      if (e['slots_info'].runtimeType == List) {
+        print('list');
+        print(e);
+        int indice = 0;
+        for (var j in e['slots_info']) {
+          _allSlotDay.add(DropdownItem(value: indice, label: j['time']));
+          _allSlotDayString.add(j['time']);
+          indice++;
         }
       }
-    } else {
-      print(widget.data['extension_attributes']);
-      for (dynamic attr in widget.data['extension_attributes']
-          ['slot_schedules']) {
-        if (attr['attribute_code'] == picked?.weekday) {
-          _slotDay = attr['value'];
-        }
-      }
-      //_slot = widget.data['extension_attributes']['slot_schedules'];
     }
 
     if (picked != null && picked != _selectedDate) {
@@ -146,48 +187,21 @@ class _MyDetailPageState extends State<MyDetailPage>
         _selectedDate = picked;
       });
     }
-    /*print('_slot');
-    print(_slot);
-    for (var item in _slot) {
-      if (item['attribute_code'] == picked?.weekday) {
-        _slotDay = item['value'];
-      }
-    }
-    print('_slotDay');
-    print(_slotDay);*/
-    /*_allSlotDay = [];
-    for (var e in _slotDay) {
-      if (e['slots_info'].runtimeType == List) {
-        _allSlotDay.addAll(e['slots_info']);
-      } else {
-        _allSlotDay.addAll(e['slots_info'].values);
-      }
-    }*/
-    //print('_allSlotDay');
-    //print(_allSlotDay);
-    /*if (picked != null && picked != _selectedDate) {
-      setState(() {
-        _selectedDate = picked;
-      });
-    }*/
   }
 
-  Future<void> generateOrden(DateTime _selectedDate, int personas) async {
-    //print('************* Obtener Sesion *************');
+  Future<void> generateOrden() async {
+    print('************* Obtener Sesion *************');
     final sesion = await serviceDB.instance.getById('users', 'id_user', 1);
     // Generar carrito vacio
     if (sesion.isEmpty) {
       responseErrorWarning(context, "Nesecitas iniciar una sesion");
       return;
     }
-    //print('************* Sesion: ${sesion} *************');
+    print('************* Sesion: ${sesion} *************');
 
-    //print('************* Generar custom_options: *************');
+    print('************* Generar custom_options: *************');
     List<Map<String, dynamic>> custom_options = [];
-    if (_options.isEmpty) {
-      await getOptions();
-    }
-    //print('************* options: ${_options} *************');
+    print('************* options: ${_options} *************');
     if (_options.isEmpty) {
       responseErrorWarning(context, "No Existen Labels para este producto");
       return;
@@ -208,25 +222,29 @@ class _MyDetailPageState extends State<MyDetailPage>
       }
 
       if (item['title'] == 'Charged Per') {
-        value = "Table (4 Guests)";
+        value = people.toString();
       }
 
       if (item['title'] == 'Zona') {
-        value = "13";
+        value = zona.toString();
+      }
+
+      if (item['title'] == 'Tipo de Mesa') {
+        value = tipoMesa.toString();
       }
 
       custom_options
           .add({"option_id": item['option_id'], "option_value": value});
     }
-    //print('************* custom_options: ${custom_options} *************');
+    print('************* custom_options: ${custom_options} *************');
 
-    //print('************* Crear Carrito *************');
+    print('************* Crear Carrito *************');
     //Creamos Carrito y lo guardamos
     var myCart = await post(sesion[0]['token'], 'custom', 'carts/mine', {}, '')
         .then((value) async {
       return await get(sesion[0]['token'], 'custom', 'carts/mine');
     });
-    //print('************* Carrito: ${myCart} *************');
+    print('************* Carrito: ${myCart} *************');
 
     List<Map<String, dynamic>> configurable_item_options = [];
     configurable_item_options.addAll([
@@ -239,15 +257,17 @@ class _MyDetailPageState extends State<MyDetailPage>
       {"option_id": "slot_day_index", "option_value": _selectedDate.weekday},
       {"option_id": "charged_per_count", "option_value": 4},
     ]);
-    //print(
-    //    '************* configurable_item_options: ${configurable_item_options} *************');
+    print(
+        '************* configurable_item_options: ${configurable_item_options} *************');
 
-    /*if (myCart != null) {
+    if (myCart != null) {
       myCart['items'].map((element) async {
+        print(
+            '************* eliminar si hay datos: ${element['item_id']} *************');
         await delete(sesion[0]['token'], 'customer',
             'carts/mine/items/${element['item_id']}');
       });
-    }*/
+    }
 
     Map<String, dynamic> cartItem = {
       "cartItem": {
@@ -266,10 +286,10 @@ class _MyDetailPageState extends State<MyDetailPage>
       "booking_time": Hora
     };
 
-    //print('************* cartItem: ${_cartItem} *************');
+    print('************* cartItem: ${cartItem} *************');
 
     //Revisar productos
-    //print('************* Obtener Items en Carrito *************');
+    print('************* Obtener Items en Carrito *************');
     final items = await get(sesion[0]['token'], 'custom', 'carts/mine/items');
     print('************* items: ${items} *************');
 
@@ -289,61 +309,64 @@ class _MyDetailPageState extends State<MyDetailPage>
       }
       //bool bandera = true;
       for (dynamic data in items) {
-        //print('************* SKU: ${data['sku']} *************');
-        //print('************* SKU-Actual: ${widget.data['sku']} *************');
-        //if (data['sku'] == widget.data['sku']) {
-        //  bandera = false;
-        //}
         await delete(sesion[0]['token'], 'customer',
             'carts/mine/items/${data['item_id']}');
       }
 
-      //if (bandera) {
-      //Agregar item al carrito
       await post(
           sesion[0]['token'], 'custom', 'carts/mine/items', cartItem, 'v2');
-      //print('************* Agregar Item: ${addItem} *************');
-      //}
     }
 
     //Agregamos Bulling y
     Map<String, dynamic> info = {
       "addressInformation": {
         "billing_address": {
-          "firstname": "le aza",
-          "lastname": "CabSua",
-          "street": ["elm street"],
+          "firstname": sesion[0]['nombre'],
+          "lastname": sesion[0]['apellido_paterno'],
+          "street": [
+            getCustomAttribute(
+                widget.data['custom_attributes'], 'hotel_address')
+          ],
           "country_id": "MX",
-          "region": "QUE",
-          "region_code": "QUE",
-          "region_id": "956",
-          "city": "Queretaro",
-          "telephone": 8855224466,
-          "postcode": "76243",
-          "email": "emailfake@email.com"
+          "region": "MX",
+          "region_code": "MX",
+          "region_id": getCustomAttribute(
+              widget.data['custom_attributes'], 'hotel_state'),
+          "city": getCustomAttribute(
+              widget.data['custom_attributes'], 'product_city_string'),
+          "telephone": sesion[0]['telefono'],
+          "postcode": sesion[0]['zip_code'],
+          "email": sesion[0]['username'],
         },
         "shipping_address": {
-          "firstname": "le aza",
-          "lastname": "CabSua",
-          "street": ["elm street"],
+          "firstname": sesion[0]['nombre'],
+          "lastname": sesion[0]['apellido_paterno'],
+          "street": [
+            getCustomAttribute(
+                widget.data['custom_attributes'], 'hotel_address')
+          ],
           "country_id": "MX",
-          "region": "QUE",
-          "region_code": "QUE",
-          "region_id": "956",
-          "city": "Queretaro",
-          "telephone": 8855224466,
-          "postcode": "76243",
-          "email": "emailfake@email.com"
+          "region": "MX",
+          "region_code": "MX",
+          "region_id": getCustomAttribute(
+              widget.data['custom_attributes'], 'hotel_state'),
+          "city": getCustomAttribute(
+              widget.data['custom_attributes'], 'product_city_string'),
+          "telephone": sesion[0]['telefono'],
+          "postcode": sesion[0]['zip_code'],
+          "email": sesion[0]['username'],
         },
         "shipping_method_code": "",
         "shipping_carrier_code": ""
       }
     };
 
+    print('************* Info: ${info} *************');
+
     //Set info
-    await post(sesion[0]['token'], 'custom', 'carts/mine/shipping-information',
-        info, '');
-    //print('************* shippingInfo: ${shippingInfo} *************');
+    final shippingInfo = await post(sesion[0]['token'], 'custom',
+        'carts/mine/shipping-information', info, '');
+    print('************* shippingInfo: ${shippingInfo} *************');
 
     //Generate Order
     final orden = await put(
@@ -351,11 +374,11 @@ class _MyDetailPageState extends State<MyDetailPage>
         'custom',
         'carts/mine/order',
         {
-          "paymentMethod": {"method": "checkmo"}
+          "paymentMethod": {"method": "free"}
         },
         '');
-    //print('************* ORDEN: ${orden} *************');
-    //print('************* ORDEN-TYPE: ${orden.runtimeType} *************');
+    print('************* ORDEN: ${orden} *************');
+    print('************* ORDEN-TYPE: ${orden.runtimeType} *************');
     if (orden.runtimeType != int) {
       responseErrorWarning(context, orden['message']);
     } else {
@@ -388,8 +411,9 @@ class _MyDetailPageState extends State<MyDetailPage>
     if (splitter.length == 2) {
       GoogleMapController controller = await _controller.future;
       _marker = LatLng(double.parse(splitter[0]), double.parse(splitter[1]));
+
       controller.animateCamera(CameraUpdate.newLatLngZoom(
-          LatLng(double.parse(splitter[0]), double.parse(splitter[1])), 5));
+          LatLng(double.parse(splitter[0]), double.parse(splitter[1])), 17));
     }
   }
 
@@ -406,7 +430,7 @@ class _MyDetailPageState extends State<MyDetailPage>
     //getOptions(widget.data['sku']);
     //getSlot(widget.data['id'].toString());
     //setImgs();
-    //getUserData();
+    //
   }
 
   @override
@@ -425,7 +449,7 @@ class _MyDetailPageState extends State<MyDetailPage>
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            crearSlider(),
+            //crearSlider(),
             crearInfo(), /*createInfo()*/
           ],
         ),
@@ -433,7 +457,7 @@ class _MyDetailPageState extends State<MyDetailPage>
     );
   }
 
-  CarouselSlider crearSlider() {
+  /*CarouselSlider crearSlider() {
     return CarouselSlider(
       options: CarouselOptions(
         height: 200.0,
@@ -471,7 +495,7 @@ class _MyDetailPageState extends State<MyDetailPage>
         );
       }).toList(),
     );
-  }
+  }*/
 
   Padding crearInfo() {
     return Padding(
@@ -601,7 +625,7 @@ class _MyDetailPageState extends State<MyDetailPage>
             ),
           ),
           const SizedBox(height: 10),
-          /*Center(
+          Center(
             child: SizedBox(
               height: 280,
               width: 380,
@@ -613,7 +637,7 @@ class _MyDetailPageState extends State<MyDetailPage>
                     Marker(markerId: const MarkerId("Yo"), position: _marker)
                   }),
             ),
-          ),*/
+          ),
           const SizedBox(height: 10),
           BlocProvider(
             create: (_) => _userBloc,
@@ -626,8 +650,213 @@ class _MyDetailPageState extends State<MyDetailPage>
               child: BlocBuilder<UserBloc, UserState>(
                 builder: (context, state) {
                   if (state is UserLoaded) {
-                    return MakeAReservationForm(
-                        createReservation: generateOrden);
+                    return Form(
+                      key: _formKey,
+                      child: Card(
+                        color: Theme.of(context).dialogBackgroundColor,
+                        elevation: 4, // La elevación determina la sombra
+                        shape: RoundedRectangleBorder(
+                          borderRadius:
+                              BorderRadius.circular(10), // Bordes redondeados
+                        ),
+                        child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Padding(
+                                    padding: EdgeInsets.all(8.0),
+                                    child: Center(
+                                      child: Text(
+                                        'Haz una reservación',
+                                        style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                  ),
+                                  const Divider(
+                                    color: Colors.black,
+                                    thickness: 1,
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 10),
+                                    child: Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Flexible(
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(
+                                                right: 8.0),
+                                            child: Container(
+                                              decoration: const BoxDecoration(
+                                                border: Border(
+                                                    bottom: BorderSide(
+                                                        color: Colors.grey)),
+                                              ),
+                                              child: ListTile(
+                                                title: const Text('Fecha'),
+                                                subtitle: Text(
+                                                    DateFormat('yyyy-MM-dd')
+                                                        .format(_selectedDate)),
+                                                trailing: const Icon(
+                                                    Icons.calendar_today),
+                                                onTap: () =>
+                                                    _selectDate(context),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        _allSlotDay.isNotEmpty
+                                            ? Flexible(
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 8.0),
+                                                  child:
+                                                      DropdownButtonFormField<
+                                                          int>(
+                                                    onChanged: (val) {
+                                                      setState(() {
+                                                        slot_id = val!;
+                                                        Hora =
+                                                            _allSlotDayString[
+                                                                val];
+                                                      });
+                                                    },
+                                                    items: _allSlotDay.map(
+                                                        (DropdownItem item) {
+                                                      return DropdownMenuItem<
+                                                          int>(
+                                                        value: item.value,
+                                                        child: Text(item.label),
+                                                      );
+                                                    }).toList(),
+                                                  ),
+                                                ),
+                                              )
+                                            : const SizedBox(),
+                                      ],
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 10),
+                                    child: DropdownButtonFormField<int>(
+                                      icon: const Icon(Icons.arrow_downward),
+                                      elevation: 16,
+                                      style:
+                                          const TextStyle(color: Colors.black),
+                                      onChanged: (int? value) {
+                                        // This is called when the user selects an item.
+                                        setState(() {
+                                          people = value!;
+                                        });
+                                      },
+                                      decoration: const InputDecoration(
+                                        labelText: 'Numero de comensales',
+                                      ),
+                                      items:
+                                          peopleList.map((DropdownItem item) {
+                                        return DropdownMenuItem<int>(
+                                          value: item.value,
+                                          child: Text(item.label),
+                                        );
+                                      }).toList(),
+                                    ),
+                                  ),
+                                  zonasList.isNotEmpty
+                                      ? Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 10),
+                                          child: DropdownButtonFormField<int>(
+                                            icon: const Icon(
+                                                Icons.arrow_downward),
+                                            elevation: 16,
+                                            style: const TextStyle(
+                                                color: Colors.black),
+                                            onChanged: (int? value) {
+                                              // This is called when the user selects an item.
+                                              setState(() {
+                                                zona = value!;
+                                              });
+                                            },
+                                            decoration: const InputDecoration(
+                                              labelText: 'Zona',
+                                            ),
+                                            items: zonasList
+                                                .map((DropdownItem item) {
+                                              return DropdownMenuItem<int>(
+                                                value: item.value,
+                                                child: Text(item.label),
+                                              );
+                                            }).toList(),
+                                          ),
+                                        )
+                                      : const SizedBox(),
+                                  tiposMesasList.isNotEmpty
+                                      ? Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 10),
+                                          child: DropdownButtonFormField<int>(
+                                            icon: const Icon(
+                                                Icons.arrow_downward),
+                                            elevation: 16,
+                                            style: const TextStyle(
+                                                color: Colors.black),
+                                            onChanged: (int? value) {
+                                              // This is called when the user selects an item.
+                                              setState(() {
+                                                tipoMesa = value!;
+                                              });
+                                            },
+                                            decoration: const InputDecoration(
+                                              labelText: 'Tipo de mesa',
+                                            ),
+                                            items: tiposMesasList
+                                                .map((DropdownItem item) {
+                                              return DropdownMenuItem<int>(
+                                                value: item.value,
+                                                child: Text(item.label),
+                                              );
+                                            }).toList(),
+                                          ),
+                                        )
+                                      : const SizedBox(),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: 20.0, bottom: 5),
+                                    child: Center(
+                                      child: ElevatedButton(
+                                        onPressed: () {
+                                          if (_formKey.currentState!
+                                              .validate()) {
+                                            generateOrden();
+                                          }
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                            backgroundColor: Colors.black,
+                                            textStyle: const TextStyle(
+                                              fontSize: 20,
+                                              color: Color.fromARGB(
+                                                  255, 255, 255, 255),
+                                            ),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(2),
+                                            )),
+                                        child: const Text(
+                                          'Reservar ahora',
+                                          style: TextStyle(color: Colors.white),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ])),
+                      ),
+                    );
                   } else {
                     return Center(
                       child: baseButtom(
@@ -744,30 +973,9 @@ class _MyDetailPageState extends State<MyDetailPage>
     thickness: 1,
   );
 
-  List<DropdownMenuItem<String>> timepostSlot(data) {
-    List<DropdownMenuItem<String>> lista = [];
-    if (data.runtimeType == List) {
-      data.forEach((element) => {
-            lista.add(DropdownMenuItem<String>(
-              value: element['time'],
-              child: Text(element['time']),
-            ))
-          });
-    } else {
-      data.forEach((ele, value) {
-        lista.add(DropdownMenuItem<String>(
-          value: value['time'],
-          child: Text(value['time']),
-        ));
-      });
-    }
-    return lista;
-  }
-
   List<Widget> _createList(datas) {
     List<Widget> lists = <Widget>[];
     for (dynamic data in datas) {
-      print(data['detail']);
       lists.add(UsersReviewCard(data: data));
     }
     return lists;
@@ -896,4 +1104,11 @@ class UsersReviewCard extends StatelessWidget {
       ],
     );
   }
+}
+
+class DropdownItem {
+  final int value;
+  final String label;
+
+  DropdownItem({required this.value, required this.label});
 }

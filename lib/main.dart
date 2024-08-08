@@ -10,6 +10,7 @@ Future<void> main() async {
   await runZonedGuarded(() async {
     WidgetsFlutterBinding.ensureInitialized();
     await dotenv.load(fileName: ".env");
+
     //await initializeService();
     runApp(const Andromeda());
   }, (exception, stackTrace) async {

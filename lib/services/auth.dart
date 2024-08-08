@@ -186,7 +186,15 @@ class AuthService {
             error: 'Error: Api');
       }
 
-      return logIn({'username': data['email'], 'password': data['password']});
+      return Respuesta(
+          result: 'ok',
+          data: {
+            'data':
+                'Para continuar por favor, revisa tu cuenta de correo, te enviamos un correo',
+          },
+          error: null);
+
+      //return logIn({'username': data['email'], 'password': data['password']});
     } on Exception catch (e) {
       return Respuesta(
           result: 'fail', data: {'data': 'Error en App'}, error: e.toString());

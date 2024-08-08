@@ -76,7 +76,7 @@ void onStart(ServiceInstance service) async {
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
 
-  if (service is AndroidServiceInstance) {
+  /*if (service is AndroidServiceInstance) {
     service.on('setAsForeground').listen((event) {
       service.setAsForegroundService();
     });
@@ -84,7 +84,7 @@ void onStart(ServiceInstance service) async {
     service.on('setAsBackground').listen((event) {
       service.setAsBackgroundService();
     });
-  }
+  }*/
 
   service.on('stopService').listen((event) {
     service.stopSelf();
@@ -92,11 +92,11 @@ void onStart(ServiceInstance service) async {
 
   // bring to foreground
   Timer.periodic(const Duration(seconds: 300), (timer) async {
-    if (service is AndroidServiceInstance) {
-      if (await service.isForegroundService()) {
-        /// OPTIONAL for use custom notification
-        /// the notification id must be equals with AndroidConfiguration when you call configure() method.
-        /*flutterLocalNotificationsPlugin.show(
+    /*if (service is AndroidServiceInstance) {
+      if (await service.isForegroundService()) {*/
+    /// OPTIONAL for use custom notification
+    /// the notification id must be equals with AndroidConfiguration when you call configure() method.
+    /*flutterLocalNotificationsPlugin.show(
           888,
           'COOL SERVICE',
           'Awesome ${DateTime.now()}',
@@ -115,9 +115,9 @@ void onStart(ServiceInstance service) async {
           title: "Notificacion",
           content: "Updated at ${DateTime.now()}",
         );*/
-        print('FLUTTER BACKGROUND SERVICE: ${DateTime.now()}');
+    /*print('FLUTTER BACKGROUND SERVICE: ${DateTime.now()}');
       }
-    }
+    }*/
 
     /// you can see this log in logcat
     print('FLUTTER BACKGROUND SERVICE: ${DateTime.now()}');

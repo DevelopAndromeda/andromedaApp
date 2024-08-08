@@ -2,16 +2,19 @@ import 'package:flutter/material.dart' hide Router;
 
 //Componentes
 import 'package:andromeda/screens/andromeda/home.dart';
-import 'package:andromeda/screens/andromeda_rest/alta_rest.dart';
-import 'package:andromeda/screens/andromeda_rest/list_rest.dart';
-import 'package:andromeda/screens/andromeda_rest/list_reservacion.dart';
-import 'package:andromeda/screens/andromeda_rest/list_reviews.dart';
 import 'package:andromeda/screens/andromeda/history.dart';
 import 'package:andromeda/screens/andromeda/notifications.dart';
 import 'package:andromeda/screens/andromeda/saved.dart';
 import 'package:andromeda/screens/andromeda/search.dart';
+import 'package:andromeda/screens/andromeda/orden.dart';
+//Componentes Rest
+import 'package:andromeda/screens/andromeda_rest/alta_rest.dart';
+import 'package:andromeda/screens/andromeda_rest/list_rest.dart';
+import 'package:andromeda/screens/andromeda_rest/list_reservacion.dart';
+import 'package:andromeda/screens/andromeda_rest/list_reviews.dart';
 import 'package:andromeda/screens/andromeda_rest/modificacion_rest.dart';
 import 'package:andromeda/screens/andromeda_rest/reviews.dart';
+import 'package:andromeda/screens/andromeda_rest/list_tables.dart';
 //Auth
 import 'package:andromeda/screens/auth/login.dart';
 import 'package:andromeda/screens/auth/register.dart';
@@ -85,14 +88,20 @@ class Router {
             builder: (_) => MyRegisterPage(
                   type: type,
                 ));
-      /*case 'register-rest':
-        return MaterialPageRoute(
-            builder: (_) => const MyRegisterPageRestaurant());*/
+      case 'list-tables':
+        return MaterialPageRoute(builder: (_) => const ListTables());
       case 'reviews':
         final data = settings.arguments as Map<String, dynamic>;
         return MaterialPageRoute(
           builder: (_) => Reviews(
             data: data,
+          ),
+        );
+      case 'orden':
+        final id = settings.arguments as int;
+        return MaterialPageRoute(
+          builder: (_) => MyOrdenScreen(
+            id: id,
           ),
         );
       default:

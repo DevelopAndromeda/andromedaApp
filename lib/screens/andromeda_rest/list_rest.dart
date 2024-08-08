@@ -19,6 +19,7 @@ class ListRest extends StatefulWidget {
 
 class _ListRestState extends State<ListRest> {
   final StoreBloc _newsBloc = StoreBloc();
+  bool startAnimation = false;
 
   @override
   void initState() {
@@ -73,6 +74,11 @@ class _ListRestState extends State<ListRest> {
               } else if (state is StoreLoading) {
                 return _buildLoading();
               } else if (state is StoreLoaded) {
+                WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+                  setState(() {
+                    startAnimation = true;
+                  });
+                });
                 return _buildCard(context, state.data);
               } else if (state is StoreError) {
                 return Container();
@@ -101,8 +107,11 @@ class _ListRestState extends State<ListRest> {
       return ListView.builder(
         itemCount: model.data!['items'].length,
         itemBuilder: (context, index) {
-          return Container(
+          return AnimatedContainer(
             margin: const EdgeInsets.all(8.0),
+            duration: Duration(milliseconds: 300 + (index * 200)),
+            transform: Matrix4.translationValues(
+                startAnimation ? 0 : MediaQuery.of(context).size.width, 0, 0),
             child: CardRest(
               texto: model.data!['items'][index]['name'],
               img: model.data!['items'][index]['media_gallery_entries'] !=

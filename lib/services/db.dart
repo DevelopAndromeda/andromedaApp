@@ -6,7 +6,7 @@ import 'package:sqflite/sqflite.dart';
 
 class serviceDB {
   static const dbName = 'andromeda.db';
-  static const dbVersion = 2;
+  static const dbVersion = 3;
 
   static final serviceDB instance = serviceDB();
   static Database? _database;
@@ -19,7 +19,7 @@ class serviceDB {
     await db.execute("DROP TABLE IF EXISTS states;");
     await db.execute("DROP TABLE IF EXISTS favorites;");
     await db.execute(
-        'CREATE TABLE IF NOT EXISTS users(id_user INTEGER PRIMARY KEY, nombre TEXT NULL, apellido_paterno TEXT NULL, apellido_materno TEXT NULL, telefono TEXT NULL, codigo_postal TEXT NULL, estado TEXT NULL, password TEXT, username TEXT NULL, lat TEXT NULL, long TEXT NULL, token TEXT NULL, id INTEGER NULL, group_id INTEGER NULL, zip_code TEXT NULL, name_city TEXT NULL, name_business TEXT NULL, rfc_id TEXT NULL, genero TEXT NULL, img_profile genero TEXT NULL)');
+        'CREATE TABLE IF NOT EXISTS users(id_user INTEGER PRIMARY KEY, nombre TEXT NULL, apellido_paterno TEXT NULL, apellido_materno TEXT NULL, telefono TEXT NULL, codigo_postal TEXT NULL, estado TEXT NULL, password TEXT, username TEXT NULL, lat TEXT NULL, long TEXT NULL, token TEXT NULL, id INTEGER NULL, group_id INTEGER NULL, zip_code TEXT NULL, name_city TEXT NULL, name_business TEXT NULL, rfc_id TEXT NULL, genero TEXT NULL, img_profile TEXT NULL)');
     await db.execute(
         'CREATE TABLE IF NOT EXISTS stores(id_store INTEGER PRIMARY KEY, nombre TEXT, direccion TEXT, id_tipo_comida INTEGER, id_tipo_restaurante INTEGER, cantidad_mesas NUMERIC)');
     await db.execute(
@@ -43,15 +43,9 @@ class serviceDB {
     if (oldVersion < newVersion) {
       // you can execute drop table and create table
       await db.execute("DROP TABLE IF EXISTS users;");
-      await db.execute("DROP TABLE IF EXISTS stores;");
-      await db.execute("DROP TABLE IF EXISTS states;");
       await db.execute("DROP TABLE IF EXISTS favorites;");
       await db.execute(
-          'CREATE TABLE IF NOT EXISTS users(id_user INTEGER PRIMARY KEY, nombre TEXT NULL, apellido_paterno TEXT NULL, apellido_materno TEXT NULL, telefono TEXT NULL, codigo_postal TEXT NULL, estado TEXT NULL, password TEXT, username TEXT NULL, lat TEXT NULL, long TEXT NULL, token TEXT NULL, id INTEGER NULL, group_id INTEGER NULL, zip_code TEXT NULL, name_city TEXT NULL, name_business TEXT NULL, rfc_id TEXT NULL, genero TEXT NULL, img_profile genero TEXT NULL)');
-      await db.execute(
-          'CREATE TABLE IF NOT EXISTS stores(id_store INTEGER PRIMARY KEY, nombre TEXT, direccion TEXT, id_tipo_comida INTEGER, id_tipo_restaurante INTEGER, cantidad_mesas NUMERIC)');
-      await db.execute(
-          'CREATE TABLE IF NOT EXISTS states(id INTEGER PRIMARY KEY, label TEXT, code TEXT)');
+          'CREATE TABLE IF NOT EXISTS users(id_user INTEGER PRIMARY KEY, nombre TEXT NULL, apellido_paterno TEXT NULL, apellido_materno TEXT NULL, telefono TEXT NULL, codigo_postal TEXT NULL, estado TEXT NULL, password TEXT, username TEXT NULL, lat TEXT NULL, long TEXT NULL, token TEXT NULL, id INTEGER NULL, group_id INTEGER NULL, zip_code TEXT NULL, name_city TEXT NULL, name_business TEXT NULL, rfc_id TEXT NULL, genero TEXT NULL, img_profile TEXT NULL)');
       await db.execute(
           'CREATE TABLE IF NOT EXISTS favorites(id INTEGER PRIMARY KEY)');
     }
@@ -69,10 +63,15 @@ class serviceDB {
     Database? db = await instance.database;
     Batch batch = db!.batch();
 
-    batch.execute('DELETE FROM users;');
-    batch.execute('DELETE FROM stores;');
-    batch.execute('DELETE FROM states;');
-    batch.execute('DELETE FROM favorites;');
+    if (dbVersion == 3) {
+      batch.execute('DELETE FROM users;');
+      batch.execute('DELETE FROM favorites;');
+    } else {
+      batch.execute('DELETE FROM users;');
+      batch.execute('DELETE FROM stores;');
+      batch.execute('DELETE FROM states;');
+      batch.execute('DELETE FROM favorites;');
+    }
 
     await batch.commit();
   }

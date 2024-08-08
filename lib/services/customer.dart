@@ -78,6 +78,7 @@ class CustomerService {
       }
       final borrado = await delete(
           session[0]['token'], 'custom', 'wishlist/customer/item/$id');
+
       if (borrado != null) {
         return Respuesta(result: 'ok', data: {'data': true}, error: null);
       } else {
@@ -94,8 +95,15 @@ class CustomerService {
 
   Future<Respuesta> changeStatusOrder(id, status) async {
     try {
+      Map<String, dynamic> updateStatus = {
+        'entity': {
+          'entity_id': id,
+          'status': status,
+        },
+      };
+
       final statusOrder =
-          await post('', 'integration', 'orders/$id/$status', {}, '');
+          await post('', 'integration', 'orders', updateStatus, '');
       if (statusOrder != null) {
         return Respuesta(result: 'ok', data: {'data': true}, error: null);
       } else {
@@ -122,10 +130,10 @@ class CustomerService {
       }
 
       final reservations = await get(sesion[0]['token'], 'custom',
-          'mysalesorders?searchCriteria[currentPage]=1&searchCriteria[pageSize]=10');
+          'mysalesorders?searchCriteria[currentPage]=1&searchCriteria[pageSize]=100');
 
-      if (reservations.isNotEmpty) {
-        return Respuesta(result: 'ok', data: reservations['data'], error: null);
+      if (reservations[0].isNotEmpty) {
+        return Respuesta(result: 'ok', data: reservations[0], error: null);
       } else {
         return Respuesta(
             result: 'fail',
@@ -362,6 +370,33 @@ class CustomerService {
             'users', {'password': data['newPassword']}, 'id_user', 1);
         return Respuesta(
             result: 'fail', data: {'data': 'Error en EndPoint'}, error: null);
+      } else {
+        return Respuesta(
+            result: 'fail',
+            data: {'data': 'La info esta corrupta'},
+            error: 'Error: Api');
+      }
+    } on Exception catch (e) {
+      return Respuesta(
+          result: 'fail', data: {'data': 'Error en App'}, error: e.toString());
+    }
+  }
+
+  Future<Respuesta> getOrderByEntityId(id) async {
+    try {
+      final session = await serviceDB.instance.getById('users', 'id_user', 1);
+
+      if (session.isEmpty) {
+        return Respuesta(
+            result: 'fail',
+            data: {'data': 'Ingresa sesion para continuar'},
+            error: 'Error: Api');
+      }
+
+      final order = await get('', 'integration', 'orders/$id');
+
+      if (order.isNotEmpty) {
+        return Respuesta(result: 'ok', data: order, error: null);
       } else {
         return Respuesta(
             result: 'fail',

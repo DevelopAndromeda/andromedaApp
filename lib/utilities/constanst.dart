@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
-import 'package:flutter/foundation.dart';
 
 import 'package:ftoast/ftoast.dart';
 import 'package:panara_dialogs/panara_dialogs.dart';
@@ -10,6 +9,7 @@ import 'package:andromeda/utilities/strings.dart';
 import 'package:andromeda/services/db.dart';
 
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:andromeda/blocs/reservations/reservation_bloc.dart';
 
 responseErrorWarning(context, String msj) {
   return FToast.toast(
@@ -63,6 +63,25 @@ dynamic closeSession(BuildContext context) {
       buttonTextColor: Colors.white);
 }
 
+dynamic closeReservation(BuildContext context, entity_id, label) {
+  final ReservationBloc _newsBloc = ReservationBloc();
+  PanaraConfirmDialog.showAnimatedFromBottom(context,
+      title: MyString.areYouSure,
+      message: "¿Deseas cerrar la reservacion?",
+      confirmButtonText: "Si",
+      cancelButtonText: "No", onTapCancel: () {
+    Navigator.pop(context);
+  }, onTapConfirm: () async {
+    _newsBloc.add(ChangeStatusReservation(entity_id, label));
+    Navigator.pop(context);
+  },
+      panaraDialogType: PanaraDialogType.custom,
+      barrierDismissible: false,
+      color: Colors.black,
+      textColor: Colors.black,
+      buttonTextColor: Colors.white);
+}
+
 String? validateEmail(String? value) {
   const pattern = r"(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'"
       r'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-'
@@ -98,19 +117,20 @@ String pathMedia(String media) {
 }
 
 whitAvatar(String img) {
-  if (img.length % 4 > 0) {
-    img += '=' * (4 - img.length % 4); // as suggested by Albert221
+  print('length');
+  //266872 65535
+  print(img.length);
+  if (img.length > 65535) {
+    return Image.memory(base64Decode(img.replaceAll(RegExp(r'\s+'), ''))).image;
+  } else {
+    return Image.memory(base64Decode(img)).image;
   }
-  //print('img');
-  //print(img.replaceAll(RegExp(r'\s+'), ''));
-  Uint8List bytesImage =
-      const Base64Decoder().convert(img.replaceAll(RegExp(r'\s+'), ''));
-  //Uint8List bytesImage = const Base64Decoder().convert(img);
-  return Image.memory(bytesImage, width: 50, height: 50).image;
+  //
 }
 
 String translateStatus(String status) {
   const map = {
+    'new': 'Nuevo',
     'for_serve': 'Por Atender',
     'serving': 'Atendiendo',
     'canceled': 'Cancelada',

@@ -1,6 +1,8 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:andromeda/blocs/user/user_sesion_bloc.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:image_picker/image_picker.dart';
@@ -106,7 +108,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
   Widget _customer(data) {
     final menuItem = [
       {
-        'name': 'Informacion de la cuenta',
+        'name': 'Información de la cuenta',
         'url': 'configurations',
         'icon': Icons.person
       },
@@ -148,7 +150,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
   Widget _restaurant(data) {
     final menuItem = [
       {
-        'name': 'Informacion de la cuenta',
+        'name': 'Información de la cuenta',
         'url': 'configurations',
         'icon': Icons.person
       },
@@ -176,6 +178,11 @@ class _MyProfilePageState extends State<MyProfilePage> {
         'name': 'Lista de comentarios',
         'url': 'list-reviews',
         'icon': Icons.comment
+      },
+      {
+        'name': 'Gestion de mesas',
+        'url': 'list-tables',
+        'icon': Icons.table_bar
       }
     ];
     List<Widget> lista = <Widget>[];
@@ -226,7 +233,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
                       ? const AssetImage('assets/Masculino.jpg')
                       //? whitAvatar(data['img_profile'])
                       : const AssetImage('assets/Masculino.jpg')),
-          Positioned(
+          /*Positioned(
               bottom: 0,
               right: 0,
               child: InkWell(
@@ -243,7 +250,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
                     size: 20,
                   ),
                 ),
-              )),
+              )),*/
         ]),
       ],
     );

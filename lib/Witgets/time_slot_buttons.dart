@@ -4,12 +4,14 @@ class TimeSlotButton extends StatelessWidget {
   final double anchoButton;
   final double altoButton;
   final double sizeText;
-  final List<String> data;
+  final List<String> horas;
+  final Map<dynamic, dynamic> data;
   const TimeSlotButton(
       {super.key,
       required this.anchoButton,
       required this.altoButton,
       required this.sizeText,
+      required this.horas,
       required this.data});
 
   @override
@@ -21,15 +23,17 @@ class TimeSlotButton extends StatelessWidget {
   listSlot() {
     List<Widget> dataSlot = [];
     int index = 0;
-    for (var element in data) {
+    for (var element in horas) {
       if (index == 3) {
         break;
       }
       dataSlot.add(ButtonSlot(
-          hour: element,
-          anchoButton: anchoButton,
-          altoButton: altoButton,
-          sizeText: sizeText));
+        hour: element,
+        anchoButton: anchoButton,
+        altoButton: altoButton,
+        sizeText: sizeText,
+        data: data,
+      ));
       index++;
     }
     return dataSlot;
@@ -61,12 +65,14 @@ class ButtonSlot extends StatelessWidget {
   final double anchoButton;
   final double altoButton;
   final double sizeText;
+  final Map<dynamic, dynamic> data;
   const ButtonSlot(
       {super.key,
       required this.hour,
       required this.anchoButton,
       required this.altoButton,
-      required this.sizeText});
+      required this.sizeText,
+      required this.data});
   //const UsersReviewCard({Key? key}) : super(key: key, required this.data);
 
   @override
@@ -83,6 +89,7 @@ class ButtonSlot extends StatelessWidget {
         ),
         onPressed: () {
           // Respond to button press
+          Navigator.pushNamed(context, 'detail', arguments: data);
         },
         child: Text(
           hour,

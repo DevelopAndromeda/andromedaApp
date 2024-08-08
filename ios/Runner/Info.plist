@@ -3,7 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>NSCameraUsageDescription</key>
-	<string>Take a photos</string>
+    <string>Please grant camera access</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+    <string>Please grant photo gallery access</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Use in video</string>
 	<key>CFBundleDevelopmentRegion</key>
@@ -50,6 +52,12 @@
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
+	<true/>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<true/>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<true/>
+	<key>NSLocationUsageDescription</key>
 	<true/>
 </dict>
 </plist>

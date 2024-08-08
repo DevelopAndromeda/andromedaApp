@@ -117,63 +117,78 @@ class _ListReservacionState extends State<ListReservacion> {
         itemCount: model.data!['data'].length,
         itemBuilder: (context, index) {
           var data = model.data!['data'][index];
+          data?['product_options']!['info_buyRequest']!['booking_time'] =
+              "${data?['product_options']!['info_buyRequest']!['booking_time']}"
+                  .trim();
           return Card(
             margin: const EdgeInsets.all(5),
             elevation: 10,
             child: InkWell(
               onTap: () {
-                showModalBottomSheet<void>(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return SizedBox(
-                      height: 200,
-                      child: Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            const SizedBox(height: 20),
-                            const Text('Seleccione Estado'),
-                            const SizedBox(height: 20),
-                            Expanded(
-                              child: FutureBuilder<List<Status>>(
-                                future: futureStatus,
-                                builder: (context, snapshot) {
-                                  if (snapshot.hasData) {
-                                    //return Text('aa');
-                                    return DropdownMenu<Status>(
-                                        //initialSelection: list.first,
-                                        onSelected: (Status? value) {
-                                          //print(
-                                          //    'Enviar este valor: $value, a evento update orden');
-                                          Navigator.pop(context);
-                                        },
-                                        dropdownMenuEntries: snapshot.data!
-                                            .map<DropdownMenuEntry<Status>>(
-                                                (Status value) {
-                                          return DropdownMenuEntry<Status>(
-                                              value: value, label: value.label);
-                                        }).toList());
-                                  } else if (snapshot.hasError) {
-                                    return Text("${snapshot.error}");
-                                  }
-                                  return const SizedBox(
-                                    height: 50,
-                                    child: Text('Seleccione Pais'),
-                                  );
-                                },
-                              ),
-                            )
-                          ],
+                if (model.data!['data'][index]['status'] != 'canceled') {
+                  showModalBottomSheet<void>(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return SizedBox(
+                        height: 200,
+                        child: Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              const SizedBox(height: 20),
+                              const Text('Seleccione Estado'),
+                              const SizedBox(height: 20),
+                              Expanded(
+                                child: FutureBuilder<List<Status>>(
+                                  future: futureStatus,
+                                  builder: (context, snapshot) {
+                                    if (snapshot.hasData) {
+                                      //return Text('aa');
+                                      return DropdownMenu<Status>(
+                                          //initialSelection: list.first,
+                                          onSelected: (Status? value) {
+                                            if (value!.value == 'canceled') {
+                                              closeReservation(
+                                                  context,
+                                                  data['entity_id'],
+                                                  value!.label);
+                                            } else {
+                                              Navigator.pop(context);
+                                              _newsBloc.add(
+                                                  ChangeStatusReservation(
+                                                      data['entity_id'],
+                                                      value!.label));
+                                            }
+                                          },
+                                          dropdownMenuEntries: snapshot.data!
+                                              .map<DropdownMenuEntry<Status>>(
+                                                  (Status value) {
+                                            return DropdownMenuEntry<Status>(
+                                                value: value,
+                                                label: value.label);
+                                          }).toList());
+                                    } else if (snapshot.hasError) {
+                                      return Text("${snapshot.error}");
+                                    }
+                                    return const SizedBox(
+                                      height: 50,
+                                      child: Text('Seleccione Pais'),
+                                    );
+                                  },
+                                ),
+                              )
+                            ],
+                          ),
                         ),
-                      ),
-                    );
-                  },
-                );
+                      );
+                    },
+                  );
+                }
               },
               child: SizedBox(
                 width: 350,
-                height: 120,
+                height: 130,
                 child: Stack(
                   children: <Widget>[
                     Positioned(
@@ -191,14 +206,15 @@ class _ListReservacionState extends State<ListReservacion> {
                               style: const TextStyle(
                                   fontSize: 18, fontWeight: FontWeight.bold),
                             ),
-                            const SizedBox(height: 20),
+                            const SizedBox(height: 10),
                             Text(
                               'Estado: ${data!['status']}',
                               style: const TextStyle(fontSize: 14),
                             ),
                             const SizedBox(height: 3),
                             Text(
-                              'Hora: ${data?['product_options']!['info_buyRequest']!['booking_time'] ?? ''}',
+                              'Hora: ${data?['product_options']!['info_buyRequest']!['booking_time']}'
+                                  .trim(),
                               style: const TextStyle(fontSize: 14),
                             ),
                           ],

@@ -27,5 +27,23 @@ class ReservationBloc extends Bloc<ReservationEvent, ReservationState> {
             "Failed to fetch data. is your device online?"));
       }
     });
+
+    on<ChangeStatusReservation>((event, emit) async {
+      try {
+        await customerService.changeStatusOrder(event.id, event.status);
+
+        emit(ReservationLoading());
+        final mList = await customerService.getReservations();
+
+        if (mList.error != null) {
+          emit(ReservationError(mList.error));
+        }
+
+        emit(ReservationLoaded(mList));
+      } on NetworkError {
+        emit(const ReservationError(
+            "Failed to fetch data. is your device online?"));
+      }
+    });
   }
 }
