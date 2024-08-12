@@ -19,11 +19,11 @@ class ListReview extends StatefulWidget {
 }
 
 class _ListReviewState extends State<ListReview> {
-  final StoreBloc _newsBloc = StoreBloc();
+  //final StoreBloc _newsBloc = StoreBloc();
 
   @override
   void initState() {
-    _newsBloc.add(GetStoresList());
+    //_newsBloc.add(GetStoresList());
     super.initState();
   }
 
@@ -56,32 +56,21 @@ class _ListReviewState extends State<ListReview> {
     return Container(
       margin: const EdgeInsets.all(8.0),
       child: BlocProvider(
-        create: (_) => _newsBloc,
-        child: BlocListener<StoreBloc, StoreState>(
-          listener: (context, state) {
-            if (state is StoreError) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(state.message!),
-                ),
-              );
+        create: (_) => StoreBloc()..add(GetStoresList()),
+        child: BlocBuilder<StoreBloc, StoreState>(
+          builder: (context, state) {
+            if (state is StoreInitial) {
+              return _buildLoading();
+            } else if (state is StoreLoading) {
+              return _buildLoading();
+            } else if (state is StoreLoaded) {
+              return _buildCard(context, state.data);
+            } else if (state is StoreError) {
+              return Container();
+            } else {
+              return Container();
             }
           },
-          child: BlocBuilder<StoreBloc, StoreState>(
-            builder: (context, state) {
-              if (state is StoreInitial) {
-                return _buildLoading();
-              } else if (state is StoreLoading) {
-                return _buildLoading();
-              } else if (state is StoreLoaded) {
-                return _buildCard(context, state.data);
-              } else if (state is StoreError) {
-                return Container();
-              } else {
-                return Container();
-              }
-            },
-          ),
         ),
       ),
     );

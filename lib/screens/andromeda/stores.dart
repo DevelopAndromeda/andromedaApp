@@ -1,5 +1,3 @@
-import 'package:andromeda/services/db.dart';
-import 'package:andromeda/witgets/button_base.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,24 +14,28 @@ class MyStorePage extends StatefulWidget {
   const MyStorePage({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
   _MyStorePageState createState() => _MyStorePageState();
 }
 
 class _MyStorePageState extends State<MyStorePage> {
-  final OneBloc _firstBloc = OneBloc();
-  final SecondBloc _secondBloc = SecondBloc();
-  final AllBloc _allBloc = AllBloc();
-  final UserBloc _userBloc = UserBloc();
+  late final OneBloc _firstBloc;
+  late final SecondBloc _secondBloc;
+  late final AllBloc _allBloc;
+  late final UserBloc _userBloc = UserBloc();
   String username = '';
 
   @override
   void initState() {
+    super.initState();
+    _firstBloc = OneBloc();
+    _secondBloc = SecondBloc();
+    _allBloc = AllBloc();
+
     _firstBloc.add(GetOneList());
     _secondBloc.add(GetSecondList());
     _allBloc.add(GetAllList());
     _userBloc.add(GetUser());
-    super.initState();
+
     //getUserData();
   }
 
@@ -159,7 +161,7 @@ class _MyStorePageState extends State<MyStorePage> {
               style: TextStyle(fontSize: 18, color: Colors.white),
             ),
           ),*/
-          const SizedBox(height: 20)
+          SizedBox(height: 20)
         ],
       ),
     );

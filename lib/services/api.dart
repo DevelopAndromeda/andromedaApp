@@ -15,38 +15,28 @@ Map<String, String> _headers = <String, String>{
 };
 
 String getTokenHeader(String type, String? tokenCustomer) {
-  String token = '';
-  switch (type) {
-    case 'admin':
-      token = 'Bearer $tokenAdmin';
-      break;
-    case 'integration':
-      token = 'Bearer $tokenIntegracion';
-      break;
-    case 'custom':
-      token = 'Bearer $tokenCustomer';
-      break;
-    default:
-      token = '';
-      break;
-  }
-  return token;
+  Map<String, String> map = {
+    'admin': 'Bearer ${dotenv.env['TOKEN_ADMIN']!}',
+    'integration': 'Bearer ${dotenv.env['TOKEN_INTEGRATION']!}',
+    'custom': 'Bearer $tokenCustomer'
+  };
+  return map[type] ?? '';
 }
 
 Future<dynamic> get(String? tokenCustomer, String type, String url) async {
-  print('** API_GET **');
+  //print('** API_GET **');
   try {
-    final TOKEN = getTokenHeader(type, tokenCustomer);
-    print(
-        '************* Endpoint: ${Uri.parse(endPoint! + url)}  *************');
-    print('************* TYPE: $type *************');
+    final token = getTokenHeader(type, tokenCustomer);
+    //print(
+    //    '************* Endpoint: ${Uri.parse(endPoint! + url)}  *************');
+    //print('************* TYPE: $type *************');
 
-    if (TOKEN.isNotEmpty) {
-      _headers["Authorization"] = TOKEN;
+    if (token.isNotEmpty) {
+      _headers["Authorization"] = token;
     } else {
       _headers.remove("Authorization");
     }
-    print('************* headers: $_headers *************');
+    //print('************* headers: $_headers *************');
     final resp = await http.get(Uri.parse(endPoint! + url), headers: _headers);
 
     if (resp.statusCode < 500) {
@@ -65,19 +55,19 @@ Future<dynamic> get(String? tokenCustomer, String type, String url) async {
 
 Future<dynamic> post(String? tokenCustomer, String type, String url,
     Object params, String? version) async {
-  print('** API_POST **');
+  //print('** API_POST **');
   try {
-    final TOKEN = getTokenHeader(type, tokenCustomer);
-    print(
-        '************* Endpoint: ${Uri.parse(version == '' ? endPoint! + url : endPointV2! + url)}  *************');
-    print('************* Paramas: $params *************');
-    print('************* TYPE: $type *************');
-    if (TOKEN.isNotEmpty) {
-      _headers["Authorization"] = TOKEN;
+    final token = getTokenHeader(type, tokenCustomer);
+    //print(
+    //    '************* Endpoint: ${Uri.parse(version == '' ? endPoint! + url : endPointV2! + url)}  *************');
+    //print('************* Paramas: $params *************');
+    //print('************* TYPE: $type *************');
+    if (token.isNotEmpty) {
+      _headers["Authorization"] = token;
     } else {
       _headers.remove("Authorization");
     }
-    print('************* headers: $_headers *************');
+    //print('************* headers: $_headers *************');
 
     final resp = await http.post(
         Uri.parse(version == '' ? endPoint! + url : endPointV2! + url),
@@ -97,19 +87,19 @@ Future<dynamic> post(String? tokenCustomer, String type, String url,
 
 Future<dynamic> put(String? tokenCustomer, String type, String url,
     Object params, String id) async {
-  print('** API_PUT **');
+  //print('** API_PUT **');
   try {
-    final TOKEN = getTokenHeader(type, tokenCustomer);
-    print(
-        '************* Endpoint: ${Uri.parse(endPoint! + url + id)}  *************');
-    print('************* Paramas: $params *************');
-    print('************* TYPE: $type *************');
-    if (TOKEN.isNotEmpty) {
-      _headers["Authorization"] = TOKEN;
+    final token = getTokenHeader(type, tokenCustomer);
+    //print(
+    //    '************* Endpoint: ${Uri.parse(endPoint! + url + id)}  *************');
+    //print('************* Paramas: $params *************');
+    //print('************* TYPE: $type *************');
+    if (token.isNotEmpty) {
+      _headers["Authorization"] = token;
     } else {
       _headers.remove("Authorization");
     }
-    print('************* headers: $_headers *************');
+    //print('************* headers: $_headers *************');
     //_headers["Authorization"] = getTokenHeader(type, tokenCustomer);
     final resp = await http.put(Uri.parse(endPoint! + url + id),
         headers: _headers, body: jsonEncode(params));
@@ -126,19 +116,19 @@ Future<dynamic> put(String? tokenCustomer, String type, String url,
 }
 
 Future<dynamic> delete(String? tokenCustomer, String type, String url) async {
-  print('** API_DELETE **');
+  //print('** API_DELETE **');
   try {
-    final TOKEN = getTokenHeader(type, tokenCustomer);
-    print(
-        '************* Endpoint: ${Uri.parse(endPoint! + url)}  *************');
-    print('************* TYPE: $type *************');
+    final token = getTokenHeader(type, tokenCustomer);
+    //print(
+    //    '************* Endpoint: ${Uri.parse(endPoint! + url)}  *************');
+    //print('************* TYPE: $type *************');
     //_headers["Authorization"] = getTokenHeader(type, tokenCustomer);
-    if (TOKEN.isNotEmpty) {
-      _headers["Authorization"] = TOKEN;
+    if (token.isNotEmpty) {
+      _headers["Authorization"] = token;
     } else {
       _headers.remove("Authorization");
     }
-    print('************* headers: $_headers *************');
+    //print('************* headers: $_headers *************');
     final resp =
         await http.delete(Uri.parse(endPoint! + url), headers: _headers);
     if (resp.statusCode == 200) {

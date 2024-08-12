@@ -16,10 +16,10 @@ class AllBloc extends Bloc<AllEvent, AllState> {
       try {
         emit(AllLoading());
         final mList = await storeService.allRestaurants();
-        emit(AllLoaded(mList));
         if (mList.error != null) {
           emit(AllError(mList.error));
         }
+        emit(AllLoaded(mList));
       } on NetworkError {
         emit(const AllError("Failed to fetch data. is your device online?"));
       }

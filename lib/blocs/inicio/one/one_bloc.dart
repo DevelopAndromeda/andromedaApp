@@ -16,10 +16,10 @@ class OneBloc extends Bloc<OneEvent, OneState> {
       try {
         emit(OneLoading());
         final mList = await storeService.firstSection();
-        emit(OneLoaded(mList));
         if (mList.error != null) {
           emit(OneError(mList.error));
         }
+        emit(OneLoaded(mList));
       } on NetworkError {
         emit(const OneError("Failed to fetch data. is your device online?"));
       }

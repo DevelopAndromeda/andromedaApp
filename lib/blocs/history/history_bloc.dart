@@ -14,14 +14,13 @@ class HistoryBloc extends Bloc<HistoryEvent, HistoryState> {
     final CustomerService customerService = CustomerService();
 
     on<GetHistoryList>((event, emit) async {
-      print('LLamando!!!!!');
       try {
         emit(HistoryLoading());
         final mList = await customerService.getMyOrders();
-        emit(HistoryLoaded(mList));
         if (mList.error != null) {
           emit(HistoryError(mList.error));
         }
+        emit(HistoryLoaded(mList));
       } on NetworkError {
         emit(
             const HistoryError("Failed to fetch data. is your device online?"));

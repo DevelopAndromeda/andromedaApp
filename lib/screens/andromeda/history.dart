@@ -1,16 +1,11 @@
-import 'package:andromeda/witgets/time_slot_buttons.dart';
 import 'package:flutter/material.dart';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:andromeda/blocs/history/history_bloc.dart';
-
 import 'package:andromeda/witgets/label_card.dart';
 import 'package:andromeda/witgets/no_search_result.dart';
 import 'package:andromeda/witgets/not_session.dart';
 import 'package:andromeda/witgets/skeleton.dart';
-
 import 'package:andromeda/utilities/constanst.dart';
-
 import 'package:andromeda/models/response.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
@@ -22,80 +17,62 @@ class MyHistoryPage extends StatefulWidget {
 }
 
 class _MyHistoryPageState extends State<MyHistoryPage> {
-  final HistoryBloc _newsBloc = HistoryBloc();
-  bool bandera = true;
+  bool startAnimation = false;
+  late HistoryBloc _historyBloc; // Usamos late para inicializar en initState
 
   @override
   void initState() {
-    if (bandera) {
-      _newsBloc.add(GetHistoryList());
-      bandera = false;
-    }
     super.initState();
+    _historyBloc = HistoryBloc()..add(GetHistoryList());
   }
 
   @override
   void dispose() {
-    _newsBloc.close();
+    _historyBloc.close();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text(
-            'Historial',
-            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-          ),
-          centerTitle: true,
-          backgroundColor: const Color.fromARGB(255, 0, 0, 0),
+      appBar: AppBar(
+        title: const Text(
+          'Historial',
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
-        body: _buildList());
-  }
+        centerTitle: true,
+        backgroundColor: const Color.fromARGB(255, 0, 0, 0),
+      ),
+      body: BlocProvider<HistoryBloc>.value(
+        value: _historyBloc,
+        child: BlocBuilder<HistoryBloc, HistoryState>(
+          builder: (context, state) {
+            if (state is HistoryInitial || state is HistoryLoading) {
+              return const Skeleton(cantData: 4);
+            } else if (state is HistoryLoaded) {
+              WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+                setState(() {
+                  startAnimation = true;
+                });
 
-  Widget _buildList() {
-    return Container(
-      margin: const EdgeInsets.all(8.0),
-      child: BlocProvider(
-        create: (_) => _newsBloc,
-        child: BlocListener<HistoryBloc, HistoryState>(
-          listener: (context, state) {
-            /*if (state is HistoryError) {
-              responseErrorWarning(context, state.message!);
-            }*/
+                /*print(1);
 
-            if (state is HistoryLoaded) {
-              if (state.data.result == 'ok') {
-                if (state.data.data != null &&
-                    state.data.data!['items'].isNotEmpty) {
-                  //_showMyDialog(
-                  //    "Te recordamos que peudes realizar una reseña a tu ultima visita en ${state.data.data!['items'][0]['items'][0]['name']}");
-                  //print(state.data.data!['items'][0]);
-                  //responseSuccessWarning(context,
-                  //    "Te recordamos que peudes realizar una reseña a tu ultima visita en ${state.data.data!['items'][0]['items'][0]['name']}");
-                  infoAlertModal(context,
-                      "Te recordamos que peudes realizar una reseña a tu ultima visita en ${state.data.data!['items'][0]['items'][0]['name']}");
-                  return;
-                }
-              }
+                Fluttertoast.showToast(
+                    msg:
+                        "Te recordamos que peudes realizar una reseña a tu ultima visita en ${state.data.data!['items'][0]['items'][0]['name']}",
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.BOTTOM,
+                    backgroundColor: Colors.green[400],
+                    textColor: Colors.white,
+                    fontSize: 16.0);*/
+              });
+              return _buildCard(context, state.data);
+            } else if (state is HistoryError) {
+              return const WrongConnection();
+            } else {
+              return Container();
             }
           },
-          child: BlocBuilder<HistoryBloc, HistoryState>(
-            builder: (context, state) {
-              if (state is HistoryInitial) {
-                return const Skeleton(cantData: 4);
-              } else if (state is HistoryLoading) {
-                return const Skeleton(cantData: 4);
-              } else if (state is HistoryLoaded) {
-                return _buildCard(context, state.data);
-              } else if (state is HistoryError) {
-                return const WrongConnection();
-              } else {
-                return Container();
-              }
-            },
-          ),
         ),
       ),
     );
@@ -111,13 +88,14 @@ class _MyHistoryPageState extends State<MyHistoryPage> {
         return const NoSearchResultFound();
       }
 
-      //infoAlertModal(context,
-      //    "Te recordamos que peudes realizar una reseña a tu ultima visita en ${model.data!['items'][0]['items'][0]['name']}");
-
       return ListView.builder(
-          itemCount: model.data!['total_count'],
-          itemBuilder: (context, index) {
-            return Card(
+        itemCount: model.data!['total_count'],
+        itemBuilder: (context, index) {
+          return AnimatedContainer(
+            duration: Duration(milliseconds: 300 + (index * 200)),
+            transform: Matrix4.translationValues(
+                startAnimation ? 0 : MediaQuery.of(context).size.width, 0, 0),
+            child: Card(
               margin: const EdgeInsets.all(5),
               elevation: 10,
               child: SizedBox(
@@ -125,25 +103,22 @@ class _MyHistoryPageState extends State<MyHistoryPage> {
                 height: 200,
                 child: Stack(
                   children: <Widget>[
-                    // Imagen a la izquierda
                     Positioned(
                       left: 10,
                       top: 15,
                       bottom: 15,
                       child: InkWell(
-                          onTap: () => Navigator.pushNamed(context, 'orden',
-                              arguments: model.data!['items'][index]
-                                  ['entity_id']),
-                          child: Container(
-                              width: 120,
-                              height: 90,
-                              decoration: getImg(model.data!['items'][index]
-                                              ['items'][0]
-                                          ['extension_attributes'] !=
-                                      null
-                                  ? model.data!['items'][index]['items'][0]
-                                      ['extension_attributes']['image'][0]
-                                  : null))),
+                        onTap: () => Navigator.pushNamed(context, 'orden',
+                            arguments: model.data!['items'][index]
+                                ['entity_id']),
+                        child: Container(
+                          width: 120,
+                          height: 90,
+                          decoration: getImg(model.data!['items'][index]
+                                  ['items'][0]['extension_attributes']?['image']
+                              [0]),
+                        ),
+                      ),
                     ),
                     Positioned(
                       left: 140,
@@ -177,7 +152,6 @@ class _MyHistoryPageState extends State<MyHistoryPage> {
                                   ),
                                   RatingBarIndicator(
                                     rating: 0.0,
-                                    //rating: 0.0,
                                     itemBuilder: (context, index) => const Icon(
                                       Icons.star,
                                       color: Color.fromARGB(255, 20, 20, 20),
@@ -187,7 +161,6 @@ class _MyHistoryPageState extends State<MyHistoryPage> {
                                     direction: Axis.horizontal,
                                   ),
                                   const Text(
-                                    //"${getCustomAttribute(widget.data['custom_attributes'], 'product_score')}",
                                     "0",
                                     style: TextStyle(
                                         color: Color(0xff323232),
@@ -195,7 +168,6 @@ class _MyHistoryPageState extends State<MyHistoryPage> {
                                         fontFamily: 'Exo Light'),
                                   ),
                                   const Text(
-                                    //"${getCustomAttribute(widget.data['custom_attributes'], 'product_score')}",
                                     " reseñas",
                                     style: TextStyle(
                                         color: Color(0xff323232),
@@ -217,10 +189,11 @@ class _MyHistoryPageState extends State<MyHistoryPage> {
                         ),
                       ),
                     ),
-                    // Botones de Modificar y Eliminar en la parte inferior derecha
                     Align(
                       alignment: Alignment.bottomRight,
-                      child: model.data!['items'][index]['status'] != 'canceled'
+                      child: model.data!['items'][index]['status'] !=
+                                  'canceled' &&
+                              model.data!['items'][index]['status'] != 'cancel'
                           ? Column(
                               mainAxisSize: MainAxisSize.min,
                               children: [
@@ -228,8 +201,7 @@ class _MyHistoryPageState extends State<MyHistoryPage> {
                                   padding: EdgeInsets.zero,
                                   icon: const Icon(
                                     Icons.delete,
-                                    color: Colors
-                                        .red, // C/ Cambia el color del icono aquí
+                                    color: Colors.red,
                                   ),
                                   iconSize: 22,
                                   onPressed: () {
@@ -244,35 +216,42 @@ class _MyHistoryPageState extends State<MyHistoryPage> {
                                           actions: <Widget>[
                                             TextButton(
                                               onPressed: () =>
-                                                  Navigator.of(context).pop(
-                                                      false), // No eliminar, cerrar diálogo
-                                              child: const Text(
-                                                'No',
-                                                style: TextStyle(
-                                                    color: Colors.black),
-                                              ),
+                                                  Navigator.of(context)
+                                                      .pop(false),
+                                              child: const Text('No',
+                                                  style: TextStyle(
+                                                      color: Colors.black)),
                                             ),
                                             TextButton(
                                               onPressed: () async {
                                                 Navigator.of(context).pop(true);
-                                                _newsBloc.add(ChangeStatusHistory(
-                                                    '${model.data!['items'][index]['items'][0]['order_id']}',
-                                                    'cancel'));
+                                                _historyBloc.add(
+                                                    ChangeStatusHistory(
+                                                        '${model.data!['items'][index]['items'][0]['order_id']}',
+                                                        'cancel'));
+                                                await Future.delayed(
+                                                    const Duration(seconds: 2));
+                                                _historyBloc
+                                                    .add(GetHistoryList());
+                                                // Al hacer clic en "Sí", el evento se envía al mismo BLoC.
+                                                /*HistoryBloc()
+                                                  ..add(ChangeStatusHistory(
+                                                      '${model.data!['items'][index]['items'][0]['order_id']}',
+                                                      'cancel'));
+                                                HistoryBloc()
+                                                  ..add(GetHistoryList());*/
                                               },
-                                              child: const Text(
-                                                'Sí',
-                                                style: TextStyle(
-                                                    color: Colors.black),
-                                              ),
+                                              child: const Text('Sí',
+                                                  style: TextStyle(
+                                                      color: Colors.black)),
                                             ),
                                           ],
                                         );
                                       },
                                     ).then((value) {
                                       if (value == true) {
-                                        setState(() {});
                                         responseSuccessWarning(context,
-                                            'Se Cancelo tu reservacion');
+                                            'Se canceló tu reservación');
                                       }
                                     });
                                   },
@@ -281,26 +260,18 @@ class _MyHistoryPageState extends State<MyHistoryPage> {
                             )
                           : Container(),
                     ),
-                    /*const Positioned(
-                        left: 133,
-                        bottom: 33,
-                        child: TimeSlotButton(
-                            anchoButton: 10, altoButton: 35, sizeText: 13)),*/
-                    //Etiqueta de estado
                     LabelCard(
-                        color: (model.data!['items'][index]['status'] ==
-                                'complete'
-                            ? const Color.fromARGB(255, 46, 17, 238)
-                            : model.data!['items'][index]['status'] == 'pending'
-                                ? const Color.fromARGB(255, 207, 176, 2)
-                                : const Color.fromARGB(255, 241, 58, 45)),
+                        color: transformColor(
+                            model.data!['items'][index]['status']),
                         title: translateStatus(
-                            model.data!['items'][index]['status']))
+                            model.data!['items'][index]['status'])),
                   ],
                 ),
               ),
-            );
-          });
+            ),
+          );
+        },
+      );
     } else {
       return const NoSearchResultFound();
     }
@@ -321,31 +292,4 @@ class _MyHistoryPageState extends State<MyHistoryPage> {
           ));
     }
   }
-
-  /*Future<void> _showMyDialog(String msj) async {
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: false, // user must tap button!
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Informacion'),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                Text(msj),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('Ok'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }*/
 }

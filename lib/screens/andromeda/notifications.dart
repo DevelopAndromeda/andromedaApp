@@ -19,17 +19,18 @@ class MyNotificationsPage extends StatefulWidget {
 }
 
 class _MyNotificationsPageState extends State<MyNotificationsPage> {
-  final NotificacionesBloc _newsBloc = NotificacionesBloc();
+  late final NotificacionesBloc _notificacionBloc;
 
   @override
   void initState() {
-    _newsBloc.add(GetNotificacionesList());
     super.initState();
+    _notificacionBloc = NotificacionesBloc();
+    _notificacionBloc.add(GetNotificacionesList());
   }
 
   @override
   void dispose() {
-    _newsBloc.close();
+    _notificacionBloc.close();
     super.dispose();
   }
 
@@ -66,7 +67,7 @@ class _MyNotificationsPageState extends State<MyNotificationsPage> {
     return Container(
       margin: const EdgeInsets.all(8.0),
       child: BlocProvider(
-        create: (_) => _newsBloc,
+        create: (_) => _notificacionBloc,
         child: BlocListener<NotificacionesBloc, NotificacionesState>(
           listener: (context, state) {
             /*if (state is FavoriteError) {

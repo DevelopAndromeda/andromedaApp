@@ -16,11 +16,9 @@ class ReviewsBloc extends Bloc<ReviewsEvent, ReviewsState> {
       try {
         emit(ReviewsLoading());
         final mList = await _storeService.getReviwes(event.sku);
-
         if (mList.error != null) {
           emit(ReviewsError(mList.error));
         }
-
         emit(ReviewsLoaded(mList));
       } on NetworkError {
         emit(

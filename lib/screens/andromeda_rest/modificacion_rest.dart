@@ -142,7 +142,7 @@ class _ModificacionRestaurante extends State<ModificacionRestaurante> {
   ];
 
   late Future<List<Pais>> futurePais;
-  Pais? _selectedPais;
+  //Pais? _selectedPais;
   bool isPaisUpdate = false;
 
   Future<List<Estado>>? futureEstado;
@@ -366,7 +366,7 @@ class _ModificacionRestaurante extends State<ModificacionRestaurante> {
   }
 
   setData() {
-    print(widget.data);
+    //print(widget.data);
     _nombreController.text = widget.data['name'];
     _skuController.text = widget.data['sku'];
     _descripcionController.text = getCustomAttribute(
@@ -596,9 +596,9 @@ class _ModificacionRestaurante extends State<ModificacionRestaurante> {
                       //}
                     }
 
-                    print(
-                        '*******************customAttributes****************');
-                    print(customAttributes);
+                    //print(
+                    //    '*******************customAttributes****************');
+                    //print(customAttributes);
 
                     Map<String, dynamic> producto = {
                       'product': {
@@ -965,7 +965,7 @@ class _ModificacionRestaurante extends State<ModificacionRestaurante> {
                   controller: textEditingController,
                   focusNode: focusNode,
                   onFieldSubmitted: (value) => onFieldSubmitted,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     contentPadding:
                         EdgeInsets.symmetric(vertical: 0, horizontal: 10),
                     border: OutlineInputBorder(gapPadding: 1),
@@ -1373,16 +1373,16 @@ class _ModificacionRestaurante extends State<ModificacionRestaurante> {
             width: 90,
             child: GoogleMap(
                 myLocationEnabled: true,
-                onCameraMove: ((_position) {
+                onCameraMove: ((positiones) {
                   setState(() {
-                    _marker = LatLng(
-                        _position.target.latitude, _position.target.longitude);
+                    _marker = LatLng(positiones.target.latitude,
+                        positiones.target.longitude);
                   });
                 }),
                 onMapCreated: _onMapCreated,
                 initialCameraPosition: _initialPosition,
                 onTap: (LatLng latLng) {
-                  print('${latLng.latitude}, ${latLng.longitude}');
+                  //print('${latLng.latitude}, ${latLng.longitude}');
                   _marker = LatLng(latLng.latitude, latLng.longitude);
                   setState(() {});
                 },

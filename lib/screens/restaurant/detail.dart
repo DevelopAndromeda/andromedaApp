@@ -1,9 +1,8 @@
 import 'dart:async';
 import 'package:andromeda/blocs/reviews/reviews_bloc.dart';
-import 'package:andromeda/services/store.dart';
 import 'package:flutter/material.dart';
 
-//import 'package:carousel_slider/carousel_slider.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:html_parsed_read_more/html_parsed_read_more.dart';
 import 'package:intl/intl.dart';
@@ -64,8 +63,8 @@ class _MyDetailPageState extends State<MyDetailPage>
   }
 
   setImgs() {
-    print("************Pintar Imagenes: 1************");
-    print(widget.data['media_gallery_entries']);
+    //print("************Pintar Imagenes: 1************");
+    //print(widget.data['media_gallery_entries']);
     if (widget.data['media_gallery_entries'] != null) {
       widget.data['media_gallery_entries'].forEach((element) {
         imagenes.add(element['file']);
@@ -76,7 +75,7 @@ class _MyDetailPageState extends State<MyDetailPage>
   }
 
   setPeople() {
-    print("************Pintar Personas: 2************");
+    //print("************Pintar Personas: 2************");
     int limit = int.parse(getCustomAttribute(
         widget.data['custom_attributes'], 'tables_by_restaurant'));
     for (int i = 1; i < limit; i++) {
@@ -86,7 +85,7 @@ class _MyDetailPageState extends State<MyDetailPage>
 
   Future<void> getSlot() async {
     //print('getSlot -> $id');
-    print("************getSlot: 3************");
+    //print("************getSlot: 3************");
     final slot = await get('', '', 'restaurant/product/${widget.data['id']}');
     _slot = slot[0]['info'];
   }
@@ -105,11 +104,11 @@ class _MyDetailPageState extends State<MyDetailPage>
   }*/
 
   Future<void> getOptions() async {
-    print("************getOptions: 4************");
+    //print("************getOptions: 4************");
     _options =
         await get('', 'integration', 'products/${widget.data['sku']}/options');
 
-    print("************llenado de zona y tipo: 5************");
+    //print("************llenado de zona y tipo: 5************");
     if (_options.isNotEmpty) {
       for (dynamic data in _options) {
         if (data['title'] == 'Zona') {
@@ -171,8 +170,8 @@ class _MyDetailPageState extends State<MyDetailPage>
     _slotDay = _slot[picked?.weekday.toString()];
     for (var e in _slotDay) {
       if (e['slots_info'].runtimeType == List) {
-        print('list');
-        print(e);
+        //print('list');
+        //print(e);
         int indice = 0;
         for (var j in e['slots_info']) {
           _allSlotDay.add(DropdownItem(value: indice, label: j['time']));
@@ -190,18 +189,18 @@ class _MyDetailPageState extends State<MyDetailPage>
   }
 
   Future<void> generateOrden() async {
-    print('************* Obtener Sesion *************');
+    //print('************* Obtener Sesion *************');
     final sesion = await serviceDB.instance.getById('users', 'id_user', 1);
     // Generar carrito vacio
     if (sesion.isEmpty) {
       responseErrorWarning(context, "Nesecitas iniciar una sesion");
       return;
     }
-    print('************* Sesion: ${sesion} *************');
+    //print('************* Sesion: ${sesion} *************');
 
-    print('************* Generar custom_options: *************');
+    //print('************* Generar custom_options: *************');
     List<Map<String, dynamic>> custom_options = [];
-    print('************* options: ${_options} *************');
+    //print('************* options: ${_options} *************');
     if (_options.isEmpty) {
       responseErrorWarning(context, "No Existen Labels para este producto");
       return;
@@ -236,15 +235,15 @@ class _MyDetailPageState extends State<MyDetailPage>
       custom_options
           .add({"option_id": item['option_id'], "option_value": value});
     }
-    print('************* custom_options: ${custom_options} *************');
+    //print('************* custom_options: ${custom_options} *************');
 
-    print('************* Crear Carrito *************');
+    //print('************* Crear Carrito *************');
     //Creamos Carrito y lo guardamos
     var myCart = await post(sesion[0]['token'], 'custom', 'carts/mine', {}, '')
         .then((value) async {
       return await get(sesion[0]['token'], 'custom', 'carts/mine');
     });
-    print('************* Carrito: ${myCart} *************');
+    //print('************* Carrito: ${myCart} *************');
 
     List<Map<String, dynamic>> configurable_item_options = [];
     configurable_item_options.addAll([
@@ -257,13 +256,13 @@ class _MyDetailPageState extends State<MyDetailPage>
       {"option_id": "slot_day_index", "option_value": _selectedDate.weekday},
       {"option_id": "charged_per_count", "option_value": 4},
     ]);
-    print(
-        '************* configurable_item_options: ${configurable_item_options} *************');
+    //print(
+    //    '************* configurable_item_options: ${configurable_item_options} *************');
 
     if (myCart != null) {
       myCart['items'].map((element) async {
-        print(
-            '************* eliminar si hay datos: ${element['item_id']} *************');
+        //print(
+        //    '************* eliminar si hay datos: ${element['item_id']} *************');
         await delete(sesion[0]['token'], 'customer',
             'carts/mine/items/${element['item_id']}');
       });
@@ -286,21 +285,22 @@ class _MyDetailPageState extends State<MyDetailPage>
       "booking_time": Hora
     };
 
-    print('************* cartItem: ${cartItem} *************');
+    //print('************* cartItem: ${cartItem} *************');
 
     //Revisar productos
-    print('************* Obtener Items en Carrito *************');
+    //print('************* Obtener Items en Carrito *************');
     final items = await get(sesion[0]['token'], 'custom', 'carts/mine/items');
-    print('************* items: ${items} *************');
+    //print('************* items: ${items} *************');
 
     if (items.isEmpty) {
       //Agregar item al carrito
-      print('enviar post');
-      print(cartItem);
-      final cart = await post(
+      //print('enviar post');
+      //print(cartItem);
+      //final cart =
+      await post(
           sesion[0]['token'], 'custom', 'carts/mine/items', cartItem, 'v2');
-      print('response post');
-      print(cart);
+      //print('response post');
+      //print(cart);
       //print('************* Agregar Item: ${addItem} *************');
     } else {
       if (items.runtimeType != List) {
@@ -361,12 +361,13 @@ class _MyDetailPageState extends State<MyDetailPage>
       }
     };
 
-    print('************* Info: ${info} *************');
+    //print('************* Info: ${info} *************');
 
     //Set info
-    final shippingInfo = await post(sesion[0]['token'], 'custom',
-        'carts/mine/shipping-information', info, '');
-    print('************* shippingInfo: ${shippingInfo} *************');
+    //final shippingInfo =
+    await post(sesion[0]['token'], 'custom', 'carts/mine/shipping-information',
+        info, '');
+    //print('************* shippingInfo: ${shippingInfo} *************');
 
     //Generate Order
     final orden = await put(
@@ -377,14 +378,14 @@ class _MyDetailPageState extends State<MyDetailPage>
           "paymentMethod": {"method": "free"}
         },
         '');
-    print('************* ORDEN: ${orden} *************');
-    print('************* ORDEN-TYPE: ${orden.runtimeType} *************');
+    //print('************* ORDEN: ${orden} *************');
+    //print('************* ORDEN-TYPE: ${orden.runtimeType} *************');
     if (orden.runtimeType != int) {
       responseErrorWarning(context, orden['message']);
     } else {
       showDialog(
         context: context,
-        builder: (context) => AlertDialog(
+        builder: (_) => AlertDialog(
           title: const Text('Reserva Realizada'),
           content: const Text('Tu reserva ha sido realizada con éxito.'),
           actions: <Widget>[
@@ -449,7 +450,7 @@ class _MyDetailPageState extends State<MyDetailPage>
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            //crearSlider(),
+            crearSlider(),
             crearInfo(), /*createInfo()*/
           ],
         ),
@@ -457,7 +458,7 @@ class _MyDetailPageState extends State<MyDetailPage>
     );
   }
 
-  /*CarouselSlider crearSlider() {
+  CarouselSlider crearSlider() {
     return CarouselSlider(
       options: CarouselOptions(
         height: 200.0,
@@ -495,7 +496,7 @@ class _MyDetailPageState extends State<MyDetailPage>
         );
       }).toList(),
     );
-  }*/
+  }
 
   Padding crearInfo() {
     return Padding(

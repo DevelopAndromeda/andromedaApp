@@ -18,7 +18,6 @@ class NotificacionesBloc
         if (mList.error != null) {
           emit(NotificacionesError(mList.error));
         }
-
         emit(NotificacionesLoaded(mList));
       } on NetworkError {
         emit(const NotificacionesError(

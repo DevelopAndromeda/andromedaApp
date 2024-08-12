@@ -16,10 +16,10 @@ class SecondBloc extends Bloc<SecondEvent, SecondState> {
       try {
         emit(SecondLoading());
         final mList = await storeService.secondSection();
-        emit(SecondLoaded(mList));
         if (mList.error != null) {
           emit(SecondError(mList.error));
         }
+        emit(SecondLoaded(mList));
       } on NetworkError {
         emit(const SecondError("Failed to fetch data. is your device online?"));
       }

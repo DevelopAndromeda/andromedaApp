@@ -82,11 +82,12 @@ class StoreService {
       final allRestaurants = await get('', 'integration',
           'products/?searchCriteria[sortOrders][0][direction]=ASC');
 
-      if (allRestaurants == null)
+      if (allRestaurants == null) {
         return Respuesta(
             result: 'fail',
             data: {'data': 'Error en App'},
             error: 'Api Response: null In function: allRestaurants');
+      }
 
       if (allRestaurants.isEmpty) {
         return Respuesta(
@@ -129,8 +130,6 @@ class StoreService {
 
       final stores = await get('', 'integration',
           'products/?searchCriteria[filterGroups][0][filters][0][field]=created_by&searchCriteria[filterGroups][0][filters][0][value]=${session[0]['id']}&searchCriteria[filterGroups][0][filters][0][conditionType]=eq');
-
-      print(stores);
 
       if (stores.isNotEmpty) {
         return Respuesta(result: 'ok', data: stores, error: null);

@@ -14,12 +14,21 @@ class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
   _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  String username = '';
+  Widget paginaActual(int status) {
+    Map<int, Widget> map = {
+      0: const MySearchPage(),
+      1: const MyHistoryPage(),
+      2: const MyStorePage(),
+      3: const MySavedPage(),
+      4: const MyNotificationsPage()
+    };
+
+    return map[status] ?? const MyStorePage();
+  }
 
   @override
   void initState() {
@@ -33,29 +42,12 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    //FlutterBackgroundService().invoke("setAsBackground");
-    //FlutterBackgroundService().invoke("setAsBackground");
+    FlutterBackgroundService().invoke("setAsBackground");
+    FlutterBackgroundService().invoke("setAsBackground");
     return Scaffold(
       body: BlocBuilder<BottomNavigationBloc, int>(
         builder: (context, currentTab) {
-          if (currentTab == 0) {
-            return const MySearchPage();
-          }
-          if (currentTab == 1) {
-            return const MyHistoryPage();
-          }
-          if (currentTab == 2) {
-            //FlutterBackgroundService().invoke("setAsForeground");
-            //FlutterBackgroundService().invoke("setAsBackground");
-            return const MyStorePage();
-          }
-          if (currentTab == 3) {
-            return const MySavedPage();
-          }
-          if (currentTab == 4) {
-            return const MyNotificationsPage();
-          }
-          return Text('Default: $currentTab ');
+          return paginaActual(currentTab);
         },
       ),
       bottomNavigationBar: const MyBottomBar(),

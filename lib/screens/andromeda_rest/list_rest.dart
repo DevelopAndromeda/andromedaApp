@@ -1,6 +1,6 @@
 import 'package:andromeda/witgets/car_rest.dart';
 import 'package:flutter/material.dart';
-import 'package:shimmer/shimmer.dart';
+import 'package:andromeda/witgets/skeleton.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:andromeda/blocs/stores/store_bloc.dart';
@@ -18,12 +18,12 @@ class ListRest extends StatefulWidget {
 }
 
 class _ListRestState extends State<ListRest> {
-  final StoreBloc _newsBloc = StoreBloc();
+  //final StoreBloc _newsBloc = StoreBloc();
   bool startAnimation = false;
 
   @override
   void initState() {
-    _newsBloc.add(GetStoresList());
+    //_newsBloc.add(GetStoresList());
     super.initState();
   }
 
@@ -56,37 +56,24 @@ class _ListRestState extends State<ListRest> {
     return Container(
       margin: const EdgeInsets.all(8.0),
       child: BlocProvider(
-        create: (_) => _newsBloc,
-        child: BlocListener<StoreBloc, StoreState>(
-          listener: (context, state) {
-            if (state is StoreError) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(state.message!),
-                ),
-              );
+        create: (_) => StoreBloc()..add(GetStoresList()),
+        child: BlocBuilder<StoreBloc, StoreState>(
+          builder: (context, state) {
+            if (state is StoreInitial || state is StoreLoading) {
+              return const Skeleton(cantData: 4);
+            } else if (state is StoreLoaded) {
+              WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+                setState(() {
+                  startAnimation = true;
+                });
+              });
+              return _buildCard(context, state.data);
+            } else if (state is StoreError) {
+              return Container();
+            } else {
+              return Container();
             }
           },
-          child: BlocBuilder<StoreBloc, StoreState>(
-            builder: (context, state) {
-              if (state is StoreInitial) {
-                return _buildLoading();
-              } else if (state is StoreLoading) {
-                return _buildLoading();
-              } else if (state is StoreLoaded) {
-                WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-                  setState(() {
-                    startAnimation = true;
-                  });
-                });
-                return _buildCard(context, state.data);
-              } else if (state is StoreError) {
-                return Container();
-              } else {
-                return Container();
-              }
-            },
-          ),
         ),
       ),
     );
@@ -151,34 +138,5 @@ class _ListRestState extends State<ListRest> {
         child: Text('Ocurrio un error al obtener los datos'),
       );
     }
-  }
-
-  Widget _buildLoading() {
-    return SizedBox(
-      width: double.infinity,
-      height: 100.0,
-      child: Shimmer.fromColors(
-          baseColor: Colors.grey.shade300,
-          highlightColor: Colors.grey.shade100,
-          enabled: true,
-          child: const SingleChildScrollView(
-            physics: NeverScrollableScrollPhysics(),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.max,
-              children: <Widget>[
-                Card(
-                  margin: EdgeInsets.all(5),
-                  elevation: 10,
-                  child: SizedBox(
-                    width: double.infinity,
-                    height: 150,
-                    child: SizedBox(width: 100, height: 90),
-                  ),
-                ),
-              ],
-            ),
-          )),
-    );
   }
 }

@@ -14,6 +14,6 @@ Future<void> main() async {
     //await initializeService();
     runApp(const Andromeda());
   }, (exception, stackTrace) async {
-    print("${exception}, ${stackTrace}");
+    //print("${exception}, ${stackTrace}");
   });
 }

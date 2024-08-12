@@ -19,17 +19,18 @@ class MyOrdenScreen extends StatefulWidget {
 }
 
 class _MyOrdenScreenState extends State<MyOrdenScreen> {
-  final OrdenBloc _newsBloc = OrdenBloc();
+  late final OrdenBloc _orderBloc;
 
   @override
   void initState() {
-    _newsBloc.add(GetOrdenByEntityId(widget.id));
     super.initState();
+    _orderBloc = OrdenBloc();
+    _orderBloc.add(GetOrdenByEntityId(widget.id));
   }
 
   @override
   void dispose() {
-    _newsBloc.close();
+    _orderBloc.close();
     super.dispose();
   }
 
@@ -58,7 +59,7 @@ class _MyOrdenScreenState extends State<MyOrdenScreen> {
     return Container(
       margin: const EdgeInsets.all(8.0),
       child: BlocProvider(
-        create: (_) => _newsBloc,
+        create: (_) => _orderBloc,
         child: BlocListener<OrdenBloc, OrdenState>(
           listener: (context, state) {
             /*if (state is FavoriteError) {

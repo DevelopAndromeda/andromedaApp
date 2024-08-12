@@ -59,14 +59,14 @@ class CatalogService {
       return [];
     }
 
-    List<Status> _status = [];
+    List<Status> status = [];
     for (dynamic data in responseJson) {
       if (data['value'] != "table_free") {
-        _status.add(Status.fromJson(data));
+        status.add(Status.fromJson(data));
       }
     }
 
-    return _status;
+    return status;
 
     //return (responseJson as List).map((data) => Status.fromJson(data)).toList();
   }

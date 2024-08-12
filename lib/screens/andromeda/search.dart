@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-//import 'package:carousel_slider/carousel_slider.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
@@ -24,13 +24,14 @@ class _MySearchPageState extends State<MySearchPage> {
   final DateTime _now = DateTime.now();
   final search = TextEditingController();
 
-  final OneBloc _firstBloc = OneBloc();
+  late final OneBloc _firstBloc;
   final StoreService _storeService = StoreService();
 
   @override
   void initState() {
-    _firstBloc.add(GetOneList());
     super.initState();
+    _firstBloc = OneBloc();
+    _firstBloc.add(GetOneList());
   }
 
   @override
@@ -276,7 +277,7 @@ class _MySearchPageState extends State<MySearchPage> {
     }
   }
 
-  /*Widget crearSlider(Respuesta model) {
+  Widget crearSlider(Respuesta model) {
     if (model.result == 'fail') {
       return const Center(
         child: Text('Ocurrio un error al obtener los datos'),
@@ -312,7 +313,7 @@ class _MySearchPageState extends State<MySearchPage> {
           viewportFraction: 0.8,
         ),
         items: list);
-  }*/
+  }
 
   cardRestaurant(data) {
     return InkWell(
@@ -389,7 +390,7 @@ class _MySearchPageState extends State<MySearchPage> {
                     fontFamily: 'Exo Regular'),
               ),
               Text(
-                transformPrice(data['price'].toString() ?? 0),
+                transformPrice(data['price'].toString()),
                 style: const TextStyle(
                     color: Colors.black,
                     fontSize: 12,
@@ -444,8 +445,8 @@ class _MySearchPageState extends State<MySearchPage> {
                 } else if (state is OneLoading) {
                   return _buildLoading();
                 } else if (state is OneLoaded) {
-                  //return crearSlider(state.data);
-                  return Text('En mantenimiento');
+                  return crearSlider(state.data);
+                  //return Text('En mantenimiento');
                 } else if (state is OneError) {
                   return Container();
                 } else {
@@ -462,9 +463,7 @@ class _MySearchPageState extends State<MySearchPage> {
   Widget crearSlotSlider(data) {
     List<String> horas = [];
     if (data['extension_attributes'] != null) {
-      if (data['extension_attributes']['slot_schedules'] == null) {
-        print('not data in ' + data['name']);
-      } else {
+      if (data['extension_attributes']['slot_schedules'] != null) {
         for (dynamic attr in data['extension_attributes']['slot_schedules']) {
           if (attr['attribute_code'] == _now.weekday) {
             if (!attr['value'].isEmpty) {
@@ -484,13 +483,13 @@ class _MySearchPageState extends State<MySearchPage> {
                     }
                     horas.add(item['time']);
                   }
-                } else {
+                } /*else {
                   print('data is empty 2' + data['name']);
-                }
+                }*/
               }
-            } else {
-              print('data is empty ' + data['name']);
-            }
+            } /*else {
+              //print('data is empty ' + data['name']);
+            }*/
           }
         }
       }
@@ -507,9 +506,7 @@ class _MySearchPageState extends State<MySearchPage> {
   Widget crearSlot(data) {
     List<String> horas = [];
     if (data['extension_attributes'] != null) {
-      if (data['extension_attributes']['slot_schedules'] == null) {
-        print('not data in ' + data['name']);
-      } else {
+      if (data['extension_attributes']['slot_schedules'] != null) {
         for (dynamic attr in data['extension_attributes']['slot_schedules']) {
           if (attr['attribute_code'] == _now.weekday) {
             if (!attr['value'].isEmpty) {
@@ -529,13 +526,13 @@ class _MySearchPageState extends State<MySearchPage> {
                     }
                     horas.add(item['time']);
                   }
-                } else {
+                } /*else {
                   print('data is empty 2' + data['name']);
-                }
+                }*/
               }
-            } else {
+            } /*else {
               print('data is empty ' + data['name']);
-            }
+            }*/
           }
         }
       }

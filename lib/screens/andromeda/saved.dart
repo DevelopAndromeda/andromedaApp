@@ -22,19 +22,16 @@ class MySavedPage extends StatefulWidget {
 }
 
 class _MySavedPageState extends State<MySavedPage> {
-  final FavoriteBloc _newsBloc = FavoriteBloc();
   bool startAnimation = false;
   final DateTime _now = DateTime.now();
 
   @override
   void initState() {
-    _newsBloc.add(GetFavoriteList());
     super.initState();
   }
 
   @override
   void dispose() {
-    _newsBloc.close();
     super.dispose();
   }
 
@@ -55,15 +52,9 @@ class _MySavedPageState extends State<MySavedPage> {
 
   Container _body() {
     return Container(
-      margin: const EdgeInsets.all(8.0),
-      child: BlocProvider(
-        create: (_) => _newsBloc,
-        child: BlocListener<FavoriteBloc, FavoriteState>(
-          listener: (context, state) {
-            /*if (state is FavoriteError) {
-              responseErrorWarning(context, state.message!);
-            }*/
-          },
+        margin: const EdgeInsets.all(8.0),
+        child: BlocProvider(
+          create: (context) => FavoriteBloc()..add(GetFavoriteList()),
           child: BlocBuilder<FavoriteBloc, FavoriteState>(
             builder: (context, state) {
               if (state is FavoriteInitial) {
@@ -85,9 +76,7 @@ class _MySavedPageState extends State<MySavedPage> {
               }
             },
           ),
-        ),
-      ),
-    );
+        ));
   }
 
   Widget _buildCard(BuildContext context, Respuesta model) {
@@ -128,8 +117,9 @@ class _MySavedPageState extends State<MySavedPage> {
                         ),
                         iconSize: 30,
                         onPressed: () async {
-                          _newsBloc.add(DeleteFavorite(
-                              model.data!['data'][index]['product_id']));
+                          FavoriteBloc()
+                            ..add(DeleteFavorite(
+                                model.data!['data'][index]['product_id']));
                         },
                       ),
                     ),
@@ -140,8 +130,6 @@ class _MySavedPageState extends State<MySavedPage> {
                       bottom: 15,
                       child: InkWell(
                         onTap: () => goToRest(model.data!['data'][index]),
-                        /*onTap: () => Navigator.pushNamed(context, 'detail',
-                          arguments: model.data!['data'][index]['product']),*/
                         child: Container(
                           width: 120,
                           height: 90,
@@ -160,8 +148,6 @@ class _MySavedPageState extends State<MySavedPage> {
                       bottom: 5,
                       child: InkWell(
                         onTap: () => goToRest(model.data!['data'][index]),
-                        /*onTap: () => Navigator.pushNamed(context, 'detail',
-                          arguments: model.data!['data'][index]['product']),*/
                         child: Padding(
                           padding: const EdgeInsets.all(5.0),
                           child: Column(
@@ -275,9 +261,9 @@ class _MySavedPageState extends State<MySavedPage> {
                 }
               }
               return horas;
-            } else {
+            } /*else {
               print('data is empty 2');
-            }
+            }*/
           }
         }
       });
@@ -313,26 +299,4 @@ class _MySavedPageState extends State<MySavedPage> {
           ));
     }
   }
-
-  /*Widget _buildLoading() {
-    return Shimmer.fromColors(
-      baseColor: Colors.grey[300]!,
-      highlightColor: Colors.grey[100]!,
-      child: ListView.builder(
-        itemCount: 4, // Adjust the count based on your needs
-        itemBuilder: (context, index) {
-          return const ListTile(
-              title: Card(
-            margin: EdgeInsets.all(5),
-            elevation: 10,
-            child: SizedBox(
-              width: double.infinity,
-              height: 150,
-              child: SizedBox(width: 100, height: 90),
-            ),
-          ));
-        },
-      ),
-    );
-  }*/
 }

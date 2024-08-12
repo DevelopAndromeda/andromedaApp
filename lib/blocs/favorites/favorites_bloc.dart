@@ -18,11 +18,9 @@ class FavoriteBloc extends Bloc<FavoriteEvent, FavoriteState> {
       try {
         emit(FavoriteLoading());
         final mList = await customerService.getFavorites();
-
         if (mList.error != null) {
           emit(FavoriteError(mList.error));
         }
-
         emit(FavoriteLoaded(mList));
       } on NetworkError {
         emit(const FavoriteError(

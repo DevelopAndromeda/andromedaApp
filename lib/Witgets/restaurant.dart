@@ -210,8 +210,6 @@ class _RestuarentScreenState extends State<RestuarentScreen> {
   Widget crearSlot() {
     List<String> horas = [];
     if (widget.data['extension_attributes'] == null) {
-      //print(widget.data['name']);
-      //print(widget.data['custom_attributes']);
       for (dynamic attr in widget.data['custom_attributes']) {
         if (attr['attribute_code'].runtimeType == int &&
             attr['attribute_code'] == _now.weekday) {
@@ -220,30 +218,28 @@ class _RestuarentScreenState extends State<RestuarentScreen> {
               horas.add(attr['value'][0]['from']);
             } else {
               if (!attr['value'][0]['slots_info'].isEmpty) {
+                //print(attr['value'][0]['slots_info']);
                 for (dynamic item in attr['value'][0]['slots_info']) {
                   final HoraAcutal = item['time']
                       .replaceAll(" am", "")
                       .replaceAll(" pm", "")
                       .split(':');
                   int hour = int.parse(HoraAcutal[0]);
-                  int minute = int.parse(HoraAcutal[1]);
-                  if (_now.hour == hour && _now.minute <= minute) {
+                  if (_now.hour <= hour /*&& _now.minute <= minute*/) {
                     horas.add(item['time']);
                   }
                 }
-              } else {
+              } /*else {
                 print('data is empty 2' + widget.data['name']);
-              }
+              }*/
             }
-          } else {
+          } /*else {
             print('data is empty ' + widget.data['name']);
-          }
+          }*/
         }
       }
     } else {
-      if (widget.data['extension_attributes']['slot_schedules'] == null) {
-        print('not data in ' + widget.data['name']);
-      } else {
+      if (widget.data['extension_attributes']['slot_schedules'] != null) {
         for (dynamic attr in widget.data['extension_attributes']
             ['slot_schedules']) {
           if (attr['attribute_code'] == _now.weekday) {
@@ -253,15 +249,23 @@ class _RestuarentScreenState extends State<RestuarentScreen> {
               } else {
                 if (!attr['value'][0]['slots_info'].isEmpty) {
                   for (dynamic item in attr['value'][0]['slots_info']) {
-                    horas.add(item['time']);
+                    final HoraAcutal = item['time']
+                        .replaceAll(" am", "")
+                        .replaceAll(" pm", "")
+                        .split(':');
+                    int hour = int.parse(HoraAcutal[0]);
+                    if (_now.hour <= hour /*&& _now.minute <= minute*/) {
+                      horas.add(item['time']);
+                    }
+                    //horas.add(item['time']);
                   }
-                } else {
+                } /*else {
                   print('data is empty 2' + widget.data['name']);
-                }
+                }*/
               }
-            } else {
+            } /*else {
               print('data is empty ' + widget.data['name']);
-            }
+            }*/
           }
         }
       }

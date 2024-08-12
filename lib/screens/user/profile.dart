@@ -1,8 +1,6 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:andromeda/blocs/user/user_sesion_bloc.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:image_picker/image_picker.dart';
@@ -179,11 +177,11 @@ class _MyProfilePageState extends State<MyProfilePage> {
         'url': 'list-reviews',
         'icon': Icons.comment
       },
-      {
+      /*{
         'name': 'Gestion de mesas',
         'url': 'list-tables',
         'icon': Icons.table_bar
-      }
+      }*/
     ];
     List<Widget> lista = <Widget>[];
     lista.add(clip(data));

@@ -251,7 +251,7 @@ class _MyChangePasswordPagePageState extends State<MyChangePasswordPage> {
                 'newPassword': _newPasswordController.text,
               }, context);
             } catch (E) {
-              print(E);
+              //print(E);
             }
           }
         }, text: BlocBuilder<UserSesionLogic, UserSesionState>(

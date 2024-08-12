@@ -64,7 +64,6 @@ dynamic closeSession(BuildContext context) {
 }
 
 dynamic closeReservation(BuildContext context, entity_id, label) {
-  final ReservationBloc _newsBloc = ReservationBloc();
   PanaraConfirmDialog.showAnimatedFromBottom(context,
       title: MyString.areYouSure,
       message: "¿Deseas cerrar la reservacion?",
@@ -72,7 +71,7 @@ dynamic closeReservation(BuildContext context, entity_id, label) {
       cancelButtonText: "No", onTapCancel: () {
     Navigator.pop(context);
   }, onTapConfirm: () async {
-    _newsBloc.add(ChangeStatusReservation(entity_id, label));
+    ReservationBloc()..add(ChangeStatusReservation(entity_id, label));
     Navigator.pop(context);
   },
       panaraDialogType: PanaraDialogType.custom,
@@ -117,9 +116,9 @@ String pathMedia(String media) {
 }
 
 whitAvatar(String img) {
-  print('length');
+  //print('length');
   //266872 65535
-  print(img.length);
+  //print(img.length);
   if (img.length > 65535) {
     return Image.memory(base64Decode(img.replaceAll(RegExp(r'\s+'), ''))).image;
   } else {
@@ -134,10 +133,25 @@ String translateStatus(String status) {
     'for_serve': 'Por Atender',
     'serving': 'Atendiendo',
     'canceled': 'Cancelada',
+    'cancel': 'Cancelada',
     'pending': 'Pendiente',
     'reserved': 'Reservada',
   };
   return map[status] ?? status;
+}
+
+Color transformColor(String status) {
+  const map = {
+    'new': Color.fromARGB(255, 74, 162, 104),
+    'for_serve': Color.fromARGB(255, 207, 176, 2),
+    'serving': Color.fromARGB(255, 207, 176, 2),
+    'canceled': Color.fromARGB(255, 241, 58, 45),
+    'cancel': Color.fromARGB(255, 241, 58, 45),
+    'pending': Color.fromARGB(255, 207, 176, 2),
+    'reserved': Color.fromARGB(255, 46, 17, 238),
+    'complete': Color.fromARGB(255, 46, 17, 238)
+  };
+  return map[status] ?? const Color.fromARGB(255, 207, 176, 2);
 }
 
 dynamic infoAlertModal(BuildContext context, String msj) {

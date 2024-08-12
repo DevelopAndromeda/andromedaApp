@@ -16,11 +16,9 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
       try {
         emit(StoreLoading());
         final mList = await storeService.myStores();
-
         if (mList.error != null) {
           emit(StoreError(mList.error));
         }
-
         emit(StoreLoaded(mList));
       } on NetworkError {
         emit(const StoreError("Failed to fetch data. is your device online?"));

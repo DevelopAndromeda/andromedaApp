@@ -23,7 +23,7 @@ class ListReservacion extends StatefulWidget {
 }
 
 class _ListReservacionState extends State<ListReservacion> {
-  final ReservationBloc _newsBloc = ReservationBloc();
+  //final ReservationBloc _newsBloc = ReservationBloc();
   final CatalogService _catalogService = CatalogService();
   final List<String> list = <String>[
     'Pendiente',
@@ -38,7 +38,7 @@ class _ListReservacionState extends State<ListReservacion> {
 
   @override
   void initState() {
-    _newsBloc.add(GetAllReservations());
+    //_newsBloc.add(GetAllReservations());
     futureStatus = _catalogService.fetchStatus();
     super.initState();
   }
@@ -72,28 +72,21 @@ class _ListReservacionState extends State<ListReservacion> {
     return Container(
       margin: const EdgeInsets.all(8.0),
       child: BlocProvider(
-        create: (_) => _newsBloc,
-        child: BlocListener<ReservationBloc, ReservationState>(
-          listener: (context, state) {
-            if (state is ReservationError) {
-              responseErrorWarning(context, state.message!);
+        create: (_) => ReservationBloc()..add(GetAllReservations()),
+        child: BlocBuilder<ReservationBloc, ReservationState>(
+          builder: (context, state) {
+            if (state is ReservationInitial) {
+              return _buildLoading();
+            } else if (state is ReservationLoading) {
+              return _buildLoading();
+            } else if (state is ReservationLoaded) {
+              return _buildCard(context, state.data);
+            } else if (state is ReservationError) {
+              return Container();
+            } else {
+              return Container();
             }
           },
-          child: BlocBuilder<ReservationBloc, ReservationState>(
-            builder: (context, state) {
-              if (state is ReservationInitial) {
-                return _buildLoading();
-              } else if (state is ReservationLoading) {
-                return _buildLoading();
-              } else if (state is ReservationLoaded) {
-                return _buildCard(context, state.data);
-              } else if (state is ReservationError) {
-                return Container();
-              } else {
-                return Container();
-              }
-            },
-          ),
         ),
       ),
     );
@@ -144,21 +137,19 @@ class _ListReservacionState extends State<ListReservacion> {
                                   future: futureStatus,
                                   builder: (context, snapshot) {
                                     if (snapshot.hasData) {
-                                      //return Text('aa');
                                       return DropdownMenu<Status>(
-                                          //initialSelection: list.first,
                                           onSelected: (Status? value) {
                                             if (value!.value == 'canceled') {
                                               closeReservation(
                                                   context,
                                                   data['entity_id'],
-                                                  value!.label);
+                                                  value.label);
                                             } else {
                                               Navigator.pop(context);
-                                              _newsBloc.add(
-                                                  ChangeStatusReservation(
-                                                      data['entity_id'],
-                                                      value!.label));
+                                              ReservationBloc()
+                                                ..add(ChangeStatusReservation(
+                                                    data['entity_id'],
+                                                    value.label));
                                             }
                                           },
                                           dropdownMenuEntries: snapshot.data!
@@ -222,12 +213,8 @@ class _ListReservacionState extends State<ListReservacion> {
                       ),
                     ),
                     LabelCard(
-                        color: (model.data!['data'][index]['status'] ==
-                                'complete'
-                            ? const Color.fromARGB(255, 48, 20, 233)
-                            : model.data!['data'][index]['status'] == 'pending'
-                                ? const Color.fromARGB(255, 241, 206, 10)
-                                : const Color.fromARGB(255, 235, 154, 148)),
+                        color: transformColor(
+                            model.data!['items'][index]['status']),
                         title: translateStatus(
                             model.data!['data'][index]['status']))
                   ],

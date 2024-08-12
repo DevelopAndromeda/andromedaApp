@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:andromeda/utilities/constanst.dart';
+//import 'package:andromeda/utilities/constanst.dart';
 import 'package:andromeda/witgets/colores_base.dart';
 
 class ListTables extends StatefulWidget {

@@ -85,8 +85,8 @@ class MakeAReservationFormState extends State<MakeAReservationForm> {
             child: child!,
           );
         });
-    print('_slot');
-    print(_slot);
+    //print('_slot');
+    //print(_slot);
     _slot.forEach((key, value) {
       if (int.parse(key) == picked?.weekday) {
         _slotDay = value;
@@ -101,7 +101,7 @@ class MakeAReservationFormState extends State<MakeAReservationForm> {
         _allSlotDay.addAll(e['slots_info'].values);
       }
     }
-    print(_allSlotDay);
+    //print(_allSlotDay);
     if (picked != null && picked != _selectedDate) {
       setState(() {
         _selectedDate = picked;
@@ -109,7 +109,7 @@ class MakeAReservationFormState extends State<MakeAReservationForm> {
     }
   }
 
-  Future<void> _selectTime(BuildContext context) async {
+  /*Future<void> _selectTime(BuildContext context) async {
     final TimeOfDay? picked = await showTimePicker(
       context: context,
       initialTime: TimeOfDay.now(),
@@ -119,7 +119,7 @@ class MakeAReservationFormState extends State<MakeAReservationForm> {
         selectedTime = picked;
       });
     }
-  }
+  }*/
 
   DateTime combineDateAndTime(DateTime date, TimeOfDay time) {
     return DateTime(date.year, date.month, date.day, time.hour, time.minute);
@@ -210,11 +210,11 @@ class MakeAReservationFormState extends State<MakeAReservationForm> {
                                       value: e,
                                       child: Row(
                                         children: [
-                                          Icon(
+                                          const Icon(
                                             Icons.exit_to_app,
                                             color: Colors.black,
                                           ),
-                                          SizedBox(
+                                          const SizedBox(
                                             height: 8,
                                           ),
                                           Text(e)

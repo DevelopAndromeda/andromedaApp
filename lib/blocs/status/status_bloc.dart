@@ -16,11 +16,9 @@ class StatusBloc extends Bloc<StatusEvent, StatusState> {
       try {
         emit(StatusLoading());
         final mList = await catalogService.fetchStatus();
-
         if (mList.isEmpty) {
           emit(const StatusError("Lista de estatus vacia"));
         }
-
         emit(StatusLoaded(mList));
       } on NetworkError {
         emit(const StatusError("Failed to fetch data. is your device online?"));

@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 class LabelCard extends StatelessWidget {
@@ -14,19 +13,19 @@ class LabelCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 90,
-      height: 24,
+      width: 120,
+      height: 28,
       alignment: Alignment.center,
       margin: const EdgeInsets.all(10),
       padding: const EdgeInsets.symmetric(vertical: 3.5, horizontal: 15),
       decoration: BoxDecoration(
         color: color,
-        borderRadius: BorderRadius.circular(36),
+        borderRadius: BorderRadius.circular(30),
       ),
       child: Text(
         title,
         style: const TextStyle(
-            color: Colors.white, fontWeight: FontWeight.w500, fontSize: 12),
+            color: Colors.white, fontWeight: FontWeight.w500, fontSize: 15),
       ),
     );
   }

@@ -15,11 +15,9 @@ class OrdenBloc extends Bloc<OrdenEvent, OrdenState> {
       try {
         emit(OrdenLoading());
         final mList = await customerService.getOrderByEntityId(event.id);
-
         if (mList.error != null) {
           emit(OrdenError(mList.error));
         }
-
         emit(OrdenLoaded(mList));
       } on NetworkError {
         emit(const OrdenError("Failed to fetch data. is your device online?"));

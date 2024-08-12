@@ -614,7 +614,7 @@ class _MyConfigProfilePageState extends State<MyConfigProfilePage> {
               }*/
               context.read<UserSesionLogic>().updateUserLogic(data, context);
             } catch (E) {
-              print(E);
+              //print(E);
             }
           }
         }, text: BlocBuilder<UserSesionLogic, UserSesionState>(

@@ -175,7 +175,6 @@ class _AltaRestState extends State<AltaRest> {
     "Terraza"
   ];
 
-  late List<CameraDescription> _cameras;
   late CameraController controller;
 
   void setMap(double lat, double lng) async {
@@ -504,7 +503,6 @@ class _AltaRestState extends State<AltaRest> {
                     int indice = 0;
                     int indiceMesa = 0;
                     for (String data in _finalZonas) {
-                      //if (data['nombre'] != 'NOMBRE') {
                       if (data == 'Habitual' || data == 'Mesa Alta') {
                         typeTable['values'].add({
                           "title": data,
@@ -524,8 +522,6 @@ class _AltaRestState extends State<AltaRest> {
                         });
                         indice++;
                       }
-
-                      //}
                     }
 
                     /*int indice = 0;
@@ -561,7 +557,7 @@ class _AltaRestState extends State<AltaRest> {
                       'saveOptions': true
                     };
 
-                    print('*******************options****************');
+                    /*print('*******************options****************');
                     print(options);
 
                     print('*******************producto****************');
@@ -572,13 +568,13 @@ class _AltaRestState extends State<AltaRest> {
 
                     print(
                         '*******************customAttributes****************');
-                    print(customAttributes);
+                    print(customAttributes);*/
 
                     final restaurante =
                         await post('', 'integration', 'products', producto, '');
 
-                    print('rest --->');
-                    print(restaurante);
+                    /*print('rest --->');
+                    print(restaurante);*/
 
                     if (restaurante != null) {
                       responseSuccessWarning(
@@ -629,404 +625,6 @@ class _AltaRestState extends State<AltaRest> {
                   style: TextStyle(color: Colors.white),
                 ),
               )
-              /*
-
-              SizedBox(
-                height: 300,
-                child: GoogleMap(
-                  myLocationEnabled: true,
-                  onMapCreated: _onMapCreated,
-                  initialCameraPosition: _initialPosition,
-                ),
-              ),
-              TextFormField(
-                  controller: _nombreMesa,
-                  decoration:
-                      const InputDecoration(labelText: 'Nombre de la zona')),
-              const SizedBox(height: 10.0),
-              ElevatedButton(
-                  onPressed: () {
-                    agregarMesa();
-                  },
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.black,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(2))),
-                  child: const Text(
-                    'Agregar Zona',
-                    style: TextStyle(color: Colors.white),
-                  )),
-              const SizedBox(height: 10.0),
-              mesas.length == 1
-                  ? const Center(child: Text('Sin zonas registradas'))
-                  : _table(),
-              const SizedBox(height: 20.0),
-              const Text(
-                'Informacion de Servicio',
-                style: TextStyle(fontSize: 25),
-              ),
-              SingleChildScrollView(
-                child: SizedBox(
-                  height: 380,
-                  width: double.infinity,
-                  child: ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: _daysOfWeek.length,
-                      itemBuilder: (context, index) {
-                        //var data = _daysOfWeek.toList();
-                        //print(data[index]);
-                        //print(index);
-                        //print(_daysOfWeek[index]['name']);
-                        return Column(
-                          children: [
-                            SizedBox(
-                              //color: Colors.blue,
-                              child: Row(children: [
-                                Checkbox(
-                                  value: _daysOfWeek[index]['checked'],
-                                  onChanged: (bool? value) {
-                                    //print(value);
-                                    setState(() {
-                                      _daysOfWeek[index]['checked'] = value;
-                                    });
-                                  },
-                                ),
-                                Text(_daysOfWeek[index]['name']),
-                              ]),
-                            ),
-                            SizedBox(
-                              //color: Colors.red,
-                              child: Row(
-                                children: [
-                                  Flexible(
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 2, horizontal: 2),
-                                      child: SizedBox(
-                                        width: 150, // Ajusta el ancho deseado
-                                        child: DropdownButtonFormField<String>(
-                                          //value: _daysOfWeek[index]['hora'][0]['from'],
-                                          items:
-                                              _timeOptions.map((String time) {
-                                            return DropdownMenuItem<String>(
-                                              value: time,
-                                              child: Text(time),
-                                            );
-                                          }).toList(),
-                                          decoration: const InputDecoration(
-                                            labelText: 'Inicio',
-                                            labelStyle: TextStyle(
-                                                color: Colors
-                                                    .black), // Etiqueta negra
-                                            enabledBorder: OutlineInputBorder(
-                                              borderSide: BorderSide(
-                                                  color: Colors.black,
-                                                  width: 2.0), // Borde negro
-                                              borderRadius: BorderRadius
-                                                  .zero, // Sin redondeles
-                                            ),
-                                            focusedBorder: OutlineInputBorder(
-                                              borderSide: BorderSide(
-                                                  color: Colors.black,
-                                                  width: 2.0), // Borde negro
-                                              borderRadius: BorderRadius
-                                                  .zero, // Sin redondeles
-                                            ),
-                                            border: OutlineInputBorder(
-                                              borderSide: BorderSide(
-                                                  color: Colors.black,
-                                                  width: 2.0), // Borde negro
-                                              borderRadius: BorderRadius
-                                                  .zero, // Sin redondeles
-                                            ),
-                                          ),
-                                          onChanged: (String? newValue) {
-                                            setState(() {
-                                              // _restaurant.horaFin = newValue!;
-                                              _daysOfWeek[index]['hora'][0]
-                                                  ['from'] = newValue!;
-                                            });
-                                          },
-                                          style: const TextStyle(
-                                              color: Colors.black),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  Flexible(
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 2, horizontal: 2),
-                                      child: SizedBox(
-                                        // Limitamos el ancho del DropdownButtonFormField
-                                        width:
-                                            150, // Ajusta este valor según tus necesidades
-                                        child: DropdownButtonFormField<String>(
-                                          //value: _restaurant.horaInicio,
-                                          items:
-                                              _timeOptions.map((String time) {
-                                            return DropdownMenuItem<String>(
-                                              value: time,
-                                              child: Text(time),
-                                            );
-                                          }).toList(),
-                                          decoration: const InputDecoration(
-                                            labelText: 'Final',
-                                            labelStyle: TextStyle(
-                                                color: Colors
-                                                    .black), // Etiqueta negra
-                                            enabledBorder: OutlineInputBorder(
-                                              borderSide: BorderSide(
-                                                  color: Colors.black,
-                                                  width: 2.0), // Borde negro
-                                              borderRadius: BorderRadius
-                                                  .zero, // Sin redondeles
-                                            ),
-                                            focusedBorder: OutlineInputBorder(
-                                              borderSide: BorderSide(
-                                                  color: Colors.black,
-                                                  width: 2.0), // Borde negro
-                                              borderRadius: BorderRadius
-                                                  .zero, // Sin redondeles
-                                            ),
-                                            border: OutlineInputBorder(
-                                              borderSide: BorderSide(
-                                                  color: Colors.black,
-                                                  width: 2.0), // Borde negro
-                                              borderRadius: BorderRadius
-                                                  .zero, // Sin redondeles
-                                            ),
-                                          ),
-                                          onChanged: (String? newValue) {
-                                            setState(() {
-                                              _daysOfWeek[index]['hora'][0]
-                                                  ['to'] = newValue!;
-                                            });
-                                          },
-                                          style: const TextStyle(
-                                              color: Colors.black),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            const SizedBox(height: 10.0),
-                          ],
-                        );
-                      }),
-                ),
-              ),*/
-              /*ElevatedButton(
-                onPressed: () async {
-                  if (_formKey.currentState!.validate()) {
-                    try {
-                      final user = await serviceDB.instance
-                          .getById('users', 'id_user', 1);
-                      if (user.isEmpty) {
-                        //print('error user empty');
-                        return;
-                      }
-
-                      Map<String, dynamic> arraSlot = {};
-                      for (var element in _daysOfWeek) {
-                        if (element['checked'] == true) {
-                          //print(element);
-                          //arraSlot[element['index'].toString()] =
-                          arraSlot[element['index'].toString()] =
-                              element['hora'];
-                        }
-                      }
-
-                      Map<String, dynamic> extensionAttributes = {
-                        'stock_item': {'qty': 99999999, 'is_in_stock': true},
-                        'slot_data': arraSlot
-                      };
-
-                      List<Map<String, dynamic>> customAttributes = [];
-                      customAttributes.addAll([
-                        {
-                          "attribute_code": "short_description",
-                          "value": _descripcionController.text
-                        },
-                        {
-                          "attribute_code": "cancellation_available",
-                          "value": "1"
-                        },
-                        {
-                          "attribute_code": "no_of_guests",
-                          "value": _noOfGuests.text
-                        },
-                        {
-                          "attribute_code": "max_capacity",
-                          "value": _maxCapacity.text
-                        },
-                        {
-                          "attribute_code": "slot_duration",
-                          "value": _slotDuration.text
-                        },
-                        {
-                          "attribute_code": "prevent_scheduling_before",
-                          "value": _preventSchedulingBefore.text
-                        },
-                        {
-                          "attribute_code": "break_time_bw_slot",
-                          "value": _breakTimeBwSlot.text
-                        },
-                        {"attribute_code": "show_map_loction", "value": "1"},
-                        {
-                          'attribute_code': 'hotel_address',
-                          'value': _direccionController.text
-                        },
-                        {
-                          "attribute_code": "hotel_country",
-                          "value": _selectedPais?.code
-                        },
-                        {
-                          "attribute_code": "hotel_state",
-                          "value": _selectedEstado?.label
-                        },
-                        {
-                          "attribute_code": "location",
-                          "value":
-                              "${_direccionController.text}, ${_selectedEstado?.label}., ${_selectedPais?.name}"
-                        },
-                        {
-                          "attribute_code": "city",
-                          "value": _selectedCiudad?.statecity
-                        },
-                        {
-                          "attribute_code": "category_ids",
-                          "value": _finalCategories
-                        },
-                        {
-                          "attribute_code": "description",
-                          "value": _descripcionController.text
-                        },
-                        {"attribute_code": "slot_for_all_days", "value": 0},
-                        {
-                          "attribute_code": "created_by",
-                          "value": user[0]['id']
-                        },
-                        {
-                          "attribute_code": "updated_by",
-                          "value": user[0]['id']
-                        },
-                        {
-                          "attribute_code": "product_city",
-                          "value": _selectedCiudad?.statecity
-                        },
-                        {
-                          "attribute_code": "restaurant_number",
-                          "value": _numberPhone.text
-                        },
-                      ]);
-
-                      List<Map<String, dynamic>> options = [];
-                      Map<String, dynamic> table = {
-                        "title": "Zona",
-                        "type": "drop_down",
-                        "sort_order": 1,
-                        "is_require": true,
-                        "product_sku": _nombreController.text,
-                        "values": []
-                      };
-                      options.add(table);
-
-                      int indice = 0;
-                      for (dynamic data in mesas) {
-                        //print('data');
-                        //print(data);
-
-                        if (data['nombre'] != 'NOMBRE') {
-                          table['values'].add({
-                            "title": data['nombre'],
-                            "price": 0,
-                            "price_type": "fixed",
-                            "sku": data['nombre'],
-                            "sort_order": indice
-                          });
-                        }
-                        indice++;
-                      }
-
-                      //print(table);
-                      //print(options);
-
-                      Map<String, dynamic> producto = {
-                        'product': {
-                          'name': _nombreController.text,
-                          'attribute_set_id': 13,
-                          'sku': _nombreController.text,
-                          'price': 100,
-                          'status': 0,
-                          'visibility': 4,
-                          'type_id': 'booking',
-                          'extension_attributes': extensionAttributes,
-                          'custom_attributes': customAttributes,
-                          'options': options
-                        },
-                        'saveOptions': true
-                      };
-
-                      final restaurante = await post(
-                          '', 'integration', 'products', producto, 'v2');
-                      //print('rest --->');
-                      //print(restaurante);
-                      responseSuccessWarning(
-                          context, 'Restaurante registrado correctamente');
-
-                      int position = 1;
-                      //arrayFiles.forEach((element) async
-                      for (File element in arrayFiles) {
-                        final bytes = File(element.path).readAsBytesSync();
-                        String img64 = base64Encode(bytes);
-
-                        var img = {
-                          "entry": [
-                            {
-                              "media_type": "image",
-                              "label":
-                                  "img_${_nombreController.text}_$position",
-                              "position": position,
-                              "disabled": false,
-                              "types": ["image", "small_image", "thumbnail"],
-                              "content": {
-                                "base64_encoded_data": img64,
-                                "type": "image/jpeg",
-                                "name":
-                                    "img_${_nombreController.text}_$position.jpg"
-                              }
-                            }
-                          ]
-                        };
-
-                        await post(
-                            '',
-                            'integration',
-                            'products/${_nombreController.text}/media',
-                            img,
-                            'V2');
-
-                        position++;
-                      }
-                      ;
-                    } catch (e) {
-                      responseErrorWarning(context, e.toString());
-                      //print(e);
-                    }
-                  }
-                },
-                style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.black,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(2))),
-                child: const Text(
-                  'Registrar Restaurante',
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),*/
             ],
           ),
         ),
@@ -1043,21 +641,6 @@ class _AltaRestState extends State<AltaRest> {
     setState(() {
       _nombreMesa.text = '';
     });
-  }
-
-  SingleChildScrollView _table() {
-    return SingleChildScrollView(
-      child: SizedBox(
-        height: 100,
-        width: double.infinity,
-        child: ListView.builder(
-            shrinkWrap: true,
-            itemCount: mesas.length,
-            itemBuilder: (context, index) {
-              return tr(index);
-            }),
-      ),
-    );
   }
 
   Row tr(int index) {
@@ -1414,7 +997,7 @@ class _AltaRestState extends State<AltaRest> {
                   controller: textEditingController,
                   focusNode: focusNode,
                   onFieldSubmitted: (value) => onFieldSubmitted,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     contentPadding:
                         EdgeInsets.symmetric(vertical: 0, horizontal: 10),
                     border: OutlineInputBorder(gapPadding: 1),
@@ -1910,16 +1493,16 @@ class _AltaRestState extends State<AltaRest> {
             width: 90,
             child: GoogleMap(
                 myLocationEnabled: true,
-                onCameraMove: ((_position) {
+                onCameraMove: ((positiones) {
                   setState(() {
-                    _marker = LatLng(
-                        _position.target.latitude, _position.target.longitude);
+                    _marker = LatLng(positiones.target.latitude,
+                        positiones.target.longitude);
                   });
                 }),
                 onMapCreated: _onMapCreated,
                 initialCameraPosition: _initialPosition,
                 onTap: (LatLng latLng) {
-                  print('${latLng.latitude}, ${latLng.longitude}');
+                  //print('${latLng.latitude}, ${latLng.longitude}');
                   _marker = LatLng(latLng.latitude, latLng.longitude);
                   setState(() {});
                 },

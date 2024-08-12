@@ -16,11 +16,9 @@ class ReservationBloc extends Bloc<ReservationEvent, ReservationState> {
       try {
         emit(ReservationLoading());
         final mList = await customerService.getReservations();
-
         if (mList.error != null) {
           emit(ReservationError(mList.error));
         }
-
         emit(ReservationLoaded(mList));
       } on NetworkError {
         emit(const ReservationError(
