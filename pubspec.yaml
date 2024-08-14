@@ -47,6 +47,7 @@ dependencies:
   permission_handler: ^11.3.1
   #fluttertoast: ^8.2.6
   #html: ^0.15.4
+  vector_math: ^2.1.4
 
 
 dev_dependencies:

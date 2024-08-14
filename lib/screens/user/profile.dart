@@ -177,11 +177,11 @@ class _MyProfilePageState extends State<MyProfilePage> {
         'url': 'list-reviews',
         'icon': Icons.comment
       },
-      /*{
+      {
         'name': 'Gestion de mesas',
         'url': 'list-tables',
         'icon': Icons.table_bar
-      }*/
+      }
     ];
     List<Widget> lista = <Widget>[];
     lista.add(clip(data));
