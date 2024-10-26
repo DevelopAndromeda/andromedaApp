@@ -1,8 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
-import 'package:andromeda/services/store.dart';
-import 'package:andromeda/models/response.dart';
+import 'package:appandromeda/services/store.dart';
+import 'package:appandromeda/models/response.dart';
 
 part 'store_event.dart';
 part 'store_state.dart';
@@ -13,13 +13,26 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
     final StoreService storeService = StoreService();
 
     on<GetStoresList>((event, emit) async {
+      emit(StoreLoading());
       try {
-        emit(StoreLoading());
         final mList = await storeService.myStores();
-        if (mList.error != null) {
-          emit(StoreError(mList.error));
+
+        if (mList.result == 'ok') {
+          emit(StoreLoaded(mList));
         }
-        emit(StoreLoaded(mList));
+
+        if (mList.result == 'excep') {
+          emit(const StoreErrorSession());
+        }
+
+        if (mList.result == 'fail') {
+          emit(const StoreLoadedEmpty());
+        }
+        /*if (mList.error != null) {
+          emit(StoreError(mList.error));
+        } else {
+          emit(StoreLoaded(mList));
+        }*/
       } on NetworkError {
         emit(const StoreError("Failed to fetch data. is your device online?"));
       }

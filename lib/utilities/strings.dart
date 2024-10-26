@@ -7,6 +7,8 @@ class MyString {
       "Parece que tu sesion a caducado,\nVuelve a intentarlo por favor.";
   static const String required = "Algunos campos son necesarios";
   static const String notResult = "Lo sentimos, no encontramos registros";
+  static const String restaurantDetail = "Información del restaurante";
+  static const String successMessage = "Se actualizaron los datos con exito!";
   /*static const String deletedTask = "This task was deleted";
   static const String doneAllTask = "You Have Done All Tasks!👌";
   static const String addNewTask = "Add New ";

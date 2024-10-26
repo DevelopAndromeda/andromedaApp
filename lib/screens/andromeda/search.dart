@@ -5,13 +5,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:andromeda/blocs/inicio/one/one_bloc.dart';
+import 'package:appandromeda/blocs/inicio/one/one_bloc.dart';
 
-import 'package:andromeda/models/response.dart';
-import 'package:andromeda/witgets/time_slot_buttons.dart';
-import 'package:andromeda/utilities/constanst.dart';
+import 'package:appandromeda/models/response.dart';
+import 'package:appandromeda/witgets/time_slot_buttons.dart';
+import 'package:appandromeda/utilities/constanst.dart';
 
-import 'package:andromeda/services/store.dart';
+import 'package:appandromeda/services/store.dart';
+
+import '../../witgets/screens/screen_widget_export.dart';
 
 class MySearchPage extends StatefulWidget {
   const MySearchPage({super.key});
@@ -30,8 +32,9 @@ class _MySearchPageState extends State<MySearchPage> {
   @override
   void initState() {
     super.initState();
-    _firstBloc = OneBloc();
-    _firstBloc.add(GetOneList());
+    //_firstBloc = OneBloc();
+    //_firstBloc.add(GetOneList());
+    _firstBloc = OneBloc()..add(GetOneList());
   }
 
   @override
@@ -105,33 +108,60 @@ class _MySearchPageState extends State<MySearchPage> {
                   },
                   initialData: const []),
             )
-          : Column(
-              children: [
-                preSlider(),
-                const Center(
-                  child: Column(
-                    mainAxisAlignment:
-                        MainAxisAlignment.center, // Centra verticalmente
-                    children: [
-                      Text('Ingresa datos para realizar una busqueda'),
-                      SizedBox(height: 10), // Espacio entre los textos
-                      Text('Nombre de restaurante'),
-                      SizedBox(height: 10),
-                      Text('Ciudad'),
-                      SizedBox(height: 10),
-                      Text('Tipo de restaurante'),
-                    ],
-                  ),
-                ),
-              ],
+          : BlocProvider<OneBloc>.value(
+              value: _firstBloc,
+              child: BlocBuilder<OneBloc, OneState>(
+                builder: (context, state) {
+                  if (state is OneInitial) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  } else if (state is OneLoading) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  } else if (state is OneErrorSession) {
+                    return const WrongConnection();
+                  } else if (state is OneLoaded) {
+                    /*WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+                setState(() {
+                  startAnimation = true;
+                });
+              });*/
+                    return Column(
+                      children: [
+                        for (var item in state.data.data!['data']!['items'])
+                          _buildCard(item)
+                      ],
+                    );
+                  } else if (state is OneLoadedEmpty) {
+                    return NotSearchResults(img: "Busqueda_not_results.png");
+                  } else if (state is OneError) {
+                    return const WrongConnection();
+                  } else {
+                    return Container();
+                  }
+
+                  /* else if (state is FavoriteError) {
+                return const NoSearchResultFound();
+              }*/
+                  /*else {
+              return Container();
+            }*/
+                },
+              ),
             ),
     );
   }
 
   List<Widget> _createList(items) {
+    print(items);
     List<Widget> lists = <Widget>[];
     if (items.isEmpty) {
-      lists.add(const Center(child: Text('Ingresa otros datos')));
+      lists.add(const Center(
+          child: NotSearchResults(
+        img: "Busqueda_not_results.png",
+      )));
       return lists;
     }
     items.forEach((element) => {lists.add(_buildCard(element))});
@@ -171,6 +201,7 @@ class _MySearchPageState extends State<MySearchPage> {
                 child: Container(
                   width: 120,
                   height: 90,
+                  //child: NetworkImageWithLoader(getImg(getCustomAttribute(data['custom_attributes'], 'image')))
                   decoration: getImg(
                       getCustomAttribute(data['custom_attributes'], 'image')),
                 ),
@@ -256,7 +287,7 @@ class _MySearchPageState extends State<MySearchPage> {
   }
 
   BoxDecoration getImg(String? img) {
-    if (img != null) {
+    if (img != null && img != "") {
       return BoxDecoration(
         borderRadius: BorderRadius.circular(4),
         image: DecorationImage(
@@ -289,6 +320,8 @@ class _MySearchPageState extends State<MySearchPage> {
         child: Text('No Cuentas con una sesion'),
       );
     }
+
+    //print(model.data!['data']['items']);
 
     List<Widget> list = [];
     for (dynamic item in model.data!['data']['items']) {
@@ -324,7 +357,7 @@ class _MySearchPageState extends State<MySearchPage> {
           borderRadius: BorderRadius.circular(10),
         ),
         child: Column(children: [
-          FadeInImage(
+          /*FadeInImage(
             image: data['media_gallery_entries'] != null &&
                     data['media_gallery_entries'].length > 0
                 ? NetworkImage(
@@ -334,7 +367,7 @@ class _MySearchPageState extends State<MySearchPage> {
             fit: BoxFit.cover,
             height: 125,
             width: 300,
-          ),
+          ),*/
           Row(
             children: [
               Text(
@@ -375,13 +408,13 @@ class _MySearchPageState extends State<MySearchPage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              const Text(
+              /*const Text(
                 'Comida',
                 style: TextStyle(
                     color: Colors.black,
                     fontSize: 12,
                     fontFamily: 'Exo Regular'),
-              ),
+              ),*/
               const Text(
                 ' * ',
                 style: TextStyle(
@@ -505,6 +538,7 @@ class _MySearchPageState extends State<MySearchPage> {
 
   Widget crearSlot(data) {
     List<String> horas = [];
+    //print(data['extension_attributes']);
     if (data['extension_attributes'] != null) {
       if (data['extension_attributes']['slot_schedules'] != null) {
         for (dynamic attr in data['extension_attributes']['slot_schedules']) {
@@ -515,15 +549,15 @@ class _MySearchPageState extends State<MySearchPage> {
               } else {
                 if (!attr['value'][0]['slots_info'].isEmpty) {
                   for (dynamic item in attr['value'][0]['slots_info']) {
-                    final HoraAcutal = item['time']
+                    /*final HoraAcutal = item['time']
                         .replaceAll(" am", "")
                         .replaceAll(" pm", "")
-                        .split(':');
-                    int hour = int.parse(HoraAcutal[0]);
-                    int minute = int.parse(HoraAcutal[1]);
-                    if (_now.hour == hour && _now.minute <= minute) {
+                        .split(':');*/
+                    //int hour = int.parse(HoraAcutal[0]);
+                    //int minute = int.parse(HoraAcutal[1]);
+                    /*if (_now.hour == hour && _now.minute <= minute) {
                       horas.add(item['time']);
-                    }
+                    }*/
                     horas.add(item['time']);
                   }
                 } /*else {

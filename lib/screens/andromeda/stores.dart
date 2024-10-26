@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:andromeda/blocs/inicio/one/one_bloc.dart';
-import 'package:andromeda/blocs/inicio/second/second_bloc.dart';
-import 'package:andromeda/blocs/inicio/all/all_bloc.dart';
-import 'package:andromeda/blocs/inicio/user/user_bloc.dart';
+import 'package:appandromeda/blocs/inicio/one/one_bloc.dart';
+import 'package:appandromeda/blocs/inicio/second/second_bloc.dart';
+import 'package:appandromeda/blocs/inicio/all/all_bloc.dart';
+import 'package:appandromeda/blocs/inicio/user/user_bloc.dart';
 
-import 'package:andromeda/models/response.dart';
-import 'package:andromeda/utilities/constanst.dart';
-import 'package:andromeda/witgets/restaurant.dart';
+import 'package:appandromeda/models/response.dart';
+import 'package:appandromeda/utilities/constanst.dart';
+import 'package:appandromeda/witgets/restaurant.dart';
+import 'package:localstorage/localstorage.dart';
 
 class MyStorePage extends StatefulWidget {
   const MyStorePage({super.key});
@@ -67,13 +68,14 @@ class _MyStorePageState extends State<MyStorePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-            child: SingleChildScrollView(
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+          child: SingleChildScrollView(
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
                   BlocProvider(
                     create: (_) => _userBloc,
                     child: BlocListener<UserBloc, UserState>(
@@ -121,10 +123,15 @@ class _MyStorePageState extends State<MyStorePage> {
                         fontFamily: 'Exo Bold'),
                   ),
                   _allRestaurants()
-                ]))));
+                ]),
+          ),
+        ),
+      ),
+    );
   }
 
   SizedBox _headerSesion(state) {
+    final img = localStorage.getItem('img_profile');
     return SizedBox(
         child: Column(children: [
       const SizedBox(height: 30),
@@ -136,10 +143,9 @@ class _MyStorePageState extends State<MyStorePage> {
           radius: 50,
           /*minRadius: 20,
                         maxRadius: 50,*/
-          backgroundImage: state.data['img_profile'] != null &&
-                  state.data['img_profile'] != ""
-              //? whitAvatar(state.data['img_profile'])
-              ? const AssetImage('assets/Masculino.jpg')
+          backgroundImage: (img != "" && img != null)
+              //? const AssetImage('assets/Masculino.jpg')
+              ? whitAvatar(img.toString())
               : const AssetImage('assets/Masculino.jpg'),
           //  backgroundColor: Color.fromARGB(255, 8, 8, 8),
         ),
@@ -169,9 +175,9 @@ class _MyStorePageState extends State<MyStorePage> {
 
   Padding _firstSection() {
     return Padding(
-      padding: const EdgeInsets.all(10.0),
+      padding: const EdgeInsets.all(5.0),
       child: SizedBox(
-        height: MediaQuery.of(context).size.height * .43,
+        height: MediaQuery.of(context).size.height * .38,
         child: BlocProvider(
           create: (_) => _firstBloc,
           child: BlocListener<OneBloc, OneState>(
@@ -203,9 +209,9 @@ class _MyStorePageState extends State<MyStorePage> {
 
   Padding _secondSection() {
     return Padding(
-      padding: const EdgeInsets.all(10.0),
+      padding: const EdgeInsets.all(5.0),
       child: SizedBox(
-        height: MediaQuery.of(context).size.height * .43,
+        height: MediaQuery.of(context).size.height * .38,
         child: BlocProvider(
           create: (_) => _secondBloc,
           child: BlocListener<SecondBloc, SecondState>(
@@ -237,9 +243,9 @@ class _MyStorePageState extends State<MyStorePage> {
 
   Padding _allRestaurants() {
     return Padding(
-      padding: const EdgeInsets.all(10.0),
+      padding: const EdgeInsets.all(5.0),
       child: SizedBox(
-        height: MediaQuery.of(context).size.height * .43,
+        height: MediaQuery.of(context).size.height * .38,
         child: BlocProvider(
           create: (_) => _allBloc,
           child: BlocListener<AllBloc, AllState>(

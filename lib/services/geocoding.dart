@@ -1,8 +1,8 @@
-import 'package:andromeda/geocoding/geocoding_parameters.dart';
-import 'package:andromeda/geocoding/geocoding_response.dart';
-import 'package:andromeda/models/bounds.dart';
-import 'package:andromeda/models/component.dart';
-import 'package:andromeda/models/lat_lon.dart';
+import 'package:appandromeda/geocoding/geocoding_parameters.dart';
+import 'package:appandromeda/geocoding/geocoding_response.dart';
+import 'package:appandromeda/models/bounds.dart';
+import 'package:appandromeda/models/component.dart';
+import 'package:appandromeda/models/lat_lon.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:flutter_dotenv/flutter_dotenv.dart';

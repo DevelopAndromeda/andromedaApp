@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:andromeda/blocs/bottom/bottom_navigation_bloc.dart';
+import 'package:appandromeda/blocs/bottom/bottom_navigation_bloc.dart';
 
 class MyBottomBar extends StatefulWidget {
   //const MyBottomBar({super.key, required this.index});

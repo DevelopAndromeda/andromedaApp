@@ -1,46 +1,78 @@
+import 'package:appandromeda/services/customer.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
+//import 'package:intl/intl.dart';
 
-import 'package:ftoast/ftoast.dart';
+//import 'package:ftoast/ftoast.dart';
+import 'package:toastification/toastification.dart';
 import 'package:panara_dialogs/panara_dialogs.dart';
 
-import 'package:andromeda/utilities/strings.dart';
+import 'package:appandromeda/utilities/strings.dart';
 
-import 'package:andromeda/services/db.dart';
+import 'package:appandromeda/services/db.dart';
 
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:andromeda/blocs/reservations/reservation_bloc.dart';
+import 'package:appandromeda/blocs/reservations/reservation_bloc.dart';
+
+import 'package:intl/intl.dart';
 
 responseErrorWarning(context, String msj) {
-  return FToast.toast(
+  /*¨return FToast.toast(
     context,
     msg: MyString.oopsMsg,
     subMsg: msj,
     corner: 20.0,
     duration: 3000,
     padding: const EdgeInsets.all(20),
+  );*/
+  return toastification.show(
+    context: context, // optional if you use ToastificationWrapper
+    type: ToastificationType.error,
+    style: ToastificationStyle.fillColored,
+    title: Text(MyString.oopsMsg),
+    description: RichText(text: TextSpan(text: msj)),
+    autoCloseDuration: const Duration(seconds: 2),
+    animationDuration: const Duration(milliseconds: 300),
   );
 }
 
 responseWarning(context, String msj) {
-  return FToast.toast(
+  /*return FToast.toast(
     context,
     msg: MyString.forceStop,
     subMsg: msj,
     corner: 20.0,
     duration: 2000,
     padding: const EdgeInsets.all(20),
+  );*/
+  return toastification.show(
+    context: context, // optional if you use ToastificationWrapper
+    type: ToastificationType.warning,
+    style: ToastificationStyle.fillColored,
+    title: Text(MyString.forceStop),
+    description: RichText(text: TextSpan(text: msj)),
+    autoCloseDuration: const Duration(seconds: 3),
+    animationDuration: const Duration(milliseconds: 300),
   );
 }
 
 responseSuccessWarning(context, String msj) {
-  return FToast.toast(
+  /*return FToast.toast(
     context,
     msg: MyString.successMsg,
     subMsg: msj,
     corner: 20.0,
     duration: 2000,
     padding: const EdgeInsets.all(20),
+  );*/
+  return toastification.show(
+    context: context, // optional if you use ToastificationWrapper
+    type: ToastificationType.success,
+    style: ToastificationStyle.fillColored,
+    title: Text(MyString.successMsg),
+    description: RichText(text: TextSpan(text: msj)),
+    autoCloseDuration: const Duration(seconds: 3),
+    animationDuration: const Duration(milliseconds: 300),
   );
 }
 
@@ -53,11 +85,36 @@ dynamic closeSession(BuildContext context) {
     Navigator.pop(context);
   }, onTapConfirm: () async {
     await serviceDB.instance.cleanAllTable();
+    Navigator.pop(context);
     //await serviceDB.instance.deleteDatabase();
     Navigator.pushNamed(context, 'home');
   },
       panaraDialogType: PanaraDialogType.custom,
-      barrierDismissible: false,
+      barrierDismissible: true,
+      color: Colors.black,
+      textColor: Colors.black,
+      buttonTextColor: Colors.white);
+}
+
+dynamic deleteAccount(BuildContext context) {
+  return PanaraConfirmDialog.showAnimatedFromBottom(context,
+      title: MyString.areYouSure,
+      message: "Ten en cuenta que tu cuenta sera borrada, confirmar",
+      confirmButtonText: "Si",
+      cancelButtonText: "No", onTapCancel: () {
+    Navigator.pop(context);
+  }, onTapConfirm: () async {
+    Navigator.pop(context);
+    await CustomerService().deleteAccount().then((value) async {
+      if (value.result == 'ok') {
+        await serviceDB.instance.cleanAllTable();
+        responseSuccessWarning(context, 'Tu cuenta fue borrada Exitosamente!');
+        Navigator.pushNamed(context, 'home');
+      }
+    });
+  },
+      panaraDialogType: PanaraDialogType.custom,
+      barrierDismissible: true,
       color: Colors.black,
       textColor: Colors.black,
       buttonTextColor: Colors.white);
@@ -116,15 +173,19 @@ String pathMedia(String media) {
 }
 
 whitAvatar(String img) {
-  //print('length');
-  //266872 65535
-  //print(img.length);
-  if (img.length > 65535) {
-    return Image.memory(base64Decode(img.replaceAll(RegExp(r'\s+'), ''))).image;
-  } else {
-    return Image.memory(base64Decode(img)).image;
+  try {
+    if (img.length > 65535) {
+      return Image.memory(base64Decode(img.replaceAll(RegExp(r'\s+'), '')))
+          .image;
+    } else {
+      return Image.memory(base64Decode(img)).image;
+    }
+  } catch (e) {
+    return Image.asset('assets/Profile.png');
   }
+
   //
+  //return Image.memory(base64Decode(img)).image;
 }
 
 String translateStatus(String status) {
@@ -183,4 +244,33 @@ String transformPrice(price) {
   }
 
   return cadena;
+}
+
+const double defaultPadding = 16.0;
+const double defaultBorderRadious = 12.0;
+const Duration defaultDuration = Duration(milliseconds: 300);
+
+const dividerLine = const Divider(
+  color: Colors.black,
+  thickness: 1,
+);
+
+bool esHoraMayor(String hora12) {
+  try {
+    // Obtener la hora actual
+    DateTime ahora = DateTime.now();
+
+    // Parsear la hora en formato de 12 horas
+    DateFormat formato12 = DateFormat("hh:mm a");
+    DateTime horaIngresada = formato12.parse(hora12.toUpperCase());
+
+    //print(horaIngresada.isAfter(ahora));
+
+    // Comparar las horas
+    return horaIngresada.isAfter(ahora);
+  } catch (e) {
+    // Manejo de excepciones
+    print('Error al parsear la hora: $e');
+    return false; // Retorna false si hay un error
+  }
 }

@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:andromeda/blocs/notificaciones/notificaciones_bloc.dart';
+import 'package:appandromeda/blocs/notificaciones/notificaciones_bloc.dart';
 
-import 'package:andromeda/models/response.dart';
+import 'package:appandromeda/models/response.dart';
 
-import 'package:andromeda/witgets/reservation_notificacion.dart';
-import 'package:andromeda/witgets/not_session.dart';
-import 'package:andromeda/witgets/no_search_result.dart';
+import 'package:appandromeda/witgets/reservation_notificacion.dart';
+import 'package:appandromeda/witgets/screens/screen_widget_export.dart';
+//import 'package:appandromeda/witgets/screens/no_search_result_1.dart';
 
-import 'package:andromeda/witgets/skeleton.dart';
+import 'package:appandromeda/witgets/skeleton.dart';
 
 class MyNotificationsPage extends StatefulWidget {
   const MyNotificationsPage({super.key});
@@ -80,8 +80,12 @@ class _MyNotificationsPageState extends State<MyNotificationsPage> {
                 return const Skeleton(cantData: 4);
               } else if (state is NotificacionesLoading) {
                 return const Skeleton(cantData: 4);
+              } else if (state is NotificacionesErrorSession) {
+                return const WrongConnection();
               } else if (state is NotificacionesLoaded) {
                 return _buildCard(context, state.data);
+              } else if (state is NotificacionesLoadedEmpty) {
+                return NotSearchResults(img: "Notificaciones.png");
               } else if (state is NotificacionesError) {
                 return const WrongConnection();
               } else {
@@ -95,30 +99,18 @@ class _MyNotificationsPageState extends State<MyNotificationsPage> {
   }
 
   Widget _buildCard(BuildContext context, Respuesta model) {
-    if (model.result == 'ok') {
-      if (model.data!['data'] == null) {
-        return const WrongConnection();
-      }
-
-      if (model.data == null || model.data!['data'].isEmpty) {
-        return const NoSearchResultFound();
-      }
-
-      return ListView.builder(
-          itemCount: model.data!['data'].length,
-          itemBuilder: (context, index) {
-            return ReservationNotification(
-              title: model.data!['data'][index]['message'],
-              subtitle: "Nombre del Restaurante",
-              description: "Datos de la reservación",
-              imagePath: model.data!['data'][index]['image'] ?? "",
-              onClose: () {
-                //print("Notificaciones");
-              },
-            );
-          });
-    } else {
-      return const NoSearchResultFound();
-    }
+    return ListView.builder(
+        itemCount: model.data!['data'].length,
+        itemBuilder: (context, index) {
+          return ReservationNotification(
+            title: model.data!['data'][index]['message'],
+            subtitle: model.data!['data'][index]['product_name'] ?? "",
+            description: model.data!['data'][index]['created_at'] ?? "",
+            imagePath: model.data!['data'][index]['image'] ?? "",
+            onClose: () {
+              //print("Notificaciones");
+            },
+          );
+        });
   }
 }

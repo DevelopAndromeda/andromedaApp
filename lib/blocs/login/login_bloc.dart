@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:andromeda/services/auth.dart';
-import 'package:andromeda/utilities/constanst.dart';
+import 'package:appandromeda/services/auth.dart';
+import 'package:appandromeda/utilities/constanst.dart';
 
 abstract class AuthState {}
 

@@ -1,14 +1,14 @@
-import 'package:andromeda/screens/andromeda/history.dart';
-import 'package:andromeda/screens/andromeda/notifications.dart';
-import 'package:andromeda/screens/andromeda/saved.dart';
-import 'package:andromeda/screens/andromeda/search.dart';
-import 'package:andromeda/screens/andromeda/stores.dart';
+import 'package:appandromeda/screens/andromeda/history.dart';
+import 'package:appandromeda/screens/andromeda/notifications.dart';
+import 'package:appandromeda/screens/andromeda/saved.dart';
+import 'package:appandromeda/screens/andromeda/search.dart';
+import 'package:appandromeda/screens/andromeda/stores.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_background_service/flutter_background_service.dart';
+//import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:andromeda/witgets/bottom_bar.dart';
-import 'package:andromeda/blocs/bottom/bottom_navigation_bloc.dart';
+import 'package:appandromeda/witgets/bottom_bar.dart';
+import 'package:appandromeda/blocs/bottom/bottom_navigation_bloc.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -42,8 +42,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    FlutterBackgroundService().invoke("setAsBackground");
-    FlutterBackgroundService().invoke("setAsBackground");
+    //FlutterBackgroundService().invoke("setAsBackground");
+    //FlutterBackgroundService().invoke("setAsBackground");
     return Scaffold(
       body: BlocBuilder<BottomNavigationBloc, int>(
         builder: (context, currentTab) {

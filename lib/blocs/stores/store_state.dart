@@ -21,4 +21,12 @@ class StoreError extends StoreState {
   const StoreError(this.message);
 }
 
+class StoreErrorSession extends StoreState {
+  const StoreErrorSession();
+}
+
+class StoreLoadedEmpty extends StoreState {
+  const StoreLoadedEmpty();
+}
+
 class StoreGetById extends StoreState {}

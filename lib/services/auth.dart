@@ -1,8 +1,9 @@
-import 'package:andromeda/services/api.dart';
-import 'package:andromeda/services/db.dart';
+import 'package:appandromeda/services/api.dart';
+import 'package:appandromeda/services/db.dart';
+//import 'package:appandromeda/services/storage.dart';
 
-import 'package:andromeda/models/response.dart';
-import 'package:andromeda/utilities/constanst.dart';
+import 'package:appandromeda/models/response.dart';
+import 'package:appandromeda/utilities/constanst.dart';
 
 class AuthService {
   Future<Respuesta> logIn(dynamic data) async {
@@ -29,15 +30,14 @@ class AuthService {
 
       //final customer = await get(login, 'integration', 'customers/me');
       final customer = await get(login, 'custom', 'customers/me');
-      //print('customer');
-      //print(customer);
       if (customer != null) {
-        data['id'] = customer['id'];
-        data['nombre'] = customer['firstname'];
-        data['apellido_paterno'] = customer['lastname'];
-        data['group_id'] = customer['group_id'];
+        data['id'] = customer['id'] ?? '';
+        data['nombre'] = customer['firstname'] ?? '';
+        data['apellido_paterno'] = customer['lastname'] ?? '';
+        data['group_id'] = customer['group_id'] ?? '';
 
-        if (customer['custom_attributes'].isNotEmpty) {
+        if (customer['custom_attributes'] != null &&
+            customer['custom_attributes'].isNotEmpty) {
           data['zip_code'] =
               getCustomAttribute(customer['custom_attributes'], 'zip_code') ??
                   '';
@@ -54,9 +54,14 @@ class AuthService {
               '';
           data['genero'] =
               getCustomAttribute(customer['custom_attributes'], 'gender') ?? '';
-          data['img_profile'] = getCustomAttribute(
+          /*data['img_profile'] = getCustomAttribute(
                   customer['custom_attributes'], 'profile_icon') ??
-              '';
+              '';*/
+          /*StorageService().saveToStorage(
+              'img_profile',
+              getCustomAttribute(
+                      customer['custom_attributes'], 'profile_icon') ??
+                  '');*/
         }
       }
 
@@ -72,6 +77,7 @@ class AuthService {
 
       final user = await serviceDB.instance.getById('users', 'id_user', 1);
       //Si existen datos en base de datos local actualizamos datos en mapa
+      //print(user);
       if (user.isNotEmpty) {
         await serviceDB.instance.updateRecord('users', data, 'id_user', 1);
       } else {
@@ -79,6 +85,7 @@ class AuthService {
         data['id_user'] = 1;
         await serviceDB.instance.insertRecord('users', data);
       }
+
       return Respuesta(
           result: 'ok',
           data: {
@@ -87,6 +94,7 @@ class AuthService {
           },
           error: null);
     } on Exception catch (e) {
+      print(e.toString());
       return Respuesta(
           result: 'fail', data: {'data': 'Error en App'}, error: e.toString());
     }

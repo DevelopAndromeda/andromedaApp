@@ -1,20 +1,20 @@
-import 'package:andromeda/services/catalog.dart';
+import 'package:appandromeda/services/catalog.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:andromeda/blocs/login/login_bloc.dart';
+import 'package:appandromeda/blocs/login/login_bloc.dart';
 
-import 'package:andromeda/services/api.dart';
+import 'package:appandromeda/services/api.dart';
 
-import 'package:andromeda/utilities/strings.dart';
-import 'package:andromeda/utilities/constanst.dart';
+import 'package:appandromeda/utilities/strings.dart';
+import 'package:appandromeda/utilities/constanst.dart';
 
-import 'package:andromeda/models/paises.dart';
-import 'package:andromeda/models/estados.dart';
-import 'package:andromeda/models/ciudades.dart';
-import 'package:andromeda/models/codigospostales.dart';
+import 'package:appandromeda/models/paises.dart';
+import 'package:appandromeda/models/estados.dart';
+import 'package:appandromeda/models/ciudades.dart';
+import 'package:appandromeda/models/codigospostales.dart';
 
-import 'package:andromeda/witgets/button_base.dart';
+import '../../witgets/boton_base.dart';
 
 class MyRegisterPage extends StatefulWidget {
   const MyRegisterPage({super.key, required this.type});
@@ -915,7 +915,7 @@ class _MyRegisterContet extends State<MyRegisterPage> {
     return Container(
       // width: double.maxFinite,
       margin: const EdgeInsets.symmetric(horizontal: 50, vertical: 10),
-      child: baseButtom(
+      child: MyBaseButtom(
         onPressed: () async {
           if (_formKey.currentState!.validate()) {
             Map<String, dynamic> data = {

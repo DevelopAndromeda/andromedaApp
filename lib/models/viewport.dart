@@ -1,5 +1,5 @@
-import 'package:andromeda/models/northeast.dart';
-import 'package:andromeda/models/southwest.dart';
+import 'package:appandromeda/models/northeast.dart';
+import 'package:appandromeda/models/southwest.dart';
 
 class Viewport {
   final Northeast? northeast;

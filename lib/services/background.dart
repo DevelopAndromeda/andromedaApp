@@ -1,14 +1,14 @@
 import 'dart:async';
-import 'dart:ui';
-import 'dart:io';
+//-import 'dart:ui';
+//-import 'dart:io';
 
-import 'package:device_info_plus/device_info_plus.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_background_service/flutter_background_service.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+//-import 'package:device_info_plus/device_info_plus.dart';
+//-import 'package:flutter/material.dart';
+//import 'package:flutter_background_service/flutter_background_service.dart';
+//import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 Future<void> initializeService() async {
-  final service = FlutterBackgroundService();
+  /*final service = FlutterBackgroundService();
 
   /// OPTIONAL, using custom notification channel id
   const AndroidNotificationChannel channel = AndroidNotificationChannel(
@@ -140,5 +140,5 @@ void onStart(ServiceInstance service) async {
         "device": device,
       },
     );*/
-  });
+  });*/
 }

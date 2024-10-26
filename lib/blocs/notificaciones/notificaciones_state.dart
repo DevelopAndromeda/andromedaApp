@@ -21,4 +21,12 @@ class NotificacionesError extends NotificacionesState {
   const NotificacionesError(this.message);
 }
 
+class NotificacionesErrorSession extends NotificacionesState {
+  const NotificacionesErrorSession();
+}
+
+class NotificacionesLoadedEmpty extends NotificacionesState {
+  const NotificacionesLoadedEmpty();
+}
+
 class NotificacionesDelete extends NotificacionesState {}

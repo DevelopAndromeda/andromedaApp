@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:andromeda/blocs/login/login_bloc.dart';
+import 'package:appandromeda/blocs/login/login_bloc.dart';
+import 'package:appandromeda/blocs/bottom/bottom_navigation_bloc.dart';
 
-import 'package:andromeda/witgets/button_base.dart';
-import 'package:andromeda/witgets/colores_base.dart';
+import 'package:appandromeda/witgets/colores_base.dart';
 
-import 'package:andromeda/screens/auth/register.dart';
-import 'package:andromeda/screens/auth/recover_password.dart';
+import 'package:appandromeda/screens/auth/register.dart';
+import 'package:appandromeda/screens/auth/recover_password.dart';
 
-import 'package:andromeda/utilities/constanst.dart';
-import 'package:andromeda/utilities/strings.dart';
+import 'package:appandromeda/utilities/constanst.dart';
+import 'package:appandromeda/utilities/strings.dart';
+
+import '../../witgets/boton_base.dart';
 
 class MyLoginPage extends StatefulWidget {
   const MyLoginPage({super.key});
@@ -211,29 +213,32 @@ class _MyLoginPageState extends State<MyLoginPage> {
     return Container(
       width: double.infinity,
       margin: const EdgeInsets.symmetric(horizontal: 58, vertical: 30),
-      child: baseButtom(onPressed: () async {
-        if (_formKeyLogin.currentState!.validate()) {
-          context.read<AuthLogic>().loginLogic(
-              _emailController.text, _passwordController.text, context);
-        } else {
-          responseErrorWarning(context, MyString.required);
-          return;
-        }
-      }, text: BlocBuilder<AuthLogic, AuthState>(builder: (context, state) {
-        if (state is LoginLoadingState) {
-          return state.isLoading
-              ? const CircularProgressIndicator(
-                  color: Colors.white,
-                )
-              : const Text("Iniciar Sesion",
-                  style: TextStyle(fontSize: 18, color: Colors.white));
-        } else {
-          return const Text(
-            "Iniciar Sesion",
-            style: TextStyle(fontSize: 18, color: Colors.white),
-          );
-        }
-      })),
+      child: MyBaseButtom(
+        onPressed: () async {
+          if (_formKeyLogin.currentState!.validate()) {
+            context.read<AuthLogic>().loginLogic(
+                _emailController.text, _passwordController.text, context);
+          } else {
+            responseErrorWarning(context, MyString.required);
+            return;
+          }
+        },
+        text: BlocBuilder<AuthLogic, AuthState>(builder: (context, state) {
+          if (state is LoginLoadingState) {
+            return state.isLoading
+                ? const CircularProgressIndicator(
+                    color: Colors.white,
+                  )
+                : const Text("Iniciar Sesion",
+                    style: TextStyle(fontSize: 18, color: Colors.white));
+          } else {
+            return const Text(
+              "Iniciar Sesion",
+              style: TextStyle(fontSize: 18, color: Colors.white),
+            );
+          }
+        }),
+      ),
     );
   }
 
@@ -279,7 +284,7 @@ class _MyLoginPageState extends State<MyLoginPage> {
 
   Container forget() {
     return Container(
-      margin: const EdgeInsets.only(bottom: 25),
+      margin: const EdgeInsets.only(bottom: 15),
       child: GestureDetector(
         onTap: () {
           Navigator.push(
@@ -296,6 +301,20 @@ class _MyLoginPageState extends State<MyLoginPage> {
         ),
       ),
     );
+  }
+
+  OutlinedButton invitado() {
+    return OutlinedButton(
+        onPressed: () {
+          context.read<BottomNavigationBloc>()..add(TabChangeEvent(2));
+          Navigator.pushNamed(context, 'home');
+        },
+        style: OutlinedButton.styleFrom(
+            padding: const EdgeInsets.all(8), backgroundColor: Colors.black),
+        child: const Text(
+          "Continuar como invitado",
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        ));
   }
 
   SizedBox typeButton() {
@@ -379,7 +398,8 @@ class _MyLoginPageState extends State<MyLoginPage> {
           buttonRegister(),
           divisor,
           forget(),
-          typeButton()
+          typeButton(),
+          invitado(),
         ],
       ),
     );

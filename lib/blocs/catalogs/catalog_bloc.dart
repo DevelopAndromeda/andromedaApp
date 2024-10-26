@@ -1,8 +1,8 @@
-import 'package:andromeda/models/paises.dart';
+import 'package:appandromeda/models/paises.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:andromeda/services/catalog.dart';
-import 'package:andromeda/utilities/constanst.dart';
+import 'package:appandromeda/services/catalog.dart';
+import 'package:appandromeda/utilities/constanst.dart';
 
 abstract class CatalogState {}
 

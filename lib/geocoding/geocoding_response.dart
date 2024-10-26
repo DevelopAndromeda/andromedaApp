@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:andromeda/geocoding/geocoding_result.dart';
+import 'package:appandromeda/geocoding/geocoding_result.dart';
 
 class GeocodingResponse {
   final String? status;

@@ -1,6 +1,6 @@
-import 'package:andromeda/models/bounds.dart';
-import 'package:andromeda/models/location.dart';
-import 'package:andromeda/models/viewport.dart';
+import 'package:appandromeda/models/bounds.dart';
+import 'package:appandromeda/models/location.dart';
+import 'package:appandromeda/models/viewport.dart';
 
 class Geometry {
   final Location? location;

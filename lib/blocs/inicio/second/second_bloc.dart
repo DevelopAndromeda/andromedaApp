@@ -1,8 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
-import 'package:andromeda/services/store.dart';
-import 'package:andromeda/models/response.dart';
+import 'package:appandromeda/services/store.dart';
+import 'package:appandromeda/models/response.dart';
 
 part 'second_event.dart';
 part 'second_state.dart';
@@ -18,8 +18,9 @@ class SecondBloc extends Bloc<SecondEvent, SecondState> {
         final mList = await storeService.secondSection();
         if (mList.error != null) {
           emit(SecondError(mList.error));
+        } else {
+          emit(SecondLoaded(mList));
         }
-        emit(SecondLoaded(mList));
       } on NetworkError {
         emit(const SecondError("Failed to fetch data. is your device online?"));
       }

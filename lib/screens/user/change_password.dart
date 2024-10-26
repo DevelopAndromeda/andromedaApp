@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:andromeda/blocs/user/user_sesion_bloc.dart';
+import 'package:appandromeda/blocs/user/user_sesion_bloc.dart';
 
-import 'package:andromeda/witgets/button_base.dart';
+import '../../witgets/boton_base.dart';
 
 class MyChangePasswordPage extends StatefulWidget {
   const MyChangePasswordPage({super.key});
@@ -242,7 +242,7 @@ class _MyChangePasswordPagePageState extends State<MyChangePasswordPage> {
     return Container(
         width: double.infinity,
         margin: const EdgeInsets.symmetric(horizontal: 50, vertical: 30),
-        child: baseButtom(onPressed: () async {
+        child: MyBaseButtom(onPressed: () async {
           //print('aca');
           if (_formKey.currentState!.validate()) {
             try {

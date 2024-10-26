@@ -1,5 +1,6 @@
-import 'package:andromeda/witgets/button_base.dart';
 import 'package:flutter/material.dart';
+
+import '../../witgets/boton_base.dart';
 
 class CardRest extends StatelessWidget {
   const CardRest(
@@ -10,7 +11,7 @@ class CardRest extends StatelessWidget {
 
   final Image img;
   final String texto;
-  final baseButtom button;
+  final MyBaseButtom button;
 
   @override
   Widget build(BuildContext context) {

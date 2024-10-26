@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
-import 'package:andromeda/services/customer.dart';
+import 'package:appandromeda/services/customer.dart';
 
 part 'user_event.dart';
 part 'user_state.dart';

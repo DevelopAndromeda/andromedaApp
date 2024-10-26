@@ -1,11 +1,11 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:andromeda/services/api.dart';
-import 'package:andromeda/models/paises.dart';
-import 'package:andromeda/models/estados.dart';
-import 'package:andromeda/models/ciudades.dart';
-import 'package:andromeda/models/status.dart';
+import 'package:appandromeda/services/api.dart';
+import 'package:appandromeda/models/paises.dart';
+import 'package:appandromeda/models/estados.dart';
+import 'package:appandromeda/models/ciudades.dart';
+import 'package:appandromeda/models/status.dart';
 
 class CatalogService {
   Future<List<Pais>> fetchPaises() async {
@@ -40,6 +40,7 @@ class CatalogService {
   }
 
   Future<List<Ciudad>> fetchCiudades(String code) async {
+    print('code estado: $code');
     final responseJson =
         await get('', 'integration', 'product/cities?search=$code');
     if (responseJson == null) {

@@ -1,13 +1,13 @@
-import 'package:andromeda/utilities/constanst.dart';
+import 'package:appandromeda/utilities/constanst.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:andromeda/blocs/orden/orden_bloc.dart';
+import 'package:appandromeda/blocs/orden/orden_bloc.dart';
 
-import 'package:andromeda/models/response.dart';
-import 'package:andromeda/witgets/skeleton.dart';
+import 'package:appandromeda/models/response.dart';
+import 'package:appandromeda/witgets/skeleton.dart';
 
-import 'package:andromeda/witgets/Colores_Base.dart';
+import 'package:appandromeda/witgets/Colores_Base.dart';
 import 'package:intl/intl.dart';
 
 class MyOrdenScreen extends StatefulWidget {

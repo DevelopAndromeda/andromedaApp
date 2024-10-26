@@ -1,6 +1,6 @@
-import 'package:andromeda/models/address_component.dart';
-import 'package:andromeda/models/geometry.dart';
-import 'package:andromeda/models/plus_code.dart';
+import 'package:appandromeda/models/address_component.dart';
+import 'package:appandromeda/models/geometry.dart';
+import 'package:appandromeda/models/plus_code.dart';
 
 class GeocodingResult {
   final List<AddressComponent>? addressComponents;

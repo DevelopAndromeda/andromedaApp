@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 
-import 'package:andromeda/models/response.dart';
-import 'package:andromeda/services/customer.dart';
+import 'package:appandromeda/models/response.dart';
+import 'package:appandromeda/services/customer.dart';
 
 import 'package:equatable/equatable.dart';
 
@@ -13,13 +13,28 @@ class ReservationBloc extends Bloc<ReservationEvent, ReservationState> {
     final CustomerService customerService = CustomerService();
 
     on<GetAllReservations>((event, emit) async {
+      emit(ReservationLoading());
       try {
-        emit(ReservationLoading());
         final mList = await customerService.getReservations();
-        if (mList.error != null) {
-          emit(ReservationError(mList.error));
+
+        print('mList');
+        print(mList);
+        if (mList.result == 'ok') {
+          emit(ReservationLoaded(mList));
         }
-        emit(ReservationLoaded(mList));
+
+        if (mList.result == 'excep') {
+          emit(const ReservationErrorSession());
+        }
+
+        if (mList.result == 'fail') {
+          emit(const ReservationLoadedEmpty());
+        }
+        /*if (mList.error != null) {
+          emit(ReservationError(mList.error));
+        } else {
+          emit(ReservationLoaded(mList));
+        }*/
       } on NetworkError {
         emit(const ReservationError(
             "Failed to fetch data. is your device online?"));

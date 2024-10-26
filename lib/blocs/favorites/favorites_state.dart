@@ -21,4 +21,12 @@ class FavoriteError extends FavoriteState {
   const FavoriteError(this.message);
 }
 
+class FavoriteErrorSession extends FavoriteState {
+  const FavoriteErrorSession();
+}
+
+class FavoriteLoadedEmpty extends FavoriteState {
+  const FavoriteLoadedEmpty();
+}
+
 class FavoriteDelete extends FavoriteState {}

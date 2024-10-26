@@ -1,16 +1,19 @@
 import 'dart:io';
 
-import 'package:andromeda/blocs/user/user_sesion_bloc.dart';
+import 'package:appandromeda/blocs/user/user_sesion_bloc.dart';
 import 'package:flutter/material.dart';
 
 import 'package:image_picker/image_picker.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:andromeda/blocs/inicio/user/user_bloc.dart';
+import 'package:appandromeda/blocs/inicio/user/user_bloc.dart';
 
-import 'package:andromeda/witgets/profile_menu.dart';
+import 'package:appandromeda/witgets/profile_menu.dart';
 
-import 'package:andromeda/utilities/constanst.dart';
+import 'package:appandromeda/utilities/constanst.dart';
+import 'package:localstorage/localstorage.dart';
+
+import 'package:permission_handler/permission_handler.dart';
 
 class MyProfilePage extends StatefulWidget {
   const MyProfilePage({super.key});
@@ -53,6 +56,25 @@ class _MyProfilePageState extends State<MyProfilePage> {
         .updateImgLogic(File(returnImage.path), context);
 
     Navigator.of(context).pop();
+  }
+
+  Future<void> _requestPermissions(type) async {
+    // Solicitar permisos de cámara y almacenamiento
+    if (Platform.isIOS) {
+      var cameraStatus = await Permission.camera.request();
+      var storageStatus = await Permission.storage.request();
+
+      if (!cameraStatus.isGranted && !storageStatus.isGranted) {
+        responseWarning(
+            context, "Permisos denegados. Necesitas otorgar acceso.");
+      }
+    }
+
+    if (type == 'camera') {
+      _pickImageFromCamera();
+    } else {
+      _pickImageFromGallery();
+    }
   }
 
   @override
@@ -130,6 +152,13 @@ class _MyProfilePageState extends State<MyProfilePage> {
     }
     lista.add(
       ProfileMenuWidget(
+          title: "Eliminar mi cuenta",
+          icon: Icons.delete_forever,
+          endIcon: false,
+          onPress: () => deleteAccount(context)),
+    );
+    lista.add(
+      ProfileMenuWidget(
           title: "Salir",
           icon: Icons.logout,
           textColor: Colors.red,
@@ -181,7 +210,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
         'name': 'Gestion de mesas',
         'url': 'list-tables',
         'icon': Icons.table_bar
-      }
+      },
     ];
     List<Widget> lista = <Widget>[];
     lista.add(clip(data));
@@ -196,6 +225,13 @@ class _MyProfilePageState extends State<MyProfilePage> {
             Navigator.pushNamed(context, element['url'].toString());
           }));
     }
+    lista.add(
+      ProfileMenuWidget(
+          title: "Eliminar mi cuenta",
+          icon: Icons.delete_forever,
+          endIcon: false,
+          onPress: () => deleteAccount(context)),
+    );
     lista.add(
       ProfileMenuWidget(
           title: "Salir",
@@ -214,6 +250,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
   }
 
   Widget clip(data) {
+    final img = localStorage.getItem('img_profile');
     return Stack(
       alignment: Alignment.center,
       children: [
@@ -226,12 +263,11 @@ class _MyProfilePageState extends State<MyProfilePage> {
         Stack(children: [
           CircleAvatar(
               radius: 50,
-              backgroundImage:
-                  (data['img_profile'] != null && data['img_profile'] != "")
-                      ? const AssetImage('assets/Masculino.jpg')
-                      //? whitAvatar(data['img_profile'])
-                      : const AssetImage('assets/Masculino.jpg')),
-          /*Positioned(
+              backgroundImage: (img != "" && img != null)
+                  //? const AssetImage('assets/Masculino.jpg')
+                  ? whitAvatar(img.toString())
+                  : const AssetImage('assets/Masculino.jpg')),
+          Positioned(
               bottom: 0,
               right: 0,
               child: InkWell(
@@ -248,7 +284,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
                     size: 20,
                   ),
                 ),
-              )),*/
+              )),
         ]),
       ],
     );
@@ -300,7 +336,8 @@ class _MyProfilePageState extends State<MyProfilePage> {
                   Expanded(
                     child: InkWell(
                       onTap: () {
-                        _pickImageFromGallery();
+                        _requestPermissions('galery');
+                        //_pickImageFromGallery();
                       },
                       child: const SizedBox(
                         child: Column(
@@ -318,7 +355,8 @@ class _MyProfilePageState extends State<MyProfilePage> {
                   Expanded(
                     child: InkWell(
                       onTap: () {
-                        _pickImageFromCamera();
+                        _requestPermissions('camera');
+                        //_pickImageFromCamera();
                       },
                       child: const SizedBox(
                         child: Column(

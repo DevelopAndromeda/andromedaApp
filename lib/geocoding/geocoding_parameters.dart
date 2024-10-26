@@ -1,6 +1,6 @@
-import 'package:andromeda/models/bounds.dart';
-import 'package:andromeda/models/component.dart';
-import 'package:andromeda/models/lat_lon.dart';
+import 'package:appandromeda/models/bounds.dart';
+import 'package:appandromeda/models/component.dart';
+import 'package:appandromeda/models/lat_lon.dart';
 
 class GeocodingParameters {
   static Map<String, String> createGeocodingParameters(

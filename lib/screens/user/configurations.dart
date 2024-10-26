@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:andromeda/blocs/inicio/user/user_bloc.dart';
-import 'package:andromeda/blocs/user/user_sesion_bloc.dart';
+import 'package:appandromeda/blocs/inicio/user/user_bloc.dart';
+import 'package:appandromeda/blocs/user/user_sesion_bloc.dart';
 
-import 'package:andromeda/witgets/button_base.dart';
-import 'package:andromeda/witgets/Colores_Base.dart';
+import 'package:appandromeda/witgets/Colores_Base.dart';
+import 'package:appandromeda/utilities/constanst.dart';
 
-import 'package:andromeda/utilities/constanst.dart';
+import '../../witgets/boton_base.dart';
 
 class MyConfigProfilePage extends StatefulWidget {
   const MyConfigProfilePage({super.key});
@@ -585,7 +585,7 @@ class _MyConfigProfilePageState extends State<MyConfigProfilePage> {
     return Container(
         width: double.infinity,
         margin: const EdgeInsets.symmetric(horizontal: 50, vertical: 30),
-        child: baseButtom(onPressed: () async {
+        child: MyBaseButtom(onPressed: () async {
           //print('aca');
           if (_formKey.currentState!.validate()) {
             try {

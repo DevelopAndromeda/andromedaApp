@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
+import 'package:flutter/material.dart';
+
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 String? endPoint = dotenv.env['ENDPOINT'];
@@ -39,10 +41,12 @@ Future<dynamic> get(String? tokenCustomer, String type, String url) async {
     //print('************* headers: $_headers *************');
     final resp = await http.get(Uri.parse(endPoint! + url), headers: _headers);
 
-    if (resp.statusCode < 500) {
+    if (resp.statusCode == 200) {
       //print(
       //    '************* API Response: ${json.decode(resp.body)} *************');
       return json.decode(resp.body);
+    } else {
+      throw Exception(resp.reasonPhrase);
     }
     //print(
     //    '************* API Response code - ${resp.statusCode}: ${json.decode(resp.body)} *************');
@@ -100,7 +104,7 @@ Future<dynamic> put(String? tokenCustomer, String type, String url,
       _headers.remove("Authorization");
     }
     //print('************* headers: $_headers *************');
-    //_headers["Authorization"] = getTokenHeader(type, tokenCustomer);
+    _headers["Authorization"] = getTokenHeader(type, tokenCustomer);
     final resp = await http.put(Uri.parse(endPoint! + url + id),
         headers: _headers, body: jsonEncode(params));
     if (resp.statusCode < 500) {
@@ -109,7 +113,7 @@ Future<dynamic> put(String? tokenCustomer, String type, String url,
       return json.decode(resp.body);
     }
   } on Exception catch (_) {
-    //print('************* API Exception: $_} *************');
+    debugPrint('************* API Exception: $_} *************');
     // make it explicit that this function can throw exceptions
     rethrow;
   }
@@ -135,6 +139,8 @@ Future<dynamic> delete(String? tokenCustomer, String type, String url) async {
       //print(
       //    '************* API Response: ${json.decode(resp.body)} *************');
       return json.decode(resp.body);
+    } else {
+      throw Exception(resp.reasonPhrase);
     }
   } on Exception catch (_) {
     //print('************* API Exception: $_} *************');

@@ -1,11 +1,11 @@
-import 'package:andromeda/witgets/time_slot_buttons.dart';
+import 'package:appandromeda/witgets/time_slot_buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
-import 'package:andromeda/services/api.dart';
-import 'package:andromeda/services/db.dart';
+import 'package:appandromeda/services/api.dart';
+import 'package:appandromeda/services/db.dart';
 
-import 'package:andromeda/utilities/constanst.dart';
+import 'package:appandromeda/utilities/constanst.dart';
 
 class RestuarentScreen extends StatefulWidget {
   final Map<dynamic, dynamic> data;
@@ -40,24 +40,31 @@ class _RestuarentScreenState extends State<RestuarentScreen> {
       onTap: () =>
           Navigator.pushNamed(context, 'detail', arguments: widget.data),
       child: Padding(
-        padding: const EdgeInsets.all(5),
+        padding: const EdgeInsets.all(4),
         child: Container(
+          margin: const EdgeInsets.all(10.0),
           decoration: BoxDecoration(
             border: Border.all(color: Colors.black, width: 1),
             borderRadius: BorderRadius.circular(10),
           ),
           child: Column(
             children: [
-              FadeInImage(
-                image: widget.data['media_gallery_entries'] != null &&
-                        widget.data['media_gallery_entries'].length > 0
-                    ? NetworkImage(pathMedia(
-                        widget.data['media_gallery_entries'][0]['file']))
-                    : const AssetImage('assets/notFoundImg.png'),
-                placeholder: const AssetImage('assets/notFoundImg.png'),
-                fit: BoxFit.cover,
-                height: 125,
-                width: 270,
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: FadeInImage(
+                  image: widget.data['media_gallery_entries'] != null &&
+                          widget.data['media_gallery_entries'].length > 0
+                      ? NetworkImage(pathMedia(
+                          widget.data['media_gallery_entries'][0]['file']))
+                      : const AssetImage('assets/notFoundImg.png'),
+                  placeholder: const AssetImage('assets/notFoundImg.png'),
+                  fit: BoxFit.cover,
+                  height: 125,
+                  width: 250,
+                ),
+                //fadeOutCurve: Curves.bounceIn
               ),
               Row(
                 children: [
@@ -70,7 +77,7 @@ class _RestuarentScreenState extends State<RestuarentScreen> {
                         fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(
-                    width: 40,
+                    width: 10,
                   ),
                   IconButton(
                     onPressed: () async {
@@ -80,21 +87,27 @@ class _RestuarentScreenState extends State<RestuarentScreen> {
                         return;
                       }
                       String token = user[0]['token'];
-                      final favorite = await post(
+                      var favorite = await post(
                           token,
                           'custom',
                           'wishlist/customer/product/${widget.data["id"]}',
                           {},
                           '');
-                      /*print('favorite');
+                      print('favorite');
                       print(favorite);
-                      if (favorite['success']) {*/
-                      await serviceDB.instance
-                          .insertRecord('favorites', {'id': widget.data["id"]});
-                      responseSuccessWarning(context, "Se agrego a favoritos");
-                      //}
-
-                      //print(favorite);
+                      //if (favorite['success']) {*/
+                      final favoriteExist = await serviceDB.instance.getById(
+                          'favorites',
+                          'id',
+                          int.parse(widget.data["id"].toString()));
+                      print(favoriteExist);
+                      if (favoriteExist != null ||
+                          favoriteExist[0].isNotEmpty) {
+                        await serviceDB.instance.insertRecord('favorites',
+                            {'id': int.parse(widget.data["id"].toString())});
+                        responseSuccessWarning(
+                            context, "Se agrego a favoritos");
+                      }
                       setState(() {
                         widget.data['isFavorite'] = true;
                       });
@@ -123,7 +136,7 @@ class _RestuarentScreenState extends State<RestuarentScreen> {
                     direction: Axis.horizontal,
                   ),
                   const SizedBox(
-                    width: 40,
+                    width: 20,
                   ),
                   Text(
                     "${getCustomAttribute(widget.data['custom_attributes'], 'product_score')} reseñas",
@@ -134,37 +147,22 @@ class _RestuarentScreenState extends State<RestuarentScreen> {
                   ),
                 ],
               ),
-              const SizedBox(
-                height: 10,
-              ),
               Expanded(
                   child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
+                  /*const Text(
                     'Comida',
                     style: TextStyle(
                         color: Color(0xff707070),
                         fontSize: 12,
                         fontFamily: 'Exo Regular'),
-                  ),
-                  const Text(
-                    ' * ',
-                    style: TextStyle(
-                        color: Color(0xff707070),
-                        fontSize: 12,
-                        fontFamily: 'Exo Regular'),
-                  ),
+                  ),*/
                   Text(
-                    transformPrice(widget.data['price'].toString()),
+                    ' *' +
+                        transformPrice(widget.data['price'].toString()) +
+                        '* ',
                     style: const TextStyle(
-                        color: Color(0xff707070),
-                        fontSize: 12,
-                        fontFamily: 'Exo Regular'),
-                  ),
-                  const Text(
-                    ' * ',
-                    style: TextStyle(
                         color: Color(0xff707070),
                         fontSize: 12,
                         fontFamily: 'Exo Regular'),
@@ -178,28 +176,7 @@ class _RestuarentScreenState extends State<RestuarentScreen> {
                   ),
                 ],
               )),
-              const SizedBox(
-                height: 5,
-              ),
-              const Row(
-                children: [
-                  Icon(Icons.auto_graph_sharp),
-                  SizedBox(
-                    width: 5,
-                  ),
-                  Text(
-                    'Reservado 20 veces hoy',
-                    style: TextStyle(
-                        color: Color(0xff707070),
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'Exo Regular'),
-                  ),
-                ],
-              ),
               crearSlot()
-              //const TimeSlotButton(
-              //    anchoButton: 20, altoButton: 35, sizeText: 14)
             ],
           ),
         ),
@@ -220,14 +197,14 @@ class _RestuarentScreenState extends State<RestuarentScreen> {
               if (!attr['value'][0]['slots_info'].isEmpty) {
                 //print(attr['value'][0]['slots_info']);
                 for (dynamic item in attr['value'][0]['slots_info']) {
-                  final HoraAcutal = item['time']
+                  /*final HoraAcutal = item['time']
                       .replaceAll(" am", "")
                       .replaceAll(" pm", "")
-                      .split(':');
-                  int hour = int.parse(HoraAcutal[0]);
-                  if (_now.hour <= hour /*&& _now.minute <= minute*/) {
-                    horas.add(item['time']);
-                  }
+                      .split(':');*/
+                  //int hour = int.parse(HoraAcutal[0]);
+                  //if (_now.hour <= hour /*&& _now.minute <= minute*/) {
+                  horas.add(item['time']);
+                  //}
                 }
               } /*else {
                 print('data is empty 2' + widget.data['name']);
@@ -249,14 +226,14 @@ class _RestuarentScreenState extends State<RestuarentScreen> {
               } else {
                 if (!attr['value'][0]['slots_info'].isEmpty) {
                   for (dynamic item in attr['value'][0]['slots_info']) {
-                    final HoraAcutal = item['time']
+                    /*final HoraAcutal = item['time']
                         .replaceAll(" am", "")
                         .replaceAll(" pm", "")
-                        .split(':');
-                    int hour = int.parse(HoraAcutal[0]);
-                    if (_now.hour <= hour /*&& _now.minute <= minute*/) {
-                      horas.add(item['time']);
-                    }
+                        .split(':');*/
+                    //int hour = int.parse(HoraAcutal[0]);
+                    //if (_now.hour <= hour && _now.minute <= minute) {
+                    horas.add(item['time']);
+                    //}
                     //horas.add(item['time']);
                   }
                 } /*else {

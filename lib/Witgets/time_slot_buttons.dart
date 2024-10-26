@@ -16,6 +16,12 @@ class TimeSlotButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    /*return Container(
+      child: ListView(
+        scrollDirection: Axis.horizontal,
+        children: listSlot(),
+      ),
+    );*/
     return Row(
         mainAxisAlignment: MainAxisAlignment.center, children: listSlot());
   }
@@ -27,6 +33,7 @@ class TimeSlotButton extends StatelessWidget {
       if (index == 3) {
         break;
       }
+      //dataSlot.add(Text("tempo"));
       dataSlot.add(ButtonSlot(
         hour: element,
         anchoButton: anchoButton,
@@ -37,26 +44,6 @@ class TimeSlotButton extends StatelessWidget {
       index++;
     }
     return dataSlot;
-    /*for(String item in data) {
-
-    }
-    return <Widget>[
-      ButtonSlot(
-          hour: "10:30",
-          anchoButton: anchoButton,
-          altoButton: altoButton,
-          sizeText: sizeText),
-      ButtonSlot(
-          hour: "11:00",
-          anchoButton: anchoButton,
-          altoButton: altoButton,
-          sizeText: sizeText),
-      ButtonSlot(
-          hour: "11:30",
-          anchoButton: anchoButton,
-          altoButton: altoButton,
-          sizeText: sizeText)
-    ];*/
   }
 }
 
@@ -73,32 +60,25 @@ class ButtonSlot extends StatelessWidget {
       required this.altoButton,
       required this.sizeText,
       required this.data});
-  //const UsersReviewCard({Key? key}) : super(key: key, required this.data);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(1),
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: const Color.fromARGB(255, 0, 0, 0),
-          minimumSize: Size(anchoButton, altoButton),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(4.0), // Redondeo de 10.0
-          ),
-        ),
-        onPressed: () {
-          // Respond to button press
-          Navigator.pushNamed(context, 'detail', arguments: data);
-        },
-        child: Text(
-          hour,
-          style: TextStyle(
-            fontSize: sizeText,
-            color: Colors.white, // Color del texto
-          ),
-        ),
-      ),
-    );
+    return Padding(
+        padding: const EdgeInsets.all(3),
+        child: OutlinedButton(
+            onPressed: () {
+              Navigator.pushNamed(context, 'detail', arguments: data);
+            },
+            style: OutlinedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.zero, // Borde cuadrado
+                ),
+                padding: const EdgeInsets.all(8),
+                backgroundColor: Colors.black),
+            child: Text(
+              hour,
+              style:
+                  TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+            )));
   }
 }

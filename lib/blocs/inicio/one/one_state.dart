@@ -20,3 +20,13 @@ class OneError extends OneState {
   final String? message;
   const OneError(this.message);
 }
+
+class OneErrorSession extends OneState {
+  const OneErrorSession();
+}
+
+class OneLoadedEmpty extends OneState {
+  const OneLoadedEmpty();
+}
+
+class FavoriteDelete extends OneState {}

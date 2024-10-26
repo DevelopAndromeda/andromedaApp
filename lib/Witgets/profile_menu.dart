@@ -31,7 +31,7 @@ class ProfileMenuWidget extends StatelessWidget {
       ),
       title: Text(
         title,
-        //style: TextStyle(color: Colors.white),
+        style: TextStyle(color: textColor != null ? textColor : Colors.black),
       ),
       trailing: endIcon
           ? Container(
@@ -42,7 +42,8 @@ class ProfileMenuWidget extends StatelessWidget {
                 color: Colors.black,
               ),
               child: const Icon(Icons.keyboard_arrow_right,
-                  size: 18.0, color: Colors.white))
+                  size: 18.0, color: Colors.white),
+            )
           : null,
     );
   }

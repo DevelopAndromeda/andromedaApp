@@ -1,6 +1,6 @@
-import 'package:andromeda/services/api.dart';
-import 'package:andromeda/services/db.dart';
-import 'package:andromeda/models/response.dart';
+import 'package:appandromeda/services/api.dart';
+import 'package:appandromeda/services/db.dart';
+import 'package:appandromeda/models/response.dart';
 
 class StoreService {
   Future<Respuesta> firstSection() async {
@@ -15,8 +15,7 @@ class StoreService {
       final firstSection = await get('', 'integration', url);
 
       if (firstSection.isEmpty) {
-        return Respuesta(
-            result: 'fail', data: {'data': 'Error en Api'}, error: null);
+        return Respuesta(result: 'fail', data: {'data': []}, error: '');
       }
 
       final allFavorites = await serviceDB.instance.queryRecord('favorites');
@@ -38,8 +37,7 @@ class StoreService {
           },
           error: null);
     } on Exception catch (e) {
-      return Respuesta(
-          result: 'fail', data: {'data': 'Error en App'}, error: e.toString());
+      return Respuesta(result: 'excep', data: {}, error: e.toString());
     }
   }
 
@@ -175,15 +173,10 @@ class StoreService {
         return Respuesta(result: 'fail', data: {'data': []}, error: null);
       }
 
-      return Respuesta(
-          result: 'ok',
-          data: {
-            'data': reviews,
-          },
-          error: null);
+      var data = {"data": reviews};
+      return Respuesta(result: 'ok', data: data, error: null);
     } on Exception catch (e) {
-      return Respuesta(
-          result: 'fail', data: {'data': 'Error en App'}, error: e.toString());
+      return Respuesta(result: 'excep', data: {}, error: e.toString());
     }
   }
 

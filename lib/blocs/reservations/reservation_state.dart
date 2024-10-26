@@ -20,3 +20,11 @@ class ReservationError extends ReservationState {
   final String? message;
   const ReservationError(this.message);
 }
+
+class ReservationErrorSession extends ReservationState {
+  const ReservationErrorSession();
+}
+
+class ReservationLoadedEmpty extends ReservationState {
+  const ReservationLoadedEmpty();
+}

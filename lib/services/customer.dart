@@ -1,11 +1,12 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:andromeda/services/api.dart';
-import 'package:andromeda/services/db.dart';
+import 'package:appandromeda/services/api.dart';
+import 'package:appandromeda/services/db.dart';
 
-import 'package:andromeda/models/response.dart';
-import 'package:andromeda/utilities/constanst.dart';
+import 'package:appandromeda/models/response.dart';
+import 'package:appandromeda/services/storage.dart';
+import 'package:appandromeda/utilities/constanst.dart';
 
 class CustomerService {
   Future<Respuesta> getFavorites() async {
@@ -13,10 +14,7 @@ class CustomerService {
       final session = await serviceDB.instance.getById('users', 'id_user', 1);
 
       if (session.isEmpty) {
-        return Respuesta(
-            result: 'fail',
-            data: {'data': 'Ingresa sesion para continuar'},
-            error: 'Error: Api');
+        return Respuesta(result: 'excep', data: {}, error: 'Local BD Empty');
       }
 
       final favorites = await get(
@@ -25,17 +23,13 @@ class CustomerService {
         'wishlist/customer/items',
       );
 
-      if (favorites.isNotEmpty) {
-        return Respuesta(result: 'ok', data: {"data": favorites}, error: null);
-      } else {
-        return Respuesta(
-            result: 'fail',
-            data: {'data': 'La info esta corrupta'},
-            error: 'Error: Api');
+      if (favorites.isEmpty) {
+        return Respuesta(result: 'fail', data: {'data': []}, error: '');
       }
+
+      return Respuesta(result: 'ok', data: {"data": favorites}, error: null);
     } on Exception catch (e) {
-      return Respuesta(
-          result: 'fail', data: {'data': 'Error en App'}, error: e.toString());
+      return Respuesta(result: 'excep', data: {}, error: e.toString());
     }
   }
 
@@ -44,10 +38,7 @@ class CustomerService {
       final session = await serviceDB.instance.getById('users', 'id_user', 1);
 
       if (session.isEmpty) {
-        return Respuesta(
-            result: 'fail',
-            data: {'data': 'Ingresa sesion para continuar'},
-            error: 'Error: Api');
+        return Respuesta(result: 'excep', data: {}, error: 'Local BD Empty');
       }
 
       final history = await get('', 'integration',
@@ -62,8 +53,7 @@ class CustomerService {
             error: 'Error: Api');
       }
     } on Exception catch (e) {
-      return Respuesta(
-          result: 'fail', data: {'data': 'Error en App'}, error: e.toString());
+      return Respuesta(result: 'excep', data: {}, error: e.toString());
     }
   }
 
@@ -88,8 +78,7 @@ class CustomerService {
             error: 'Error: Api');
       }
     } on Exception catch (e) {
-      return Respuesta(
-          result: 'fail', data: {'data': 'Error en App'}, error: e.toString());
+      return Respuesta(result: 'excep', data: {}, error: e.toString());
     }
   }
 
@@ -120,29 +109,25 @@ class CustomerService {
 
   Future<Respuesta> getReservations() async {
     try {
-      var sesion = await serviceDB.instance.getById('users', 'id_user', 1);
+      var session = await serviceDB.instance.getById('users', 'id_user', 1);
 
-      if (sesion.isEmpty) {
-        return Respuesta(
-            result: 'fail',
-            data: {'data': 'Ingresa sesion para continuar'},
-            error: 'Error: Api');
+      if (session.isEmpty) {
+        return Respuesta(result: 'excep', data: {}, error: 'Local BD Empty');
       }
 
-      final reservations = await get(sesion[0]['token'], 'custom',
+      final reservations = await get(session[0]['token'], 'custom',
           'mysalesorders?searchCriteria[currentPage]=1&searchCriteria[pageSize]=100');
 
-      if (reservations[0].isNotEmpty) {
-        return Respuesta(result: 'ok', data: reservations[0], error: null);
-      } else {
-        return Respuesta(
-            result: 'fail',
-            data: {'data': 'La info esta corrupta'},
-            error: 'Error: Api');
+      print("reservations");
+      print(reservations[0]);
+
+      if (reservations[0]['data'].isEmpty) {
+        return Respuesta(result: 'fail', data: {'data': []}, error: '');
       }
+
+      return Respuesta(result: 'ok', data: reservations[0], error: null);
     } on Exception catch (e) {
-      return Respuesta(
-          result: 'fail', data: {'data': 'Error en App'}, error: e.toString());
+      return Respuesta(result: 'excep', data: {}, error: e.toString());
     }
   }
 
@@ -276,34 +261,33 @@ class CustomerService {
       final session = await serviceDB.instance.getById('users', 'id_user', 1);
 
       if (session.isEmpty) {
-        return Respuesta(
-            result: 'fail',
-            data: {'data': 'Ingresa sesion para continuar'},
-            error: 'Error: Api');
+        return Respuesta(result: 'excep', data: {}, error: 'Local BD Empty');
       }
 
       final notifications = await get('', 'integration',
           'customer-notifications/customer/unread/${session[0]['id']}');
 
-      if (notifications == null) {
+      /*if (notifications == null) {
         return Respuesta(
             result: 'fail',
             data: {'data': 'La info esta corrupta'},
             error: 'Error: Api');
+      }*/
+
+      if (notifications == null || notifications.isEmpty) {
+        return Respuesta(result: 'fail', data: {'data': []}, error: '');
       }
 
-      if (notifications.isNotEmpty) {
-        return Respuesta(
-            result: 'ok', data: {'data': notifications}, error: null);
-      } else {
+      return Respuesta(
+          result: 'ok', data: {'data': notifications}, error: null);
+      /*else {
         return Respuesta(
             result: 'fail',
             data: {'data': 'La info esta corrupta'},
             error: 'Error: Api');
-      }
+      }*/
     } on Exception catch (e) {
-      return Respuesta(
-          result: 'fail', data: {'data': 'Error en App'}, error: e.toString());
+      return Respuesta(result: 'excep', data: {}, error: e.toString());
     }
   }
 
@@ -341,8 +325,9 @@ class CustomerService {
             result: 'fail', data: {'data': 'Error en EndPoint'}, error: null);
       }
 
-      await serviceDB.instance
-          .updateRecord('users', {'img_profile': img64}, 'id_user', 1);
+      //await serviceDB.instance
+      //    .updateRecord('users', {'img_profile': img64}, 'id_user', 1);
+      StorageService().saveToStorage('img_profile', img64);
       return Respuesta(
           result: 'ok',
           data: {
@@ -365,11 +350,11 @@ class CustomerService {
       final updatePassword = await put(
           seion.data!['token'], 'custom', 'customers/me/password', data, '');
 
-      if (updatePassword.isEmpty) {
+      if (updatePassword) {
         await serviceDB.instance.updateRecord(
             'users', {'password': data['newPassword']}, 'id_user', 1);
         return Respuesta(
-            result: 'fail', data: {'data': 'Error en EndPoint'}, error: null);
+            result: 'ok', data: {'success': updatePassword}, error: null);
       } else {
         return Respuesta(
             result: 'fail',
@@ -397,6 +382,35 @@ class CustomerService {
 
       if (order.isNotEmpty) {
         return Respuesta(result: 'ok', data: order, error: null);
+      } else {
+        return Respuesta(
+            result: 'fail',
+            data: {'data': 'La info esta corrupta'},
+            error: 'Error: Api');
+      }
+    } on Exception catch (e) {
+      return Respuesta(
+          result: 'fail', data: {'data': 'Error en App'}, error: e.toString());
+    }
+  }
+
+  Future<Respuesta> deleteAccount() async {
+    try {
+      final session = await serviceDB.instance.getById('users', 'id_user', 1);
+
+      if (session.isEmpty) {
+        return Respuesta(
+            result: 'fail',
+            data: {'data': 'Ingresa sesion para continuar'},
+            error: 'Error: Api');
+      }
+
+      final deleteAccount =
+          await delete('', 'admin', 'customers/${session[0]['id']}');
+
+      if (deleteAccount) {
+        return Respuesta(
+            result: 'ok', data: {'data': deleteAccount}, error: null);
       } else {
         return Respuesta(
             result: 'fail',

@@ -1,9 +1,10 @@
 import 'dart:io';
 
+import 'package:appandromeda/utilities/strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:andromeda/services/customer.dart';
-import 'package:andromeda/utilities/constanst.dart';
+import 'package:appandromeda/services/customer.dart';
+import 'package:appandromeda/utilities/constanst.dart';
 
 abstract class UserSesionState {}
 
@@ -24,7 +25,7 @@ class UserSesionLogic extends Cubit<UserSesionState> {
     await customerService.updateInfo(data).then((value) {
       emit(UserLoadingState(isLoading: false));
       if (value.result == 'ok') {
-        responseSuccessWarning(context, value.data!['data']);
+        responseSuccessWarning(context, MyString.successMessage);
       } else {
         responseErrorWarning(context, value.data!['data']);
       }
@@ -35,6 +36,7 @@ class UserSesionLogic extends Cubit<UserSesionState> {
   }
 
   Future updateImgLogic(File img, BuildContext context) async {
+    emit(UserLoadingState(isLoading: true));
     await customerService.updateImg(img).then((value) {
       emit(UserLoadingState(isLoading: false));
       if (value.result == 'ok') {
@@ -53,7 +55,22 @@ class UserSesionLogic extends Cubit<UserSesionState> {
     await customerService.updatePassword(data).then((value) {
       emit(UserLoadingState(isLoading: false));
       if (value.result == 'ok') {
-        responseSuccessWarning(context, value.data!['data']);
+        responseSuccessWarning(context, MyString.successMessage);
+      } else {
+        responseErrorWarning(context, value.data!['data']);
+      }
+    }).onError((error, stackTrace) {
+      responseErrorWarning(context, 'Usuario y/o Correo incorrecto');
+      emit(UserLoadingState(isLoading: false));
+    });
+  }
+
+  Future deleteAccountLogic(BuildContext context) async {
+    emit(UserLoadingState(isLoading: true));
+    await customerService.deleteAccount().then((value) {
+      emit(UserLoadingState(isLoading: false));
+      if (value.result == 'ok') {
+        Navigator.pushNamed(context, 'home');
       } else {
         responseErrorWarning(context, value.data!['data']);
       }

@@ -1,9 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
-import 'package:andromeda/services/customer.dart';
+import 'package:appandromeda/services/customer.dart';
 
-import 'package:andromeda/models/response.dart';
+import 'package:appandromeda/models/response.dart';
 
 part 'history_event.dart';
 part 'history_state.dart';
@@ -19,8 +19,9 @@ class HistoryBloc extends Bloc<HistoryEvent, HistoryState> {
         final mList = await customerService.getMyOrders();
         if (mList.error != null) {
           emit(HistoryError(mList.error));
+        } else {
+          emit(HistoryLoaded(mList));
         }
-        emit(HistoryLoaded(mList));
       } on NetworkError {
         emit(
             const HistoryError("Failed to fetch data. is your device online?"));
@@ -32,12 +33,13 @@ class HistoryBloc extends Bloc<HistoryEvent, HistoryState> {
         await customerService
             .changeStatusOrder(event.id, event.status)
             .then((value) async {
-          emit(HistoryLoading());
+          //emit(HistoryLoading());
           final mList = await customerService.getMyOrders();
 
-          emit(HistoryLoaded(mList));
           if (mList.error != null) {
             emit(HistoryError(mList.error));
+          } else {
+            emit(HistoryLoaded(mList));
           }
         });
       } on NetworkError {
