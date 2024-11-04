@@ -161,6 +161,7 @@ class _ModificacionRestaurante extends State<ModificacionRestaurante> {
 
   late List<Categoria> _categoria = [];
   List<String> _finalCategories = [];
+  List<Categoria> _initialCategories = [];
   List<String> _finalZonas = [];
 
   List<GeocodingResult>? futureCodigosPostales = <GeocodingResult>[];
@@ -205,6 +206,19 @@ class _ModificacionRestaurante extends State<ModificacionRestaurante> {
           _tiposRest.add(Categoria(id: element['id'], name: element['name']));
         }
       });
+
+      if (_tiposRest.isNotEmpty) {
+        _tiposRest.forEach((elemento) {
+          if (elemento.id ==
+              int.parse(widget.data['extension_attributes']['category_links'][0]
+                  ['category_id'])) {
+            setState(() {
+              _selectedTipoRest = elemento;
+              getSubCategories();
+            });
+          }
+        });
+      }
       setState(() {});
     }
   }
@@ -218,7 +232,13 @@ class _ModificacionRestaurante extends State<ModificacionRestaurante> {
     if (categories.isNotEmpty) {
       categories['items'].forEach((element) {
         _categoria.add(Categoria(id: element['id'], name: element['name']));
+        print(_finalCategories.contains(element['id'].toString()));
+        if (_finalCategories.contains(element['id'].toString())) {
+          _initialCategories
+              .add(Categoria(id: element['id'], name: element['name']));
+        }
       });
+
       setState(() {});
     }
   }
@@ -336,8 +356,8 @@ class _ModificacionRestaurante extends State<ModificacionRestaurante> {
   }
 
   setData() {
-    print("******slot_schedules******");
-    print(widget.data['extension_attributes']['slot_schedules']);
+    //print("******slot_schedules******");
+    //print(widget.data['extension_attributes']['slot_schedules']);
     _nombreController.text = widget.data['name'];
     _skuController.text = widget.data['sku'];
     _descripcionController.text = getCustomAttribute(
@@ -361,33 +381,35 @@ class _ModificacionRestaurante extends State<ModificacionRestaurante> {
       widget.data['extension_attributes']['slot_schedules'].forEach((elem) {
         for (var dia in _daysOfWeek) {
           if (dia['index'] == elem['attribute_code']) {
+            dia['checked'] = true;
             dia['listHours'].add({
               "from": elem['value'][0]['from'],
               "to": elem['value'][0]['to']
             });
-            /*elem['value'][0]['slots_info'].forEach((time) {
-              dia['listHours'].add({
-                "from": elem['value'][0]['from'],
-                "to": elem['value'][0]['to']
-              });*/
           }
         }
       });
     }
-    print('*********_daysOfWeek**********');
-    print(_daysOfWeek);
-    setState(() {});
 
-    //getCustomAttribute(widget.data['custom_attributes'], 'hotel_country')
-    /*futurePais.map((data) {
-      print('data');
-      print(data);
-      print(code);
-      if (data['code'] == code) {
-        _selectedPais = Pais.fromJson(data);
+    for (var zonas in widget.data['options']) {
+      if (zonas['values'].isNotEmpty) {
+        for (var element in zonas['values']) {
+          _finalZonas.add(element['sku'].toString());
+        }
       }
-    });*/
-    //setState(() {});
+    }
+
+    //if (_categoria.isNotEmpty) {
+    for (dynamic attr in widget.data['custom_attributes']) {
+      if (attr['attribute_code'] == 'category_ids') {
+        for (var iteration in attr['value']) {
+          _finalCategories.add(iteration.toString());
+        }
+      }
+    }
+    //}
+
+    setState(() {});
   }
 
   @override
@@ -396,6 +418,45 @@ class _ModificacionRestaurante extends State<ModificacionRestaurante> {
     getUserData();
     //futurePais = fetchPaises();
     futureEstado = _catalogService.fetchEstados("MX");
+    futureEstado?.then((data) {
+      for (Estado estado in data) {
+        if (estado.label ==
+            getCustomAttribute(
+                widget.data['custom_attributes'], 'hotel_state')) {
+          setState(() {
+            _selectedEstado = estado; // Asignación del estado seleccionado
+          });
+
+          // Llamada a fetchCiudades
+          futureCiudad =
+              _catalogService.fetchCiudades("${_selectedEstado?.label}");
+
+          futureCiudad?.then((dataEstado) {
+            for (Ciudad ciudad in dataEstado) {
+              //print(ciudad.statecity);
+              //print(getCustomAttribute(
+              //    widget.data['custom_attributes'], 'product_city'));
+
+              if (ciudad.statecity ==
+                  getCustomAttribute(
+                      widget.data['custom_attributes'], 'product_city')) {
+                setState(() {
+                  _selectedCiudad =
+                      ciudad; // Asignación de la ciudad seleccionada
+                });
+              }
+            }
+          }).catchError((error) {
+            print('Error al obtener ciudades: $error'); // Manejo de errores
+          });
+
+          break; // Salir del ciclo una vez que se encuentra el estado
+        }
+      }
+    }).catchError((error) {
+      print('Error: $error'); // Manejo de errores
+    });
+
     setData();
     getCategories();
   }
@@ -453,7 +514,8 @@ class _ModificacionRestaurante extends State<ModificacionRestaurante> {
                       if (element['checked'] == true) {
                         //print(element);
                         //arraSlot[element['index'].toString()] =
-                        arraSlot[element['index'].toString()] = element['hora'];
+                        arraSlot[element['index'].toString()] =
+                            element['listHours'];
                       }
                     }
 
@@ -561,7 +623,6 @@ class _ModificacionRestaurante extends State<ModificacionRestaurante> {
                     int indice = 0;
                     int indiceMesa = 0;
                     for (String data in _finalZonas) {
-                      //if (data['nombre'] != 'NOMBRE') {
                       if (data == 'Habitual' || data == 'Mesa Alta') {
                         typeTable['values'].add({
                           "title": data,
@@ -581,13 +642,11 @@ class _ModificacionRestaurante extends State<ModificacionRestaurante> {
                         });
                         indice++;
                       }
-
-                      //}
                     }
 
-                    //print(
-                    //    '*******************customAttributes****************');
-                    //print(customAttributes);
+                    print(
+                        '*******************customAttributes****************');
+                    print(customAttributes);
 
                     Map<String, dynamic> producto = {
                       'product': {
@@ -605,9 +664,9 @@ class _ModificacionRestaurante extends State<ModificacionRestaurante> {
                       'saveOptions': true
                     };
 
-                    final restaurante = await put(
-                        '', 'integration', 'products', {}, _skuController.text);
-
+                    final restaurante = await put('', 'integration',
+                        'products/', producto, _skuController.text);
+                    print(restaurante);
                     if (restaurante != null) {
                       responseSuccessWarning(
                           context, 'Restaurante actualizado correctamente');
@@ -843,6 +902,7 @@ class _ModificacionRestaurante extends State<ModificacionRestaurante> {
             }
             setState(() {});
           },
+          initialValue: _initialCategories,
           chipDisplay: MultiSelectChipDisplay(
             onTap: (value) {},
             chipColor: Colors.white, // Fondo de chip en negro
@@ -932,7 +992,9 @@ class _ModificacionRestaurante extends State<ModificacionRestaurante> {
             for (dynamic element in values) {
               _finalZonas.add(element);
             }
-            setState(() {});
+            setState(() {
+              _finalZonas;
+            });
             //_finalZonas.add(_selectedTipoRest!.id.toString());
             /*for (dynamic element in values) {
               _finalZonas.add(element.id.toString());
@@ -941,6 +1003,7 @@ class _ModificacionRestaurante extends State<ModificacionRestaurante> {
             print(_finalZonas);
             setState(() {});*/
           },
+          initialValue: _finalZonas,
           chipDisplay: MultiSelectChipDisplay(
             onTap: (value) {},
             chipColor: Colors.white, // Fondo de chip en negro

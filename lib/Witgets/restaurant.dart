@@ -101,7 +101,7 @@ class _RestuarentScreenState extends State<RestuarentScreen> {
                           'id',
                           int.parse(widget.data["id"].toString()));
                       print(favoriteExist);
-                      if (favoriteExist != null ||
+                      if (favoriteExist.isNotEmpty &&
                           favoriteExist[0].isNotEmpty) {
                         await serviceDB.instance.insertRecord('favorites',
                             {'id': int.parse(widget.data["id"].toString())});

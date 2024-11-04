@@ -92,9 +92,11 @@ class _MyHistoryPageState extends State<MyHistoryPage> {
       return ListView.builder(
         itemCount: model.data!['total_count'],
         itemBuilder: (context, index) {
-          //debugPrint(model.data!['items'][index].toString());
+          //print(model.data!['items'][index]['items'][0]['product_option']
+          //    ['extension_attributes']['custom_options']);
+
           //print(model.data!['items'][index]['status']);
-          final item = model.data!['items'][index]['items'][0]['order_id'];
+          // final item = model.data!['items'][index]['items'][0]['order_id'];
 
           /*return model.data!['items'][index]['status'] != 'canceled' &&
                   model.data!['items'][index]['status'] != 'cancel'
@@ -206,7 +208,34 @@ class _MyHistoryPageState extends State<MyHistoryPage> {
                                     fontSize: 18, fontWeight: FontWeight.bold),
                               ),
                               const SizedBox(height: 20),
-                              Row(
+                              Text(
+                                "Fecha:  ${model.data!['items'][index]['items'][0]['product_option']['extension_attributes']['custom_options'][0]['option_value']}",
+                                style: const TextStyle(
+                                    fontSize: 14, fontWeight: FontWeight.bold),
+                              ),
+                              Text(
+                                "Hora: ${model.data!['items'][index]['items'][0]['product_option']['extension_attributes']['custom_options'][1]['option_value']}",
+                                style: const TextStyle(
+                                    fontSize: 14, fontWeight: FontWeight.bold),
+                              ),
+                              Text(
+                                "Comentarios: ${model.data!['items'][index]['items'][0]['product_option']['extension_attributes']['custom_options'][2]['option_value']}",
+                                style: const TextStyle(
+                                    fontSize: 14, fontWeight: FontWeight.bold),
+                              ),
+                              Text(
+                                "Comensales: ${model.data!['items'][index]['items'][0]['product_option']['extension_attributes']['custom_options'][3]['option_value']}",
+                                style: const TextStyle(
+                                    fontSize: 14, fontWeight: FontWeight.bold),
+                              )
+                              /*Text(
+                                model.data!['items'][index][0]['product_option']
+                                    ['extension_attributes']['custom_options'],
+                                style: const TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.bold),
+                              ),*/
+
+                              /*Row(
                                 mainAxisSize: MainAxisSize.max,
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 mainAxisAlignment:
@@ -241,15 +270,15 @@ class _MyHistoryPageState extends State<MyHistoryPage> {
                                         fontFamily: 'Exo Light'),
                                   ),
                                 ],
-                              ),
-                              const SizedBox(height: 10),
+                              ),*/
+                              /*const SizedBox(height: 10),
                               const Text(
                                 "",
                                 style: TextStyle(
                                     color: Color(0xff323232),
                                     fontSize: 12,
                                     fontFamily: 'Exo Light'),
-                              ),
+                              ),*/
                             ],
                           ),
                         ),

@@ -6,7 +6,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../blocs/reviews/reviews_bloc.dart';
 import '../../../utilities/constanst.dart';
 
-import './rating_rogress_indicador.dart';
 import './users_review_card.dart';
 
 class ReviewsInfo extends StatefulWidget {

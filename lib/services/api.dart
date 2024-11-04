@@ -91,25 +91,25 @@ Future<dynamic> post(String? tokenCustomer, String type, String url,
 
 Future<dynamic> put(String? tokenCustomer, String type, String url,
     Object params, String id) async {
-  //print('** API_PUT **');
+  print('** API_PUT **');
   try {
     final token = getTokenHeader(type, tokenCustomer);
-    //print(
-    //    '************* Endpoint: ${Uri.parse(endPoint! + url + id)}  *************');
-    //print('************* Paramas: $params *************');
-    //print('************* TYPE: $type *************');
+    print(
+        '************* Endpoint: ${Uri.parse(endPoint! + url + id)}  *************');
+    print('************* Paramas: $params *************');
+    print('************* TYPE: $type *************');
     if (token.isNotEmpty) {
       _headers["Authorization"] = token;
     } else {
       _headers.remove("Authorization");
     }
-    //print('************* headers: $_headers *************');
+    print('************* headers: $_headers *************');
     _headers["Authorization"] = getTokenHeader(type, tokenCustomer);
     final resp = await http.put(Uri.parse(endPoint! + url + id),
         headers: _headers, body: jsonEncode(params));
     if (resp.statusCode < 500) {
-      //print(
-      //    '************* API Response: ${json.decode(resp.body)} *************');
+      print(
+          '************* API Response: ${json.decode(resp.body)} *************');
       return json.decode(resp.body);
     }
   } on Exception catch (_) {
