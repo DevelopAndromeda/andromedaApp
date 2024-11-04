@@ -1,0 +1,18 @@
+part of 'store_bloc.dart';
+
+abstract class StoreEvent extends Equatable {
+  const StoreEvent();
+
+  @override
+  List<Object> get props => [];
+}
+
+class GetStoresList extends StoreEvent {}
+
+class GetStoreById extends StoreEvent {
+  final String id;
+  const GetStoreById(this.id);
+
+  @override
+  List<Object> get props => [id];
+}
