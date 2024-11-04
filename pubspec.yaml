@@ -1,41 +1,78 @@
-name: andromeda
-description: A new Flutter project.
+name: appandromeda
+description: andromeda
 publish_to: 'none' 
 
 
-version: 1.0.0+1
+version: 1.0.7
 
 environment:
-  sdk: '>=2.19.6 <3.0.0'
+  #sdk: '>=2.19.6 <3.0.0'
+  sdk: '>=3.4.0 <4.0.0'
 
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
   cupertino_icons: ^1.0.2
   flutter_rating_bar: ^4.0.1
-  #firebase_core: ^2.15.0
-  flutter_custom_clippers: ^2.1.0
-  provider: ^6.0.5
-  http: ^0.13.5
-  geolocator: ^10.1.0
-  path_provider: ^2.0.11
-  sqflite: ^2.2.2
+  html_parsed_read_more: ^0.0.1
+  #flutter_custom_clippers: ^2.1.0
+  http: ^1.2.2
+  geolocator: ^12.0.0
+  path_provider: ^2.1.4
+  sqflite: ^2.3.3+1
   flutter_dotenv: ^5.1.0
-  intl: ^0.18.1
-  carousel_slider: ^4.0.0
-  readmore: ^2.2.0
-
+  intl: ^0.19.0
+  carousel_slider: ^5.0.0
+  readmore: ^3.0.0
+  google_maps_flutter: ^2.8.0
+  multi_select_flutter: ^4.1.3
+  #ftoast: ^2.0.0
+  panara_dialogs: ^0.1.5
+  shimmer: ^3.0.0
+  camera: ^0.11.0+2
+  path: ^1.9.0
+  image_picker: ^1.1.2
+  photo_view: ^0.15.0
+  bloc: ^8.1.4
+  flutter_bloc: ^8.1.6
+  equatable: ^2.0.5
+  #flutter_background_service: ^5.0.7
+  #flutter_local_notifications: ^17.1.1+2
+  device_info_plus: ^10.1.1
+  location: ^7.0.0
+  geocoding: ^3.0.0
+  permission_handler: ^11.3.1
+  #fluttertoast: ^8.2.6
+  #html: ^0.15.4
+  #vector_math: ^2.1.4
+  flutter_box_transform: ^0.4.5
+  flutter_speed_dial: ^7.0.0
+  localstorage: ^5.0.0
+  flutter_svg: ^2.0.10+1
+  cached_network_image: ^3.4.0
+  toastification: ^2.3.0
+  flutter_native_splash: ^2.4.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_launcher_icons: "^0.13.1"
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/andromeda_icono.png"
+  adaptive_icon_background: "assets/andromeda_icono.png"
+
     
  # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^2.0.0
+  flutter_lints: ^4.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -44,18 +81,23 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
-    - assets/ExampleRest.png
-    - assets/ExampleRest1.png
-    - assets/ExampleRest2.png
-    - assets/Profile.png
     - assets/Back.png
-    - assets/image1.jpg
-    - assets/image2.jpg
-    - assets/image3.jpg
-    - assets/image4.jpg
-    - assets/image5.jpg
+    - assets/Black.jpg
     - assets/IniciarSesionCliente.png
     - assets/IniciarSesionRest.png
+    - assets/Login.png
+    - assets/notFoundImg.png
+    - assets/Profile.png
+    - assets/Masculino.jpg
+    - assets/Femenino.jpg
+    - assets/LogoBlack.png
+    - assets/no_search_result.png
+    - assets/LogoWhite.png
+    - assets/svg/Cuadrada.svg
+    - assets/svg/Rectangular.svg
+    - assets/svg/Redonda.svg
+    - assets/svg/Silla_para_barra.svg
+    - assets/screens/
     - .env
 
   # To add assets to your application, add an assets section, like this:

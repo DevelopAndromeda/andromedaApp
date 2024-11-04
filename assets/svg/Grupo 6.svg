@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="35.216" height="35.165" viewBox="0 0 35.216 35.165">
+  <g id="Grupo_6" data-name="Grupo 6" transform="translate(585.212 -1248.965)">
+    <g id="Elipse_2" data-name="Elipse 2" transform="translate(-574.932 1248.965)" fill="#fff" stroke="#000" stroke-width="2">
+      <circle cx="5.666" cy="5.666" r="5.666" stroke="none"/>
+      <circle cx="5.666" cy="5.666" r="4.666" fill="none"/>
+    </g>
+    <g id="Elipse_16" data-name="Elipse 16" transform="translate(-573.88 1272.798)" fill="#fff" stroke="#000" stroke-width="2">
+      <circle cx="5.666" cy="5.666" r="5.666" stroke="none"/>
+      <circle cx="5.666" cy="5.666" r="4.666" fill="none"/>
+    </g>
+    <g id="Elipse_17" data-name="Elipse 17" transform="translate(-561.328 1260.298)" fill="#fff" stroke="#000" stroke-width="2">
+      <circle cx="5.666" cy="5.666" r="5.666" stroke="none"/>
+      <circle cx="5.666" cy="5.666" r="4.666" fill="none"/>
+    </g>
+    <g id="Elipse_18" data-name="Elipse 18" transform="translate(-585.212 1262.182)" fill="#fff" stroke="#000" stroke-width="2">
+      <circle cx="5.666" cy="5.666" r="5.666" stroke="none"/>
+      <circle cx="5.666" cy="5.666" r="4.666" fill="none"/>
+    </g>
+    <g id="Trazado_25" data-name="Trazado 25" transform="translate(-580.765 1259.065)" fill="#fff">
+      <path d="M 22.0897159576416 19.75992202758789 L 4.634713649749756 15.67455577850342 L 1.187243223190308 0.6997125744819641 L 23.99957656860352 -5.845475673675537 L 22.0897159576416 19.75992202758789 Z" stroke="none"/>
+      <path d="M 22.89557456970215 -4.488372802734375 L 2.374488830566406 1.399422645568848 L 5.469409942626953 14.84289741516113 L 21.1794319152832 18.51984786987305 L 22.89557456970215 -4.488372802734375 M 25.10357856750488 -7.202577590942383 L 22.99999809265137 21.00000190734863 L 3.800018310546875 16.50622177124023 L -1.9073486328125e-06 1.9073486328125e-06 L 25.10357856750488 -7.202577590942383 Z" stroke="none" fill="#000"/>
+    </g>
+  </g>
+</svg>

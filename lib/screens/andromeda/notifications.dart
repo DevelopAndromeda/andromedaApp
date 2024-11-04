@@ -1,7 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:andromeda/Witgets/Notifications/Successful_Notification_.dart';
-import 'package:andromeda/Witgets/Notifications/Reservation_Notificacion.dart';
-import 'package:andromeda/Witgets/bottomBar.dart';
+
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:appandromeda/blocs/notificaciones/notificaciones_bloc.dart';
+
+import 'package:appandromeda/models/response.dart';
+
+import 'package:appandromeda/witgets/reservation_notificacion.dart';
+import 'package:appandromeda/witgets/screens/screen_widget_export.dart';
+//import 'package:appandromeda/witgets/screens/no_search_result_1.dart';
+
+import 'package:appandromeda/witgets/skeleton.dart';
 
 class MyNotificationsPage extends StatefulWidget {
   const MyNotificationsPage({super.key});
@@ -11,67 +19,98 @@ class MyNotificationsPage extends StatefulWidget {
 }
 
 class _MyNotificationsPageState extends State<MyNotificationsPage> {
+  late final NotificacionesBloc _notificacionBloc;
+
+  @override
+  void initState() {
+    super.initState();
+    _notificacionBloc = NotificacionesBloc();
+    _notificacionBloc.add(GetNotificacionesList());
+  }
+
+  @override
+  void dispose() {
+    _notificacionBloc.close();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
+        appBar: AppBar(
+          title: const Text(
+            'Notificaciones',
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          ),
+          centerTitle: true,
+          backgroundColor: const Color.fromARGB(255, 0, 0, 0),
+        ),
+        body:
+            _body() /*Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
         child: SingleChildScrollView(
           child: ReservationNotification(
             title: "Confirmacion de tu reservación",
             subtitle: "Nombre del Restaurante",
             description: "Datos de la reservación",
-            imagePath: "assets/ExampleRest.png",
+            imagePath: "assets/Login.png",
             onClose: () {
-              print("Notificaciones");
+              //print("Notificaciones");
+            },
+          ),
+        ),
+      ),*/
+        );
+  }
+
+  Container _body() {
+    return Container(
+      margin: const EdgeInsets.all(8.0),
+      child: BlocProvider(
+        create: (_) => _notificacionBloc,
+        child: BlocListener<NotificacionesBloc, NotificacionesState>(
+          listener: (context, state) {
+            /*if (state is FavoriteError) {
+              responseErrorWarning(context, state.message!);
+            }*/
+          },
+          child: BlocBuilder<NotificacionesBloc, NotificacionesState>(
+            builder: (context, state) {
+              if (state is NotificacionesInitial) {
+                return const Skeleton(cantData: 4);
+              } else if (state is NotificacionesLoading) {
+                return const Skeleton(cantData: 4);
+              } else if (state is NotificacionesErrorSession) {
+                return const WrongConnection();
+              } else if (state is NotificacionesLoaded) {
+                return _buildCard(context, state.data);
+              } else if (state is NotificacionesLoadedEmpty) {
+                return NotSearchResults(img: "Notificaciones.png");
+              } else if (state is NotificacionesError) {
+                return const WrongConnection();
+              } else {
+                return Container();
+              }
             },
           ),
         ),
       ),
-      bottomNavigationBar: MyBottomBar(
-        index: 4,
-      ),
     );
   }
-/*
-    return //Notificacion de cancelacion de la reservación
-       CancellationNotification(
-        title: "Cancelacion de Reservación", 
-        subtitle: "Nombre del Restaurante", 
-        description: "Datos de la reservación", 
-        imagePath: "assets/ExampleRest.png", 
-        onClose: (){
-          print("Notificaciones");
-        },
-        );
+
+  Widget _buildCard(BuildContext context, Respuesta model) {
+    return ListView.builder(
+        itemCount: model.data!['data'].length,
+        itemBuilder: (context, index) {
+          return ReservationNotification(
+            title: model.data!['data'][index]['message'],
+            subtitle: model.data!['data'][index]['product_name'] ?? "",
+            description: model.data!['data'][index]['created_at'] ?? "",
+            imagePath: model.data!['data'][index]['image'] ?? "",
+            onClose: () {
+              //print("Notificaciones");
+            },
+          );
+        });
   }
-*/
-/*
-  return //Notificacion de reservación modificada por alguna de las 2 partes, restaurante o usuario
-       ModificationNotification(
-        title: "Modificacion de la reservación", 
-        subtitle: "Nombre del Restaurante", 
-        description: "Datos de la reservación", 
-        imagePath: "assets/ExampleRest.png", 
-        onClose: (){
-          print("Notificaciones");
-        },
-        );
-  }
-*/
-/*
-  return //Confirmación de reservación
-       SuccessfullNotification(
-        title: "Tu reservación a sido realizada", 
-        subtitle: "Nombre del Restaurante", 
-        description: "Datos de la reservación", 
-        imagePath: "assets/ExampleRest.png", 
-        onClose: (){
-          print("Notificaciones");
-        },
-        );
-  }
-*/
-  //Pendiente a resolver con Emma :x
-  //Crear validaciones y formatos de para mandar a llamar las funciones
 }

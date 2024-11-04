@@ -7,7 +7,8 @@ class SuccessfullNotification extends StatelessWidget {
   final String imagePath;
   final VoidCallback onClose;
 
-  SuccessfullNotification({
+  const SuccessfullNotification({
+    super.key,
     required this.title,
     required this.subtitle,
     required this.description,
@@ -18,7 +19,7 @@ class SuccessfullNotification extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       elevation: 4.0,
-      margin: EdgeInsets.all(16.0),
+      margin: const EdgeInsets.all(16.0),
       child: ListTile(
         leading: Container(
           width: 60.0,
@@ -33,27 +34,24 @@ class SuccessfullNotification extends StatelessWidget {
         ),
         title: Text(
           title,
-          style: TextStyle(fontWeight: FontWeight.bold),
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(subtitle),
-            SizedBox(height: 4.0),
+            const SizedBox(height: 4.0),
             Text(
               description,
-              style: TextStyle(color: Colors.grey),
+              style: const TextStyle(color: Colors.grey),
             ),
           ],
         ),
         trailing: IconButton(
-          icon: Icon(Icons.close),
+          icon: const Icon(Icons.close),
           onPressed: onClose,
         ),
       ),
     );
   }
 }
-
-
-
